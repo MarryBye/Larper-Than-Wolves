@@ -1,25 +1,68 @@
+# BetterThanGamers - Minecraft NeoForge Mod
 
-Installation information
-=======
+A gameplay modification for Minecraft 1.21.1 using NeoForge that improves early-game survival mechanics and progression.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+## Features
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+### New Items
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+- **Silicon Shards** - Crafted from gravel with lower drop rate
+- **Dry Grass** - Early game fuel source for furnaces
+- **Ore Dusts** - Drop from mining ore with silicon tools
+- **Stone Nuggets** - Drop from stone variants
+- **Rope** - Crafted from leather using silicon shears
+- **Lighter** - Fire-starting wooden tool
+- **Copper Tools & Armor** - Complete sets for early progression
+- **Silicon Tools** - Budget-friendly early-game tools
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+### Blocks
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+- **Brick Furnace** - Custom furnace with unique mechanics
+- **Brick Slab** - Building block and furnace component
+
+### Key Mechanics
+
+#### Furnace System
+- Fuel efficiency varies by type (dry grass, wood, coal, etc.)
+- Customizable input/output slots
+- Ignited with lighter tool
+
+#### Mining Progression
+- Silicon tools for ore dust and stone
+- Copper tools for iron and copper
+- Traditional progression for higher ores
+
+#### Survival Changes
+- Gravel drops silicon shards (not flint)
+- Grass doesn't drop seeds
+- Hoe interaction with grass creates farmable dirt
+
+## Installation
+
+1. Download JAR from Releases
+2. Place in NeoForge `mods` folder
+3. Requires Minecraft 1.21.1 + NeoForge 21.1.249
+
+## Building
+
+```bash
+./gradlew build
+```
+
+Output: `build/libs/betterthangamers-1.0.0.jar`
+
+## Texture Files
+
+Add textures to corresponding folders:
+- Items: `assets/betterthangamers/textures/item/`
+- Blocks: `assets/betterthangamers/textures/block/`
+
+See `TEXTURE_GUIDE.md` for complete requirements.
+
+## Version
+
+**v1.0.0** - Initial release for NeoForge 1.21.1
+
+## License
+
+All Rights Reserved
