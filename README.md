@@ -1,4 +1,4 @@
-# BetterThanGamers - Minecraft NeoForge Mod
+# Larper Than Wolves - Minecraft NeoForge Mod
 
 A gameplay modification for Minecraft 1.21.1 using NeoForge that improves early-game survival mechanics and progression.
 

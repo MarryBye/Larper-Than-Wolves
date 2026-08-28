@@ -83,7 +83,7 @@ public class DisabledItemsHandler {
             event.setCanceled(true);
             Player player = event.getEntity();
             if (!event.getLevel().isClientSide && player != null) {
-                player.displayClientMessage(Component.literal("§cЭтот предмет вырезан модификацией BetterThanGamers!"), true);
+                player.displayClientMessage(Component.literal("§cЭтот предмет вырезан модификацией Larper Than Wolves!"), true);
             }
         }
     }
@@ -96,7 +96,7 @@ public class DisabledItemsHandler {
             event.setCanceled(true);
             Player player = event.getEntity();
             if (!event.getLevel().isClientSide && player != null) {
-                player.displayClientMessage(Component.literal("§cЭтот предмет вырезан модификацией BetterThanGamers!"), true);
+                player.displayClientMessage(Component.literal("§cЭтот предмет вырезан модификацией Larper Than Wolves!"), true);
             }
         }
     }
