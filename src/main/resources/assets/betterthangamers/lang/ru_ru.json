@@ -27,5 +27,7 @@
   "item.betterthangamers.copper_boots": "Медные ботинки",
   "block.betterthangamers.brick_furnace": "Кирпичная печь",
   "container.brick_furnace": "Кирпичная печь",
-  "itemGroup.betterthangamers": "Better Than Gamers"
+  "itemGroup.betterthangamers": "Better Than Gamers",
+  "item.betterthangamers.unfired_brick": "Сформированный кирпич",
+  "block.betterthangamers.unfired_brick": "Сформированный кирпич"
 }

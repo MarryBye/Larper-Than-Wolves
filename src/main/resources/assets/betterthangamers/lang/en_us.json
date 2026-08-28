@@ -27,5 +27,7 @@
   "item.betterthangamers.copper_boots": "Copper Boots",
   "block.betterthangamers.brick_furnace": "Brick Furnace",
   "container.brick_furnace": "Brick Furnace",
-  "itemGroup.betterthangamers": "Better Than Gamers"
+  "itemGroup.betterthangamers": "Better Than Gamers",
+  "item.betterthangamers.unfired_brick": "Unfired Brick",
+  "block.betterthangamers.unfired_brick": "Unfired Brick"
 }

@@ -13,5 +13,11 @@ public class ModBlocks {
             () -> new BrickFurnaceBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
                     .strength(3.0F, 10.0F)));
+
+    public static final DeferredBlock<UnfiredBrickBlock> UNFIRED_BRICK = BLOCKS.register("unfired_brick",
+            () -> new UnfiredBrickBlock(BlockBehaviour.Properties.of()
+                    .strength(0.3F, 0.3F)
+                    .sound(net.minecraft.world.level.block.SoundType.GRAVEL)
+                    .noOcclusion()));
 }
 

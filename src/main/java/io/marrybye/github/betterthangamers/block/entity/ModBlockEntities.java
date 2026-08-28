@@ -14,5 +14,11 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(BrickFurnaceBlockEntity::new,
                             io.marrybye.github.betterthangamers.block.ModBlocks.BRICK_FURNACE.get())
                             .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<UnfiredBrickBlockEntity>> UNFIRED_BRICK =
+            BLOCK_ENTITIES.register("unfired_brick", () ->
+                    BlockEntityType.Builder.of(UnfiredBrickBlockEntity::new,
+                            io.marrybye.github.betterthangamers.block.ModBlocks.UNFIRED_BRICK.get())
+                            .build(null));
 }
 

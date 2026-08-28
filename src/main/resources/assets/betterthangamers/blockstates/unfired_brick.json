@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "dried=false,facing=north": {
+      "model": "betterthangamers:block/unfired_brick"
+    },
+    "dried=false,facing=east": {
+      "model": "betterthangamers:block/unfired_brick",
+      "y": 90
+    },
+    "dried=false,facing=south": {
+      "model": "betterthangamers:block/unfired_brick",
+      "y": 180
+    },
+    "dried=false,facing=west": {
+      "model": "betterthangamers:block/unfired_brick",
+      "y": 270
+    },
+    "dried=true,facing=north": {
+      "model": "betterthangamers:block/dried_brick"
+    },
+    "dried=true,facing=east": {
+      "model": "betterthangamers:block/dried_brick",
+      "y": 90
+    },
+    "dried=true,facing=south": {
+      "model": "betterthangamers:block/dried_brick",
+      "y": 180
+    },
+    "dried=true,facing=west": {
+      "model": "betterthangamers:block/dried_brick",
+      "y": 270
+    }
+  }
+}

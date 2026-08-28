@@ -1,5 +1,6 @@
 package io.marrybye.github.betterthangamers.block.entity;
 
+import io.marrybye.github.betterthangamers.block.ModBlocks;
 import io.marrybye.github.betterthangamers.item.ModItems;
 import io.marrybye.github.betterthangamers.menu.BrickFurnaceMenu;
 import net.minecraft.core.BlockPos;
@@ -253,8 +254,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         if (inputItem == Items.KELP) return new ItemStack(Items.DRIED_KELP);
         if (inputItem == Items.COBBLESTONE) return new ItemStack(Items.STONE);
         if (inputItem == Items.SAND) return new ItemStack(Items.GLASS);
-        if (inputItem == Items.RED_SAND) return new ItemStack(Items.GLASS);
-        if (inputItem == Items.CLAY_BALL) return new ItemStack(Items.BRICK);
+        if (inputItem == ModBlocks.UNFIRED_BRICK.asItem()) return new ItemStack(Items.BRICK, 1);
         if (inputItem == Items.CLAY) return new ItemStack(Items.TERRACOTTA);
         if (inputItem == Items.WET_SPONGE) return new ItemStack(Items.SPONGE);
 

@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "minecraft:clay_ball"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:brick"
+  }
+}

@@ -167,6 +167,21 @@ public class BlockBreakHandler {
         double y = pos.getY() + 0.5;
         double z = pos.getZ() + 0.5;
 
+        // --- Unfired Brick Block ---
+        if (block instanceof io.marrybye.github.betterthangamers.block.UnfiredBrickBlock) {
+            drops.clear();
+            if (state.getValue(io.marrybye.github.betterthangamers.block.UnfiredBrickBlock.DRIED)) {
+                ItemEntity brick = new ItemEntity(level, x, y, z, new ItemStack(Items.BRICK, 1));
+                brick.setDefaultPickUpDelay();
+                drops.add(brick);
+            } else {
+                ItemEntity unfired = new ItemEntity(level, x, y, z, new ItemStack(io.marrybye.github.betterthangamers.item.ModBlockItems.UNFIRED_BRICK.get(), 1));
+                unfired.setDefaultPickUpDelay();
+                drops.add(unfired);
+            }
+            return;
+        }
+
         // --- A. Grass / Foliage: NO drops when broken by hand/non-shears ---
         if (block == Blocks.SHORT_GRASS || block == Blocks.TALL_GRASS || block == Blocks.FERN ||
                 block == Blocks.LARGE_FERN || block == Blocks.SEAGRASS || block == Blocks.DEAD_BUSH) {

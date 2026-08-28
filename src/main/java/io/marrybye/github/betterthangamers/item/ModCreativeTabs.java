@@ -50,5 +50,6 @@ public class ModCreativeTabs {
                         output.accept(ModItems.COPPER_BOOTS.get());
 
                         output.accept(ModBlocks.BRICK_FURNACE.get());
+                        output.accept(ModBlockItems.UNFIRED_BRICK.get());
                     }).build());
 }

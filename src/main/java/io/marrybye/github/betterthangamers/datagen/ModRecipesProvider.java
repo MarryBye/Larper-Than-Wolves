@@ -270,17 +270,16 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT))
                 .save(pRecipeOutput, "copper_boots");
 
-        // --- 7. Brick Slab & Brick Furnace (Craftable in 2x2 player inventory!) ---
+        // --- 7. Clay, Brick Slab & Brick Furnace ---
 
-        // 2 Bricks (blocks) -> 4 Brick Slabs (2x1 horizontal in 2x2 grid)
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Items.BRICK_SLAB, 4)
-                .pattern("##")
-                .define('#', Blocks.BRICKS)
-                .unlockedBy("has_bricks", has(Blocks.BRICKS))
-                .save(pRecipeOutput, "brick_slab_from_bricks");
+        // 1 Clay Ball -> 1 Unfired Brick
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.UNFIRED_BRICK.get())
+                .requires(Items.CLAY_BALL)
+                .unlockedBy("has_clay_ball", has(Items.CLAY_BALL))
+                .save(pRecipeOutput, "unfired_brick_from_clay_ball");
 
-        // 2 Brick (items) -> 2 Brick Slabs (2x1 horizontal in 2x2 grid)
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Items.BRICK_SLAB, 2)
+        // 2 Brick (items) -> 1 Brick Slab (2x1 horizontal in 2x2 grid)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Items.BRICK_SLAB, 1)
                 .pattern("##")
                 .define('#', Items.BRICK)
                 .unlockedBy("has_brick_item", has(Items.BRICK))
@@ -293,6 +292,16 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
                 .define('#', Items.BRICK_SLAB)
                 .unlockedBy("has_brick_slab", has(Items.BRICK_SLAB))
                 .save(pRecipeOutput, "brick_furnace_from_slabs");
+
+        // Smelting Unfired Brick -> Brick
+        SimpleCookingRecipeBuilder.smelting(
+                Ingredient.of(ModBlocks.UNFIRED_BRICK.get()),
+                RecipeCategory.MISC,
+                Items.BRICK,
+                0.3f,
+                200)
+                .unlockedBy("has_unfired_brick", has(ModBlocks.UNFIRED_BRICK.get()))
+                .save(pRecipeOutput, "smelting_unfired_brick");
 
         // --- 8. Vanilla Smelting Overrides ---
         SimpleCookingRecipeBuilder.smelting(
