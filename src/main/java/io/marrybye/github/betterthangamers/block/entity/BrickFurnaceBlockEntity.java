@@ -56,11 +56,9 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     }
 
     private static final Map<Item, FuelInfo> FUEL_REGISTRY = new HashMap<>();
+    private static final FuelInfo DRY_GRASS_INFO = new FuelInfo(600, 200);
 
     static {
-        // Dry grass: 30s burn (600 ticks), 10s cook speed (200 ticks)
-        FUEL_REGISTRY.put(ModItems.DRY_GRASS.get(), new FuelInfo(600, 200));
-
         // Wood / Logs / Planks: 60s burn (1200 ticks), 8s cook speed (160 ticks)
         FuelInfo woodInfo = new FuelInfo(1200, 160);
         FUEL_REGISTRY.put(Items.OAK_LOG, woodInfo);
@@ -95,10 +93,14 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     }
 
     public static boolean isValidFuel(ItemStack stack) {
-        return !stack.isEmpty() && FUEL_REGISTRY.containsKey(stack.getItem());
+        if (stack.isEmpty()) return false;
+        if (stack.is(ModItems.DRY_GRASS.get())) return true;
+        return FUEL_REGISTRY.containsKey(stack.getItem());
     }
 
     public static FuelInfo getFuelInfo(ItemStack stack) {
+        if (stack.isEmpty()) return null;
+        if (stack.is(ModItems.DRY_GRASS.get())) return DRY_GRASS_INFO;
         return FUEL_REGISTRY.get(stack.getItem());
     }
 

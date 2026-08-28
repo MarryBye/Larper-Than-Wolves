@@ -9,54 +9,54 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = "betterthangamers")
 public class DisabledItemsHandler {
 
-    private static final Map<Item, Item> REPLACEMENTS = new HashMap<>();
-    private static final Set<Item> DISABLED_ITEMS;
+    private static final Map<Item, Supplier<? extends ItemLike>> REPLACEMENT_SUPPLIERS = new HashMap<>();
 
     static {
-        REPLACEMENTS.put(Items.WOODEN_PICKAXE, ModItems.SILICON_PICKAXE.get());
-        REPLACEMENTS.put(Items.WOODEN_AXE, ModItems.SILICON_AXE.get());
-        REPLACEMENTS.put(Items.WOODEN_SHOVEL, ModItems.SILICON_SHOVEL.get());
-        REPLACEMENTS.put(Items.WOODEN_SWORD, ModItems.SILICON_SPEAR.get());
-        REPLACEMENTS.put(Items.WOODEN_HOE, ModItems.SILICON_SHARD.get());
+        REPLACEMENT_SUPPLIERS.put(Items.WOODEN_PICKAXE, ModItems.SILICON_PICKAXE);
+        REPLACEMENT_SUPPLIERS.put(Items.WOODEN_AXE, ModItems.SILICON_AXE);
+        REPLACEMENT_SUPPLIERS.put(Items.WOODEN_SHOVEL, ModItems.SILICON_SHOVEL);
+        REPLACEMENT_SUPPLIERS.put(Items.WOODEN_SWORD, ModItems.SILICON_SPEAR);
+        REPLACEMENT_SUPPLIERS.put(Items.WOODEN_HOE, ModItems.SILICON_SHARD);
 
-        REPLACEMENTS.put(Items.STONE_PICKAXE, ModItems.SILICON_PICKAXE.get());
-        REPLACEMENTS.put(Items.STONE_AXE, ModItems.SILICON_AXE.get());
-        REPLACEMENTS.put(Items.STONE_SHOVEL, ModItems.SILICON_SHOVEL.get());
-        REPLACEMENTS.put(Items.STONE_SWORD, ModItems.SILICON_SPEAR.get());
-        REPLACEMENTS.put(Items.STONE_HOE, ModItems.SILICON_SHARD.get());
+        REPLACEMENT_SUPPLIERS.put(Items.STONE_PICKAXE, ModItems.SILICON_PICKAXE);
+        REPLACEMENT_SUPPLIERS.put(Items.STONE_AXE, ModItems.SILICON_AXE);
+        REPLACEMENT_SUPPLIERS.put(Items.STONE_SHOVEL, ModItems.SILICON_SHOVEL);
+        REPLACEMENT_SUPPLIERS.put(Items.STONE_SWORD, ModItems.SILICON_SPEAR);
+        REPLACEMENT_SUPPLIERS.put(Items.STONE_HOE, ModItems.SILICON_SHARD);
 
-        REPLACEMENTS.put(Items.CHAINMAIL_HELMET, ModItems.COPPER_HELMET.get());
-        REPLACEMENTS.put(Items.CHAINMAIL_CHESTPLATE, ModItems.COPPER_CHESTPLATE.get());
-        REPLACEMENTS.put(Items.CHAINMAIL_LEGGINGS, ModItems.COPPER_LEGGINGS.get());
-        REPLACEMENTS.put(Items.CHAINMAIL_BOOTS, ModItems.COPPER_BOOTS.get());
+        REPLACEMENT_SUPPLIERS.put(Items.CHAINMAIL_HELMET, ModItems.COPPER_HELMET);
+        REPLACEMENT_SUPPLIERS.put(Items.CHAINMAIL_CHESTPLATE, ModItems.COPPER_CHESTPLATE);
+        REPLACEMENT_SUPPLIERS.put(Items.CHAINMAIL_LEGGINGS, ModItems.COPPER_LEGGINGS);
+        REPLACEMENT_SUPPLIERS.put(Items.CHAINMAIL_BOOTS, ModItems.COPPER_BOOTS);
 
-        REPLACEMENTS.put(Items.FURNACE, ModBlocks.BRICK_FURNACE.asItem());
-
-        DISABLED_ITEMS = Set.copyOf(REPLACEMENTS.keySet());
+        REPLACEMENT_SUPPLIERS.put(Items.FURNACE, ModBlocks.BRICK_FURNACE);
     }
 
     public static boolean isDisabled(Item item) {
-        return DISABLED_ITEMS.contains(item);
+        return REPLACEMENT_SUPPLIERS.containsKey(item);
     }
 
     public static ItemStack getReplacement(ItemStack original) {
-        Item replacementItem = REPLACEMENTS.get(original.getItem());
-        if (replacementItem != null) {
-            return new ItemStack(replacementItem, original.getCount());
+        Supplier<? extends ItemLike> supplier = REPLACEMENT_SUPPLIERS.get(original.getItem());
+        if (supplier != null) {
+            ItemLike replacement = supplier.get();
+            if (replacement != null) {
+                return new ItemStack(replacement, original.getCount());
+            }
         }
         return original;
     }
