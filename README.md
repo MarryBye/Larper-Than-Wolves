@@ -41,7 +41,7 @@ A gameplay modification for Minecraft 1.21.1 using NeoForge that improves early-
 
 1. Download JAR from Releases
 2. Place in NeoForge `mods` folder
-3. Requires Minecraft 1.21.1 + NeoForge 21.1.249
+3. Requires Minecraft 1.21.1 + NeoForge 21.1.248
 
 ## Building
 

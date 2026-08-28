@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "lit=false": {
       "model": "betterthangamers:block/brick_furnace"
+    },
+    "lit=true": {
+      "model": "betterthangamers:block/brick_furnace_on"
     }
   }
 }

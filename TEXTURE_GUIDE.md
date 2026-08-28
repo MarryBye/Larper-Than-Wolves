@@ -1,8 +1,8 @@
-# Texture Placement Guide
+# Texture Guide
 
-This mod requires textures for all custom items and blocks. Please place textures in the following directories:
+All required textures for custom items, blocks, and armor models have been created and placed in the project.
 
-## Item Textures
+## Texture Directories
 
 All item textures should be placed in:
 ```

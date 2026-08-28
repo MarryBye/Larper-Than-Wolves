@@ -59,18 +59,19 @@ betterthangamers-1.21.1/
 │       │   ├── models/ (Item & block models)
 │       │   └── blockstates/
 │       └── data/betterthangamers/ (Loot tables)
-├── build.gradle (NeoForge 21.1.249 configuration)
+├── build.gradle (NeoForge 21.1.248 configuration)
 ├── README.md (Complete documentation)
 ├── TEXTURE_GUIDE.md (Texture placement instructions)
 └── .git/ (Git repository with v1.0.0 tag)
 ```
 
 ## 🎨 Textures
-
-Item and block models are configured but require texture files:
+ 
+- All 26 item textures, 8 block textures, and 2 armor model textures are implemented.
 - **Location**: `src/main/resources/assets/betterthangamers/textures/`
-- **Guide**: See TEXTURE_GUIDE.md for complete list
-- **Copper tools**: Can use Minecraft's default copper textures
+- **Item Textures**: `textures/item/`
+- **Block Textures**: `textures/block/`
+- **Armor Textures**: `textures/models/armor/`
 
 ## 🚀 Push to GitHub
 
@@ -131,7 +132,7 @@ git push origin v1.0.0
 
 - **Build Status**: ✅ SUCCESS
 - **Build Time**: ~3 seconds
-- **Dependencies**: NeoForge 21.1.249
+- **Dependencies**: NeoForge 21.1.248
 - **Java Version**: 21
 - **Gradle**: 9.2.1
 
