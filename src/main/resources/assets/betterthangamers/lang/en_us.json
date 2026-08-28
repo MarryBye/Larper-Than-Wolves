@@ -29,5 +29,6 @@
   "container.brick_furnace": "Brick Furnace",
   "itemGroup.betterthangamers": "Better Than Gamers",
   "item.betterthangamers.unfired_brick": "Unfired Brick",
-  "block.betterthangamers.unfired_brick": "Unfired Brick"
+  "block.betterthangamers.unfired_brick": "Unfired Brick",
+  "item.betterthangamers.copper_nugget": "Copper Nugget"
 }

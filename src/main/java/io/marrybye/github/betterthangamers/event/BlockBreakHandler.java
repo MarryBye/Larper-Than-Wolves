@@ -175,7 +175,7 @@ public class BlockBreakHandler {
                 brick.setDefaultPickUpDelay();
                 drops.add(brick);
             } else {
-                ItemEntity unfired = new ItemEntity(level, x, y, z, new ItemStack(io.marrybye.github.betterthangamers.item.ModBlockItems.UNFIRED_BRICK.get(), 1));
+                ItemEntity unfired = new ItemEntity(level, x, y, z, new ItemStack(io.marrybye.github.betterthangamers.item.ModItems.UNFIRED_BRICK.get(), 1));
                 unfired.setDefaultPickUpDelay();
                 drops.add(unfired);
             }
@@ -247,6 +247,18 @@ public class BlockBreakHandler {
                 dust.setDefaultPickUpDelay();
                 drops.add(dust);
                 return;
+            } else if (block == Blocks.IRON_ORE) {
+                drops.clear();
+                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.IRON_DUST.get(), 1));
+                dust.setDefaultPickUpDelay();
+                drops.add(dust);
+                return;
+            } else if (block == Blocks.GOLD_ORE) {
+                drops.clear();
+                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.GOLD_DUST.get(), 1));
+                dust.setDefaultPickUpDelay();
+                drops.add(dust);
+                return;
             }
         }
 
@@ -254,65 +266,6 @@ public class BlockBreakHandler {
         if (tool.getItem() instanceof net.minecraft.world.item.PickaxeItem) {
             if (isCopperPickaxe(tool) && isDiamondPlusTier(block)) {
                 drops.clear();
-                return;
-            }
-
-            // Stone variants drop 2-4 nuggets
-            if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
-                drops.clear();
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.STONE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-                return;
-            } else if (block == Blocks.DIORITE) {
-                drops.clear();
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.DIORITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-                return;
-            } else if (block == Blocks.GRANITE) {
-                drops.clear();
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.GRANITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-                return;
-            } else if (block == Blocks.ANDESITE) {
-                drops.clear();
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.ANDESITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-                return;
-            } else if (block == Blocks.TUFF || block == Blocks.CHISELED_TUFF || block == Blocks.POLISHED_TUFF || block == Blocks.TUFF_BRICKS) {
-                drops.clear();
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.TUFF_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-                return;
-            }
-
-            // Ores drop 1 dust
-            if (block == Blocks.IRON_ORE || block == Blocks.DEEPSLATE_IRON_ORE) {
-                drops.clear();
-                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.IRON_DUST.get(), 1));
-                dust.setDefaultPickUpDelay();
-                drops.add(dust);
-                return;
-            } else if (block == Blocks.COPPER_ORE || block == Blocks.DEEPSLATE_COPPER_ORE) {
-                drops.clear();
-                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.COPPER_DUST.get(), 1));
-                dust.setDefaultPickUpDelay();
-                drops.add(dust);
-                return;
-            } else if (block == Blocks.GOLD_ORE || block == Blocks.DEEPSLATE_GOLD_ORE) {
-                drops.clear();
-                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.GOLD_DUST.get(), 1));
-                dust.setDefaultPickUpDelay();
-                drops.add(dust);
                 return;
             }
         }

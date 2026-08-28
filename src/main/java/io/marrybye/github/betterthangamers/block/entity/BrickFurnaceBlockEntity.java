@@ -237,12 +237,10 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     private static ItemStack getSmeltingResult(Level level, ItemStack input) {
         Item inputItem = input.getItem();
 
-        // 1. BetterThanGamers Ore processing: Raw ores -> 1 nugget or dust
+        // 1. BetterThanGamers Ore processing: Raw ores -> 1 nugget (dust does not smelt)
         if (inputItem == Items.RAW_IRON) return new ItemStack(Items.IRON_NUGGET, 1);
-        if (inputItem == Items.RAW_COPPER) return new ItemStack(ModItems.COPPER_DUST.get(), 1);
+        if (inputItem == Items.RAW_COPPER) return new ItemStack(ModItems.COPPER_NUGGET.get(), 1);
         if (inputItem == Items.RAW_GOLD) return new ItemStack(Items.GOLD_NUGGET, 1);
-        if (inputItem == ModItems.IRON_DUST.get()) return new ItemStack(Items.IRON_NUGGET, 1);
-        if (inputItem == ModItems.GOLD_DUST.get()) return new ItemStack(Items.GOLD_NUGGET, 1);
 
         // 2. Food & basic blocks
         if (inputItem == Items.BEEF) return new ItemStack(Items.COOKED_BEEF);

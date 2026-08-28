@@ -27,6 +27,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.GRANITE_NUGGET.get());
                         output.accept(ModItems.ANDESITE_NUGGET.get());
                         output.accept(ModItems.TUFF_NUGGET.get());
+                        output.accept(ModItems.COPPER_NUGGET.get());
 
                         output.accept(ModItems.IRON_DUST.get());
                         output.accept(ModItems.COPPER_DUST.get());
@@ -49,7 +50,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.COPPER_LEGGINGS.get());
                         output.accept(ModItems.COPPER_BOOTS.get());
 
-                        output.accept(ModBlocks.BRICK_FURNACE.get());
-                        output.accept(ModBlockItems.UNFIRED_BRICK.get());
+                        output.accept(ModItems.BRICK_FURNACE.get());
+                        output.accept(ModItems.UNFIRED_BRICK.get());
                     }).build());
 }

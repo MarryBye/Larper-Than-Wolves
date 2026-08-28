@@ -89,7 +89,7 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
                 .unlockedBy("has_gold_dust", has(ModItems.GOLD_DUST.get()))
                 .save(pRecipeOutput, "raw_gold_from_dust");
 
-        // --- 3. Nuggets & Dusts to Ingots (4 nuggets = 1 ingot) ---
+        // --- 3. Nuggets to Ingots (4 nuggets = 1 ingot) ---
 
         // 4 Iron nuggets -> 1 Iron Ingot
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.IRON_INGOT)
@@ -107,13 +107,13 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
                 .unlockedBy("has_gold_nugget", has(Items.GOLD_NUGGET))
                 .save(pRecipeOutput, "gold_ingot_from_nuggets");
 
-        // 4 Copper dust -> 1 Copper Ingot
+        // 4 Copper nuggets -> 1 Copper Ingot
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.COPPER_INGOT)
                 .pattern("##")
                 .pattern("##")
-                .define('#', ModItems.COPPER_DUST.get())
-                .unlockedBy("has_copper_dust", has(ModItems.COPPER_DUST.get()))
-                .save(pRecipeOutput, "copper_ingot_from_dust");
+                .define('#', ModItems.COPPER_NUGGET.get())
+                .unlockedBy("has_copper_nugget", has(ModItems.COPPER_NUGGET.get()))
+                .save(pRecipeOutput, "copper_ingot_from_nuggets");
 
         // --- 4. Survival Utilities (Rope & Lighter) ---
 
@@ -138,59 +138,56 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
                 .unlockedBy("has_stick", has(Items.STICK))
                 .save(pRecipeOutput, "lighter_from_sticks");
 
-        // --- 5. Silicon Tools ---
+        // --- 5. Silicon Tools (2x2 craftable, except pickaxe) ---
 
-        // Silicon Shears (2 silicon shards crossed)
+        // Silicon Shears (2 silicon shards) - 2x2 grid
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_SHEARS.get())
-                .pattern("# ")
                 .pattern(" #")
+                .pattern("# ")
                 .define('#', ModItems.SILICON_SHARD.get())
                 .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
                 .save(pRecipeOutput, "silicon_shears");
 
-        // Silicon Spear (1 silicon shard, 1 rope, 1 stick)
+        // Silicon Spear (1 silicon shard, 1 rope, 1 stick) - 2x2 grid
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SILICON_SPEAR.get())
-                .pattern("  #")
-                .pattern(" R ")
-                .pattern("X  ")
+                .pattern("#R")
+                .pattern("X ")
                 .define('#', ModItems.SILICON_SHARD.get())
                 .define('R', ModItems.ROPE.get())
                 .define('X', Items.STICK)
                 .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
                 .save(pRecipeOutput, "silicon_spear");
 
-        // Silicon Axe (1 silicon shard, 2 sticks, 1 rope)
+        // Silicon Axe (1 silicon shard, 1 rope, 2 sticks) - 2x2 grid
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_AXE.get())
                 .pattern("#R")
-                .pattern("X#")
-                .pattern("X ")
+                .pattern("XX")
                 .define('#', ModItems.SILICON_SHARD.get())
                 .define('R', ModItems.ROPE.get())
                 .define('X', Items.STICK)
                 .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
                 .save(pRecipeOutput, "silicon_axe");
 
-        // Silicon Pickaxe (3 silicon shards, 2 sticks, 1 rope) - requires crafting table
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_PICKAXE.get())
-                .pattern("###")
-                .pattern("XR ")
-                .pattern("X  ")
-                .define('#', ModItems.SILICON_SHARD.get())
-                .define('R', ModItems.ROPE.get())
-                .define('X', Items.STICK)
-                .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
-                .save(pRecipeOutput, "silicon_pickaxe");
-
-        // Silicon Shovel (1 silicon shard, 2 sticks, 1 rope)
+        // Silicon Shovel (1 silicon shard, 1 rope, 1 stick) - 2x2 grid
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_SHOVEL.get())
-                .pattern("#")
-                .pattern("R")
-                .pattern("X")
+                .pattern("#R")
+                .pattern(" X")
                 .define('#', ModItems.SILICON_SHARD.get())
                 .define('R', ModItems.ROPE.get())
                 .define('X', Items.STICK)
                 .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
                 .save(pRecipeOutput, "silicon_shovel");
+
+        // Silicon Pickaxe (3 silicon shards, 1 rope, 2 sticks) - 3x3 crafting table
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_PICKAXE.get())
+                .pattern("###")
+                .pattern(" R ")
+                .pattern(" X ")
+                .define('#', ModItems.SILICON_SHARD.get())
+                .define('R', ModItems.ROPE.get())
+                .define('X', Items.STICK)
+                .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
+                .save(pRecipeOutput, "silicon_pickaxe");
 
         // --- 6. Copper Tools & Armor ---
 
@@ -316,11 +313,11 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
         SimpleCookingRecipeBuilder.smelting(
                 Ingredient.of(Items.RAW_COPPER),
                 RecipeCategory.MISC,
-                ModItems.COPPER_DUST.get(),
+                ModItems.COPPER_NUGGET.get(),
                 0.7f,
                 200)
                 .unlockedBy("has_raw_copper", has(Items.RAW_COPPER))
-                .save(pRecipeOutput, "copper_dust_from_smelting");
+                .save(pRecipeOutput, "copper_nugget_from_smelting_raw_copper");
 
         SimpleCookingRecipeBuilder.smelting(
                 Ingredient.of(Items.RAW_GOLD),
@@ -329,25 +326,7 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
                 1.0f,
                 200)
                 .unlockedBy("has_raw_gold", has(Items.RAW_GOLD))
-                .save(pRecipeOutput, "gold_nugget_from_smelting");
-
-        SimpleCookingRecipeBuilder.smelting(
-                Ingredient.of(ModItems.IRON_DUST.get()),
-                RecipeCategory.MISC,
-                Items.IRON_NUGGET,
-                0.7f,
-                200)
-                .unlockedBy("has_iron_dust", has(ModItems.IRON_DUST.get()))
-                .save(pRecipeOutput, "iron_nugget_from_dust_smelting");
-
-        SimpleCookingRecipeBuilder.smelting(
-                Ingredient.of(ModItems.GOLD_DUST.get()),
-                RecipeCategory.MISC,
-                Items.GOLD_NUGGET,
-                1.0f,
-                200)
-                .unlockedBy("has_gold_dust", has(ModItems.GOLD_DUST.get()))
-                .save(pRecipeOutput, "gold_nugget_from_dust_smelting");
+                .save(pRecipeOutput, "gold_nugget_from_smelting_raw_gold");
     }
 }
 

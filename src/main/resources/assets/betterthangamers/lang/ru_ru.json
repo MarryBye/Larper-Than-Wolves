@@ -29,5 +29,6 @@
   "container.brick_furnace": "Кирпичная печь",
   "itemGroup.betterthangamers": "Better Than Gamers",
   "item.betterthangamers.unfired_brick": "Сформированный кирпич",
-  "block.betterthangamers.unfired_brick": "Сформированный кирпич"
+  "block.betterthangamers.unfired_brick": "Сформированный кирпич",
+  "item.betterthangamers.copper_nugget": "Медный камешек"
 }

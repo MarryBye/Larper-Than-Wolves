@@ -45,6 +45,9 @@ public class ModItems {
     public static final DeferredItem<Item> TUFF_NUGGET = ITEMS.register("tuff_nugget",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> ROPE = ITEMS.register("rope",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
@@ -104,5 +107,12 @@ public class ModItems {
     public static final DeferredItem<Item> SILICON_SPEAR = ITEMS.register("silicon_spear",
             () -> new SwordItem(ModToolMaterials.SILICON, new Item.Properties()
                     .attributes(SwordItem.createAttributes(ModToolMaterials.SILICON, 2, -2.4f))));
+
+    // Block Items
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BRICK_FURNACE = ITEMS.register("brick_furnace",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.betterthangamers.block.ModBlocks.BRICK_FURNACE.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> UNFIRED_BRICK = ITEMS.register("unfired_brick",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.betterthangamers.block.ModBlocks.UNFIRED_BRICK.get(), new Item.Properties()));
 }
 

@@ -2,9 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "combat",
   "pattern": [
-    "  #",
-    " R ",
-    "X  "
+    "#R",
+    "X "
   ],
   "key": {
     "#": {
