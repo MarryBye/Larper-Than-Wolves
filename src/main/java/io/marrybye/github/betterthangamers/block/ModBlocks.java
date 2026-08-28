@@ -12,7 +12,11 @@ public class ModBlocks {
     public static final DeferredBlock<BrickFurnaceBlock> BRICK_FURNACE = BLOCKS.register("brick_furnace",
             () -> new BrickFurnaceBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
-                    .strength(3.0F, 10.0F)));
+                    .strength(3.0F, 10.0F)
+                    .lightLevel(state -> {
+                        int stage = state.hasProperty(BrickFurnaceBlock.STAGE) ? state.getValue(BrickFurnaceBlock.STAGE) : 0;
+                        return stage == 2 ? 14 : (stage == 3 ? 8 : 0);
+                    })));
 
     public static final DeferredBlock<UnfiredBrickBlock> UNFIRED_BRICK = BLOCKS.register("unfired_brick",
             () -> new UnfiredBrickBlock(BlockBehaviour.Properties.of()

@@ -4,15 +4,18 @@ import io.marrybye.github.betterthangamers.block.entity.BrickFurnaceBlockEntity;
 import io.marrybye.github.betterthangamers.block.entity.ModBlockEntities;
 import io.marrybye.github.betterthangamers.item.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -29,12 +32,16 @@ import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
 public class BrickFurnaceBlock extends BaseEntityBlock {
-    public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    // 0: Empty, 1: Fueled, 2: Lit (Strong), 3: Lit Low (Dying embers)
+    public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
     public static final MapCodec<BrickFurnaceBlock> CODEC = simpleCodec(BrickFurnaceBlock::new);
 
     public BrickFurnaceBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false));
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(FACING, Direction.NORTH)
+                .setValue(STAGE, 0));
     }
 
     @Override
@@ -43,8 +50,15 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
     }
 
     @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState()
+                .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(STAGE, 0);
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(LIT);
+        builder.add(FACING, STAGE);
     }
 
     @Override
@@ -76,6 +90,7 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
                         if (!player.getAbilities().instabuild) {
                             stack.shrink(1);
                         }
+                        level.setBlock(pos, state.setValue(STAGE, furnace.isLit() ? (furnace.getBurnTime() <= furnace.getMaxBurnTime() / 4 ? 3 : 2) : 1), 3);
                         level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
                         player.displayClientMessage(Component.literal("§aТопливо загружено в печь."), true);
                     } else if (furnace.isLit()) {
@@ -93,6 +108,7 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
                     if (furnace.isLit()) {
                         player.displayClientMessage(Component.literal("§eПечь уже горит!"), true);
                     } else if (furnace.lightFurnace()) {
+                        level.setBlock(pos, state.setValue(STAGE, 2), 3);
                         level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
                         stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                         player.displayClientMessage(Component.literal("§6Кирпичная печь успешно зажжена!"), true);

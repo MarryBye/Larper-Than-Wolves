@@ -29,14 +29,18 @@ public class BrickFurnaceScreen extends AbstractContainerScreen<BrickFurnaceMenu
         int y = this.topPos;
         guiGraphics.blit(TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
-        // Animated burning flame
+        // Animated burning flame at (80, 54)
         if (this.menu.isLit()) {
             int litProgress = this.menu.getLitProgress();
-            guiGraphics.blit(TEXTURE, x + 80, y + 54 + 12 - litProgress, 176, 12 - litProgress, 14, litProgress + 1);
+            if (litProgress > 0) {
+                guiGraphics.blit(TEXTURE, x + 80, y + 54 + 14 - litProgress, 176, 14 - litProgress, 14, litProgress);
+            }
         }
 
-        // Animated cooking arrow
-        int burnProgress = this.menu.getBurnProgress();
-        guiGraphics.blit(TEXTURE, x + 79, y + 34, 176, 14, burnProgress + 1, 16);
+        // Animated cooking arrow at (79, 34)
+        int cookProgress = this.menu.getBurnProgress();
+        if (cookProgress > 0) {
+            guiGraphics.blit(TEXTURE, x + 79, y + 34, 176, 14, cookProgress, 16);
+        }
     }
 }

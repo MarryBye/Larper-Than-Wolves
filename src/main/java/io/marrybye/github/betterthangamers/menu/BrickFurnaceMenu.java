@@ -66,16 +66,16 @@ public class BrickFurnaceMenu extends AbstractContainerMenu {
     public int getLitProgress() {
         int burnTime = this.data.get(0);
         int maxBurnTime = this.data.get(1);
-        if (maxBurnTime == 0) {
+        if (maxBurnTime <= 0) {
             maxBurnTime = 200;
         }
-        return burnTime * 13 / maxBurnTime;
+        return Math.clamp((int) Math.ceil((float) burnTime * 14.0f / (float) maxBurnTime), 0, 14);
     }
 
     public int getBurnProgress() {
         int cookTime = this.data.get(2);
         int cookTimeTotal = this.data.get(3);
-        return cookTimeTotal != 0 && cookTime != 0 ? cookTime * 24 / cookTimeTotal : 0;
+        return cookTimeTotal != 0 && cookTime != 0 ? Math.clamp((int) Math.ceil((float) cookTime * 24.0f / (float) cookTimeTotal), 0, 24) : 0;
     }
 
     @Override

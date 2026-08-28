@@ -223,15 +223,34 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
             entity.cookTime = 0;
         }
 
-        boolean isLit = entity.burnTime > 0;
-        if (wasLit != isLit) {
-            level.setBlock(pos, state.setValue(io.marrybye.github.betterthangamers.block.BrickFurnaceBlock.LIT, isLit), 3);
-            changed = true;
+        int targetStage;
+        if (entity.burnTime > 0) {
+            targetStage = (entity.maxBurnTime > 0 && entity.burnTime <= entity.maxBurnTime / 4) ? 3 : 2;
+        } else if (!entity.storedFuel.isEmpty()) {
+            targetStage = 1;
+        } else {
+            targetStage = 0;
+        }
+
+        if (state.hasProperty(io.marrybye.github.betterthangamers.block.BrickFurnaceBlock.STAGE)) {
+            int currentStage = state.getValue(io.marrybye.github.betterthangamers.block.BrickFurnaceBlock.STAGE);
+            if (currentStage != targetStage) {
+                level.setBlock(pos, state.setValue(io.marrybye.github.betterthangamers.block.BrickFurnaceBlock.STAGE, targetStage), 3);
+                changed = true;
+            }
         }
 
         if (changed) {
             setChanged(level, pos, state);
         }
+    }
+
+    public int getBurnTime() {
+        return this.burnTime;
+    }
+
+    public int getMaxBurnTime() {
+        return this.maxBurnTime;
     }
 
     private static ItemStack getSmeltingResult(Level level, ItemStack input) {
