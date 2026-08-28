@@ -273,14 +273,14 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
         // --- 7. Brick Slab & Brick Furnace (Craftable in 2x2 player inventory!) ---
 
         // 2 Bricks (blocks) -> 4 Brick Slabs (2x1 horizontal in 2x2 grid)
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BRICK_SLAB.get(), 4)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Items.BRICK_SLAB, 4)
                 .pattern("##")
                 .define('#', Blocks.BRICKS)
                 .unlockedBy("has_bricks", has(Blocks.BRICKS))
                 .save(pRecipeOutput, "brick_slab_from_bricks");
 
         // 2 Brick (items) -> 2 Brick Slabs (2x1 horizontal in 2x2 grid)
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BRICK_SLAB.get(), 2)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Items.BRICK_SLAB, 2)
                 .pattern("##")
                 .define('#', Items.BRICK)
                 .unlockedBy("has_brick_item", has(Items.BRICK))
@@ -290,8 +290,8 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BRICK_FURNACE.get())
                 .pattern("##")
                 .pattern("##")
-                .define('#', ModBlocks.BRICK_SLAB.get())
-                .unlockedBy("has_brick_slab", has(ModBlocks.BRICK_SLAB.get()))
+                .define('#', Items.BRICK_SLAB)
+                .unlockedBy("has_brick_slab", has(Items.BRICK_SLAB))
                 .save(pRecipeOutput, "brick_furnace_from_slabs");
 
         // --- 8. Vanilla Smelting Overrides ---

@@ -49,7 +49,6 @@ public class ModCreativeTabs {
                         output.accept(ModItems.COPPER_LEGGINGS.get());
                         output.accept(ModItems.COPPER_BOOTS.get());
 
-                        output.accept(ModBlocks.BRICK_SLAB.get());
                         output.accept(ModBlocks.BRICK_FURNACE.get());
                     }).build());
 }

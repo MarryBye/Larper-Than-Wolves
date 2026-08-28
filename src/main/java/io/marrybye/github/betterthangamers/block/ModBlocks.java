@@ -13,10 +13,5 @@ public class ModBlocks {
             () -> new BrickFurnaceBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
                     .strength(3.0F, 10.0F)));
-
-    public static final DeferredBlock<Block> BRICK_SLAB = BLOCKS.register("brick_slab",
-            () -> new net.minecraft.world.level.block.SlabBlock(BlockBehaviour.Properties.of()
-                    .requiresCorrectToolForDrops()
-                    .strength(2.0F, 6.0F)));
 }
 
