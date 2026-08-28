@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "betterthangamers:block/brick_slab_bottom",
+    "top": "betterthangamers:block/brick_slab_top",
+    "side": "betterthangamers:block/brick_slab_side"
+  }
+}
+

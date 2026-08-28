@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "half=bottom": {
+      "model": "betterthangamers:block/brick_slab"
+    },
+    "half=top": {
+      "model": "betterthangamers:block/brick_slab_top"
+    }
+  }
+}
+
