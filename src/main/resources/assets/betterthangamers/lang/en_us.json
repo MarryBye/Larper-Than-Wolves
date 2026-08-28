@@ -11,25 +11,22 @@
   "item.betterthangamers.tuff_nugget": "Tuff Nugget",
   "item.betterthangamers.rope": "Rope",
   "item.betterthangamers.lighter": "Lighter",
-
   "item.betterthangamers.silicon_pickaxe": "Silicon Pickaxe",
   "item.betterthangamers.silicon_axe": "Silicon Axe",
   "item.betterthangamers.silicon_shovel": "Silicon Shovel",
   "item.betterthangamers.silicon_shears": "Silicon Shears",
   "item.betterthangamers.silicon_spear": "Silicon Spear",
-
   "item.betterthangamers.copper_sword": "Copper Sword",
   "item.betterthangamers.copper_pickaxe": "Copper Pickaxe",
   "item.betterthangamers.copper_axe": "Copper Axe",
   "item.betterthangamers.copper_shovel": "Copper Shovel",
   "item.betterthangamers.copper_hoe": "Copper Hoe",
-
   "item.betterthangamers.copper_helmet": "Copper Helmet",
   "item.betterthangamers.copper_chestplate": "Copper Chestplate",
   "item.betterthangamers.copper_leggings": "Copper Leggings",
   "item.betterthangamers.copper_boots": "Copper Boots",
-
   "block.betterthangamers.brick_furnace": "Brick Furnace",
-  "block.betterthangamers.brick_slab": "Brick Slab"
+  "block.betterthangamers.brick_slab": "Brick Slab",
+  "container.brick_furnace": "Brick Furnace",
+  "itemGroup.betterthangamers": "Better Than Gamers"
 }
-

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": [
+    "  #",
+    " R ",
+    "X  "
+  ],
+  "key": {
+    "#": {
+      "item": "betterthangamers:silicon_shard"
+    },
+    "R": {
+      "item": "betterthangamers:rope"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "betterthangamers:silicon_spear"
+  }
+}

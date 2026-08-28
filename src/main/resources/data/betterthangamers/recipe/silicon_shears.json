@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    "# ",
+    " #"
+  ],
+  "key": {
+    "#": {
+      "item": "betterthangamers:silicon_shard"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "betterthangamers:silicon_shears"
+  }
+}

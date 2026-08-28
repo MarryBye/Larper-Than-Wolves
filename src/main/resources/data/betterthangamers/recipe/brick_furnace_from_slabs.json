@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "betterthangamers:brick_slab"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "betterthangamers:brick_furnace"
+  }
+}

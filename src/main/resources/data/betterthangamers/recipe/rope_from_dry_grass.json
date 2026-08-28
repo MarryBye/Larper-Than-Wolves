@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "betterthangamers:dry_grass"
+    },
+    {
+      "item": "betterthangamers:dry_grass"
+    },
+    {
+      "item": "betterthangamers:dry_grass"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "betterthangamers:rope"
+  }
+}

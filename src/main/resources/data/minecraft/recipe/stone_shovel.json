@@ -1,0 +1,13 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [],
+  "result": {
+    "count": 1,
+    "id": "minecraft:stone_shovel"
+  }
+}
