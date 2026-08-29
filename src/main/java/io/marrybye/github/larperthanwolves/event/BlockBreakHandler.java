@@ -133,45 +133,6 @@ public class BlockBreakHandler {
         Level level = player.level();
         ItemStack held = player.getMainHandItem();
 
-        // Work Stump breaking progression
-        if (held.is(ModItems.WORK_STUMP.get())) {
-            if (state.is(BlockTags.LOGS)) {
-                event.setCanceled(true);
-                level.setBlock(pos, ModBlocks.WORK_STUMP.get().defaultBlockState().setValue(WorkStumpBlock.STAGE, 0), 3);
-                level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0f, 1.0f);
-                if (level instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.CRIT, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 10, 0.2, 0.1, 0.2, 0.05);
-                }
-                if (!player.getAbilities().instabuild) held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
-                player.displayClientMessage(Component.literal("§6[1/4] Вы начали вытёсывать верстак из бревна..."), true);
-                return;
-            } else if (state.is(ModBlocks.WORK_STUMP.get())) {
-                event.setCanceled(true);
-                int currentStage = state.getValue(WorkStumpBlock.STAGE);
-                if (currentStage == 0) {
-                    level.setBlock(pos, state.setValue(WorkStumpBlock.STAGE, 1), 3);
-                    level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0f, 1.1f);
-                    player.displayClientMessage(Component.literal("§6[2/4] Проявляются контуры рабочей поверхности..."), true);
-                } else if (currentStage == 1) {
-                    level.setBlock(pos, state.setValue(WorkStumpBlock.STAGE, 2), 3);
-                    level.playSound(null, pos, SoundEvents.WOOD_HIT, SoundSource.BLOCKS, 1.0f, 1.2f);
-                    player.displayClientMessage(Component.literal("§6[3/4] Вырезается сетка крафта верстака..."), true);
-                } else if (currentStage == 2) {
-                    level.setBlock(pos, Blocks.CRAFTING_TABLE.defaultBlockState(), 3);
-                    level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.2f, 1.0f);
-                    if (level instanceof ServerLevel serverLevel) {
-                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, 15, 0.3, 0.3, 0.3, 0.1);
-                    }
-                    player.displayClientMessage(Component.literal("§a[4/4] Верстак успешно создан!"), true);
-                }
-                if (level instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.CRIT, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 8, 0.2, 0.1, 0.2, 0.05);
-                }
-                if (!player.getAbilities().instabuild) held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
-                return;
-            }
-        }
-
         // Prevent silicon pickaxe breaking deepslate/tuff
         if (isSiliconPickaxe(held) && isDeepslateOrTuffOrHighTier(block)) {
             event.setCanceled(true);
