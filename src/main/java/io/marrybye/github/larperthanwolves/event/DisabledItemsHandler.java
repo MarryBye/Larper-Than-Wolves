@@ -75,8 +75,12 @@ public class DisabledItemsHandler {
 
     // Remove disabled items from all Creative Tabs (called via mod event bus listener)
     public static void onBuildCreativeTabs(BuildCreativeModeTabContentsEvent event) {
-        event.getParentEntries().removeIf(stack -> !stack.isEmpty() && isDisabled(stack.getItem()));
-        event.getSearchEntries().removeIf(stack -> !stack.isEmpty() && isDisabled(stack.getItem()));
+        try {
+            event.getParentEntries().removeIf(stack -> !stack.isEmpty() && isDisabled(stack.getItem()));
+        } catch (Throwable ignored) {}
+        try {
+            event.getSearchEntries().removeIf(stack -> !stack.isEmpty() && isDisabled(stack.getItem()));
+        } catch (Throwable ignored) {}
     }
 
     // Remove dropped or spawned item entities in the world
