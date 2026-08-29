@@ -1,183 +1,104 @@
-# BetterThanGamers Mod - Project Summary
+# 🐺 Larper Than Wolves - Полная сводка проекта (v1.5.0)
 
-## ✅ Project Status: COMPLETE & SUCCESSFULLY COMPILED
+## 📌 О проекте
 
-Your BetterThanGamers mod has been successfully created, configured, and compiled for Minecraft 1.21.1 with NeoForge!
-
-## 📦 Build Output
-
-- **Compiled JAR**: `build/libs/betterthangamers-1.0.0.jar`
-- **Version**: 1.0.0
-- **Git Repository**: Initialized with v1.0.0 tag
-
-## 🎮 Features Implemented
-
-### Items (26 Total)
-- Silicon Shards, Dry Grass, Ore Dusts (Iron, Copper, Gold)
-- Stone Nuggets (Stone, Diorite, Granite, Andesite, Tuff)
-- Rope, Lighter
-- Copper Tools: Sword, Pickaxe, Axe, Shovel, Hoe
-- Copper Armor: Helmet, Chestplate, Leggings, Boots
-- Silicon Tools: Pickaxe, Axe, Shovel, Shears, Spear
-
-### Blocks
-- Brick Furnace (with custom fuel system)
-- Brick Slab
-
-### Crafting Recipes
-✅ Silicon shards → Flint (4:1)
-✅ Stone nuggets → Cobblestone (4:1)
-✅ Leather + Silicon Shears → Rope (2x)
-✅ Sticks → Lighter
-✅ Silicon shards (crossed) → Silicon Shears
-✅ Silicon tools crafting (Axe, Pickaxe, Shovel, Spear)
-✅ Copper tools (all variants)
-✅ Copper armor (all pieces)
-✅ Brick Slabs → Brick Furnace
-
-### Mechanics Changes
-✅ Gravel drops Silicon Shards instead of Flint
-✅ Tall grass drops nothing
-✅ Custom furnace system with fuel management
-✅ Ore processing: Raw → Dust/Nugget → Ingot
-
-## 🔧 Project Structure
-
-```
-betterthangamers-1.21.1/
-├── src/main/
-│   ├── java/io/marrybye/github/betterthangamers/
-│   │   ├── BetterThanGamers.java (Main mod class)
-│   │   ├── item/ (26 items + armor/tool materials)
-│   │   ├── block/ (Furnace block + BlockEntity)
-│   │   ├── event/ (Block mechanics handlers)
-│   │   ├── mixin/ (Minecraft modifications)
-│   │   └── datagen/ (Recipes & data generation)
-│   └── resources/
-│       ├── assets/betterthangamers/
-│       │   ├── lang/ (en_us.json)
-│       │   ├── models/ (Item & block models)
-│       │   └── blockstates/
-│       └── data/betterthangamers/ (Loot tables)
-├── build.gradle (NeoForge 21.1.248 configuration)
-├── README.md (Complete documentation)
-├── TEXTURE_GUIDE.md (Texture placement instructions)
-└── .git/ (Git repository with v1.0.0 tag)
-```
-
-## 🎨 Textures
- 
-- All 26 item textures, 8 block textures, and 2 armor model textures are implemented.
-- **Location**: `src/main/resources/assets/betterthangamers/textures/`
-- **Item Textures**: `textures/item/`
-- **Block Textures**: `textures/block/`
-- **Armor Textures**: `textures/models/armor/`
-
-## 🚀 Push to GitHub
-
-### Step 1: Create GitHub Repository
-1. Go to https://github.com/new
-2. Repository name: `betterthangamers`
-3. Description: "NeoForge 1.21.1 mod for improved early-game survival"
-4. Choose: Public or Private
-5. Click "Create repository"
-
-### Step 2: Add Remote & Push
-```bash
-cd /Users/marrybye/Desktop/betterthangamers-1.21.1
-
-# Add your GitHub repository (replace YOUR_USERNAME)
-git remote add origin https://github.com/YOUR_USERNAME/betterthangamers.git
-git branch -M main
-git push -u origin main
-
-# Push the v1.0.0 tag
-git push origin v1.0.0
-```
-
-### Step 3: (Optional) Create Release on GitHub
-1. Go to your repository on GitHub
-2. Click "Releases" in the right sidebar
-3. Click "Create a new release"
-4. Select tag: `v1.0.0`
-5. Title: "BetterThanGamers v1.0.0"
-6. Description: Copy content from README.md
-7. Upload JAR: Drag `build/libs/betterthangamers-1.0.0.jar`
-8. Publish release
-
-## 📋 Next Steps for Full Functionality
-
-1. **Add Textures**
-   - Create or download texture files
-   - Place in `src/main/resources/assets/betterthangamers/textures/`
-   - Rebuild with `./gradlew build`
-
-2. **Test in Game**
-   - Copy JAR to NeoForge mods folder
-   - Launch Minecraft 1.21.1
-   - Test all items, blocks, and recipes
-
-3. **Fine-tune Balance**
-   - Adjust tool durability in ModToolMaterials.java
-   - Modify furnace timings in BrickFurnaceBlockEntity.java
-   - Update recipes in ModRecipesProvider.java
-
-4. **Add More Features** (Optional)
-   - Custom enchantments
-   - Advancement/achievements
-   - Dimension features
-   - NBT-based item mechanics
-
-## 📊 Compilation Details
-
-- **Build Status**: ✅ SUCCESS
-- **Build Time**: ~3 seconds
-- **Dependencies**: NeoForge 21.1.248
-- **Java Version**: 21
-- **Gradle**: 9.2.1
-
-## 🐛 Known Limitations
-
-- Furnace GUI not yet implemented (basic functionality only)
-- Tool tier balancing uses STONE tier as placeholder
-- Full Brick Furnace mechanics require custom menu
-- Some loot tables need fine-tuning
-
-## 📚 Documentation Files
-
-- **README.md** - Main project documentation
-- **TEXTURE_GUIDE.md** - Texture placement and naming
-- **build.gradle** - Build configuration
-- **gradle.properties** - Project metadata
-- **src/main/templates/META-INF/neoforge.mods.toml** - Mod metadata
-
-## 🎯 Git History
-
-```
-v1.0.0 tag created
-├── docs: Add comprehensive README and texture guide
-└── Initial commit: BetterThanGamers mod for NeoForge 1.21.1
-```
-
-## ✨ Summary
-
-Your BetterThanGamers mod is now:
-✅ Fully coded and organized
-✅ Successfully compiled to JAR
-✅ Tracked in Git with version 1.0.0
-✅ Documented with README and guides
-✅ Ready to push to GitHub
-✅ Ready for texture additions
-✅ Ready for in-game testing
-
-**Total Files Created**: 70+
-**Total Classes**: 14+
-**Total Recipes**: 20+
-**Total Items**: 26
+**Larper Than Wolves** (`larperthanwolves`) — комплексный мод на базе **NeoForge 21.1.248** для **Minecraft 1.21.1**, воссоздающий хардкорный опыт выживания с поэтапной технологической прогрессией, кастомной металлургией и механизмами.
 
 ---
 
-**For GitHub push instructions, see "🚀 Push to GitHub" section above.**
+## 🛠️ Архитектура и компоненты
 
-Good luck with your mod! 🎮
+### 1. Предметы (`io.marrybye.github.larperthanwolves.item`)
+* **Материалы и компоненты**:
+  * `silicon_shard` — кремниевый осколок (из гравия/песка).
+  * `dry_grass` — сухая трава (топливо, крафт верёвок).
+  * `rope` — верёвка (из кожи/травы ножницами).
+  * `lighter` — зажигалка для розжига печей (64 использования).
+  * `chisel` — стамеска для создания рабочего пенька.
+  * `mesh` — сетка для просеивателя.
+  * `diamond_ingot` — алмазный слиток (сплав алмаза, железа и меди).
+* **Камешки (Nuggets)**:
+  * `stone_nugget`, `granite_nugget`, `diorite_nugget`, `andesite_nugget`, `tuff_nugget`, `calcite_nugget`.
+  * Крафт 4 камешка $\rightarrow$ 1 блок породы.
+* **Рудные пыли**:
+  * `copper_dust`, `iron_dust`, `tin_dust`, `gold_dust`, `bronze_dust`.
+  * Крафт 2 пыли $\rightarrow$ 1 сырая руда (или 2 бронзовые пыли $\rightarrow$ 1 бронзовый самородок).
+* **Олово и Бронза**:
+  * `raw_tin`, `tin_nugget`, `tin_ingot`.
+  * `bronze_nugget`, `bronze_ingot`.
+* **Инструменты и оружие**:
+  * **Кремний**: кирка, топор, лопата, копьё, ножницы (прочность 30).
+  * **Медь**: меч, кирка, топор, лопата, мотыга (прочность 100).
+  * **Бронза**: меч, кирка, топор, лопата, мотыга (прочность 150).
+  * **Укреплённое железо (Алмазный тир)**: меч, кирка, топор, лопата, мотыга (прочность 500, скорость 8.0).
+* **Броня**:
+  * **Медная**: шлем (1), нагрудник (4), поножи (3), ботинки (1). Сумма 9.
+  * **Бронзовая**: шлем (2), нагрудник (5), поножи (4), ботинки (2). Сумма 13.
+  * **Укреплённое железо**: шлем (3), нагрудник (8), поножи (6), ботинки (3). Сумма 20 + 1.5 твёрдости.
 
+---
+
+### 2. Блоки и механизмы (`io.marrybye.github.larperthanwolves.block`)
+* `brick_furnace` — **Кирпичная печь** (`BrickFurnaceBlockEntity`):
+  * 4 стадии горения (`stage`: 0 - пустая, 1 - заправлена, 2 - горит сильно, 3 - угли).
+  * Подача топлива сзади через воронки («умная» автодозагрузка при окончании горения).
+  * Вывод готовой продукции снизу и по бокам.
+* `alloy_mixer` — **Смешиватель сплавов** (`AlloyMixerBlockEntity`):
+  * 3 слота ингредиентов + 1 слот топлива + 1 слот выхода.
+  * Рецепты: 2 меди + 1 олово $\rightarrow$ 1 бронзовый слиток; 1 алмаз + 1 железо + 1 медь $\rightarrow$ 1 алмазный слиток.
+  * Автоматизация подачи топлива сзади и вывод готовых слитков.
+* `sieve` — **Просеиватель** (`SieveBlockEntity`):
+  * Установка сетки (`mesh`) ПКМ.
+  * Просеивание гравия, песка, красного песка, подозрительного гравия и подозрительного песка.
+  * Автоматическая подача сверху и вывод снизу/сбоку.
+* `unfired_brick` — **Сырой кирпичный блок** (`UnfiredBrickBlock`):
+  * Сушится на солнце под открытым небом в течение 4 стадий.
+* `tin_ore`, `deepslate_tin_ore`, `raw_tin_block`, `tin_block`, `bronze_block` — блоки руды и металлов.
+
+---
+
+### 3. Обработчики игровых событий (`io.marrybye.github.larperthanwolves.event`)
+* `BlockBreakHandler`:
+  * Контроль скорости разрушения (`BreakSpeed`) и события ломания (`BreakEvent`) по тирам инструментов.
+  * Дроп пыли/камешков/песка вместо блоков при добыче кремнием и медью (`BlockDropsEvent`).
+  * Защита глубинного сланца ($Y \le 0$), обсидиана, адских руд/пород и эндерняка.
+  * Поддержка мгновенного ломания в креативном режиме.
+  * Вспашка травы мотыгой с шансом выпадения семян пшеницы.
+* `DisabledItemsHandler`:
+  * Полное вырезание ванильных деревянных, каменных, алмазных инструментов и брони, кольчуги и обычной печи.
+  * Очистка сущностей в мире, спавна мобов, лута, торговли и сундуков.
+  * Безопасная фильтрация вкладок креатива.
+
+---
+
+### 4. Интеграция с JEI (`io.marrybye.github.larperthanwolves.compat`)
+* Категории:
+  * `AlloyMixerRecipeCategory` — плавка сплавов в смешивателе.
+  * `SieveRecipeCategory` — просеивание материалов с показом шансов и лута.
+  * Ванильная плавка и топливо для кирпичной печи.
+* Удаление вырезанных предметов в runtime из каталога JEI.
+
+---
+
+### 5. Генерация мира (`worldgen`)
+* `configured_feature/ore_tin.json`, `ore_tin_small.json`:
+  * Размеры жил: 16 (основная) и 8 (малая).
+  * Предикаты замены камня (`stone_ore_replaceables`) и сланца (`deepslate_ore_replaceables`).
+* `placed_feature/ore_tin.json`, `ore_tin_small.json`:
+  * Трапециевидное распределение `minecraft:trapezoid` от $Y = -16$ до $Y = 112$.
+* `neoforge/biome_modifier/add_tin_ore.json`:
+  * Добавление в биомы `#minecraft:is_overworld` на этапе `underground_ores`.
+
+---
+
+## 📈 История версий
+
+* **v1.0.0**: Базовая реализация кремния, меди, кирпичной печи и базовых рецептов.
+* **v1.1.0**: Внедрение смешивателя сплавов, алмазных слитков, укреплённого железа и вырезка ванильных читерных предметов.
+* **v1.2.0**: Добавление просеивателя (сита), сетки, просеивания гравия и песка, JEI-интеграция.
+* **v1.3.0**: Добавление поддержки подозрительного гравия и песка, «умная» автоматизация подачи топлива воронками сзади.
+* **v1.4.0**: Добавление олова, оловянной руды, генерации в мире, бронзового сета инструментов и брони, смешивания бронзы.
+* **v1.5.0**:
+  * Полная полировка баланса тиров (Кремний $\rightarrow$ Медь $\rightarrow$ Бронза $\rightarrow$ Железо $\rightarrow$ Укреплённое железо $\rightarrow$ Незерит).
+  * Добавление кальцитовых камешков, добычи песчаника, защиты адских пород (кварц, адское золото, чернит, базальт).
+  * Исправление генерации высот руд (`minecraft:trapezoid`), крашей креативных вкладок и поддержки ломания блоков в креативе.

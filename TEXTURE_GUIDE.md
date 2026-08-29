@@ -1,109 +1,88 @@
-# Texture Guide
+# 🎨 Руководство по текстурам и ассетам (Larper Than Wolves)
 
-All required textures for custom items, blocks, and armor models have been created and placed in the project.
+Все текстуры, модели и ассеты находятся в пространстве имён `larperthanwolves` (`assets/larperthanwolves/`).
 
-## Texture Directories
+---
 
-All item textures should be placed in:
+## 📁 Структура директорий
+
 ```
-src/main/resources/assets/betterthangamers/textures/item/
-```
-
-Required item textures (PNG format, 16x16 or 32x32 pixels):
-
-### Basic Items
-- silicon_shard.png
-- dry_grass.png
-- iron_dust.png
-- copper_dust.png
-- gold_dust.png
-- stone_nugget.png
-- diorite_nugget.png
-- granite_nugget.png
-- andesite_nugget.png
-- tuff_nugget.png
-- rope.png
-- lighter.png
-
-### Silicon Tools
-- silicon_pickaxe.png
-- silicon_axe.png
-- silicon_shovel.png
-- silicon_shears.png
-- silicon_spear.png
-
-### Copper Tools
-- copper_sword.png
-- copper_pickaxe.png
-- copper_axe.png
-- copper_shovel.png
-- copper_hoe.png
-
-### Copper Armor
-- copper_helmet.png
-- copper_chestplate.png
-- copper_leggings.png
-- copper_boots.png
-
-## Block Textures
-
-All block textures should be placed in:
-```
-src/main/resources/assets/betterthangamers/textures/block/
+src/main/resources/assets/larperthanwolves/
+├── blockstates/          # Описания состояний блоков (печь, смешиватель, сито, руды)
+├── lang/
+│   ├── en_us.json        # Английская локализация
+│   └── ru_ru.json        # Русская локализация
+├── models/
+│   ├── block/            # JSON-модели блоков
+│   └── item/             # JSON-модели предметов
+└── textures/
+    ├── block/            # Текстуры блоков (16x16 PNG)
+    ├── gui/container/    # Текстуры интерфейсов (печь, смешиватель, сито)
+    ├── item/             # Текстуры предметов (16x16 PNG)
+    └── models/armor/     # Текстуры слоев брони (64x32 PNG)
 ```
 
-Required block textures:
-- brick_furnace_front.png (when lit: brick_furnace_front_lit.png)
-- brick_furnace_side.png
-- brick_furnace_top.png
-- brick_furnace_bottom.png
-- brick_slab_top.png
-- brick_slab_side.png
-- brick_slab_bottom.png
+---
 
-## Block Models
+## 🗡️ Список текстур предметов (`textures/item/`)
 
-All block models should be placed in:
-```
-src/main/resources/assets/betterthangamers/models/block/
-```
+### Базовые ресурсы и материалы
+* `silicon_shard.png` — кремниевый осколок
+* `dry_grass.png` — сухая трава
+* `rope.png` — верёвка
+* `lighter.png` — зажигалка
+* `chisel.png` — стамеска
+* `mesh.png` — сетка для сита
+* `diamond_ingot.png` — алмазный слиток
 
-Models should be in JSON format according to Minecraft's block model specification.
+### Камешки (Nuggets)
+* `stone_nugget.png`
+* `diorite_nugget.png`
+* `granite_nugget.png`
+* `andesite_nugget.png`
+* `tuff_nugget.png`
+* `calcite_nugget.png`
+* `copper_nugget.png`
+* `tin_nugget.png`
+* `bronze_nugget.png`
 
-## Item Models
+### Рудные пыли (Dusts)
+* `copper_dust.png`
+* `tin_dust.png`
+* `iron_dust.png`
+* `gold_dust.png`
+* `bronze_dust.png`
 
-All item models should be placed in:
-```
-src/main/resources/assets/betterthangamers/models/item/
-```
+### Олово и Бронза
+* `raw_tin.png`
+* `tin_ingot.png`
+* `bronze_ingot.png`
 
-Models should be in JSON format according to Minecraft's item model specification.
+### Инструменты и Оружие
+* **Кремний**: `silicon_pickaxe.png`, `silicon_axe.png`, `silicon_shovel.png`, `silicon_shears.png`, `silicon_spear.png`
+* **Медь**: `copper_sword.png`, `copper_pickaxe.png`, `copper_axe.png`, `copper_shovel.png`, `copper_hoe.png`
+* **Бронза**: `bronze_sword.png`, `bronze_pickaxe.png`, `bronze_axe.png`, `bronze_shovel.png`, `bronze_hoe.png`
+* **Укреплённое железо**: `reinforced_iron_sword.png`, `reinforced_iron_pickaxe.png`, `reinforced_iron_axe.png`, `reinforced_iron_shovel.png`, `reinforced_iron_hoe.png`
 
-## Language Files
+### Иконки брони
+* **Медь**: `copper_helmet.png`, `copper_chestplate.png`, `copper_leggings.png`, `copper_boots.png`
+* **Бронза**: `bronze_helmet.png`, `bronze_chestplate.png`, `bronze_leggings.png`, `bronze_boots.png`
+* **Укреплённое железо**: `reinforced_iron_helmet.png`, `reinforced_iron_chestplate.png`, `reinforced_iron_leggings.png`, `reinforced_iron_boots.png`
 
-Language files are in:
-```
-src/main/resources/assets/betterthangamers/lang/
-```
+---
 
-Currently included: en_us.json
+## 🧱 Список текстур блоков (`textures/block/`)
 
-To add more languages, create files like:
-- ru_ru.json (Russian)
-- de_de.json (German)
-- etc.
+* `brick_furnace_front.png`, `brick_furnace_front_lit.png`, `brick_furnace_front_embers.png`, `brick_furnace_side.png`, `brick_furnace_top.png`, `brick_furnace_bottom.png`
+* `alloy_mixer_front.png`, `alloy_mixer_front_lit.png`, `alloy_mixer_front_embers.png`, `alloy_mixer_side.png`, `alloy_mixer_top.png`, `alloy_mixer_bottom.png`
+* `sieve_side.png`, `sieve_top.png`, `sieve_bottom.png`, `sieve_mesh.png`
+* `unfired_brick_stage0.png`, `unfired_brick_stage1.png`, `unfired_brick_stage2.png`, `unfired_brick_stage3.png`
+* `tin_ore.png`, `deepslate_tin_ore.png`, `raw_tin_block.png`, `tin_block.png`, `bronze_block.png`
 
-## Using Minecraft Textures
+---
 
-For copper tools and armor, you can extract textures from Minecraft's own resource pack:
-- Copper ingot texture location: `assets/minecraft/textures/item/copper_ingot.png`
-- You can use these as a base for creating copper tool and armor textures
+## 🛡️ Текстуры моделей брони (`textures/models/armor/`)
 
-## Notes
-
-- All PNG textures should be 16x16 pixels for items
-- Block textures can be 16x16 pixels
-- Use transparency (RGBA) for items to have proper display
-- Follow Minecraft's texture naming conventions (lowercase, underscores for spaces)
-- Ensure proper lighting and shading for better appearance
-
+* `copper_layer_1.png`, `copper_layer_2.png`
+* `bronze_layer_1.png`, `bronze_layer_2.png`
+* `reinforced_iron_layer_1.png`, `reinforced_iron_layer_2.png`
