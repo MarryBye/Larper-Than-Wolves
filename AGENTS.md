@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.11.4
+- **Current Version**: 1.11.5
 
 ## Project Architecture & Progression
 
