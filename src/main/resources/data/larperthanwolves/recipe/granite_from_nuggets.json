@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "larperthanwolves:granite_nugget"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:granite"
+  }
+}

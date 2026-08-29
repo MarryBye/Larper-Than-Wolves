@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:dry_grass"
+    },
+    {
+      "item": "larperthanwolves:dry_grass"
+    },
+    {
+      "item": "larperthanwolves:dry_grass"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:rope"
+  }
+}

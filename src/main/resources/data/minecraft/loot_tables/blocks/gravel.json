@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "betterthangamers:silicon_shard",
+          "name": "larperthanwolves:silicon_shard",
           "functions": [
             {
               "function": "minecraft:set_count",

@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/orientable_with_bottom",
-  "textures": {
-    "top": "betterthangamers:block/brick_furnace_top",
-    "front": "betterthangamers:block/brick_furnace_front_lit",
-    "side": "betterthangamers:block/brick_furnace_side",
-    "bottom": "betterthangamers:block/brick_furnace_bottom"
-  }
-}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    "#R",
+    " X"
+  ],
+  "key": {
+    "#": {
+      "item": "larperthanwolves:silicon_shard"
+    },
+    "R": {
+      "item": "larperthanwolves:rope"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:silicon_shovel"
+  }
+}

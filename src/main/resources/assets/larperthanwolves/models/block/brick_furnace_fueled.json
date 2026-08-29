@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "larperthanwolves:block/brick_furnace_top",
+    "front": "larperthanwolves:block/brick_furnace_front_fueled",
+    "side": "larperthanwolves:block/brick_furnace_side",
+    "bottom": "larperthanwolves:block/brick_furnace_bottom"
+  }
+}

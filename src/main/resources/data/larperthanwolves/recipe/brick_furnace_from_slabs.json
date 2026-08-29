@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:brick_slab"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:brick_furnace"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    " #",
+    "# "
+  ],
+  "key": {
+    "#": {
+      "item": "larperthanwolves:silicon_shard"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:silicon_shears"
+  }
+}
