@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
-    // 0: Diamond, 1: Iron Ingot, 2: Copper Ingot, 3: Result Diamond Ingot
+    // 0, 1, 2: Input slots, 3: Result Diamond Ingot
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
 
     private ItemStack storedFuel = ItemStack.EMPTY;
@@ -64,7 +64,6 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         if (info == null) return false;
 
         if (this.burnTime > 0) {
-            // Already burning: add to burning duration
             if (this.burnTime + info.burnDuration <= 72000) {
                 this.burnTime += info.burnDuration;
                 this.maxBurnTime = Math.max(this.maxBurnTime, this.burnTime);
@@ -74,13 +73,8 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
             return false;
         }
 
-        // Not burning yet: load into storedFuel
         if (this.storedFuel.isEmpty()) {
             this.storedFuel = fuelStack.copyWithCount(1);
-            setChanged();
-            return true;
-        } else if (ItemStack.isSameItemSameComponents(this.storedFuel, fuelStack) && this.storedFuel.getCount() < 16) {
-            this.storedFuel.grow(1);
             setChanged();
             return true;
         }
@@ -91,15 +85,12 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     public boolean lightMixer() {
         if (this.burnTime > 0) return false;
 
-        if (!this.storedFuel.isEmpty()) {
+        if (!this.storedFuel.isEmpty() && BrickFurnaceBlockEntity.isValidFuel(this.storedFuel)) {
             BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(this.storedFuel);
             if (info != null) {
                 this.burnTime = info.burnDuration;
                 this.maxBurnTime = info.burnDuration;
-                this.storedFuel.shrink(1);
-                if (this.storedFuel.isEmpty()) {
-                    this.storedFuel = ItemStack.EMPTY;
-                }
+                this.storedFuel = ItemStack.EMPTY;
                 setChanged();
                 return true;
             }
@@ -179,22 +170,8 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
             changed = true;
         }
 
-        // Auto ignite next stored fuel if burning finished and more stored fuel available
-        if (entity.burnTime <= 0 && !entity.storedFuel.isEmpty() && entity.hasValidIngredients() && entity.canOutputResult()) {
-            BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(entity.storedFuel);
-            if (info != null) {
-                entity.burnTime = info.burnDuration;
-                entity.maxBurnTime = info.burnDuration;
-                entity.storedFuel.shrink(1);
-                if (entity.storedFuel.isEmpty()) {
-                    entity.storedFuel = ItemStack.EMPTY;
-                }
-                changed = true;
-            }
-        }
-
-        entity.cookTimeTotal = ModConfig.SERVER != null ? ModConfig.SERVER.alloyMixerCookTimeTicks.get() : 600;
-        if (entity.cookTimeTotal <= 0) entity.cookTimeTotal = 600;
+        int configuredCook = ModConfig.SERVER != null ? ModConfig.SERVER.alloyMixerCookTimeTicks.get() : 600;
+        entity.cookTimeTotal = configuredCook > 0 ? configuredCook : 600;
 
         boolean hasIngredients = entity.hasValidIngredients();
         boolean canOutput = entity.canOutputResult();
@@ -213,7 +190,6 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
             }
         }
 
-        // Update block state stage (0..3)
         int targetStage;
         if (entity.burnTime > 0) {
             targetStage = (entity.maxBurnTime > 0 && entity.burnTime <= entity.maxBurnTime / 4) ? 3 : 2;
@@ -236,11 +212,34 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         }
     }
 
+    private int findDiamondSlot() {
+        for (int i = 0; i < 3; i++) {
+            if (items.get(i).is(Items.DIAMOND)) return i;
+        }
+        return -1;
+    }
+
+    private int findIronSlot(int excludeSlot) {
+        for (int i = 0; i < 3; i++) {
+            if (i != excludeSlot && items.get(i).is(Items.IRON_INGOT)) return i;
+        }
+        return -1;
+    }
+
+    private int findCopperSlot(int exclude1, int exclude2) {
+        for (int i = 0; i < 3; i++) {
+            if (i != exclude1 && i != exclude2 && items.get(i).is(Items.COPPER_INGOT)) return i;
+        }
+        return -1;
+    }
+
     private boolean hasValidIngredients() {
-        ItemStack s0 = items.get(0);
-        ItemStack s1 = items.get(1);
-        ItemStack s2 = items.get(2);
-        return s0.is(Items.DIAMOND) && s1.is(Items.IRON_INGOT) && s2.is(Items.COPPER_INGOT);
+        int d = findDiamondSlot();
+        if (d == -1) return false;
+        int fe = findIronSlot(d);
+        if (fe == -1) return false;
+        int cu = findCopperSlot(d, fe);
+        return cu != -1;
     }
 
     private boolean canOutputResult() {
@@ -251,9 +250,16 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     }
 
     private void mixAlloy() {
-        items.get(0).shrink(1);
-        items.get(1).shrink(1);
-        items.get(2).shrink(1);
+        int d = findDiamondSlot();
+        if (d == -1) return;
+        int fe = findIronSlot(d);
+        if (fe == -1) return;
+        int cu = findCopperSlot(d, fe);
+        if (cu == -1) return;
+
+        items.get(d).shrink(1);
+        items.get(fe).shrink(1);
+        items.get(cu).shrink(1);
 
         ItemStack out = items.get(3);
         if (out.isEmpty()) {

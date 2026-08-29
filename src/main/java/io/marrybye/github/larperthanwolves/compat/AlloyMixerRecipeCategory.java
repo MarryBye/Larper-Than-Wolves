@@ -70,17 +70,17 @@ public class AlloyMixerRecipeCategory implements IRecipeCategory<AlloyMixerRecip
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AlloyMixerRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 9, 3).addItemStack(recipe.getInputs().get(0));
-        builder.addSlot(RecipeIngredientRole.INPUT, 9, 21).addItemStack(recipe.getInputs().get(1));
-        builder.addSlot(RecipeIngredientRole.INPUT, 9, 39).addItemStack(recipe.getInputs().get(2));
+        builder.addSlot(RecipeIngredientRole.INPUT, 8, 3).addItemStack(recipe.getInputs().get(0));
+        builder.addSlot(RecipeIngredientRole.INPUT, 8, 21).addItemStack(recipe.getInputs().get(1));
+        builder.addSlot(RecipeIngredientRole.INPUT, 8, 39).addItemStack(recipe.getInputs().get(2));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 88, 21).addItemStack(recipe.getOutput());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 21).addItemStack(recipe.getOutput());
     }
 
     @Override
     public void draw(AlloyMixerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        this.flame.draw(guiGraphics, 44, 34);
-        this.arrow.draw(guiGraphics, 43, 10);
+        this.flame.draw(guiGraphics, 48, 40);
+        this.arrow.draw(guiGraphics, 43, 20);
 
         Font font = Minecraft.getInstance().font;
         String timeStr = (recipe.getCookTime() / 20) + "s";

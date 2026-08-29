@@ -30,12 +30,12 @@ public class AlloyMixerMenu extends AbstractContainerMenu {
         container.startOpen(playerInventory.player);
 
         // 3 Mixing inputs on left
-        this.addSlot(new Slot(container, 0, 45, 17));
-        this.addSlot(new Slot(container, 1, 45, 35));
-        this.addSlot(new Slot(container, 2, 45, 53));
+        this.addSlot(new Slot(container, 0, 44, 17));
+        this.addSlot(new Slot(container, 1, 44, 35));
+        this.addSlot(new Slot(container, 2, 44, 53));
 
         // Output slot on right
-        this.addSlot(new OutputSlot(container, 3, 124, 35));
+        this.addSlot(new OutputSlot(container, 3, 116, 35));
 
         // Player Inventory
         for (int row = 0; row < 3; ++row) {
