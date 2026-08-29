@@ -29,18 +29,18 @@ public class AlloyMixerScreen extends AbstractContainerScreen<AlloyMixerMenu> {
         int y = this.topPos;
         guiGraphics.blit(TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
-        // Animated burning flame at (80, 36)
+        // Animated burning flame at (80, 48)
         if (this.menu.isLit()) {
             int litProgress = this.menu.getLitProgress();
             if (litProgress > 0) {
-                guiGraphics.blit(TEXTURE, x + 80, y + 36 + 14 - litProgress, 176, 14 - litProgress, 14, litProgress);
+                guiGraphics.blit(TEXTURE, x + 80, y + 48 + 14 - litProgress, 176, 14 - litProgress, 14, litProgress);
             }
         }
 
-        // Animated mixing progress arrow at (74, 17)
+        // Animated mixing progress arrow at (79, 24)
         int cookProgress = this.menu.getBurnProgress();
         if (cookProgress > 0) {
-            guiGraphics.blit(TEXTURE, x + 74, y + 17, 176, 14, cookProgress, 16);
+            guiGraphics.blit(TEXTURE, x + 79, y + 24, 176, 14, cookProgress, 17);
         }
     }
 }

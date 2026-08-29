@@ -30,13 +30,13 @@ public class ModJeiPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(BrickFurnaceScreen.class, 79, 34, 24, 17, RecipeTypes.SMELTING);
-        registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.AlloyMixerScreen.class, 74, 17, 24, 17, RecipeTypes.SMELTING);
+        registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.AlloyMixerScreen.class, 79, 24, 24, 17, RecipeTypes.SMELTING);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), RecipeTypes.SMELTING, 0, 3, 6, 36);
-        registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), RecipeTypes.SMELTING, 0, 3, 5, 36);
+        registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), RecipeTypes.SMELTING, 0, 3, 4, 36);
     }
 
     @Override

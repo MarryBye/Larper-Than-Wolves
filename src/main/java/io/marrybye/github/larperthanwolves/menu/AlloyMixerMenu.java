@@ -1,7 +1,6 @@
 package io.marrybye.github.larperthanwolves.menu;
 
 import io.marrybye.github.larperthanwolves.block.ModBlocks;
-import io.marrybye.github.larperthanwolves.block.entity.BrickFurnaceBlockEntity;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -16,12 +15,12 @@ public class AlloyMixerMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess levelAccess;
 
     public AlloyMixerMenu(int containerId, Inventory playerInventory, RegistryFriendlyByteBuf extraData) {
-        this(containerId, playerInventory, new SimpleContainer(5), new SimpleContainerData(4), ContainerLevelAccess.NULL);
+        this(containerId, playerInventory, new SimpleContainer(4), new SimpleContainerData(4), ContainerLevelAccess.NULL);
     }
 
     public AlloyMixerMenu(int containerId, Inventory playerInventory, Container container, ContainerData data, ContainerLevelAccess levelAccess) {
         super(ModMenuTypes.ALLOY_MIXER.get(), containerId);
-        checkContainerSize(container, 5);
+        checkContainerSize(container, 4);
         checkContainerDataCount(data, 4);
 
         this.container = container;
@@ -30,21 +29,13 @@ public class AlloyMixerMenu extends AbstractContainerMenu {
 
         container.startOpen(playerInventory.player);
 
-        // 3 Mixing inputs
-        this.addSlot(new Slot(container, 0, 44, 17));
-        this.addSlot(new Slot(container, 1, 44, 35));
-        this.addSlot(new Slot(container, 2, 44, 53));
+        // 3 Mixing inputs on left
+        this.addSlot(new Slot(container, 0, 45, 17));
+        this.addSlot(new Slot(container, 1, 45, 35));
+        this.addSlot(new Slot(container, 2, 45, 53));
 
-        // Fuel slot
-        this.addSlot(new Slot(container, 3, 79, 53) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return BrickFurnaceBlockEntity.isValidFuel(stack);
-            }
-        });
-
-        // Output slot
-        this.addSlot(new OutputSlot(container, 4, 124, 35));
+        // Output slot on right
+        this.addSlot(new OutputSlot(container, 3, 124, 35));
 
         // Player Inventory
         for (int row = 0; row < 3; ++row) {
@@ -87,26 +78,22 @@ public class AlloyMixerMenu extends AbstractContainerMenu {
             ItemStack stackInSlot = slot.getItem();
             itemstack = stackInSlot.copy();
 
-            // From output (4)
-            if (index == 4) {
-                if (!this.moveItemStackTo(stackInSlot, 5, 41, true)) {
+            // From output (3)
+            if (index == 3) {
+                if (!this.moveItemStackTo(stackInSlot, 4, 40, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(stackInSlot, itemstack);
             }
-            // From inputs/fuel (0..3)
-            else if (index >= 0 && index <= 3) {
-                if (!this.moveItemStackTo(stackInSlot, 5, 41, false)) {
+            // From inputs (0..2)
+            else if (index >= 0 && index <= 2) {
+                if (!this.moveItemStackTo(stackInSlot, 4, 40, false)) {
                     return ItemStack.EMPTY;
                 }
             }
-            // From player inventory (5..40)
+            // From player inventory (4..39)
             else {
-                if (BrickFurnaceBlockEntity.isValidFuel(stackInSlot)) {
-                    if (!this.moveItemStackTo(stackInSlot, 3, 4, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!this.moveItemStackTo(stackInSlot, 0, 3, false)) {
+                if (!this.moveItemStackTo(stackInSlot, 0, 3, false)) {
                     return ItemStack.EMPTY;
                 }
             }

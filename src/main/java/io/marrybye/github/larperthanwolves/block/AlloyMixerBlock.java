@@ -2,11 +2,21 @@ package io.marrybye.github.larperthanwolves.block;
 
 import com.mojang.serialization.MapCodec;
 import io.marrybye.github.larperthanwolves.block.entity.AlloyMixerBlockEntity;
+import io.marrybye.github.larperthanwolves.block.entity.BrickFurnaceBlockEntity;
 import io.marrybye.github.larperthanwolves.block.entity.ModBlockEntities;
+import io.marrybye.github.larperthanwolves.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -18,22 +28,22 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class AlloyMixerBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    // 0: Empty, 1: Fueled, 2: Lit Strong, 3: Lit Low (Embers)
+    public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
     public static final MapCodec<AlloyMixerBlock> CODEC = simpleCodec(AlloyMixerBlock::new);
 
     public AlloyMixerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(LIT, false));
+                .setValue(STAGE, 0));
     }
 
     @Override
@@ -45,12 +55,12 @@ public class AlloyMixerBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                .setValue(LIT, false);
+                .setValue(STAGE, 0);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, LIT);
+        builder.add(FACING, STAGE);
     }
 
     @Override
@@ -69,6 +79,51 @@ public class AlloyMixerBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, ModBlockEntities.ALLOY_MIXER.get(),
                 (lvl, pos, st, entity) -> AlloyMixerBlockEntity.tick(lvl, pos, st, (AlloyMixerBlockEntity) entity));
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof AlloyMixerBlockEntity mixer) {
+            // 1. Loading fuel
+            if (BrickFurnaceBlockEntity.isValidFuel(stack)) {
+                if (!level.isClientSide) {
+                    if (mixer.addFuel(stack)) {
+                        if (!player.getAbilities().instabuild) {
+                            stack.shrink(1);
+                        }
+                        int targetStage = mixer.isLit() ? (mixer.getBurnTime() <= mixer.getMaxBurnTime() / 4 ? 3 : 2) : 1;
+                        level.setBlock(pos, state.setValue(STAGE, targetStage), 3);
+                        level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                        player.displayClientMessage(Component.literal("§aТопливо загружено в нижнюю часть смешивателя."), true);
+                    } else if (mixer.isLit()) {
+                        player.displayClientMessage(Component.literal("§eСмешиватель уже горит с максимальной длительностью."), true);
+                    } else {
+                        player.displayClientMessage(Component.literal("§eТопливо уже загружено. Подожгите смешиватель зажигалкой!"), true);
+                    }
+                }
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+
+            // 2. Igniting with lighter or flint & steel
+            if (stack.is(ModItems.LIGHTER.get()) || stack.is(Items.FLINT_AND_STEEL)) {
+                if (!level.isClientSide) {
+                    if (mixer.isLit()) {
+                        player.displayClientMessage(Component.literal("§eСмешиватель уже горит!"), true);
+                    } else if (mixer.lightMixer()) {
+                        level.setBlock(pos, state.setValue(STAGE, 2), 3);
+                        level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                        stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                        player.displayClientMessage(Component.literal("§6Смешиватель сплавов успешно зажжён!"), true);
+                    } else {
+                        player.displayClientMessage(Component.literal("§cВ смешивателе нет топлива! Загрузите дерево, сухую траву или уголь."), true);
+                    }
+                }
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+        }
+
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

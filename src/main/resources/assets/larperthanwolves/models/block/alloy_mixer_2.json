@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "larperthanwolves:block/alloy_mixer_top",
+    "front": "larperthanwolves:block/alloy_mixer_front_2",
+    "side": "larperthanwolves:block/alloy_mixer_side",
+    "bottom": "larperthanwolves:block/alloy_mixer_bottom"
+  }
+}

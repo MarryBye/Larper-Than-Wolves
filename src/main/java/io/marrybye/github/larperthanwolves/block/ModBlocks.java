@@ -29,7 +29,10 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(3.5F, 12.0F)
                     .sound(net.minecraft.world.level.block.SoundType.METAL)
-                    .lightLevel(state -> state.getValue(AlloyMixerBlock.LIT) ? 13 : 0)));
+                    .lightLevel(state -> {
+                        int stage = state.hasProperty(AlloyMixerBlock.STAGE) ? state.getValue(AlloyMixerBlock.STAGE) : 0;
+                        return stage == 2 ? 13 : (stage == 3 ? 7 : 0);
+                    })));
 
     public static final DeferredBlock<WorkStumpBlock> WORK_STUMP = BLOCKS.register("work_stump",
             () -> new WorkStumpBlock(BlockBehaviour.Properties.of()

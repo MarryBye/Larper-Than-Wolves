@@ -27,9 +27,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
-    // 0: Diamond, 1: Iron Ingot, 2: Copper Ingot, 3: Fuel, 4: Result Diamond Ingot
-    private final NonNullList<ItemStack> items = NonNullList.withSize(5, ItemStack.EMPTY);
+    // 0: Diamond, 1: Iron Ingot, 2: Copper Ingot, 3: Result Diamond Ingot
+    private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
 
+    private ItemStack storedFuel = ItemStack.EMPTY;
     private int burnTime = 0;
     private int maxBurnTime = 0;
     private int cookTime = 0;
@@ -42,6 +43,68 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     @Override
     public Component getDisplayName() {
         return Component.translatable("container.larperthanwolves.alloy_mixer");
+    }
+
+    public boolean isLit() {
+        return this.burnTime > 0;
+    }
+
+    public int getBurnTime() {
+        return this.burnTime;
+    }
+
+    public int getMaxBurnTime() {
+        return this.maxBurnTime;
+    }
+
+    public boolean addFuel(ItemStack fuelStack) {
+        if (!BrickFurnaceBlockEntity.isValidFuel(fuelStack)) return false;
+
+        BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(fuelStack);
+        if (info == null) return false;
+
+        if (this.burnTime > 0) {
+            // Already burning: add to burning duration
+            if (this.burnTime + info.burnDuration <= 72000) {
+                this.burnTime += info.burnDuration;
+                this.maxBurnTime = Math.max(this.maxBurnTime, this.burnTime);
+                setChanged();
+                return true;
+            }
+            return false;
+        }
+
+        // Not burning yet: load into storedFuel
+        if (this.storedFuel.isEmpty()) {
+            this.storedFuel = fuelStack.copyWithCount(1);
+            setChanged();
+            return true;
+        } else if (ItemStack.isSameItemSameComponents(this.storedFuel, fuelStack) && this.storedFuel.getCount() < 16) {
+            this.storedFuel.grow(1);
+            setChanged();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean lightMixer() {
+        if (this.burnTime > 0) return false;
+
+        if (!this.storedFuel.isEmpty()) {
+            BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(this.storedFuel);
+            if (info != null) {
+                this.burnTime = info.burnDuration;
+                this.maxBurnTime = info.burnDuration;
+                this.storedFuel.shrink(1);
+                if (this.storedFuel.isEmpty()) {
+                    this.storedFuel = ItemStack.EMPTY;
+                }
+                setChanged();
+                return true;
+            }
+        }
+        return false;
     }
 
     protected final ContainerData dataAccess = new ContainerData() {
@@ -82,6 +145,9 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, this.items, registries);
+        if (!this.storedFuel.isEmpty()) {
+            tag.put("StoredFuel", this.storedFuel.save(registries));
+        }
         tag.putInt("BurnTime", this.burnTime);
         tag.putInt("MaxBurnTime", this.maxBurnTime);
         tag.putInt("CookTime", this.cookTime);
@@ -92,6 +158,11 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         ContainerHelper.loadAllItems(tag, this.items, registries);
+        if (tag.contains("StoredFuel")) {
+            this.storedFuel = ItemStack.parseOptional(registries, tag.getCompound("StoredFuel"));
+        } else {
+            this.storedFuel = ItemStack.EMPTY;
+        }
         this.burnTime = tag.getInt("BurnTime");
         this.maxBurnTime = tag.getInt("MaxBurnTime");
         this.cookTime = tag.getInt("CookTime");
@@ -101,11 +172,25 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     public static void tick(Level level, BlockPos pos, BlockState state, AlloyMixerBlockEntity entity) {
         if (level.isClientSide) return;
 
-        boolean wasLit = entity.burnTime > 0;
         boolean changed = false;
 
         if (entity.burnTime > 0) {
             entity.burnTime--;
+            changed = true;
+        }
+
+        // Auto ignite next stored fuel if burning finished and more stored fuel available
+        if (entity.burnTime <= 0 && !entity.storedFuel.isEmpty() && entity.hasValidIngredients() && entity.canOutputResult()) {
+            BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(entity.storedFuel);
+            if (info != null) {
+                entity.burnTime = info.burnDuration;
+                entity.maxBurnTime = info.burnDuration;
+                entity.storedFuel.shrink(1);
+                if (entity.storedFuel.isEmpty()) {
+                    entity.storedFuel = ItemStack.EMPTY;
+                }
+                changed = true;
+            }
         }
 
         entity.cookTimeTotal = ModConfig.SERVER != null ? ModConfig.SERVER.alloyMixerCookTimeTicks.get() : 600;
@@ -114,39 +199,36 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         boolean hasIngredients = entity.hasValidIngredients();
         boolean canOutput = entity.canOutputResult();
 
-        if (hasIngredients && canOutput) {
-            // Need fuel if not burning
-            if (entity.burnTime <= 0) {
-                ItemStack fuelStack = entity.items.get(3);
-                BrickFurnaceBlockEntity.FuelInfo fuelInfo = BrickFurnaceBlockEntity.getFuelInfo(fuelStack);
-                if (fuelInfo != null) {
-                    entity.burnTime = fuelInfo.burnDuration;
-                    entity.maxBurnTime = fuelInfo.burnDuration;
-                    fuelStack.shrink(1);
-                    changed = true;
-                }
-            }
-
-            if (entity.burnTime > 0) {
-                entity.cookTime++;
-                if (entity.cookTime >= entity.cookTimeTotal) {
-                    entity.mixAlloy();
-                    entity.cookTime = 0;
-                    changed = true;
-                }
-            } else {
-                if (entity.cookTime > 0) {
-                    entity.cookTime = Math.max(0, entity.cookTime - 2);
-                }
+        if (hasIngredients && canOutput && entity.burnTime > 0) {
+            entity.cookTime++;
+            if (entity.cookTime >= entity.cookTimeTotal) {
+                entity.mixAlloy();
+                entity.cookTime = 0;
+                changed = true;
             }
         } else {
-            entity.cookTime = 0;
+            if (entity.cookTime > 0) {
+                entity.cookTime = Math.max(0, entity.cookTime - 2);
+                changed = true;
+            }
         }
 
-        boolean isLit = entity.burnTime > 0;
-        if (wasLit != isLit) {
-            level.setBlock(pos, state.setValue(AlloyMixerBlock.LIT, isLit), 3);
-            changed = true;
+        // Update block state stage (0..3)
+        int targetStage;
+        if (entity.burnTime > 0) {
+            targetStage = (entity.maxBurnTime > 0 && entity.burnTime <= entity.maxBurnTime / 4) ? 3 : 2;
+        } else if (!entity.storedFuel.isEmpty()) {
+            targetStage = 1;
+        } else {
+            targetStage = 0;
+        }
+
+        if (state.hasProperty(AlloyMixerBlock.STAGE)) {
+            int currentStage = state.getValue(AlloyMixerBlock.STAGE);
+            if (currentStage != targetStage) {
+                level.setBlock(pos, state.setValue(AlloyMixerBlock.STAGE, targetStage), 3);
+                changed = true;
+            }
         }
 
         if (changed) {
@@ -162,7 +244,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     }
 
     private boolean canOutputResult() {
-        ItemStack out = items.get(4);
+        ItemStack out = items.get(3);
         if (out.isEmpty()) return true;
         if (!out.is(ModItems.DIAMOND_INGOT.get())) return false;
         return out.getCount() < out.getMaxStackSize();
@@ -173,9 +255,9 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         items.get(1).shrink(1);
         items.get(2).shrink(1);
 
-        ItemStack out = items.get(4);
+        ItemStack out = items.get(3);
         if (out.isEmpty()) {
-            items.set(4, new ItemStack(ModItems.DIAMOND_INGOT.get(), 1));
+            items.set(3, new ItemStack(ModItems.DIAMOND_INGOT.get(), 1));
         } else {
             out.grow(1);
         }
@@ -183,26 +265,23 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
 
     @Override
     public int[] getSlotsForFace(Direction side) {
-        if (side == Direction.DOWN) return new int[]{4};
-        if (side == Direction.UP) return new int[]{0, 1, 2};
-        return new int[]{3}; // Fuel from sides
+        if (side == Direction.DOWN) return new int[]{3};
+        return new int[]{0, 1, 2};
     }
 
     @Override
     public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
-        if (index == 4) return false;
-        if (index == 3) return BrickFurnaceBlockEntity.isValidFuel(itemStack);
-        return true;
+        return index != 3;
     }
 
     @Override
     public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-        return index == 4;
+        return index == 3;
     }
 
     @Override
     public int getContainerSize() {
-        return 5;
+        return 4;
     }
 
     @Override
