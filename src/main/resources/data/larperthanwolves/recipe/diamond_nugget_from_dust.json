@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:diamond_dust"
+    },
+    {
+      "item": "larperthanwolves:diamond_dust"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:diamond_nugget"
+  }
+}

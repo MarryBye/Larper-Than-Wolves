@@ -63,6 +63,9 @@ public class ModItems {
     public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> DIAMOND_NUGGET = ITEMS.register("diamond_nugget",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> ROPE = ITEMS.register("rope",
             () -> new Item(new Item.Properties().stacksTo(64)));
 

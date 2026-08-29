@@ -45,6 +45,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.TIN_INGOT.get());
                         output.accept(ModItems.BRONZE_NUGGET.get());
                         output.accept(ModItems.BRONZE_INGOT.get());
+                        output.accept(ModItems.DIAMOND_NUGGET.get());
 
                         output.accept(ModItems.SILICON_SHEARS.get());
                         output.accept(ModItems.SILICON_SPEAR.get());

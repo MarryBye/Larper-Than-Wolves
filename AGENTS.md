@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.10.0
+- **Current Version**: 1.11.0
 
 ## Project Architecture & Progression
 
@@ -31,6 +31,9 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - 2 Bronze Dust $\rightarrow$ 1 Bronze Nugget
   - 4 Bronze Nuggets $\rightarrow$ 1 Bronze Ingot
   - 2 Copper Ingot + 1 Tin Ingot in Alloy Mixer $\rightarrow$ 1 Bronze Ingot
+- **Diamond**:
+  - 2 Diamond Dust $\rightarrow$ 1 Diamond Nugget
+  - 4 Diamond Nuggets $\rightarrow$ 1 Diamond (and 1 Diamond $\rightarrow$ 4 Diamond Nuggets)
 - **Reinforced Iron (Diamond Ingot)**:
   - 1 Diamond + 1 Iron Ingot + 1 Copper Ingot in Alloy Mixer $\rightarrow$ 1 Diamond Ingot
   - Used in Smithing Table to upgrade Iron tools & armor to Reinforced Iron.
