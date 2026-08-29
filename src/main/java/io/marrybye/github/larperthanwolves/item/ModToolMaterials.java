@@ -36,7 +36,7 @@ public class ModToolMaterials {
             4.5f,
             1.5f,
             12,
-            () -> Ingredient.of(ModItems.COPPER_DUST.get())
+            () -> Ingredient.of(net.minecraft.world.item.Items.COPPER_INGOT, ModItems.COPPER_DUST.get())
     );
 
     // Reinforced Iron tools: same durability and stats as Diamond (1561 uses, 8.0f speed, 3.0f bonus)

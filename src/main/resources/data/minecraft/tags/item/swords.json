@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "larperthanwolves:copper_sword",
+    "larperthanwolves:silicon_spear",
     "larperthanwolves:reinforced_iron_sword"
   ]
 }

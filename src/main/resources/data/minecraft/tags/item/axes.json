@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "larperthanwolves:copper_axe",
+    "larperthanwolves:silicon_axe",
     "larperthanwolves:reinforced_iron_axe"
   ]
 }

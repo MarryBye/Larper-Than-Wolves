@@ -23,7 +23,7 @@ public class ModArmorMaterials {
                 }),
                 15,
                 SoundEvents.ARMOR_EQUIP_IRON,
-                () -> Ingredient.of(ModItems.COPPER_DUST.get()),
+                () -> Ingredient.of(net.minecraft.world.item.Items.COPPER_INGOT, ModItems.COPPER_DUST.get()),
                 List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("larperthanwolves", "copper"))),
                 0.0f,
                 0.0f
