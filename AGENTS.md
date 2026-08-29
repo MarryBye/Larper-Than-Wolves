@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.9.1
+- **Current Version**: 1.10.0
 
 ## Project Architecture & Progression
 
@@ -80,11 +80,19 @@ src/main/java/io/marrybye/github/larperthanwolves/
 ├── config/
 │   └── ModConfig.java             — NeoForge config spec (fuel, sieve, bricks, drops)
 ├── compat/
-│   ├── ModJeiPlugin.java          — JEI integration plugin
+│   ├── ModJeiPlugin.java          — JEI integration plugin (all categories & info tabs)
 │   ├── AlloyMixerRecipe.java      — JEI alloy recipe POJO
 │   ├── AlloyMixerRecipeCategory.java — JEI alloy mixer category
 │   ├── SieveJeiRecipe.java        — JEI sieve recipe POJO
-│   └── SieveRecipeCategory.java   — JEI sieve category
+│   ├── SieveRecipeCategory.java   — JEI sieve category
+│   ├── ChiselRecipe.java          — JEI chisel carving recipe POJO
+│   ├── ChiselRecipeCategory.java  — JEI chisel carving category
+│   ├── SunDryingRecipe.java       — JEI sun drying recipe POJO
+│   ├── SunDryingRecipeCategory.java — JEI sun drying category
+│   ├── MachineFuelRecipe.java     — JEI machine fuel & ignition recipe POJO
+│   ├── MachineFuelRecipeCategory.java — JEI machine fuel & ignition category
+│   ├── GravelDiggingRecipe.java   — JEI gravel drops recipe POJO
+│   └── GravelDiggingRecipeCategory.java — JEI gravel drops category
 ├── loot/
 │   ├── ModLootModifiers.java      — Loot modifier registration
 │   └── RemoveDisabledItemsModifier.java — Global loot modifier that strips disabled items
@@ -208,6 +216,9 @@ All commits must follow:
 
 ### 5. Mandatory AGENTS.md Update (`agents-md-updater`)
 **MANDATORY**: After completing any changes in the project, review the diff and update `AGENTS.md` to guarantee that the documentation always accurately reflects current systems, registries, and item lists.
+
+### 6. Full JEI Mechanics Integration (`jei-mechanics-documenter`)
+**MANDATORY**: Whenever adding any unique, custom, or non-standard mechanic (in-world crafting, chisel carving, sun drying, custom fuels/speeds, manual ignition, altered block drops), automatically create corresponding JEI categories, recipes, and `addIngredientInfo` tabs to guarantee total in-game discoverability.
 
 ## Best Practices & Guidelines
 - Use `ThreadLocalRandom.current()` instead of `new Random()` for thread safety in server event handlers.
