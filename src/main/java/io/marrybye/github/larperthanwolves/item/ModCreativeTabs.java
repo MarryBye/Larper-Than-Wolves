@@ -34,6 +34,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.COPPER_DUST.get());
                         output.accept(ModItems.TIN_DUST.get());
                         output.accept(ModItems.GOLD_DUST.get());
+                        output.accept(ModItems.DIAMOND_DUST.get());
                         output.accept(ModItems.BRONZE_DUST.get());
 
                         output.accept(ModItems.RAW_TIN.get());

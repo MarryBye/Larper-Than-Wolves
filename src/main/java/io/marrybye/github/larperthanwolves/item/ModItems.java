@@ -30,6 +30,9 @@ public class ModItems {
     public static final DeferredItem<Item> GOLD_DUST = ITEMS.register("gold_dust",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> DIAMOND_DUST = ITEMS.register("diamond_dust",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> STONE_NUGGET = ITEMS.register("stone_nugget",
             () -> new Item(new Item.Properties()));
 

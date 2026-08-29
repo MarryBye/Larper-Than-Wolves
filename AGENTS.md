@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.8.0
+- **Current Version**: 1.8.1
 
 ## Project Architecture
 
@@ -153,6 +153,46 @@ src/main/resources/
 - Access pattern: `ModConfig.SERVER != null ? ModConfig.SERVER.<field>.get() : <default>`
 - Config file: `larperthanwolves-server.toml`
 
+## 🎨 JAPPA Art & Texture Standards
+
+All pixel art and models MUST follow the **JAPPA** modern vanilla style:
+1. **Top-Left Lighting**: Highlights and specular glints belong strictly on the top-left edges; deep shadows and grounding outlines belong on the bottom-right.
+2. **Master Templates (`StandartTextures/`)**:
+   - `ingot.png`: Standard metal ingot base.
+   - `nugget.png`: Standard metal nugget base.
+   - `dust.png`: Standard dust pile base (top-left lit).
+   - `raw_ore.png`: Standard raw ore chunk base.
+   - `raw_ore_block.png`: Standard raw ore block base.
+   - `stone_ore.png`, `deepslate_ore.png`: Standard stone & deepslate ore bases.
+3. **Missing Textures Rule**: If a requested item or block does not have a texture, generate it automatically in 16x16 RGBA PNG using the appropriate template and material palette.
+
+## 🤖 Agent Protocols & Skills (`.agents/skills/`)
+
+### 1. Global Architectural Consultation (`architecture-consultant`)
+If any requested or planned change requires **global modifications** (overhauling a major mechanic, altering progression, breaking save compatibility, or removing systems), **STOP and consult the user first**. Present:
+- Option A (Recommended) with trade-offs.
+- Option B (Alternative) with trade-offs.
+- Exact consequences and affected classes.
+- Wait for explicit user confirmation before proceeding.
+
+### 2. Semantic Versioning & Tagging (`git-release-manager`)
+Follow standard `MAJOR.MINOR.PATCH`:
+- **PATCH** (`X.Y.Z+1`): Bug fixes, texture tweaks, minor balance polish.
+- **MINOR** (`X.Y+1.0`): New features, machines, tools/armor sets, non-breaking refactors.
+- **MAJOR** (`X+1.0.0`): Breaking save/API changes, full overhauls, engine version upgrades.
+- Always update `gradle.properties` and create an annotated git tag (`git tag -a vX.Y.Z -m "Release vX.Y.Z"`).
+
+### 3. Standardized Conventional Commits
+All commits must follow:
+- `feat:` New features, items, blocks, recipes.
+- `fix:` Bug fixes, drop calculation fixes, texture fixes.
+- `refactor:` Code refactoring without behavior change.
+- `docs:` Documentation or skill changes.
+- `chore:` Gradle tasks, file removals, housekeeping.
+
+### 4. Push Permission Check
+**MANDATORY**: Never push to remote (`git push`, `git push origin --tags`) automatically. At the end of every action, ask the user for confirmation (Yes / No).
+
 ## Best Practices & Guidelines
 - Use `ThreadLocalRandom.current()` instead of `new Random()` for thread safety in server event handlers.
 - Use `FuelRegistry` for any fuel checks or durations.
@@ -165,10 +205,4 @@ src/main/resources/
 ./gradlew runClient      # Launch Minecraft client
 ./gradlew runServer      # Launch dedicated server  
 ./gradlew runData        # Run data generation
-```
-
-## Version Tagging
-```bash
-git tag -a v1.8.0 -m "Release v1.8.0"
-git push origin main --tags
 ```
