@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#minecraft:needs_iron_tool",
     "#minecraft:needs_diamond_tool",
     "larperthanwolves:deepslate_tin_ore",
     "minecraft:gold_ore",
@@ -13,6 +12,11 @@
     "minecraft:diamond_ore",
     "minecraft:deepslate_diamond_ore",
     "minecraft:emerald_ore",
-    "minecraft:deepslate_emerald_ore"
+    "minecraft:deepslate_emerald_ore",
+    "minecraft:nether_quartz_ore",
+    "minecraft:nether_gold_ore",
+    "minecraft:blackstone",
+    "minecraft:gilded_blackstone",
+    "minecraft:basalt"
   ]
 }

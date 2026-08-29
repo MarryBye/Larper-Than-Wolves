@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#minecraft:needs_stone_tool",
     "#minecraft:needs_iron_tool",
     "#minecraft:needs_diamond_tool",
     "minecraft:iron_ore",
@@ -10,6 +9,21 @@
     "larperthanwolves:deepslate_tin_ore",
     "larperthanwolves:raw_tin_block",
     "larperthanwolves:tin_block",
-    "larperthanwolves:bronze_block"
+    "larperthanwolves:bronze_block",
+    "minecraft:gold_ore",
+    "minecraft:deepslate_gold_ore",
+    "minecraft:redstone_ore",
+    "minecraft:deepslate_redstone_ore",
+    "minecraft:lapis_ore",
+    "minecraft:deepslate_lapis_ore",
+    "minecraft:diamond_ore",
+    "minecraft:deepslate_diamond_ore",
+    "minecraft:emerald_ore",
+    "minecraft:deepslate_emerald_ore",
+    "minecraft:nether_quartz_ore",
+    "minecraft:nether_gold_ore",
+    "minecraft:blackstone",
+    "minecraft:gilded_blackstone",
+    "minecraft:basalt"
   ]
 }

@@ -59,15 +59,6 @@ public class BlockBreakHandler {
         return stack.is(Items.NETHERITE_PICKAXE);
     }
 
-    public static boolean isAnyPickaxe(ItemStack stack) {
-        return isSiliconPickaxe(stack) ||
-                isCopperPickaxe(stack) ||
-                isBronzePickaxe(stack) ||
-                isIronPickaxe(stack) ||
-                isReinforcedIronPickaxe(stack) ||
-                isNetheritePickaxe(stack);
-    }
-
     public static boolean isDeepslateLayerOrBlock(Level level, BlockPos pos, Block block) {
         if (block == Blocks.DEEPSLATE ||
                 block == Blocks.COBBLED_DEEPSLATE ||
@@ -102,12 +93,47 @@ public class BlockBreakHandler {
         return false;
     }
 
+    public static boolean isNetherOrEndRockOrOre(Block block) {
+        return block == Blocks.NETHER_QUARTZ_ORE ||
+                block == Blocks.NETHER_GOLD_ORE ||
+                block == Blocks.BLACKSTONE ||
+                block == Blocks.GILDED_BLACKSTONE ||
+                block == Blocks.POLISHED_BLACKSTONE ||
+                block == Blocks.POLISHED_BLACKSTONE_BRICKS ||
+                block == Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS ||
+                block == Blocks.CHISELED_POLISHED_BLACKSTONE ||
+                block == Blocks.BASALT ||
+                block == Blocks.SMOOTH_BASALT ||
+                block == Blocks.POLISHED_BASALT ||
+                block == Blocks.END_STONE ||
+                block == Blocks.END_STONE_BRICKS ||
+                block == Blocks.PRISMARINE ||
+                block == Blocks.PRISMARINE_BRICKS ||
+                block == Blocks.DARK_PRISMARINE ||
+                block == Blocks.AMETHYST_BLOCK ||
+                block == Blocks.BUDDING_AMETHYST;
+    }
+
+    public static boolean isSandstone(Block block) {
+        return block == Blocks.SANDSTONE ||
+                block == Blocks.SMOOTH_SANDSTONE ||
+                block == Blocks.CUT_SANDSTONE ||
+                block == Blocks.CHISELED_SANDSTONE ||
+                block == Blocks.RED_SANDSTONE ||
+                block == Blocks.SMOOTH_RED_SANDSTONE ||
+                block == Blocks.CUT_RED_SANDSTONE ||
+                block == Blocks.CHISELED_RED_SANDSTONE;
+    }
+
     public static boolean isStoneOrOre(Block block) {
         return block == Blocks.STONE ||
                 block == Blocks.COBBLESTONE ||
                 block == Blocks.GRANITE ||
                 block == Blocks.DIORITE ||
                 block == Blocks.ANDESITE ||
+                block == Blocks.CALCITE ||
+                block == Blocks.DRIPSTONE_BLOCK ||
+                isSandstone(block) ||
                 block == Blocks.COAL_ORE ||
                 block == Blocks.COPPER_ORE ||
                 block == Blocks.IRON_ORE ||
@@ -122,7 +148,8 @@ public class BlockBreakHandler {
                 block == Blocks.TUFF ||
                 block == ModBlocks.RAW_TIN_BLOCK.get() ||
                 block == ModBlocks.TIN_BLOCK.get() ||
-                block == ModBlocks.BRONZE_BLOCK.get();
+                block == ModBlocks.BRONZE_BLOCK.get() ||
+                isNetherOrEndRockOrOre(block);
     }
 
     public static boolean isObsidianOrNetheriteTier(Block block) {
@@ -163,8 +190,8 @@ public class BlockBreakHandler {
             return false;
         }
 
-        // Silicon, Copper, Bronze tiers CANNOT mine Obsidian / Ancient Debris or High Tier ores
-        if (isObsidianOrNetheriteTier(block) || isHighTierOre(block)) {
+        // Silicon, Copper, Bronze tiers CANNOT mine Obsidian / Ancient Debris, High Tier ores, or Nether/End rocks/ores
+        if (isObsidianOrNetheriteTier(block) || isHighTierOre(block) || isNetherOrEndRockOrOre(block)) {
             return false;
         }
 
@@ -178,6 +205,9 @@ public class BlockBreakHandler {
                     block == Blocks.GRANITE ||
                     block == Blocks.DIORITE ||
                     block == Blocks.ANDESITE ||
+                    block == Blocks.CALCITE ||
+                    block == Blocks.DRIPSTONE_BLOCK ||
+                    isSandstone(block) ||
                     block == ModBlocks.RAW_TIN_BLOCK.get() ||
                     block == ModBlocks.TIN_BLOCK.get() ||
                     block == ModBlocks.BRONZE_BLOCK.get();
@@ -193,6 +223,9 @@ public class BlockBreakHandler {
                     block == Blocks.GRANITE ||
                     block == Blocks.DIORITE ||
                     block == Blocks.ANDESITE ||
+                    block == Blocks.CALCITE ||
+                    block == Blocks.DRIPSTONE_BLOCK ||
+                    isSandstone(block) ||
                     block == ModBlocks.RAW_TIN_BLOCK.get() ||
                     block == ModBlocks.TIN_BLOCK.get() ||
                     block == ModBlocks.BRONZE_BLOCK.get();
@@ -205,7 +238,10 @@ public class BlockBreakHandler {
                     block == Blocks.COBBLESTONE ||
                     block == Blocks.GRANITE ||
                     block == Blocks.DIORITE ||
-                    block == Blocks.ANDESITE;
+                    block == Blocks.ANDESITE ||
+                    block == Blocks.CALCITE ||
+                    block == Blocks.DRIPSTONE_BLOCK ||
+                    isSandstone(block);
         }
 
         // Hand or unhandled tool on stone/ore
@@ -216,6 +252,8 @@ public class BlockBreakHandler {
     @SubscribeEvent
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
+        if (player.isCreative() || player.getAbilities().instabuild) return;
+
         ItemStack held = player.getMainHandItem();
         BlockState state = event.getState();
         Block block = state.getBlock();
@@ -235,6 +273,7 @@ public class BlockBreakHandler {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         if (player == null || player.level().isClientSide) return;
+        if (player.isCreative() || player.getAbilities().instabuild) return;
 
         BlockState state = event.getState();
         Block block = state.getBlock();
@@ -249,6 +288,8 @@ public class BlockBreakHandler {
                     player.displayClientMessage(Component.literal("§cЭтот инструмент не может добывать породу глубинного сланца!"), true);
                 } else if (isObsidianOrNetheriteTier(block)) {
                     player.displayClientMessage(Component.literal("§cДля добычи этого блока нужна алмазная (укрепленная) или незеритовая кирка!"), true);
+                } else if (isNetherOrEndRockOrOre(block)) {
+                    player.displayClientMessage(Component.literal("§cДля добычи адских/эндер пород и руд требуется железная кирка или выше!"), true);
                 } else if (isHighTierOre(block)) {
                     player.displayClientMessage(Component.literal("§cДля этой руды требуется железная кирка или выше!"), true);
                 } else if (isSiliconPickaxe(held) && (block == Blocks.IRON_ORE || block == ModBlocks.TIN_ORE.get())) {
@@ -281,6 +322,14 @@ public class BlockBreakHandler {
         BlockState state = event.getState();
         Block block = state.getBlock();
         ItemStack tool = event.getTool();
+        if (tool.isEmpty() && event.getBreaker() instanceof Player p) {
+            tool = p.getMainHandItem();
+        }
+        if (event.getBreaker() instanceof Player p && (p.isCreative() || p.getAbilities().instabuild)) {
+            event.getDrops().clear();
+            return;
+        }
+
         List<ItemEntity> drops = event.getDrops();
 
         double x = pos.getX() + 0.5;
@@ -377,6 +426,23 @@ public class BlockBreakHandler {
                 ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.ANDESITE_NUGGET.get(), count));
                 nug.setDefaultPickUpDelay();
                 drops.add(nug);
+            } else if (block == Blocks.CALCITE) {
+                int count = 2 + RANDOM.nextInt(3);
+                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.CALCITE_NUGGET.get(), count));
+                nug.setDefaultPickUpDelay();
+                drops.add(nug);
+            } else if (block == Blocks.DRIPSTONE_BLOCK) {
+                int count = 2 + RANDOM.nextInt(3);
+                ItemEntity d = new ItemEntity(level, x, y, z, new ItemStack(Items.POINTED_DRIPSTONE, count));
+                d.setDefaultPickUpDelay();
+                drops.add(d);
+            } else if (isSandstone(block)) {
+                boolean isRed = block == Blocks.RED_SANDSTONE || block == Blocks.SMOOTH_RED_SANDSTONE ||
+                        block == Blocks.CUT_RED_SANDSTONE || block == Blocks.CHISELED_RED_SANDSTONE;
+                int count = 2 + RANDOM.nextInt(3);
+                ItemEntity s = new ItemEntity(level, x, y, z, new ItemStack(isRed ? Items.RED_SAND : Items.SAND, count));
+                s.setDefaultPickUpDelay();
+                drops.add(s);
             }
             return;
         }
@@ -420,6 +486,23 @@ public class BlockBreakHandler {
                 ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.ANDESITE_NUGGET.get(), count));
                 nug.setDefaultPickUpDelay();
                 drops.add(nug);
+            } else if (block == Blocks.CALCITE) {
+                int count = 2 + RANDOM.nextInt(3);
+                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.CALCITE_NUGGET.get(), count));
+                nug.setDefaultPickUpDelay();
+                drops.add(nug);
+            } else if (block == Blocks.DRIPSTONE_BLOCK) {
+                int count = 2 + RANDOM.nextInt(3);
+                ItemEntity d = new ItemEntity(level, x, y, z, new ItemStack(Items.POINTED_DRIPSTONE, count));
+                d.setDefaultPickUpDelay();
+                drops.add(d);
+            } else if (isSandstone(block)) {
+                boolean isRed = block == Blocks.RED_SANDSTONE || block == Blocks.SMOOTH_RED_SANDSTONE ||
+                        block == Blocks.CUT_RED_SANDSTONE || block == Blocks.CHISELED_RED_SANDSTONE;
+                int count = 2 + RANDOM.nextInt(3);
+                ItemEntity s = new ItemEntity(level, x, y, z, new ItemStack(isRed ? Items.RED_SAND : Items.SAND, count));
+                s.setDefaultPickUpDelay();
+                drops.add(s);
             }
             return;
         }
@@ -459,6 +542,18 @@ public class BlockBreakHandler {
                 ItemEntity a = new ItemEntity(level, x, y, z, new ItemStack(Blocks.ANDESITE.asItem(), 1));
                 a.setDefaultPickUpDelay();
                 drops.add(a);
+            } else if (block == Blocks.CALCITE) {
+                ItemEntity c = new ItemEntity(level, x, y, z, new ItemStack(Blocks.CALCITE.asItem(), 1));
+                c.setDefaultPickUpDelay();
+                drops.add(c);
+            } else if (block == Blocks.DRIPSTONE_BLOCK) {
+                ItemEntity d = new ItemEntity(level, x, y, z, new ItemStack(Blocks.DRIPSTONE_BLOCK.asItem(), 1));
+                d.setDefaultPickUpDelay();
+                drops.add(d);
+            } else if (isSandstone(block)) {
+                ItemEntity s = new ItemEntity(level, x, y, z, new ItemStack(block.asItem(), 1));
+                s.setDefaultPickUpDelay();
+                drops.add(s);
             }
             return;
         }

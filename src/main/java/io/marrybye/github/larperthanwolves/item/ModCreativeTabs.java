@@ -27,6 +27,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.GRANITE_NUGGET.get());
                         output.accept(ModItems.ANDESITE_NUGGET.get());
                         output.accept(ModItems.TUFF_NUGGET.get());
+                        output.accept(ModItems.CALCITE_NUGGET.get());
                         output.accept(ModItems.COPPER_NUGGET.get());
 
                         output.accept(ModItems.IRON_DUST.get());

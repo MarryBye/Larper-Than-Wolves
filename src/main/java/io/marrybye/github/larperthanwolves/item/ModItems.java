@@ -45,6 +45,9 @@ public class ModItems {
     public static final DeferredItem<Item> TUFF_NUGGET = ITEMS.register("tuff_nugget",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> CALCITE_NUGGET = ITEMS.register("calcite_nugget",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
             () -> new Item(new Item.Properties()));
 

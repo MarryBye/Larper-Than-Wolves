@@ -277,10 +277,13 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         int tinCount = 0;
         for (int i = 0; i < 3; i++) {
             ItemStack stack = items.get(i);
+            if (stack.isEmpty()) continue;
             if (stack.is(Items.COPPER_INGOT)) {
                 copperCount += stack.getCount();
             } else if (stack.is(ModItems.TIN_INGOT.get())) {
                 tinCount += stack.getCount();
+            } else {
+                return false;
             }
         }
         return copperCount >= 2 && tinCount >= 1;
@@ -320,6 +323,10 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
             items.get(fe).shrink(1);
             items.get(cu).shrink(1);
 
+            if (items.get(d).isEmpty()) items.set(d, ItemStack.EMPTY);
+            if (items.get(fe).isEmpty()) items.set(fe, ItemStack.EMPTY);
+            if (items.get(cu).isEmpty()) items.set(cu, ItemStack.EMPTY);
+
             ItemStack out = items.get(3);
             if (out.isEmpty()) {
                 items.set(3, new ItemStack(ModItems.DIAMOND_INGOT.get(), 1));
@@ -344,6 +351,12 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
                     int take = Math.min(neededTin, stack.getCount());
                     stack.shrink(take);
                     neededTin -= take;
+                }
+            }
+
+            for (int i = 0; i < 3; i++) {
+                if (items.get(i).isEmpty()) {
+                    items.set(i, ItemStack.EMPTY);
                 }
             }
 

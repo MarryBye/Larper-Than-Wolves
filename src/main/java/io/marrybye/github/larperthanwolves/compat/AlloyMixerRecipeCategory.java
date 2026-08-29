@@ -70,9 +70,13 @@ public class AlloyMixerRecipeCategory implements IRecipeCategory<AlloyMixerRecip
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AlloyMixerRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 8, 3).addItemStack(recipe.getInputs().get(0));
-        builder.addSlot(RecipeIngredientRole.INPUT, 8, 21).addItemStack(recipe.getInputs().get(1));
-        builder.addSlot(RecipeIngredientRole.INPUT, 8, 39).addItemStack(recipe.getInputs().get(2));
+        int[] yPositions = new int[]{3, 21, 39};
+        for (int i = 0; i < 3; i++) {
+            var slot = builder.addSlot(RecipeIngredientRole.INPUT, 8, yPositions[i]);
+            if (i < recipe.getInputs().size()) {
+                slot.addItemStack(recipe.getInputs().get(i));
+            }
+        }
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 21).addItemStack(recipe.getOutput());
     }
