@@ -23,5 +23,17 @@ public class ModBlocks {
                     .strength(0.3F, 0.3F)
                     .sound(net.minecraft.world.level.block.SoundType.GRAVEL)
                     .noOcclusion()));
+
+    public static final DeferredBlock<AlloyMixerBlock> ALLOY_MIXER = BLOCKS.register("alloy_mixer",
+            () -> new AlloyMixerBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(3.5F, 12.0F)
+                    .sound(net.minecraft.world.level.block.SoundType.METAL)
+                    .lightLevel(state -> state.getValue(AlloyMixerBlock.LIT) ? 13 : 0)));
+
+    public static final DeferredBlock<WorkStumpBlock> WORK_STUMP = BLOCKS.register("work_stump",
+            () -> new WorkStumpBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0F, 2.0F)
+                    .sound(net.minecraft.world.level.block.SoundType.WOOD)));
 }
 

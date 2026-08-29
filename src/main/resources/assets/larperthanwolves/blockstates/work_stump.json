@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "larperthanwolves:block/work_stump_0"
+    },
+    "stage=1": {
+      "model": "larperthanwolves:block/work_stump_1"
+    },
+    "stage=2": {
+      "model": "larperthanwolves:block/work_stump_2"
+    }
+  }
+}

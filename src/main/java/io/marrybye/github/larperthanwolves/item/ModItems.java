@@ -108,11 +108,56 @@ public class ModItems {
             () -> new SwordItem(ModToolMaterials.SILICON, new Item.Properties()
                     .attributes(SwordItem.createAttributes(ModToolMaterials.SILICON, 2, -2.4f))));
 
+    // Work Stump Tool
+    public static final DeferredItem<WorkStumpItem> WORK_STUMP = ITEMS.register("work_stump",
+            () -> new WorkStumpItem(new Item.Properties().durability(64)));
+
+    // Diamond Ingot
+    public static final DeferredItem<Item> DIAMOND_INGOT = ITEMS.register("diamond_ingot",
+            () -> new Item(new Item.Properties()));
+
+    // Reinforced Iron Tools
+    public static final DeferredItem<SwordItem> REINFORCED_IRON_SWORD = ITEMS.register("reinforced_iron_sword",
+            () -> new SwordItem(ModToolMaterials.REINFORCED_IRON, new Item.Properties()
+                    .attributes(SwordItem.createAttributes(ModToolMaterials.REINFORCED_IRON, 3, -2.4f))));
+
+    public static final DeferredItem<PickaxeItem> REINFORCED_IRON_PICKAXE = ITEMS.register("reinforced_iron_pickaxe",
+            () -> new PickaxeItem(ModToolMaterials.REINFORCED_IRON, new Item.Properties()
+                    .attributes(PickaxeItem.createAttributes(ModToolMaterials.REINFORCED_IRON, 1, -2.8f))));
+
+    public static final DeferredItem<AxeItem> REINFORCED_IRON_AXE = ITEMS.register("reinforced_iron_axe",
+            () -> new AxeItem(ModToolMaterials.REINFORCED_IRON, new Item.Properties()
+                    .attributes(AxeItem.createAttributes(ModToolMaterials.REINFORCED_IRON, 5, -3.0f))));
+
+    public static final DeferredItem<ShovelItem> REINFORCED_IRON_SHOVEL = ITEMS.register("reinforced_iron_shovel",
+            () -> new ShovelItem(ModToolMaterials.REINFORCED_IRON, new Item.Properties()
+                    .attributes(ShovelItem.createAttributes(ModToolMaterials.REINFORCED_IRON, 1.5f, -3.0f))));
+
+    public static final DeferredItem<HoeItem> REINFORCED_IRON_HOE = ITEMS.register("reinforced_iron_hoe",
+            () -> new HoeItem(ModToolMaterials.REINFORCED_IRON, new Item.Properties()
+                    .attributes(HoeItem.createAttributes(ModToolMaterials.REINFORCED_IRON, -3, 0.0f))));
+
+    // Reinforced Iron Armor
+    public static final DeferredItem<ArmorItem> REINFORCED_IRON_HELMET = ITEMS.register("reinforced_iron_helmet",
+            () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final DeferredItem<ArmorItem> REINFORCED_IRON_CHESTPLATE = ITEMS.register("reinforced_iron_chestplate",
+            () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final DeferredItem<ArmorItem> REINFORCED_IRON_LEGGINGS = ITEMS.register("reinforced_iron_leggings",
+            () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final DeferredItem<ArmorItem> REINFORCED_IRON_BOOTS = ITEMS.register("reinforced_iron_boots",
+            () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.BOOTS, new Item.Properties()));
+
     // Block Items
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRICK_FURNACE = ITEMS.register("brick_furnace",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get(), new Item.Properties()));
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> UNFIRED_BRICK = ITEMS.register("unfired_brick",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.UNFIRED_BRICK.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> ALLOY_MIXER = ITEMS.register("alloy_mixer",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.ALLOY_MIXER.get(), new Item.Properties()));
 }
 

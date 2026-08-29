@@ -30,5 +30,19 @@
   "itemGroup.larperthanwolves": "Larper Than Wolves",
   "item.larperthanwolves.unfired_brick": "Сформированный кирпич",
   "block.larperthanwolves.unfired_brick": "Сформированный кирпич",
-  "item.larperthanwolves.copper_nugget": "Медный камешек"
+  "item.larperthanwolves.copper_nugget": "Медный камешек",
+  "block.larperthanwolves.work_stump": "Верстачный пень",
+  "item.larperthanwolves.work_stump": "Инструмент для пня (Work Stump)",
+  "block.larperthanwolves.alloy_mixer": "Смешиватель сплавов",
+  "container.larperthanwolves.alloy_mixer": "Смешиватель сплавов",
+  "item.larperthanwolves.diamond_ingot": "Алмазный слиток",
+  "item.larperthanwolves.reinforced_iron_sword": "Укреплённый железный меч",
+  "item.larperthanwolves.reinforced_iron_pickaxe": "Укреплённая железная кирка",
+  "item.larperthanwolves.reinforced_iron_axe": "Укреплённый железный топор",
+  "item.larperthanwolves.reinforced_iron_shovel": "Укреплённая железная лопата",
+  "item.larperthanwolves.reinforced_iron_hoe": "Укреплённая железная мотыга",
+  "item.larperthanwolves.reinforced_iron_helmet": "Укреплённый железный шлем",
+  "item.larperthanwolves.reinforced_iron_chestplate": "Укреплённый железный нагрудник",
+  "item.larperthanwolves.reinforced_iron_leggings": "Укреплённые железные поножи",
+  "item.larperthanwolves.reinforced_iron_boots": "Укреплённые железные ботинки"
 }

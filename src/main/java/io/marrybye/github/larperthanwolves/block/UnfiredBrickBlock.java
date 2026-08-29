@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 public class UnfiredBrickBlock extends BaseEntityBlock {
     public static final MapCodec<UnfiredBrickBlock> CODEC = simpleCodec(UnfiredBrickBlock::new);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty DRIED = BooleanProperty.create("dried");
+    public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
 
     // 8x4x6 small brick shape on ground
     protected static final VoxelShape SHAPE_NORTH_SOUTH = Block.box(4.0, 0.0, 5.0, 12.0, 4.0, 11.0);
@@ -43,7 +44,7 @@ public class UnfiredBrickBlock extends BaseEntityBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(DRIED, false));
+                .setValue(STAGE, 0));
     }
 
     @Override
@@ -53,7 +54,7 @@ public class UnfiredBrickBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, DRIED);
+        builder.add(FACING, STAGE);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class UnfiredBrickBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                .setValue(DRIED, false);
+                .setValue(STAGE, 0);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class UnfiredBrickBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (state.getValue(DRIED)) {
+        if (state.getValue(STAGE) == 3) {
             if (!level.isClientSide) {
                 ItemEntity drop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.2, pos.getZ() + 0.5, new ItemStack(Items.BRICK));
                 drop.setDefaultPickUpDelay();
@@ -98,8 +99,17 @@ public class UnfiredBrickBlock extends BaseEntityBlock {
                 level.removeBlock(pos, false);
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
+        } else if (!level.isClientSide) {
+            int stage = state.getValue(STAGE);
+            String progressMsg = switch (stage) {
+                case 0 -> "§7Кирпич сырой (0% - 33%). Для сушки нужен открытый солнечный свет днём.";
+                case 1 -> "§eКирпич подсыхает (33% - 66%)...";
+                case 2 -> "§6Кирпич почти высох (66% - 99%)...";
+                default -> "";
+            };
+            player.displayClientMessage(net.minecraft.network.chat.Component.literal(progressMsg), true);
         }
-        return InteractionResult.PASS;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable

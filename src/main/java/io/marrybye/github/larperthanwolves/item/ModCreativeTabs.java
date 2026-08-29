@@ -48,9 +48,22 @@ public class ModCreativeTabs {
                         output.accept(ModItems.COPPER_HELMET.get());
                         output.accept(ModItems.COPPER_CHESTPLATE.get());
                         output.accept(ModItems.COPPER_LEGGINGS.get());
-                        output.accept(ModItems.COPPER_BOOTS.get());
-
                         output.accept(ModItems.BRICK_FURNACE.get());
                         output.accept(ModItems.UNFIRED_BRICK.get());
+                        output.accept(ModItems.ALLOY_MIXER.get());
+
+                        output.accept(ModItems.WORK_STUMP.get());
+                        output.accept(ModItems.DIAMOND_INGOT.get());
+
+                        output.accept(ModItems.REINFORCED_IRON_SWORD.get());
+                        output.accept(ModItems.REINFORCED_IRON_PICKAXE.get());
+                        output.accept(ModItems.REINFORCED_IRON_AXE.get());
+                        output.accept(ModItems.REINFORCED_IRON_SHOVEL.get());
+                        output.accept(ModItems.REINFORCED_IRON_HOE.get());
+
+                        output.accept(ModItems.REINFORCED_IRON_HELMET.get());
+                        output.accept(ModItems.REINFORCED_IRON_CHESTPLATE.get());
+                        output.accept(ModItems.REINFORCED_IRON_LEGGINGS.get());
+                        output.accept(ModItems.REINFORCED_IRON_BOOTS.get());
                     }).build());
 }

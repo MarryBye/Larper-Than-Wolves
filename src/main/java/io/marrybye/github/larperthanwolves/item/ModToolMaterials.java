@@ -38,5 +38,15 @@ public class ModToolMaterials {
             12,
             () -> Ingredient.of(ModItems.COPPER_DUST.get())
     );
+
+    // Reinforced Iron tools: same durability and stats as Diamond (1561 uses, 8.0f speed, 3.0f bonus)
+    public static final Tier REINFORCED_IRON = new SimpleTier(
+            net.minecraft.tags.BlockTags.INCORRECT_FOR_DIAMOND_TOOL,
+            1561,
+            8.0f,
+            3.0f,
+            10,
+            () -> Ingredient.of(ModItems.DIAMOND_INGOT.get())
+    );
 }
 

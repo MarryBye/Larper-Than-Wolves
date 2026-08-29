@@ -1,26 +1,26 @@
 package io.marrybye.github.larperthanwolves.event;
 
-import io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock;
-import io.marrybye.github.larperthanwolves.block.entity.BrickFurnaceBlockEntity;
+import io.marrybye.github.larperthanwolves.block.ModBlocks;
+import io.marrybye.github.larperthanwolves.block.UnfiredBrickBlock;
+import io.marrybye.github.larperthanwolves.block.WorkStumpBlock;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -41,16 +41,14 @@ public class BlockBreakHandler {
         return stack.is(ModItems.SILICON_PICKAXE.get());
     }
 
-    private static boolean isSiliconTool(ItemStack stack) {
-        return stack.is(ModItems.SILICON_PICKAXE.get()) ||
-                stack.is(ModItems.SILICON_AXE.get()) ||
-                stack.is(ModItems.SILICON_SHOVEL.get()) ||
-                stack.is(ModItems.SILICON_SPEAR.get()) ||
-                stack.is(ModItems.SILICON_SHEARS.get());
-    }
-
     private static boolean isCopperPickaxe(ItemStack stack) {
         return stack.is(ModItems.COPPER_PICKAXE.get());
+    }
+
+    private static boolean isIronOrBetterPickaxe(ItemStack stack) {
+        return stack.is(Items.IRON_PICKAXE) ||
+                stack.is(ModItems.REINFORCED_IRON_PICKAXE.get()) ||
+                stack.is(Items.NETHERITE_PICKAXE);
     }
 
     private static boolean isDeepslateOrTuffOrHighTier(Block block) {
@@ -94,13 +92,19 @@ public class BlockBreakHandler {
                 block == Blocks.DEEPSLATE_DIAMOND_ORE ||
                 block == Blocks.EMERALD_ORE ||
                 block == Blocks.DEEPSLATE_EMERALD_ORE ||
+                block == Blocks.GOLD_ORE ||
+                block == Blocks.DEEPSLATE_GOLD_ORE ||
+                block == Blocks.REDSTONE_ORE ||
+                block == Blocks.DEEPSLATE_REDSTONE_ORE ||
+                block == Blocks.LAPIS_ORE ||
+                block == Blocks.DEEPSLATE_LAPIS_ORE ||
                 block == Blocks.OBSIDIAN ||
                 block == Blocks.CRYING_OBSIDIAN ||
                 block == Blocks.RESPAWN_ANCHOR ||
                 block == Blocks.ANCIENT_DEBRIS;
     }
 
-    // 1. Break speed: Silicon tools CANNOT dig deepslate/tuff/high tier ores
+    // 1. Mining speed checks
     @SubscribeEvent
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
@@ -117,7 +121,7 @@ public class BlockBreakHandler {
         }
     }
 
-    // 2. Block break event: Hoeing grass block replaces with dirt + seeds chance
+    // 2. Block break event: Hoeing grass & Work Stump carving when breaking
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
@@ -129,6 +133,45 @@ public class BlockBreakHandler {
         Level level = player.level();
         ItemStack held = player.getMainHandItem();
 
+        // Work Stump breaking progression
+        if (held.is(ModItems.WORK_STUMP.get())) {
+            if (state.is(BlockTags.LOGS)) {
+                event.setCanceled(true);
+                level.setBlock(pos, ModBlocks.WORK_STUMP.get().defaultBlockState().setValue(WorkStumpBlock.STAGE, 0), 3);
+                level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0f, 1.0f);
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.CRIT, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 10, 0.2, 0.1, 0.2, 0.05);
+                }
+                if (!player.getAbilities().instabuild) held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                player.displayClientMessage(Component.literal("§6[1/4] Вы начали вытёсывать верстак из бревна..."), true);
+                return;
+            } else if (state.is(ModBlocks.WORK_STUMP.get())) {
+                event.setCanceled(true);
+                int currentStage = state.getValue(WorkStumpBlock.STAGE);
+                if (currentStage == 0) {
+                    level.setBlock(pos, state.setValue(WorkStumpBlock.STAGE, 1), 3);
+                    level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0f, 1.1f);
+                    player.displayClientMessage(Component.literal("§6[2/4] Проявляются контуры рабочей поверхности..."), true);
+                } else if (currentStage == 1) {
+                    level.setBlock(pos, state.setValue(WorkStumpBlock.STAGE, 2), 3);
+                    level.playSound(null, pos, SoundEvents.WOOD_HIT, SoundSource.BLOCKS, 1.0f, 1.2f);
+                    player.displayClientMessage(Component.literal("§6[3/4] Вырезается сетка крафта верстака..."), true);
+                } else if (currentStage == 2) {
+                    level.setBlock(pos, Blocks.CRAFTING_TABLE.defaultBlockState(), 3);
+                    level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.2f, 1.0f);
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, 15, 0.3, 0.3, 0.3, 0.1);
+                    }
+                    player.displayClientMessage(Component.literal("§a[4/4] Верстак успешно создан!"), true);
+                }
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.CRIT, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 8, 0.2, 0.1, 0.2, 0.05);
+                }
+                if (!player.getAbilities().instabuild) held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                return;
+            }
+        }
+
         // Prevent silicon pickaxe breaking deepslate/tuff
         if (isSiliconPickaxe(held) && isDeepslateOrTuffOrHighTier(block)) {
             event.setCanceled(true);
@@ -136,15 +179,13 @@ public class BlockBreakHandler {
             return;
         }
 
-        // When breaking grass_block with ANY hoe: turns into DIRT + chance for wheat seeds
+        // Hoeing grass block with hoe
         if (block == Blocks.GRASS_BLOCK && held.getItem() instanceof HoeItem) {
             event.setCanceled(true);
             level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 3);
             level.playSound(null, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0f, 1.0f);
-
             held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
 
-            // 35% chance to drop wheat seeds
             if (RANDOM.nextFloat() < 0.35f) {
                 ItemEntity seedDrop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
                 seedDrop.setDefaultPickUpDelay();
@@ -153,7 +194,7 @@ public class BlockBreakHandler {
         }
     }
 
-    // 3. Custom drops handling: ore dusts, stone nuggets, grass drops, gravel drops
+    // 3. Custom drops handling
     @SubscribeEvent
     public static void onBlockDrops(BlockDropsEvent event) {
         ServerLevel level = event.getLevel();
@@ -168,30 +209,30 @@ public class BlockBreakHandler {
         double z = pos.getZ() + 0.5;
 
         // --- Unfired Brick Block ---
-        if (block instanceof io.marrybye.github.larperthanwolves.block.UnfiredBrickBlock) {
+        if (block instanceof UnfiredBrickBlock) {
             drops.clear();
-            if (state.getValue(io.marrybye.github.larperthanwolves.block.UnfiredBrickBlock.DRIED)) {
+            if (state.getValue(UnfiredBrickBlock.STAGE) == 3) {
                 ItemEntity brick = new ItemEntity(level, x, y, z, new ItemStack(Items.BRICK, 1));
                 brick.setDefaultPickUpDelay();
                 drops.add(brick);
             } else {
-                ItemEntity unfired = new ItemEntity(level, x, y, z, new ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.UNFIRED_BRICK.get(), 1));
+                ItemEntity unfired = new ItemEntity(level, x, y, z, new ItemStack(ModItems.UNFIRED_BRICK.get(), 1));
                 unfired.setDefaultPickUpDelay();
                 drops.add(unfired);
             }
             return;
         }
 
-        // --- A. Grass / Foliage: NO drops when broken by hand/non-shears ---
+        // --- Grass / Foliage ---
         if (block == Blocks.SHORT_GRASS || block == Blocks.TALL_GRASS || block == Blocks.FERN ||
                 block == Blocks.LARGE_FERN || block == Blocks.SEAGRASS || block == Blocks.DEAD_BUSH) {
-            if (!(tool.getItem() instanceof net.minecraft.world.item.ShearsItem)) {
+            if (!(tool.getItem() instanceof ShearsItem)) {
                 drops.clear();
                 return;
             }
         }
 
-        // --- B. Gravel drops: Silicon Shard (8% chance) or Gravel block (92% chance) ---
+        // --- Gravel drops ---
         if (block == Blocks.GRAVEL) {
             drops.clear();
             if (RANDOM.nextFloat() < 0.08f) {
@@ -206,7 +247,7 @@ public class BlockBreakHandler {
             return;
         }
 
-        // --- C. Mining with Silicon Pickaxe ---
+        // --- A. Mining with Silicon Pickaxe ---
         if (isSiliconPickaxe(tool)) {
             if (isDeepslateOrTuffOrHighTier(block)) {
                 drops.clear();
@@ -247,31 +288,89 @@ public class BlockBreakHandler {
                 dust.setDefaultPickUpDelay();
                 drops.add(dust);
                 return;
-            } else if (block == Blocks.IRON_ORE) {
-                drops.clear();
-                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.IRON_DUST.get(), 1));
-                dust.setDefaultPickUpDelay();
-                drops.add(dust);
-                return;
-            } else if (block == Blocks.GOLD_ORE) {
-                drops.clear();
-                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.GOLD_DUST.get(), 1));
-                dust.setDefaultPickUpDelay();
-                drops.add(dust);
-                return;
+            } else {
+                // Silicon cannot mine other ores (Iron, Gold, etc.)
+                if (block == Blocks.IRON_ORE || block == Blocks.GOLD_ORE || block == Blocks.COAL_ORE) {
+                    drops.clear();
+                    return;
+                }
             }
         }
 
-        // --- D. Mining with Copper Pickaxe (or higher pickaxes) ---
-        if (tool.getItem() instanceof net.minecraft.world.item.PickaxeItem) {
-            if (isCopperPickaxe(tool) && isDiamondPlusTier(block)) {
+        // --- B. Mining with Copper Pickaxe ---
+        if (isCopperPickaxe(tool)) {
+            boolean isDeepslateLevel = pos.getY() <= 0 ||
+                    block == Blocks.DEEPSLATE ||
+                    block == Blocks.COBBLED_DEEPSLATE ||
+                    block == Blocks.DEEPSLATE_IRON_ORE ||
+                    block == Blocks.DEEPSLATE_COPPER_ORE ||
+                    block == Blocks.TUFF;
+
+            if (isDeepslateLevel) {
+                if (block == Blocks.DEEPSLATE_IRON_ORE) {
+                    drops.clear();
+                    ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.IRON_DUST.get(), 1));
+                    dust.setDefaultPickUpDelay();
+                    drops.add(dust);
+                    return;
+                } else if (block == Blocks.DEEPSLATE_COPPER_ORE) {
+                    drops.clear();
+                    ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.COPPER_DUST.get(), 1));
+                    dust.setDefaultPickUpDelay();
+                    drops.add(dust);
+                    return;
+                } else if (block == Blocks.DEEPSLATE || block == Blocks.COBBLED_DEEPSLATE) {
+                    drops.clear();
+                    int count = 2 + RANDOM.nextInt(3);
+                    ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.STONE_NUGGET.get(), count));
+                    nug.setDefaultPickUpDelay();
+                    drops.add(nug);
+                    return;
+                } else if (block == Blocks.TUFF) {
+                    drops.clear();
+                    int count = 2 + RANDOM.nextInt(3);
+                    ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.TUFF_NUGGET.get(), count));
+                    nug.setDefaultPickUpDelay();
+                    drops.add(nug);
+                    return;
+                }
+            } else {
+                // Regular stone level: drops raw iron, raw copper, coal, cobblestone
+                if (block == Blocks.STONE) {
+                    drops.clear();
+                    ItemEntity cobble = new ItemEntity(level, x, y, z, new ItemStack(Blocks.COBBLESTONE.asItem(), 1));
+                    cobble.setDefaultPickUpDelay();
+                    drops.add(cobble);
+                    return;
+                } else if (block == Blocks.IRON_ORE) {
+                    drops.clear();
+                    ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(Items.RAW_IRON, 1));
+                    raw.setDefaultPickUpDelay();
+                    drops.add(raw);
+                    return;
+                } else if (block == Blocks.COPPER_ORE) {
+                    drops.clear();
+                    ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(Items.RAW_COPPER, 1));
+                    raw.setDefaultPickUpDelay();
+                    drops.add(raw);
+                    return;
+                } else if (block == Blocks.COAL_ORE) {
+                    drops.clear();
+                    ItemEntity coal = new ItemEntity(level, x, y, z, new ItemStack(Items.COAL, 1));
+                    coal.setDefaultPickUpDelay();
+                    drops.add(coal);
+                    return;
+                }
+            }
+
+            if (isDiamondPlusTier(block)) {
                 drops.clear();
                 return;
             }
         }
     }
 
-    // 4. Use item on block: Hoeing grass block seeds chance & Brick Furnace fuel / lighter
+    // 4. Use item on block
     @SubscribeEvent
     public static void onUseItemOnBlock(UseItemOnBlockEvent event) {
         Player player = event.getPlayer();
@@ -282,7 +381,6 @@ public class BlockBreakHandler {
         BlockState state = level.getBlockState(pos);
         ItemStack held = event.getItemStack();
 
-        // Hoe right-click on grass block -> chance for seeds
         if (state.is(Blocks.GRASS_BLOCK) && held.getItem() instanceof HoeItem && event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK) {
             if (!level.isClientSide && RANDOM.nextFloat() < 0.35f) {
                 ItemEntity seed = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
@@ -292,4 +390,3 @@ public class BlockBreakHandler {
         }
     }
 }
-

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": {
+    "item": "minecraft:stick"
+  },
+  "base": {
+    "item": "minecraft:iron_boots"
+  },
+  "addition": {
+    "item": "larperthanwolves:diamond_ingot"
+  },
+  "result": {
+    "id": "larperthanwolves:reinforced_iron_boots"
+  }
+}

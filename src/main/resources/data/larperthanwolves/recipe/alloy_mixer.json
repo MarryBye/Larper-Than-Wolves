@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SFS",
+    "ICI",
+    "SFS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:brick_slab"
+    },
+    "F": {
+      "item": "larperthanwolves:brick_furnace"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:alloy_mixer"
+  }
+}

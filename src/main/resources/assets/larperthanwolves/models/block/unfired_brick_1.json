@@ -1,0 +1,41 @@
+{
+  "textures": {
+    "particle": "larperthanwolves:block/unfired_brick_1",
+    "brick": "larperthanwolves:block/unfired_brick_1"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        5
+      ],
+      "to": [
+        12,
+        4,
+        11
+      ],
+      "faces": {
+        "down": {
+          "texture": "#brick",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#brick"
+        },
+        "north": {
+          "texture": "#brick"
+        },
+        "south": {
+          "texture": "#brick"
+        },
+        "west": {
+          "texture": "#brick"
+        },
+        "east": {
+          "texture": "#brick"
+        }
+      }
+    }
+  ]
+}

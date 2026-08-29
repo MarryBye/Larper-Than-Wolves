@@ -1,33 +1,67 @@
 {
   "variants": {
-    "dried=false,facing=north": {
-      "model": "larperthanwolves:block/unfired_brick"
+    "facing=north,stage=0": {
+      "model": "larperthanwolves:block/unfired_brick_0",
+      "y": 0
     },
-    "dried=false,facing=east": {
-      "model": "larperthanwolves:block/unfired_brick",
+    "facing=east,stage=0": {
+      "model": "larperthanwolves:block/unfired_brick_0",
       "y": 90
     },
-    "dried=false,facing=south": {
-      "model": "larperthanwolves:block/unfired_brick",
+    "facing=south,stage=0": {
+      "model": "larperthanwolves:block/unfired_brick_0",
       "y": 180
     },
-    "dried=false,facing=west": {
-      "model": "larperthanwolves:block/unfired_brick",
+    "facing=west,stage=0": {
+      "model": "larperthanwolves:block/unfired_brick_0",
       "y": 270
     },
-    "dried=true,facing=north": {
-      "model": "larperthanwolves:block/dried_brick"
+    "facing=north,stage=1": {
+      "model": "larperthanwolves:block/unfired_brick_1",
+      "y": 0
     },
-    "dried=true,facing=east": {
-      "model": "larperthanwolves:block/dried_brick",
+    "facing=east,stage=1": {
+      "model": "larperthanwolves:block/unfired_brick_1",
       "y": 90
     },
-    "dried=true,facing=south": {
-      "model": "larperthanwolves:block/dried_brick",
+    "facing=south,stage=1": {
+      "model": "larperthanwolves:block/unfired_brick_1",
       "y": 180
     },
-    "dried=true,facing=west": {
-      "model": "larperthanwolves:block/dried_brick",
+    "facing=west,stage=1": {
+      "model": "larperthanwolves:block/unfired_brick_1",
+      "y": 270
+    },
+    "facing=north,stage=2": {
+      "model": "larperthanwolves:block/unfired_brick_2",
+      "y": 0
+    },
+    "facing=east,stage=2": {
+      "model": "larperthanwolves:block/unfired_brick_2",
+      "y": 90
+    },
+    "facing=south,stage=2": {
+      "model": "larperthanwolves:block/unfired_brick_2",
+      "y": 180
+    },
+    "facing=west,stage=2": {
+      "model": "larperthanwolves:block/unfired_brick_2",
+      "y": 270
+    },
+    "facing=north,stage=3": {
+      "model": "larperthanwolves:block/unfired_brick_3",
+      "y": 0
+    },
+    "facing=east,stage=3": {
+      "model": "larperthanwolves:block/unfired_brick_3",
+      "y": 90
+    },
+    "facing=south,stage=3": {
+      "model": "larperthanwolves:block/unfired_brick_3",
+      "y": 180
+    },
+    "facing=west,stage=3": {
+      "model": "larperthanwolves:block/unfired_brick_3",
       "y": 270
     }
   }

@@ -12,5 +12,6 @@ public class ModClientEvents {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.BRICK_FURNACE.get(), BrickFurnaceScreen::new);
+        event.register(ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerScreen::new);
     }
 }

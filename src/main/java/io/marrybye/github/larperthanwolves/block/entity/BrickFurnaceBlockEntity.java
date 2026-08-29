@@ -21,6 +21,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -93,14 +94,36 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     }
 
     public static boolean isValidFuel(ItemStack stack) {
-        if (stack.isEmpty()) return false;
-        if (stack.is(ModItems.DRY_GRASS.get())) return true;
-        return FUEL_REGISTRY.containsKey(stack.getItem());
+        return getFuelInfo(stack) != null;
     }
 
     public static FuelInfo getFuelInfo(ItemStack stack) {
         if (stack.isEmpty()) return null;
-        if (stack.is(ModItems.DRY_GRASS.get())) return DRY_GRASS_INFO;
+        if (stack.is(ModItems.DRY_GRASS.get())) {
+            int burn = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.dryGrassBurnTicks.get() : 400;
+            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.dryGrassCookSpeed.get() : 200;
+            return new FuelInfo(burn, speed);
+        }
+        if (stack.is(Items.STICK)) {
+            int burn = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.stickBurnTicks.get() : 300;
+            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.stickCookSpeed.get() : 250;
+            return new FuelInfo(burn, speed);
+        }
+        if (stack.is(ItemTags.LOGS) || stack.is(ItemTags.PLANKS) || stack.is(ItemTags.WOODEN_SLABS) || stack.is(ItemTags.WOODEN_STAIRS)) {
+            int burn = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.logBurnTicks.get() : 800;
+            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.logCookSpeed.get() : 160;
+            return new FuelInfo(burn, speed);
+        }
+        if (stack.is(Items.COAL) || stack.is(Items.CHARCOAL)) {
+            int burn = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.coalBurnTicks.get() : 1600;
+            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.coalCookSpeed.get() : 100;
+            return new FuelInfo(burn, speed);
+        }
+        if (stack.is(Items.COAL_BLOCK)) {
+            int burn = (io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.coalBurnTicks.get() : 1600) * 9;
+            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.coalCookSpeed.get() : 80;
+            return new FuelInfo(burn, speed);
+        }
         return FUEL_REGISTRY.get(stack.getItem());
     }
 

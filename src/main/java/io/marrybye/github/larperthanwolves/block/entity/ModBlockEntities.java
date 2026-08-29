@@ -20,5 +20,11 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(UnfiredBrickBlockEntity::new,
                             io.marrybye.github.larperthanwolves.block.ModBlocks.UNFIRED_BRICK.get())
                             .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AlloyMixerBlockEntity>> ALLOY_MIXER =
+            BLOCK_ENTITIES.register("alloy_mixer", () ->
+                    BlockEntityType.Builder.of(AlloyMixerBlockEntity::new,
+                            io.marrybye.github.larperthanwolves.block.ModBlocks.ALLOY_MIXER.get())
+                            .build(null));
 }
 

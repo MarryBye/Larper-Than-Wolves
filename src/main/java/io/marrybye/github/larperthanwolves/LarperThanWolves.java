@@ -19,6 +19,8 @@ public class LarperThanWolves {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public LarperThanWolves(IEventBus modEventBus, ModContainer modContainer) {
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, io.marrybye.github.larperthanwolves.config.ModConfig.SPEC);
+
         // Register items, blocks, menus, tabs, and other components
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);

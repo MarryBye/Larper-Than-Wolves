@@ -30,5 +30,19 @@
   "itemGroup.larperthanwolves": "Larper Than Wolves",
   "item.larperthanwolves.unfired_brick": "Unfired Brick",
   "block.larperthanwolves.unfired_brick": "Unfired Brick",
-  "item.larperthanwolves.copper_nugget": "Copper Nugget"
+  "item.larperthanwolves.copper_nugget": "Copper Nugget",
+  "block.larperthanwolves.work_stump": "Work Stump",
+  "item.larperthanwolves.work_stump": "Work Stump Tool",
+  "block.larperthanwolves.alloy_mixer": "Alloy Mixer",
+  "container.larperthanwolves.alloy_mixer": "Alloy Mixer",
+  "item.larperthanwolves.diamond_ingot": "Diamond Ingot",
+  "item.larperthanwolves.reinforced_iron_sword": "Reinforced Iron Sword",
+  "item.larperthanwolves.reinforced_iron_pickaxe": "Reinforced Iron Pickaxe",
+  "item.larperthanwolves.reinforced_iron_axe": "Reinforced Iron Axe",
+  "item.larperthanwolves.reinforced_iron_shovel": "Reinforced Iron Shovel",
+  "item.larperthanwolves.reinforced_iron_hoe": "Reinforced Iron Hoe",
+  "item.larperthanwolves.reinforced_iron_helmet": "Reinforced Iron Helmet",
+  "item.larperthanwolves.reinforced_iron_chestplate": "Reinforced Iron Chestplate",
+  "item.larperthanwolves.reinforced_iron_leggings": "Reinforced Iron Leggings",
+  "item.larperthanwolves.reinforced_iron_boots": "Reinforced Iron Boots"
 }
