@@ -172,6 +172,10 @@ public class ModItems {
             () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.BOOTS, new Item.Properties()
                     .durability(ArmorItem.Type.BOOTS.getDurability(33))));
 
+    // Mesh item
+    public static final DeferredItem<Item> MESH = ITEMS.register("mesh",
+            () -> new Item(new Item.Properties()));
+
     // Block Items
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRICK_FURNACE = ITEMS.register("brick_furnace",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get(), new Item.Properties()));
@@ -181,5 +185,8 @@ public class ModItems {
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> ALLOY_MIXER = ITEMS.register("alloy_mixer",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.ALLOY_MIXER.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> SIEVE = ITEMS.register("sieve",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.SIEVE.get(), new Item.Properties()));
 }
 

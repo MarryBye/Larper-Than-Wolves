@@ -23,6 +23,7 @@ public class ModJeiPlugin implements IModPlugin {
     @Override
     public void registerCategories(mezz.jei.api.registration.IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new AlloyMixerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new SieveRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -41,6 +42,23 @@ public class ModJeiPlugin implements IModPlugin {
                         cookTime
                 )
         ));
+
+        int sieveTime = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ?
+                io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;
+
+        registration.addRecipes(SieveRecipeCategory.TYPE, java.util.List.of(
+                new SieveJeiRecipe(
+                        new net.minecraft.world.item.ItemStack(net.minecraft.world.level.block.Blocks.GRAVEL),
+                        java.util.List.of(
+                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.COPPER_DUST.get()),
+                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.IRON_DUST.get()),
+                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.GOLD_DUST.get()),
+                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.SILICON_SHARD.get()),
+                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.FLINT)
+                        ),
+                        sieveTime
+                )
+        ));
     }
 
     @Override
@@ -49,18 +67,21 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), RecipeTypes.FUELING);
         registration.addRecipeCatalyst(ModBlocks.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.ALLOY_MIXER.get(), RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(ModBlocks.SIEVE.get(), SieveRecipeCategory.TYPE);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(BrickFurnaceScreen.class, 79, 34, 24, 17, RecipeTypes.SMELTING);
         registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.AlloyMixerScreen.class, 79, 24, 24, 17, AlloyMixerRecipeCategory.TYPE);
+        registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.SieveScreen.class, 76, 34, 24, 17, SieveRecipeCategory.TYPE);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), RecipeTypes.SMELTING, 0, 3, 6, 36);
         registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE, 0, 3, 4, 36);
+        registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.SieveMenu.class, ModMenuTypes.SIEVE.get(), SieveRecipeCategory.TYPE, 0, 9, 18, 36);
     }
 
     @Override

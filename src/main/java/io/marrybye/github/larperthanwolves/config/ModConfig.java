@@ -31,6 +31,13 @@ public class ModConfig {
         public final ModConfigSpec.DoubleValue copperDustGravelDropChance;
         public final ModConfigSpec.DoubleValue siliconShardGravelDropChance;
 
+        public final ModConfigSpec.IntValue sieveProcessTimeTicks;
+        public final ModConfigSpec.DoubleValue sieveCopperDustChance;
+        public final ModConfigSpec.DoubleValue sieveIronDustChance;
+        public final ModConfigSpec.DoubleValue sieveGoldDustChance;
+        public final ModConfigSpec.DoubleValue sieveSiliconShardChance;
+        public final ModConfigSpec.DoubleValue sieveFlintChance;
+
         public Server(ModConfigSpec.Builder builder) {
             builder.push("bricks");
             unfiredBrickDryingTimeTicks = builder
@@ -67,11 +74,32 @@ public class ModConfig {
 
             builder.push("gravel_drops");
             copperDustGravelDropChance = builder
-                    .comment("Chance of copper dust dropping when gravel is broken (default: 0.05 = 5%)")
-                    .defineInRange("copperDustGravelDropChance", 0.05, 0.0, 1.0);
+                    .comment("Chance of copper dust dropping when gravel is broken (default: 0.02 = 2%)")
+                    .defineInRange("copperDustGravelDropChance", 0.02, 0.0, 1.0);
             siliconShardGravelDropChance = builder
-                    .comment("Chance of silicon shard dropping when gravel is broken (default: 0.08 = 8%)")
-                    .defineInRange("siliconShardGravelDropChance", 0.08, 0.0, 1.0);
+                    .comment("Chance of silicon shard dropping when gravel is broken (default: 0.20 = 20%)")
+                    .defineInRange("siliconShardGravelDropChance", 0.20, 0.0, 1.0);
+            builder.pop();
+
+            builder.push("sieve");
+            sieveProcessTimeTicks = builder
+                    .comment("Number of ticks for the sieve to passively process 1 gravel block (default: 100 ticks = 5 seconds)")
+                    .defineInRange("sieveProcessTimeTicks", 100, 20, 24000);
+            sieveCopperDustChance = builder
+                    .comment("Chance of sifting Copper Dust from 1 gravel (default: 0.15 = 15%)")
+                    .defineInRange("sieveCopperDustChance", 0.15, 0.0, 1.0);
+            sieveIronDustChance = builder
+                    .comment("Chance of sifting Iron Dust from 1 gravel (default: 0.08 = 8%)")
+                    .defineInRange("sieveIronDustChance", 0.08, 0.0, 1.0);
+            sieveGoldDustChance = builder
+                    .comment("Chance of sifting Gold Dust from 1 gravel (default: 0.02 = 2%)")
+                    .defineInRange("sieveGoldDustChance", 0.02, 0.0, 1.0);
+            sieveSiliconShardChance = builder
+                    .comment("Chance of sifting Silicon Shard from 1 gravel (default: 0.15 = 15%)")
+                    .defineInRange("sieveSiliconShardChance", 0.15, 0.0, 1.0);
+            sieveFlintChance = builder
+                    .comment("Chance of sifting Flint from 1 gravel (default: 0.20 = 20%)")
+                    .defineInRange("sieveFlintChance", 0.20, 0.0, 1.0);
             builder.pop();
         }
     }

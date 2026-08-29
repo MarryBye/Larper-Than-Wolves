@@ -44,5 +44,9 @@
   "item.larperthanwolves.reinforced_iron_helmet": "Укреплённый железный шлем",
   "item.larperthanwolves.reinforced_iron_chestplate": "Укреплённый железный нагрудник",
   "item.larperthanwolves.reinforced_iron_leggings": "Укреплённые железные поножи",
-  "item.larperthanwolves.reinforced_iron_boots": "Укреплённые железные ботинки"
+  "item.larperthanwolves.reinforced_iron_boots": "Укреплённые железные ботинки",
+  "item.larperthanwolves.mesh": "Сетка",
+  "item.larperthanwolves.sieve": "Просеиватель",
+  "block.larperthanwolves.sieve": "Просеиватель",
+  "container.larperthanwolves.sieve": "Просеиватель"
 }

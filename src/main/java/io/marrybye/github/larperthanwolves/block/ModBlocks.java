@@ -38,5 +38,13 @@ public class ModBlocks {
             () -> new WorkStumpBlock(BlockBehaviour.Properties.of()
                     .strength(2.0F, 2.0F)
                     .sound(net.minecraft.world.level.block.SoundType.WOOD)));
+
+    public static final DeferredBlock<SieveBlock> SIEVE = BLOCKS.register("sieve",
+            () -> new SieveBlock(BlockBehaviour.Properties.of()
+                    .mapColor(net.minecraft.world.level.material.MapColor.WOOD)
+                    .instrument(net.minecraft.world.level.block.state.properties.NoteBlockInstrument.BASS)
+                    .strength(2.0F, 3.0F)
+                    .sound(net.minecraft.world.level.block.SoundType.WOOD)
+                    .noOcclusion()));
 }
 

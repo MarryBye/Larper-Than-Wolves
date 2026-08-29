@@ -44,5 +44,9 @@
   "item.larperthanwolves.reinforced_iron_helmet": "Reinforced Iron Helmet",
   "item.larperthanwolves.reinforced_iron_chestplate": "Reinforced Iron Chestplate",
   "item.larperthanwolves.reinforced_iron_leggings": "Reinforced Iron Leggings",
-  "item.larperthanwolves.reinforced_iron_boots": "Reinforced Iron Boots"
+  "item.larperthanwolves.reinforced_iron_boots": "Reinforced Iron Boots",
+  "item.larperthanwolves.mesh": "Mesh",
+  "item.larperthanwolves.sieve": "Sieve",
+  "block.larperthanwolves.sieve": "Sieve",
+  "container.larperthanwolves.sieve": "Sieve"
 }

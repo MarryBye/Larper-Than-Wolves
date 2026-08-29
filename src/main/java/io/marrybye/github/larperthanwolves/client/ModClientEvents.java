@@ -13,5 +13,6 @@ public class ModClientEvents {
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.BRICK_FURNACE.get(), BrickFurnaceScreen::new);
         event.register(ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerScreen::new);
+        event.register(ModMenuTypes.SIEVE.get(), SieveScreen::new);
     }
 }

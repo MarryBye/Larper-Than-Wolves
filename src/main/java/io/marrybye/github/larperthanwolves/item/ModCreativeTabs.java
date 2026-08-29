@@ -53,7 +53,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.BRICK_FURNACE.get());
                         output.accept(ModItems.UNFIRED_BRICK.get());
                         output.accept(ModItems.ALLOY_MIXER.get());
+                        output.accept(ModItems.SIEVE.get());
 
+                        output.accept(ModItems.MESH.get());
                         output.accept(ModItems.CHISEL.get());
                         output.accept(ModItems.DIAMOND_INGOT.get());
 

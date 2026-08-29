@@ -18,4 +18,9 @@ public class ModMenuTypes {
             "alloy_mixer",
             () -> IMenuTypeExtension.create(AlloyMixerMenu::new)
     );
+
+    public static final DeferredHolder<MenuType<?>, MenuType<SieveMenu>> SIEVE = MENUS.register(
+            "sieve",
+            () -> IMenuTypeExtension.create(SieveMenu::new)
+    );
 }

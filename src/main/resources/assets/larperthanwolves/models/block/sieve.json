@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "larperthanwolves:block/sieve_side",
+    "up": "larperthanwolves:block/sieve_top",
+    "down": "larperthanwolves:block/sieve_bottom",
+    "north": "larperthanwolves:block/sieve_side",
+    "south": "larperthanwolves:block/sieve_side",
+    "east": "larperthanwolves:block/sieve_side",
+    "west": "larperthanwolves:block/sieve_side"
+  }
+}
