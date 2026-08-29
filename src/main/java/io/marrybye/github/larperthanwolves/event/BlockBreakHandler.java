@@ -319,6 +319,32 @@ public class BlockBreakHandler {
         return false;
     }
 
+    public static boolean isWoodOrPlank(BlockState state) {
+        return state.is(BlockTags.LOGS) ||
+                state.is(BlockTags.PLANKS) ||
+                state.is(BlockTags.WOODEN_SLABS) ||
+                state.is(BlockTags.WOODEN_STAIRS) ||
+                state.is(BlockTags.WOODEN_FENCES) ||
+                state.is(BlockTags.FENCE_GATES) ||
+                state.is(BlockTags.WOODEN_DOORS) ||
+                state.is(BlockTags.WOODEN_TRAPDOORS) ||
+                ModBlocks.isStump(state) ||
+                state.is(ModBlocks.WORK_STUMP.get());
+    }
+
+    public static boolean isAxe(ItemStack tool) {
+        if (tool == null || tool.isEmpty()) return false;
+        return tool.getItem() instanceof net.minecraft.world.item.AxeItem ||
+                tool.is(net.minecraft.tags.ItemTags.AXES);
+    }
+
+    public static boolean isShears(ItemStack tool) {
+        if (tool == null || tool.isEmpty()) return false;
+        return tool.getItem() instanceof ShearsItem ||
+                tool.is(net.minecraft.tags.ItemTags.create(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("c", "tools/shears"))) ||
+                tool.is(net.minecraft.tags.ItemTags.create(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("minecraft", "shears")));
+    }
+
     // 1. Mining speed checks
     @SubscribeEvent
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
@@ -335,6 +361,15 @@ public class BlockBreakHandler {
         if (held.is(ModItems.CHISEL.get())) {
             if (state.is(BlockTags.LOGS) || state.is(ModBlocks.WORK_STUMP.get()) || ModBlocks.isStump(state)) {
                 event.setNewSpeed(1.5f);
+                return;
+            }
+        }
+
+        // Cannot break logs/wood/planks without an axe!
+        if (isWoodOrPlank(state)) {
+            if (!isAxe(held)) {
+                event.setNewSpeed(0.0f);
+                event.setCanceled(true);
                 return;
             }
         }
@@ -363,6 +398,14 @@ public class BlockBreakHandler {
         // Chisel CANNOT break logs/stumps on Left Click (animation only)
         if (held.is(ModItems.CHISEL.get())) {
             if (state.is(BlockTags.LOGS) || state.is(ModBlocks.WORK_STUMP.get()) || ModBlocks.isStump(state)) {
+                event.setCanceled(true);
+                return;
+            }
+        }
+
+        // Cannot break logs/wood/planks without an axe!
+        if (isWoodOrPlank(state)) {
+            if (!isAxe(held)) {
                 event.setCanceled(true);
                 return;
             }
@@ -440,11 +483,47 @@ public class BlockBreakHandler {
             return;
         }
 
+        // --- Wood / Logs / Planks require an axe ---
+        if (isWoodOrPlank(state)) {
+            if (!isAxe(tool)) {
+                drops.clear();
+                return;
+            }
+        }
+
         // --- Grass / Foliage ---
         if (block == Blocks.SHORT_GRASS || block == Blocks.TALL_GRASS || block == Blocks.FERN ||
                 block == Blocks.LARGE_FERN || block == Blocks.SEAGRASS || block == Blocks.DEAD_BUSH) {
-            if (!(tool.getItem() instanceof ShearsItem)) {
+            if (!isShears(tool)) {
                 drops.clear();
+                return;
+            } else {
+                drops.clear();
+                if (block == Blocks.SHORT_GRASS) {
+                    ItemEntity item = new ItemEntity(level, x, y, z, new ItemStack(Items.SHORT_GRASS, 1));
+                    item.setDefaultPickUpDelay();
+                    drops.add(item);
+                } else if (block == Blocks.TALL_GRASS) {
+                    ItemEntity item = new ItemEntity(level, x, y, z, new ItemStack(Items.SHORT_GRASS, 2));
+                    item.setDefaultPickUpDelay();
+                    drops.add(item);
+                } else if (block == Blocks.FERN) {
+                    ItemEntity item = new ItemEntity(level, x, y, z, new ItemStack(Items.FERN, 1));
+                    item.setDefaultPickUpDelay();
+                    drops.add(item);
+                } else if (block == Blocks.LARGE_FERN) {
+                    ItemEntity item = new ItemEntity(level, x, y, z, new ItemStack(Items.FERN, 2));
+                    item.setDefaultPickUpDelay();
+                    drops.add(item);
+                } else if (block == Blocks.SEAGRASS) {
+                    ItemEntity item = new ItemEntity(level, x, y, z, new ItemStack(Items.SEAGRASS, 1));
+                    item.setDefaultPickUpDelay();
+                    drops.add(item);
+                } else if (block == Blocks.DEAD_BUSH) {
+                    ItemEntity item = new ItemEntity(level, x, y, z, new ItemStack(Items.DEAD_BUSH, 1));
+                    item.setDefaultPickUpDelay();
+                    drops.add(item);
+                }
                 return;
             }
         }

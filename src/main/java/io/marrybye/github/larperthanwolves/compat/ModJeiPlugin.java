@@ -47,6 +47,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new SieveRecipeCategory(guiHelper));
         registration.addRecipeCategories(new ChiselRecipeCategory(guiHelper));
         registration.addRecipeCategories(new SunDryingRecipeCategory(guiHelper));
+        registration.addRecipeCategories(new DryingRackRecipeCategory(guiHelper));
         registration.addRecipeCategories(new MachineFuelRecipeCategory(guiHelper));
         registration.addRecipeCategories(new GravelDiggingRecipeCategory(guiHelper));
     }
@@ -145,6 +146,28 @@ public class ModJeiPlugin implements IModPlugin {
                         new ItemStack(ModBlocks.UNFIRED_BRICK.asItem()),
                         new ItemStack(Items.BRICK),
                         2000
+                )
+        ));
+
+        // 3b. Drying Rack Recipes
+        int dryingRackTime = ModConfig.SERVER != null ? ModConfig.SERVER.dryingRackTimeTicks.get() : 1200;
+        List<ItemStack> grassInputs = List.of(
+                new ItemStack(Items.SHORT_GRASS),
+                new ItemStack(Items.TALL_GRASS),
+                new ItemStack(Items.FERN),
+                new ItemStack(Items.LARGE_FERN),
+                new ItemStack(Items.SEAGRASS)
+        );
+        registration.addRecipes(DryingRackRecipeCategory.TYPE, List.of(
+                new DryingRackRecipe(
+                        grassInputs,
+                        new ItemStack(ModItems.DRY_GRASS.get()),
+                        dryingRackTime
+                ),
+                new DryingRackRecipe(
+                        List.of(new ItemStack(Items.LEATHER)),
+                        new ItemStack(ModItems.TANNED_LEATHER.get()),
+                        dryingRackTime
                 )
         ));
 
@@ -262,6 +285,15 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.alloy_mixer"));
         registration.addIngredientInfo(new ItemStack(ModItems.LIGHTER.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.lighter"));
+
+        registration.addIngredientInfo(new ItemStack(ModBlocks.DRYING_RACK.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.drying_rack"));
+        registration.addIngredientInfo(new ItemStack(ModItems.DRY_GRASS.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.dry_grass"));
+        registration.addIngredientInfo(new ItemStack(ModItems.TANNED_LEATHER.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.tanned_leather"));
+        registration.addIngredientInfo(new ItemStack(ModItems.SILICON_AXE.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.axe_planks"));
     }
 
     @Override
@@ -275,6 +307,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(ModItems.CHISEL.get(), ChiselRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.WORK_STUMP.get(), ChiselRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.UNFIRED_BRICK.get(), SunDryingRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(ModBlocks.DRYING_RACK.get(), DryingRackRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModItems.LIGHTER.get(), MachineFuelRecipeCategory.TYPE);
         registration.addRecipeCatalyst(Blocks.GRAVEL, GravelDiggingRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModItems.SILICON_SHARD.get(), GravelDiggingRecipeCategory.TYPE);

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:drying_rack"
+  }
+}

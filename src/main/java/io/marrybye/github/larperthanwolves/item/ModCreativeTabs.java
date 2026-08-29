@@ -19,6 +19,7 @@ public class ModCreativeTabs {
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.SILICON_SHARD.get());
                         output.accept(ModItems.DRY_GRASS.get());
+                        output.accept(ModItems.TANNED_LEATHER.get());
                         output.accept(ModItems.ROPE.get());
                         output.accept(ModItems.LIGHTER.get());
 
@@ -84,6 +85,7 @@ public class ModCreativeTabs {
 
                         output.accept(ModItems.BRICK_FURNACE.get());
                         output.accept(ModItems.UNFIRED_BRICK.get());
+                        output.accept(ModItems.DRYING_RACK.get());
                         output.accept(ModItems.ALLOY_MIXER.get());
                         output.accept(ModItems.SIEVE.get());
 

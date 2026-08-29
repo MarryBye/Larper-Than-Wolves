@@ -107,5 +107,15 @@
   "jei.larperthanwolves.info.brick": "Obtained by smelting Unfired Bricks in a Brick Furnace or drying Unfired Brick blocks under direct sunlight.",
   "jei.larperthanwolves.info.brick_furnace": "Replaces the vanilla furnace. Accepts logs, planks, coal, charcoal, sticks, dry grass, and rope. Must be manually ignited with a Lighter or Flint and Steel.",
   "jei.larperthanwolves.info.alloy_mixer": "Used to mix metal alloys (such as Bronze and Diamond Ingots). Place fuel in the bottom slot and ignite with a Lighter or Flint and Steel.",
-  "jei.larperthanwolves.info.lighter": "Crafted early from sticks. Used to ignite Brick Furnaces, Alloy Mixers, and start fires."
+  "jei.larperthanwolves.info.lighter": "Crafted early from sticks. Used to ignite Brick Furnaces, Alloy Mixers, and start fires.",
+  "item.larperthanwolves.tanned_leather": "Tanned Leather",
+  "block.larperthanwolves.drying_rack": "Drying Rack",
+  "item.larperthanwolves.drying_rack": "Drying Rack",
+  "jei.larperthanwolves.category.drying_rack": "Drying Rack",
+  "jei.larperthanwolves.drying_rack.condition": "Place outdoors in daylight under open sky",
+  "jei.larperthanwolves.drying_rack.time": "~1 min clear daylight",
+  "jei.larperthanwolves.info.drying_rack": "Crafted in a 2x2 grid using 4 sticks. Place outdoors in daytime without blocks above to passively dry grass into Dry Grass and leather into Tanned Leather.",
+  "jei.larperthanwolves.info.dry_grass": "Obtained by harvesting grass with shears and drying it on a Drying Rack outdoors under sunlight. Used to craft early ropes and as furnace fuel.",
+  "jei.larperthanwolves.info.tanned_leather": "Obtained by placing regular leather on a Drying Rack outdoors under sunlight. Used to craft leather armor sets and sturdy ropes.",
+  "jei.larperthanwolves.info.axe_planks": "Logs cannot be turned into planks by hand in the 2x2 inventory grid. Combine any axe with wood or logs to obtain 2 planks (the axe loses 1 durability). On a 3x3 Crafting Table, wood yields 4 planks without requiring an axe."
 }

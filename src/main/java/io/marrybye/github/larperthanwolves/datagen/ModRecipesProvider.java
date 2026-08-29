@@ -124,11 +124,26 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
                 .unlockedBy("has_leather", has(Items.LEATHER))
                 .save(pRecipeOutput, "rope_from_leather");
 
+        // Rope from tanned leather + shears
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROPE.get(), 2)
+                .requires(ModItems.TANNED_LEATHER.get())
+                .requires(ModItems.SILICON_SHEARS.get())
+                .unlockedBy("has_tanned_leather", has(ModItems.TANNED_LEATHER.get()))
+                .save(pRecipeOutput, "rope_from_tanned_leather");
+
         // Rope from dry grass
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROPE.get(), 1)
                 .requires(ModItems.DRY_GRASS.get(), 3)
                 .unlockedBy("has_dry_grass", has(ModItems.DRY_GRASS.get()))
                 .save(pRecipeOutput, "rope_from_dry_grass");
+
+        // Drying Rack (4 sticks in 2x2 grid)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.DRYING_RACK.get())
+                .pattern("##")
+                .pattern("##")
+                .define('#', Items.STICK)
+                .unlockedBy("has_stick", has(Items.STICK))
+                .save(pRecipeOutput, "drying_rack");
 
         // Lighter (2 sticks)
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.LIGHTER.get())

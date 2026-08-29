@@ -1,0 +1,79 @@
+{
+  "variants": {
+    "content=none,facing=north": {
+      "model": "larperthanwolves:block/drying_rack_empty"
+    },
+    "content=none,facing=east": {
+      "model": "larperthanwolves:block/drying_rack_empty",
+      "y": 90
+    },
+    "content=none,facing=south": {
+      "model": "larperthanwolves:block/drying_rack_empty",
+      "y": 180
+    },
+    "content=none,facing=west": {
+      "model": "larperthanwolves:block/drying_rack_empty",
+      "y": 270
+    },
+    "content=grass,facing=north": {
+      "model": "larperthanwolves:block/drying_rack_grass"
+    },
+    "content=grass,facing=east": {
+      "model": "larperthanwolves:block/drying_rack_grass",
+      "y": 90
+    },
+    "content=grass,facing=south": {
+      "model": "larperthanwolves:block/drying_rack_grass",
+      "y": 180
+    },
+    "content=grass,facing=west": {
+      "model": "larperthanwolves:block/drying_rack_grass",
+      "y": 270
+    },
+    "content=dry_grass,facing=north": {
+      "model": "larperthanwolves:block/drying_rack_dry_grass"
+    },
+    "content=dry_grass,facing=east": {
+      "model": "larperthanwolves:block/drying_rack_dry_grass",
+      "y": 90
+    },
+    "content=dry_grass,facing=south": {
+      "model": "larperthanwolves:block/drying_rack_dry_grass",
+      "y": 180
+    },
+    "content=dry_grass,facing=west": {
+      "model": "larperthanwolves:block/drying_rack_dry_grass",
+      "y": 270
+    },
+    "content=leather,facing=north": {
+      "model": "larperthanwolves:block/drying_rack_leather"
+    },
+    "content=leather,facing=east": {
+      "model": "larperthanwolves:block/drying_rack_leather",
+      "y": 90
+    },
+    "content=leather,facing=south": {
+      "model": "larperthanwolves:block/drying_rack_leather",
+      "y": 180
+    },
+    "content=leather,facing=west": {
+      "model": "larperthanwolves:block/drying_rack_leather",
+      "y": 270
+    },
+    "content=tanned_leather,facing=north": {
+      "model": "larperthanwolves:block/drying_rack_tanned_leather"
+    },
+    "content=tanned_leather,facing=east": {
+      "model": "larperthanwolves:block/drying_rack_tanned_leather",
+      "y": 90
+    },
+    "content=tanned_leather,facing=south": {
+      "model": "larperthanwolves:block/drying_rack_tanned_leather",
+      "y": 180
+    },
+    "content=tanned_leather,facing=west": {
+      "model": "larperthanwolves:block/drying_rack_tanned_leather",
+      "y": 270
+    }
+  }
+}

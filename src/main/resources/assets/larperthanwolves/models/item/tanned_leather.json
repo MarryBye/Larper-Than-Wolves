@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "larperthanwolves:item/dry_grass"
+    "layer0": "larperthanwolves:item/tanned_leather"
   }
 }

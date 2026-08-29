@@ -21,6 +21,9 @@ public class ModItems {
     public static final DeferredItem<Item> DRY_GRASS = ITEMS.register("dry_grass",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> TANNED_LEATHER = ITEMS.register("tanned_leather",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> IRON_DUST = ITEMS.register("iron_dust",
             () -> new Item(new Item.Properties()));
 
@@ -277,6 +280,9 @@ public class ModItems {
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SIEVE = ITEMS.register("sieve",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.SIEVE.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> DRYING_RACK = ITEMS.register("drying_rack",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.DRYING_RACK.get(), new Item.Properties()));
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> TIN_ORE = ITEMS.register("tin_ore",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.TIN_ORE.get(), new Item.Properties()));

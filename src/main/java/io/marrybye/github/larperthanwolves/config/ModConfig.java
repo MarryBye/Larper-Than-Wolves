@@ -15,6 +15,7 @@ public class ModConfig {
 
     public static class Server {
         public final ModConfigSpec.IntValue unfiredBrickDryingTimeTicks;
+        public final ModConfigSpec.IntValue dryingRackTimeTicks;
         public final ModConfigSpec.IntValue alloyMixerCookTimeTicks;
         public final ModConfigSpec.IntValue brickFurnaceDefaultCookTimeTicks;
 
@@ -51,10 +52,13 @@ public class ModConfig {
         public final ModConfigSpec.DoubleValue sieveSandDiamondDustChance;
 
         public Server(ModConfigSpec.Builder builder) {
-            builder.push("bricks");
+            builder.push("drying");
             unfiredBrickDryingTimeTicks = builder
                     .comment("Number of ticks required for an unfired brick to dry into a baked brick in open daylight (default: 2000 ticks = 100 seconds)")
                     .defineInRange("unfiredBrickDryingTimeTicks", 2000, 100, 72000);
+            dryingRackTimeTicks = builder
+                    .comment("Number of ticks required for grass or leather to dry on the Drying Rack in open daylight (default: 1200 ticks = 60 seconds)")
+                    .defineInRange("dryingRackTimeTicks", 1200, 20, 72000);
             builder.pop();
 
             builder.push("alloy_mixer");

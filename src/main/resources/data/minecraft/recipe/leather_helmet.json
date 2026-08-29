@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "###",
+    "# #"
+  ],
+  "key": {
+    "#": {
+      "item": "larperthanwolves:tanned_leather"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:leather_helmet"
+  }
+}

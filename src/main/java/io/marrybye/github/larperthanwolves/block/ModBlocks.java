@@ -50,6 +50,14 @@ public class ModBlocks {
                     .sound(SoundType.WOOD)
                     .noOcclusion()));
 
+    public static final DeferredBlock<DryingRackBlock> DRYING_RACK = BLOCKS.register("drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.of()
+                    .mapColor(net.minecraft.world.level.material.MapColor.WOOD)
+                    .instrument(net.minecraft.world.level.block.state.properties.NoteBlockInstrument.BASS)
+                    .strength(1.5F, 2.0F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
+
     public static final DeferredBlock<Block> TIN_ORE = BLOCKS.register("tin_ore",
             () -> new Block(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()

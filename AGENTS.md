@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.13.0
+- **Current Version**: 1.14.0
 
 ## Project Architecture & Progression
 
@@ -21,6 +21,18 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4).
 - **Iron (Железо)**: Standard metal. Full mining access for all standard rocks & ores as whole blocks / raw chunks. Cannot mine Ancient Debris or Obsidian.
 - **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
+
+### 🪓 Woodcutting & Plank Crafting Rules
+- **Tree & Plank Harvesting**: Trees (logs, wood, stripped wood) and planks cannot be broken by hand. An axe is strictly required.
+- **Plank Crafting**:
+  - **2x2 Inventory Grid**: 1 Log/Wood + 1 Axe $\rightarrow$ 2 Planks (the axe loses 1 durability and remains in the crafting grid).
+  - **3x3 Crafting Table**: 1 Log/Wood $\rightarrow$ 4 Planks (standard full yield without requiring an axe).
+  - Full support for all wood types (Oak, Spruce, Birch, Jungle, Acacia, Dark Oak, Mangrove, Cherry, Bamboo, Crimson, Warped, and Mod Stumps).
+
+### ☀️ Drying Rack & Material Processing
+- **Drying Rack (Сушилка)**: Crafted in 2x2 grid from 4 sticks (`drying_rack`). Operates passively when placed outdoors under open sky during daytime (`isDay() && canSeeSky() && !isRaining()`).
+  - **Grass** (Short Grass, Tall Grass, Fern, Large Fern, Seagrass) $\rightarrow$ **Dry Grass** (wilted straw, used for ropes & furnace fuel). Shears are required to harvest grass.
+  - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and horse armor).
 
 ### 🔄 Material Conversion Rules
 - **Natural Metals (Iron, Copper, Gold, Tin)**:
@@ -47,6 +59,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── BrickFurnaceBlock.java     — Brick furnace block (facing, 4 stages)
 │   ├── AlloyMixerBlock.java       — Alloy mixer block (facing, 4 stages)
 │   ├── SieveBlock.java            — Sieve block
+│   ├── DryingRackBlock.java       — Daylight drying rack block (horizontal facing, 5 content states)
 │   ├── StumpBlock.java            — Tree stump base block (extends RotatedPillarBlock)
 │   ├── WorkStumpBlock.java        — Work stump with chisel progression (3 STAGE states)
 │   ├── UnfiredBrickBlock.java     — Unfired brick (dries under sunlight, 4 stages)
@@ -55,9 +68,14 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │       ├── BrickFurnaceBlockEntity.java    — Furnace logic (7 slots, custom fuel, WorldlyContainer)
 │       ├── AlloyMixerBlockEntity.java      — Alloy mixing logic (5 slots, 2 recipes)
 │       ├── SieveBlockEntity.java           — Sieve passive processing (18 slots)
+│       ├── DryingRackBlockEntity.java      — Daylight drying rack ticking logic (1 slot, WorldlyContainer)
 │       ├── UnfiredBrickBlockEntity.java    — Brick drying ticking logic
 │       └── FuelRegistry.java               — Unified fuel durations, cook speeds & validation
 ├── recipe/
+│   ├── ModRecipeSerializers.java  — Custom recipe serializers (AxePlank, WorkbenchPlank)
+│   ├── WoodToPlanksHelper.java    — Wood type mapping and axe detection utility
+│   ├── AxePlankRecipe.java        — Log + Axe -> 2 Planks crafting recipe (axe damage retention)
+│   ├── WorkbenchPlankRecipe.java  — 3x3 Crafting Table Log -> 4 Planks crafting recipe
 │   ├── AlloyRecipe.java           — Modular alloy mixer recipe model
 │   ├── AlloyRegistry.java         — Central alloy mixer recipe registry & JEI sync
 │   └── SmeltingRegistry.java      — Brick furnace custom smelting overrides & fallback
@@ -78,10 +96,10 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── AlloyMixerScreen.java      — Mixer GUI renderer
 │   └── SieveScreen.java           — Sieve GUI renderer
 ├── event/
-│   ├── BlockBreakHandler.java     — Mining tier enforcement, custom drops, hoeing mechanics
+│   ├── BlockBreakHandler.java     — Mining tier enforcement, axe-only wood breaking, shears drops, hoeing
 │   └── DisabledItemsHandler.java  — Vanilla item removal system (creative tabs, mob equipment, trades, loot)
 ├── config/
-│   └── ModConfig.java             — NeoForge config spec (fuel, sieve, bricks, drops)
+│   └── ModConfig.java             — NeoForge config spec (fuel, sieve, bricks, drying, drops)
 ├── compat/
 │   ├── ModJeiPlugin.java          — JEI integration plugin (all categories & info tabs)
 │   ├── AlloyMixerRecipe.java      — JEI alloy recipe POJO
@@ -92,6 +110,8 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── ChiselRecipeCategory.java  — JEI chisel carving category
 │   ├── SunDryingRecipe.java       — JEI sun drying recipe POJO
 │   ├── SunDryingRecipeCategory.java — JEI sun drying category
+│   ├── DryingRackRecipe.java      — JEI drying rack recipe POJO
+│   ├── DryingRackRecipeCategory.java — JEI drying rack category
 │   ├── MachineFuelRecipe.java     — JEI machine fuel & ignition recipe POJO
 │   ├── MachineFuelRecipeCategory.java — JEI machine fuel & ignition category
 │   ├── GravelDiggingRecipe.java   — JEI gravel drops recipe POJO
