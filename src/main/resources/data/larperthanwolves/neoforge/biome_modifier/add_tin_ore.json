@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "larperthanwolves:ore_tin",
+    "larperthanwolves:ore_tin_small"
+  ],
+  "step": "underground_ores"
+}

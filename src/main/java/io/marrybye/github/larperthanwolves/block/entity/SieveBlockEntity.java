@@ -1,16 +1,24 @@
 package io.marrybye.github.larperthanwolves.block.entity;
 
 import io.marrybye.github.larperthanwolves.config.ModConfig;
+import io.marrybye.github.larperthanwolves.event.DisabledItemsHandler;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import io.marrybye.github.larperthanwolves.menu.SieveMenu;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,16 +28,23 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
 public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
-    // 0..8: 9 Input slots for Gravel, 9..17: 9 Output slots for sifted dusts/shards/flint
+    // 0..8: 9 Input slots for Gravel/Sand/Suspicious blocks, 9..17: 9 Output slots for sifted items
     private final NonNullList<ItemStack> items = NonNullList.withSize(18, ItemStack.EMPTY);
 
     private int processTime = 0;
@@ -91,17 +106,25 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         this.processTimeTotal = tag.getInt("ProcessTimeTotal");
     }
 
+    public static boolean isSiftable(ItemStack stack) {
+        return stack.is(Blocks.GRAVEL.asItem()) ||
+                stack.is(Blocks.SUSPICIOUS_GRAVEL.asItem()) ||
+                stack.is(Blocks.SAND.asItem()) ||
+                stack.is(Blocks.RED_SAND.asItem()) ||
+                stack.is(Blocks.SUSPICIOUS_SAND.asItem());
+    }
+
     public static void tick(Level level, BlockPos pos, BlockState state, SieveBlockEntity entity) {
         if (level.isClientSide) return;
 
         int configuredTotal = ModConfig.SERVER != null ? ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;
         entity.processTimeTotal = configuredTotal > 0 ? configuredTotal : 100;
 
-        int gravelSlot = entity.findFirstGravelSlot();
-        if (gravelSlot != -1) {
+        int siftSlot = entity.findFirstSiftableSlot();
+        if (siftSlot != -1) {
             entity.processTime++;
             if (entity.processTime >= entity.processTimeTotal) {
-                entity.processSifting(gravelSlot);
+                entity.processSifting(siftSlot);
                 entity.processTime = 0;
                 setChanged(level, pos, state);
             }
@@ -113,10 +136,10 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         }
     }
 
-    private int findFirstGravelSlot() {
+    private int findFirstSiftableSlot() {
         for (int i = 0; i < 9; i++) {
             ItemStack stack = items.get(i);
-            if (!stack.isEmpty() && (stack.is(Blocks.GRAVEL.asItem()) || stack.is(Blocks.SUSPICIOUS_GRAVEL.asItem()))) {
+            if (!stack.isEmpty() && isSiftable(stack)) {
                 return i;
             }
         }
@@ -127,31 +150,101 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         ItemStack input = items.get(inputSlot);
         if (input.isEmpty()) return;
 
+        boolean isSuspicious = input.is(Blocks.SUSPICIOUS_GRAVEL.asItem()) || input.is(Blocks.SUSPICIOUS_SAND.asItem());
+        boolean isSandType = input.is(Blocks.SAND.asItem()) || input.is(Blocks.RED_SAND.asItem()) || input.is(Blocks.SUSPICIOUS_SAND.asItem());
+        boolean isSuspiciousSand = input.is(Blocks.SUSPICIOUS_SAND.asItem());
+        boolean isSuspiciousGravel = input.is(Blocks.SUSPICIOUS_GRAVEL.asItem());
+
+        CustomData blockEntityData = isSuspicious ? input.get(DataComponents.BLOCK_ENTITY_DATA) : null;
+
         input.shrink(1);
 
-        double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.15;
-        double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveIronDustChance.get() : 0.08;
-        double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveGoldDustChance.get() : 0.02;
-        double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.15;
-        double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.20;
+        // 1. Regular dust / shard / flint drops
+        double copperChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandCopperDustChance.get() : 0.15) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.15);
+        double tinChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandTinDustChance.get() : 0.12) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveTinDustChance.get() : 0.12);
+        double ironChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandIronDustChance.get() : 0.08) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveIronDustChance.get() : 0.08);
+        double goldChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandGoldDustChance.get() : 0.02) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveGoldDustChance.get() : 0.02);
+        double siliconChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandSiliconShardChance.get() : 0.15) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.15);
+        double flintChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandFlintChance.get() : 0.20) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.20);
 
         float roll = RANDOM.nextFloat();
-        ItemStack result = ItemStack.EMPTY;
+        ItemStack regularResult = ItemStack.EMPTY;
 
         if (roll < copperChance) {
-            result = new ItemStack(ModItems.COPPER_DUST.get(), 1);
-        } else if (roll < copperChance + ironChance) {
-            result = new ItemStack(ModItems.IRON_DUST.get(), 1);
-        } else if (roll < copperChance + ironChance + goldChance) {
-            result = new ItemStack(ModItems.GOLD_DUST.get(), 1);
-        } else if (roll < copperChance + ironChance + goldChance + siliconChance) {
-            result = new ItemStack(ModItems.SILICON_SHARD.get(), 1);
-        } else if (roll < copperChance + ironChance + goldChance + siliconChance + flintChance) {
-            result = new ItemStack(Items.FLINT, 1);
+            regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
+        } else if (roll < copperChance + tinChance) {
+            regularResult = new ItemStack(ModItems.TIN_DUST.get(), 1);
+        } else if (roll < copperChance + tinChance + ironChance) {
+            regularResult = new ItemStack(ModItems.IRON_DUST.get(), 1);
+        } else if (roll < copperChance + tinChance + ironChance + goldChance) {
+            regularResult = new ItemStack(ModItems.GOLD_DUST.get(), 1);
+        } else if (roll < copperChance + tinChance + ironChance + goldChance + siliconChance) {
+            regularResult = new ItemStack(ModItems.SILICON_SHARD.get(), 1);
+        } else if (roll < copperChance + tinChance + ironChance + goldChance + siliconChance + flintChance) {
+            regularResult = new ItemStack(Items.FLINT, 1);
         }
 
-        if (!result.isEmpty()) {
-            insertOutput(result);
+        if (!regularResult.isEmpty()) {
+            insertOutput(regularResult);
+        }
+
+        // 2. Suspicious Block Archaeology drops
+        if (isSuspicious && this.level instanceof ServerLevel serverLevel) {
+            ResourceKey<LootTable> lootTableKey = null;
+
+            if (blockEntityData != null && blockEntityData.contains("LootTable")) {
+                String lootTableStr = blockEntityData.copyTag().getString("LootTable");
+                if (!lootTableStr.isEmpty()) {
+                    try {
+                        lootTableKey = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(lootTableStr));
+                    } catch (Exception ignored) {}
+                }
+            }
+
+            if (lootTableKey == null) {
+                if (isSuspiciousSand) {
+                    ResourceKey<LootTable>[] sandTables = new ResourceKey[]{
+                            BuiltInLootTables.DESERT_PYRAMID_ARCHAEOLOGY,
+                            BuiltInLootTables.DESERT_WELL_ARCHAEOLOGY,
+                            BuiltInLootTables.OCEAN_RUIN_WARM_ARCHAEOLOGY
+                    };
+                    lootTableKey = sandTables[RANDOM.nextInt(sandTables.length)];
+                } else if (isSuspiciousGravel) {
+                    ResourceKey<LootTable>[] gravelTables = new ResourceKey[]{
+                            BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_COMMON,
+                            BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_RARE,
+                            BuiltInLootTables.OCEAN_RUIN_COLD_ARCHAEOLOGY
+                    };
+                    lootTableKey = gravelTables[RANDOM.nextInt(gravelTables.length)];
+                }
+            }
+
+            if (lootTableKey != null) {
+                try {
+                    LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(lootTableKey);
+                    LootParams params = new LootParams.Builder(serverLevel)
+                            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.worldPosition))
+                            .create(LootContextParamSets.ARCHAEOLOGY);
+                    ObjectArrayList<ItemStack> archDrops = lootTable.getRandomItems(params);
+                    for (ItemStack drop : archDrops) {
+                        if (!drop.isEmpty() && !DisabledItemsHandler.isDisabled(drop.getItem())) {
+                            insertOutput(drop.copy());
+                        }
+                    }
+                } catch (Exception ignored) {}
+            }
         }
     }
 
@@ -173,6 +266,11 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
                 return;
             }
         }
+
+        // Drop in world if all output slots are completely full
+        if (!stack.isEmpty() && this.level != null && !this.level.isClientSide) {
+            Containers.dropItemStack(this.level, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 1.0, this.worldPosition.getZ() + 0.5, stack);
+        }
     }
 
     @Override
@@ -185,7 +283,7 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
 
     @Override
     public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
-        return index < 9 && (itemStack.is(Blocks.GRAVEL.asItem()) || itemStack.is(Blocks.SUSPICIOUS_GRAVEL.asItem()));
+        return index < 9 && isSiftable(itemStack);
     }
 
     @Override

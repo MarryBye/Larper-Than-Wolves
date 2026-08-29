@@ -83,19 +83,19 @@ public class ModItems {
     // Copper armor
     public static final DeferredItem<ArmorItem> COPPER_HELMET = ITEMS.register("copper_helmet",
             () -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Item.Properties()
-                    .durability(ArmorItem.Type.HELMET.getDurability(12))));
+                    .durability(ArmorItem.Type.HELMET.getDurability(8))));
 
     public static final DeferredItem<ArmorItem> COPPER_CHESTPLATE = ITEMS.register("copper_chestplate",
             () -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Item.Properties()
-                    .durability(ArmorItem.Type.CHESTPLATE.getDurability(12))));
+                    .durability(ArmorItem.Type.CHESTPLATE.getDurability(8))));
 
     public static final DeferredItem<ArmorItem> COPPER_LEGGINGS = ITEMS.register("copper_leggings",
             () -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Item.Properties()
-                    .durability(ArmorItem.Type.LEGGINGS.getDurability(12))));
+                    .durability(ArmorItem.Type.LEGGINGS.getDurability(8))));
 
     public static final DeferredItem<ArmorItem> COPPER_BOOTS = ITEMS.register("copper_boots",
             () -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Item.Properties()
-                    .durability(ArmorItem.Type.BOOTS.getDurability(12))));
+                    .durability(ArmorItem.Type.BOOTS.getDurability(8))));
 
     // Silicon tools (3x less durability than wood)
     public static final DeferredItem<PickaxeItem> SILICON_PICKAXE = ITEMS.register("silicon_pickaxe",
@@ -158,23 +158,89 @@ public class ModItems {
     // Reinforced Iron Armor
     public static final DeferredItem<ArmorItem> REINFORCED_IRON_HELMET = ITEMS.register("reinforced_iron_helmet",
             () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.HELMET, new Item.Properties()
-                    .durability(ArmorItem.Type.HELMET.getDurability(33))));
+                    .durability(ArmorItem.Type.HELMET.getDurability(25))));
 
     public static final DeferredItem<ArmorItem> REINFORCED_IRON_CHESTPLATE = ITEMS.register("reinforced_iron_chestplate",
             () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.CHESTPLATE, new Item.Properties()
-                    .durability(ArmorItem.Type.CHESTPLATE.getDurability(33))));
+                    .durability(ArmorItem.Type.CHESTPLATE.getDurability(25))));
 
     public static final DeferredItem<ArmorItem> REINFORCED_IRON_LEGGINGS = ITEMS.register("reinforced_iron_leggings",
             () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.LEGGINGS, new Item.Properties()
-                    .durability(ArmorItem.Type.LEGGINGS.getDurability(33))));
+                    .durability(ArmorItem.Type.LEGGINGS.getDurability(25))));
 
     public static final DeferredItem<ArmorItem> REINFORCED_IRON_BOOTS = ITEMS.register("reinforced_iron_boots",
             () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.BOOTS, new Item.Properties()
-                    .durability(ArmorItem.Type.BOOTS.getDurability(33))));
+                    .durability(ArmorItem.Type.BOOTS.getDurability(25))));
 
     // Mesh item
     public static final DeferredItem<Item> MESH = ITEMS.register("mesh",
             () -> new Item(new Item.Properties()));
+
+    // Tin Items
+    public static final DeferredItem<Item> RAW_TIN = ITEMS.register("raw_tin",
+            () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> TIN_DUST = ITEMS.register("tin_dust",
+            () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> TIN_NUGGET = ITEMS.register("tin_nugget",
+            () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> TIN_INGOT = ITEMS.register("tin_ingot",
+            () -> new Item(new Item.Properties()));
+
+    // Bronze Items
+    public static final DeferredItem<Item> BRONZE_DUST = ITEMS.register("bronze_dust",
+            () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> BRONZE_NUGGET = ITEMS.register("bronze_nugget",
+            () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> BRONZE_INGOT = ITEMS.register("bronze_ingot",
+            () -> new Item(new Item.Properties()));
+
+    // Bronze Tools
+    public static final DeferredItem<SwordItem> BRONZE_SWORD = ITEMS.register("bronze_sword",
+            () -> new SwordItem(ModToolMaterials.BRONZE, new Item.Properties()
+                    .durability(ModToolMaterials.BRONZE.getUses())
+                    .attributes(SwordItem.createAttributes(ModToolMaterials.BRONZE, 3, -2.4f))));
+
+    public static final DeferredItem<PickaxeItem> BRONZE_PICKAXE = ITEMS.register("bronze_pickaxe",
+            () -> new PickaxeItem(ModToolMaterials.BRONZE, new Item.Properties()
+                    .durability(ModToolMaterials.BRONZE.getUses())
+                    .attributes(PickaxeItem.createAttributes(ModToolMaterials.BRONZE, 1, -2.8f))));
+
+    public static final DeferredItem<AxeItem> BRONZE_AXE = ITEMS.register("bronze_axe",
+            () -> new AxeItem(ModToolMaterials.BRONZE, new Item.Properties()
+                    .durability(ModToolMaterials.BRONZE.getUses())
+                    .attributes(AxeItem.createAttributes(ModToolMaterials.BRONZE, 6, -3.1f))));
+
+    public static final DeferredItem<ShovelItem> BRONZE_SHOVEL = ITEMS.register("bronze_shovel",
+            () -> new ShovelItem(ModToolMaterials.BRONZE, new Item.Properties()
+                    .durability(ModToolMaterials.BRONZE.getUses())
+                    .attributes(ShovelItem.createAttributes(ModToolMaterials.BRONZE, 1.5f, -3.0f))));
+
+    public static final DeferredItem<HoeItem> BRONZE_HOE = ITEMS.register("bronze_hoe",
+            () -> new HoeItem(ModToolMaterials.BRONZE, new Item.Properties()
+                    .durability(ModToolMaterials.BRONZE.getUses())
+                    .attributes(HoeItem.createAttributes(ModToolMaterials.BRONZE, 0, -2.0f))));
+
+    // Bronze Armor
+    public static final DeferredItem<ArmorItem> BRONZE_HELMET = ITEMS.register("bronze_helmet",
+            () -> new ArmorItem(ModArmorMaterials.BRONZE, ArmorItem.Type.HELMET, new Item.Properties()
+                    .durability(ArmorItem.Type.HELMET.getDurability(12))));
+
+    public static final DeferredItem<ArmorItem> BRONZE_CHESTPLATE = ITEMS.register("bronze_chestplate",
+            () -> new ArmorItem(ModArmorMaterials.BRONZE, ArmorItem.Type.CHESTPLATE, new Item.Properties()
+                    .durability(ArmorItem.Type.CHESTPLATE.getDurability(12))));
+
+    public static final DeferredItem<ArmorItem> BRONZE_LEGGINGS = ITEMS.register("bronze_leggings",
+            () -> new ArmorItem(ModArmorMaterials.BRONZE, ArmorItem.Type.LEGGINGS, new Item.Properties()
+                    .durability(ArmorItem.Type.LEGGINGS.getDurability(12))));
+
+    public static final DeferredItem<ArmorItem> BRONZE_BOOTS = ITEMS.register("bronze_boots",
+            () -> new ArmorItem(ModArmorMaterials.BRONZE, ArmorItem.Type.BOOTS, new Item.Properties()
+                    .durability(ArmorItem.Type.BOOTS.getDurability(12))));
 
     // Block Items
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRICK_FURNACE = ITEMS.register("brick_furnace",
@@ -188,5 +254,20 @@ public class ModItems {
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SIEVE = ITEMS.register("sieve",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.SIEVE.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> TIN_ORE = ITEMS.register("tin_ore",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.TIN_ORE.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> DEEPSLATE_TIN_ORE = ITEMS.register("deepslate_tin_ore",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.DEEPSLATE_TIN_ORE.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> RAW_TIN_BLOCK = ITEMS.register("raw_tin_block",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.RAW_TIN_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> TIN_BLOCK = ITEMS.register("tin_block",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.TIN_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BRONZE_BLOCK = ITEMS.register("bronze_block",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRONZE_BLOCK.get(), new Item.Properties()));
 }
 

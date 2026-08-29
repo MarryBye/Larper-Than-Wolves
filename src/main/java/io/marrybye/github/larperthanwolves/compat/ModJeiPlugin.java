@@ -40,24 +40,69 @@ public class ModJeiPlugin implements IModPlugin {
                         ),
                         new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.DIAMOND_INGOT.get()),
                         cookTime
+                ),
+                new AlloyMixerRecipe(
+                        java.util.List.of(
+                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.COPPER_INGOT, 2),
+                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.TIN_INGOT.get())
+                        ),
+                        new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.BRONZE_INGOT.get()),
+                        cookTime
                 )
         ));
 
         int sieveTime = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ?
                 io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;
 
+        java.util.List<net.minecraft.world.item.ItemStack> gravelOutputs = java.util.List.of(
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.COPPER_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.TIN_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.IRON_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.GOLD_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.SILICON_SHARD.get()),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.FLINT)
+        );
+
+        java.util.List<net.minecraft.world.item.ItemStack> sandOutputs = java.util.List.of(
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.COPPER_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.TIN_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.IRON_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.GOLD_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.SILICON_SHARD.get()),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.FLINT)
+        );
+
+        java.util.List<net.minecraft.world.item.ItemStack> suspGravelOutputs = java.util.List.of(
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.COPPER_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.TIN_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.IRON_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.GOLD_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.SILICON_SHARD.get()),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.FLINT),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.EMERALD),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WHEAT),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.BURN_POTTERY_SHERD)
+        );
+
+        java.util.List<net.minecraft.world.item.ItemStack> suspSandOutputs = java.util.List.of(
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.COPPER_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.TIN_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.IRON_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.GOLD_DUST.get()),
+                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.SILICON_SHARD.get()),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.FLINT),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.EMERALD),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.SNIFFER_EGG),
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.ARCHER_POTTERY_SHERD)
+        );
+
         registration.addRecipes(SieveRecipeCategory.TYPE, java.util.List.of(
-                new SieveJeiRecipe(
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.level.block.Blocks.GRAVEL),
-                        java.util.List.of(
-                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.COPPER_DUST.get()),
-                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.IRON_DUST.get()),
-                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.GOLD_DUST.get()),
-                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.SILICON_SHARD.get()),
-                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.FLINT)
-                        ),
-                        sieveTime
-                )
+                new SieveJeiRecipe(new net.minecraft.world.item.ItemStack(net.minecraft.world.level.block.Blocks.GRAVEL), gravelOutputs, sieveTime),
+                new SieveJeiRecipe(new net.minecraft.world.item.ItemStack(net.minecraft.world.level.block.Blocks.SAND), sandOutputs, sieveTime),
+                new SieveJeiRecipe(new net.minecraft.world.item.ItemStack(net.minecraft.world.level.block.Blocks.RED_SAND), sandOutputs, sieveTime),
+                new SieveJeiRecipe(new net.minecraft.world.item.ItemStack(net.minecraft.world.level.block.Blocks.SUSPICIOUS_GRAVEL), suspGravelOutputs, sieveTime),
+                new SieveJeiRecipe(new net.minecraft.world.item.ItemStack(net.minecraft.world.level.block.Blocks.SUSPICIOUS_SAND), suspSandOutputs, sieveTime)
         ));
     }
 
@@ -88,32 +133,9 @@ public class ModJeiPlugin implements IModPlugin {
     public void onRuntimeAvailable(mezz.jei.api.runtime.IJeiRuntime jeiRuntime) {
         jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(
                 mezz.jei.api.constants.VanillaTypes.ITEM_STACK,
-                java.util.List.of(
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.FURNACE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WOODEN_PICKAXE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WOODEN_AXE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WOODEN_SHOVEL),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WOODEN_SWORD),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WOODEN_HOE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE_PICKAXE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE_AXE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE_SHOVEL),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE_SWORD),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE_HOE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.CHAINMAIL_HELMET),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.CHAINMAIL_CHESTPLATE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.CHAINMAIL_LEGGINGS),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.CHAINMAIL_BOOTS),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_PICKAXE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_AXE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_SHOVEL),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_HOE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_HELMET),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_CHESTPLATE),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_LEGGINGS),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_BOOTS)
-                )
+                io.marrybye.github.larperthanwolves.event.DisabledItemsHandler.DISABLED_ITEMS.stream()
+                        .map(net.minecraft.world.item.ItemStack::new)
+                        .toList()
         );
     }
 }

@@ -27,14 +27,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
-    // 0, 1, 2: Input slots, 3: Result Diamond Ingot
-    private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
+    // 0: Diamond, 1: Iron, 2: Copper, 3: Result Diamond Ingot, 4: Stored Fuel
+    private final NonNullList<ItemStack> items = NonNullList.withSize(5, ItemStack.EMPTY);
 
-    private ItemStack storedFuel = ItemStack.EMPTY;
     private int burnTime = 0;
     private int maxBurnTime = 0;
     private int cookTime = 0;
     private int cookTimeTotal = 600;
+    private boolean wasLitOnce = false;
 
     public AlloyMixerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.ALLOY_MIXER.get(), pos, state);
@@ -67,14 +67,15 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
             if (this.burnTime + info.burnDuration <= 72000) {
                 this.burnTime += info.burnDuration;
                 this.maxBurnTime = Math.max(this.maxBurnTime, this.burnTime);
+                this.wasLitOnce = true;
                 setChanged();
                 return true;
             }
             return false;
         }
 
-        if (this.storedFuel.isEmpty()) {
-            this.storedFuel = fuelStack.copyWithCount(1);
+        if (this.items.get(4).isEmpty()) {
+            this.items.set(4, fuelStack.copyWithCount(1));
             setChanged();
             return true;
         }
@@ -85,12 +86,14 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     public boolean lightMixer() {
         if (this.burnTime > 0) return false;
 
-        if (!this.storedFuel.isEmpty() && BrickFurnaceBlockEntity.isValidFuel(this.storedFuel)) {
-            BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(this.storedFuel);
+        ItemStack stored = this.items.get(4);
+        if (!stored.isEmpty() && BrickFurnaceBlockEntity.isValidFuel(stored)) {
+            BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(stored);
             if (info != null) {
                 this.burnTime = info.burnDuration;
                 this.maxBurnTime = info.burnDuration;
-                this.storedFuel = ItemStack.EMPTY;
+                this.wasLitOnce = true;
+                this.items.set(4, ItemStack.EMPTY);
                 setChanged();
                 return true;
             }
@@ -136,28 +139,23 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, this.items, registries);
-        if (!this.storedFuel.isEmpty()) {
-            tag.put("StoredFuel", this.storedFuel.save(registries));
-        }
         tag.putInt("BurnTime", this.burnTime);
         tag.putInt("MaxBurnTime", this.maxBurnTime);
         tag.putInt("CookTime", this.cookTime);
         tag.putInt("CookTimeTotal", this.cookTimeTotal);
+        tag.putBoolean("WasLitOnce", this.wasLitOnce);
     }
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         ContainerHelper.loadAllItems(tag, this.items, registries);
-        if (tag.contains("StoredFuel")) {
-            this.storedFuel = ItemStack.parseOptional(registries, tag.getCompound("StoredFuel"));
-        } else {
-            this.storedFuel = ItemStack.EMPTY;
-        }
         this.burnTime = tag.getInt("BurnTime");
         this.maxBurnTime = tag.getInt("MaxBurnTime");
         this.cookTime = tag.getInt("CookTime");
         this.cookTimeTotal = tag.getInt("CookTimeTotal");
+        this.wasLitOnce = tag.getBoolean("WasLitOnce");
+        if (this.burnTime > 0) this.wasLitOnce = true;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AlloyMixerBlockEntity entity) {
@@ -176,6 +174,26 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         boolean hasIngredients = entity.hasValidIngredients();
         boolean canOutput = entity.canOutputResult();
 
+        // Smart fuel auto-consumption when old fuel finishes
+        if (entity.burnTime <= 0) {
+            ItemStack fuelInSlot = entity.items.get(4);
+            if (!fuelInSlot.isEmpty() && BrickFurnaceBlockEntity.isValidFuel(fuelInSlot)) {
+                if ((hasIngredients && canOutput) || entity.wasLitOnce) {
+                    BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(fuelInSlot);
+                    if (info != null) {
+                        entity.burnTime = info.burnDuration;
+                        entity.maxBurnTime = info.burnDuration;
+                        entity.wasLitOnce = true;
+                        fuelInSlot.shrink(1);
+                        if (fuelInSlot.isEmpty()) {
+                            entity.items.set(4, ItemStack.EMPTY);
+                        }
+                        changed = true;
+                    }
+                }
+            }
+        }
+
         if (hasIngredients && canOutput && entity.burnTime > 0) {
             entity.cookTime++;
             if (entity.cookTime >= entity.cookTimeTotal) {
@@ -193,7 +211,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         int targetStage;
         if (entity.burnTime > 0) {
             targetStage = (entity.maxBurnTime > 0 && entity.burnTime <= entity.maxBurnTime / 4) ? 3 : 2;
-        } else if (!entity.storedFuel.isEmpty()) {
+        } else if (!entity.items.get(4).isEmpty()) {
             targetStage = 1;
         } else {
             targetStage = 0;
@@ -233,7 +251,19 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         return -1;
     }
 
-    private boolean hasValidIngredients() {
+    public enum ActiveRecipe {
+        NONE,
+        DIAMOND_INGOT,
+        BRONZE_INGOT
+    }
+
+    public ActiveRecipe getActiveRecipe() {
+        if (canMakeDiamondIngot()) return ActiveRecipe.DIAMOND_INGOT;
+        if (canMakeBronzeIngot()) return ActiveRecipe.BRONZE_INGOT;
+        return ActiveRecipe.NONE;
+    }
+
+    private boolean canMakeDiamondIngot() {
         int d = findDiamondSlot();
         if (d == -1) return false;
         int fe = findIronSlot(d);
@@ -242,52 +272,159 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         return cu != -1;
     }
 
-    private boolean canOutputResult() {
+    private boolean canMakeBronzeIngot() {
+        int copperCount = 0;
+        int tinCount = 0;
+        for (int i = 0; i < 3; i++) {
+            ItemStack stack = items.get(i);
+            if (stack.is(Items.COPPER_INGOT)) {
+                copperCount += stack.getCount();
+            } else if (stack.is(ModItems.TIN_INGOT.get())) {
+                tinCount += stack.getCount();
+            }
+        }
+        return copperCount >= 2 && tinCount >= 1;
+    }
+
+    public boolean hasValidIngredients() {
+        return getActiveRecipe() != ActiveRecipe.NONE;
+    }
+
+    public boolean canOutputResult() {
+        ActiveRecipe recipe = getActiveRecipe();
+        if (recipe == ActiveRecipe.NONE) return false;
+
+        ItemStack targetResult = (recipe == ActiveRecipe.DIAMOND_INGOT) ?
+                new ItemStack(ModItems.DIAMOND_INGOT.get(), 1) :
+                new ItemStack(ModItems.BRONZE_INGOT.get(), 1);
+
         ItemStack out = items.get(3);
         if (out.isEmpty()) return true;
-        if (!out.is(ModItems.DIAMOND_INGOT.get())) return false;
-        return out.getCount() < out.getMaxStackSize();
+        if (!ItemStack.isSameItemSameComponents(out, targetResult)) return false;
+        return out.getCount() + targetResult.getCount() <= out.getMaxStackSize();
     }
 
     private void mixAlloy() {
-        int d = findDiamondSlot();
-        if (d == -1) return;
-        int fe = findIronSlot(d);
-        if (fe == -1) return;
-        int cu = findCopperSlot(d, fe);
-        if (cu == -1) return;
+        ActiveRecipe recipe = getActiveRecipe();
+        if (recipe == ActiveRecipe.NONE) return;
 
-        items.get(d).shrink(1);
-        items.get(fe).shrink(1);
-        items.get(cu).shrink(1);
+        if (recipe == ActiveRecipe.DIAMOND_INGOT) {
+            int d = findDiamondSlot();
+            if (d == -1) return;
+            int fe = findIronSlot(d);
+            if (fe == -1) return;
+            int cu = findCopperSlot(d, fe);
+            if (cu == -1) return;
 
-        ItemStack out = items.get(3);
-        if (out.isEmpty()) {
-            items.set(3, new ItemStack(ModItems.DIAMOND_INGOT.get(), 1));
-        } else {
-            out.grow(1);
+            items.get(d).shrink(1);
+            items.get(fe).shrink(1);
+            items.get(cu).shrink(1);
+
+            ItemStack out = items.get(3);
+            if (out.isEmpty()) {
+                items.set(3, new ItemStack(ModItems.DIAMOND_INGOT.get(), 1));
+            } else {
+                out.grow(1);
+            }
+        } else if (recipe == ActiveRecipe.BRONZE_INGOT) {
+            int neededCopper = 2;
+            for (int i = 0; i < 3 && neededCopper > 0; i++) {
+                ItemStack stack = items.get(i);
+                if (stack.is(Items.COPPER_INGOT)) {
+                    int take = Math.min(neededCopper, stack.getCount());
+                    stack.shrink(take);
+                    neededCopper -= take;
+                }
+            }
+
+            int neededTin = 1;
+            for (int i = 0; i < 3 && neededTin > 0; i++) {
+                ItemStack stack = items.get(i);
+                if (stack.is(ModItems.TIN_INGOT.get())) {
+                    int take = Math.min(neededTin, stack.getCount());
+                    stack.shrink(take);
+                    neededTin -= take;
+                }
+            }
+
+            ItemStack out = items.get(3);
+            if (out.isEmpty()) {
+                items.set(3, new ItemStack(ModItems.BRONZE_INGOT.get(), 1));
+            } else {
+                out.grow(1);
+            }
         }
     }
 
+    private static final int[] SLOTS_TOP = new int[]{0, 1, 2};
+    private static final int[] SLOTS_OUTPUT = new int[]{3};
+    private static final int[] SLOTS_FUEL = new int[]{4};
+    private static final int[] SLOTS_NONE = new int[]{};
+
     @Override
     public int[] getSlotsForFace(Direction side) {
-        if (side == Direction.DOWN) return new int[]{3};
-        return new int[]{0, 1, 2};
+        if (side == null) return SLOTS_NONE;
+
+        Direction facing = this.getBlockState().hasProperty(AlloyMixerBlock.FACING) ?
+                this.getBlockState().getValue(AlloyMixerBlock.FACING) : Direction.NORTH;
+        Direction back = facing.getOpposite();
+
+        if (side == back) {
+            return SLOTS_FUEL;
+        }
+        if (side == Direction.DOWN) {
+            return SLOTS_OUTPUT;
+        }
+        if (side == Direction.UP) {
+            return SLOTS_TOP;
+        }
+        // Output from sides (left, right, front)
+        return SLOTS_OUTPUT;
     }
 
     @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
-        return index != 3;
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction side) {
+        if (side == null) return false;
+
+        Direction facing = this.getBlockState().hasProperty(AlloyMixerBlock.FACING) ?
+                this.getBlockState().getValue(AlloyMixerBlock.FACING) : Direction.NORTH;
+        Direction back = facing.getOpposite();
+
+        // Fuel from back: only when old fuel finished burning (burnTime <= 0) and slot 4 is empty
+        if (side == back && index == 4) {
+            return BrickFurnaceBlockEntity.isValidFuel(itemStack) && this.burnTime <= 0 && this.items.get(4).isEmpty();
+        }
+
+        // Inputs from top: allow placing valid mixer ingredients (Diamond, Iron Ingot, Copper Ingot, Tin Ingot)
+        if (side == Direction.UP && index < 3) {
+            return itemStack.is(Items.DIAMOND) ||
+                    itemStack.is(Items.IRON_INGOT) ||
+                    itemStack.is(Items.COPPER_INGOT) ||
+                    itemStack.is(ModItems.TIN_INGOT.get());
+        }
+
+        return false;
     }
 
     @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction side) {
+        if (side == null) return false;
+
+        Direction facing = this.getBlockState().hasProperty(AlloyMixerBlock.FACING) ?
+                this.getBlockState().getValue(AlloyMixerBlock.FACING) : Direction.NORTH;
+        Direction back = facing.getOpposite();
+
+        if (side == back || side == Direction.UP) {
+            return false;
+        }
+
+        // Outputs from down and sides
         return index == 3;
     }
 
     @Override
     public int getContainerSize() {
-        return 4;
+        return 5;
     }
 
     @Override

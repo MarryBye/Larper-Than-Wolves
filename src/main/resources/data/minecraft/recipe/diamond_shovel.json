@@ -1,10 +1,11 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "neoforge:conditions": [
     {
-      "item": "minecraft:barrier"
+      "type": "neoforge:false"
     }
   ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [],
   "result": {
     "count": 1,
     "id": "minecraft:diamond_shovel"

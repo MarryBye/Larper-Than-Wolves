@@ -1,5 +1,6 @@
 package io.marrybye.github.larperthanwolves.block.entity;
 
+import io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock;
 import io.marrybye.github.larperthanwolves.block.ModBlocks;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import io.marrybye.github.larperthanwolves.menu.BrickFurnaceMenu;
@@ -9,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
@@ -21,7 +23,6 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -36,15 +37,15 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
-    // 0, 1, 2: Inputs; 3, 4, 5: Outputs
-    private final NonNullList<ItemStack> items = NonNullList.withSize(6, ItemStack.EMPTY);
-    private ItemStack storedFuel = ItemStack.EMPTY;
+    // 0, 1, 2: Inputs; 3, 4, 5: Outputs; 6: Stored Fuel
+    private final NonNullList<ItemStack> items = NonNullList.withSize(7, ItemStack.EMPTY);
 
     private int burnTime = 0;
     private int maxBurnTime = 0;
     private int cookTime = 0;
     private int cookTimeTotal = 200;
     private int fuelCookSpeed = 200;
+    private boolean wasLitOnce = false;
 
     public static class FuelInfo {
         public final int burnDuration;
@@ -57,7 +58,6 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     }
 
     private static final Map<Item, FuelInfo> FUEL_REGISTRY = new HashMap<>();
-    private static final FuelInfo DRY_GRASS_INFO = new FuelInfo(600, 200);
 
     static {
         // Wood / Logs / Planks: 60s burn (1200 ticks), 8s cook speed (160 ticks)
@@ -179,11 +179,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         tag.putInt("CookTime", cookTime);
         tag.putInt("CookTimeTotal", cookTimeTotal);
         tag.putInt("FuelCookSpeed", fuelCookSpeed);
-        if (!storedFuel.isEmpty()) {
-            CompoundTag fuelTag = new CompoundTag();
-            storedFuel.save(registries, fuelTag);
-            tag.put("StoredFuel", fuelTag);
-        }
+        tag.putBoolean("WasLitOnce", wasLitOnce);
     }
 
     @Override
@@ -196,20 +192,40 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         cookTimeTotal = tag.getInt("CookTimeTotal");
         fuelCookSpeed = tag.getInt("FuelCookSpeed");
         if (fuelCookSpeed == 0) fuelCookSpeed = 200;
-        if (tag.contains("StoredFuel")) {
-            storedFuel = ItemStack.parseOptional(registries, tag.getCompound("StoredFuel"));
-        }
+        wasLitOnce = tag.getBoolean("WasLitOnce");
+        if (burnTime > 0) wasLitOnce = true;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, BrickFurnaceBlockEntity entity) {
         if (level.isClientSide) return;
 
-        boolean wasLit = entity.burnTime > 0;
         boolean changed = false;
 
         if (entity.burnTime > 0) {
             entity.burnTime--;
             changed = true;
+        }
+
+        // Smart fuel auto-consumption when old fuel finishes
+        if (entity.burnTime <= 0) {
+            ItemStack fuelInSlot = entity.items.get(6);
+            if (!fuelInSlot.isEmpty() && isValidFuel(fuelInSlot)) {
+                if (entity.hasSmeltableItem(level) || entity.wasLitOnce) {
+                    FuelInfo info = getFuelInfo(fuelInSlot);
+                    if (info != null) {
+                        entity.burnTime = info.burnDuration;
+                        entity.maxBurnTime = info.burnDuration;
+                        entity.fuelCookSpeed = info.cookSpeed;
+                        entity.cookTimeTotal = entity.fuelCookSpeed;
+                        entity.wasLitOnce = true;
+                        fuelInSlot.shrink(1);
+                        if (fuelInSlot.isEmpty()) {
+                            entity.items.set(6, ItemStack.EMPTY);
+                        }
+                        changed = true;
+                    }
+                }
+            }
         }
 
         // Cooking logic
@@ -249,16 +265,16 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         int targetStage;
         if (entity.burnTime > 0) {
             targetStage = (entity.maxBurnTime > 0 && entity.burnTime <= entity.maxBurnTime / 4) ? 3 : 2;
-        } else if (!entity.storedFuel.isEmpty()) {
+        } else if (!entity.items.get(6).isEmpty()) {
             targetStage = 1;
         } else {
             targetStage = 0;
         }
 
-        if (state.hasProperty(io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock.STAGE)) {
-            int currentStage = state.getValue(io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock.STAGE);
+        if (state.hasProperty(BrickFurnaceBlock.STAGE)) {
+            int currentStage = state.getValue(BrickFurnaceBlock.STAGE);
             if (currentStage != targetStage) {
-                level.setBlock(pos, state.setValue(io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock.STAGE, targetStage), 3);
+                level.setBlock(pos, state.setValue(BrickFurnaceBlock.STAGE, targetStage), 3);
                 changed = true;
             }
         }
@@ -266,6 +282,19 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         if (changed) {
             setChanged(level, pos, state);
         }
+    }
+
+    public boolean hasSmeltableItem(Level level) {
+        for (int i = 0; i < 3; i++) {
+            ItemStack input = items.get(i);
+            if (!input.isEmpty()) {
+                ItemStack res = getSmeltingResult(level, input);
+                if (!res.isEmpty() && canOutput(res)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public int getBurnTime() {
@@ -283,6 +312,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         if (inputItem == Items.RAW_IRON) return new ItemStack(Items.IRON_NUGGET, 1);
         if (inputItem == Items.RAW_COPPER) return new ItemStack(ModItems.COPPER_NUGGET.get(), 1);
         if (inputItem == Items.RAW_GOLD) return new ItemStack(Items.GOLD_NUGGET, 1);
+        if (inputItem == ModItems.RAW_TIN.get()) return new ItemStack(ModItems.TIN_NUGGET.get(), 1);
 
         // 2. Food & basic blocks
         if (inputItem == Items.BEEF) return new ItemStack(Items.COOKED_BEEF);
@@ -324,7 +354,6 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     }
 
     private void smeltItem(int inputSlotIndex, ItemStack result) {
-        // Find output slot
         for (int i = 3; i <= 5; i++) {
             ItemStack slotStack = items.get(i);
             if (slotStack.isEmpty()) {
@@ -336,7 +365,6 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
             }
         }
 
-        // Shrink input slot
         ItemStack input = items.get(inputSlotIndex);
         input.shrink(1);
         if (input.isEmpty()) {
@@ -356,13 +384,15 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
             maxBurnTime = Math.max(maxBurnTime, info.burnDuration);
             fuelCookSpeed = info.cookSpeed;
             cookTimeTotal = fuelCookSpeed;
+            wasLitOnce = true;
             setChanged();
             return true;
         } else {
-            // Store fuel item
-            if (storedFuel.isEmpty()) {
-                storedFuel = fuelStack.copy();
-                storedFuel.setCount(1);
+            // Store fuel item in slot 6
+            if (items.get(6).isEmpty()) {
+                ItemStack fuelCopy = fuelStack.copy();
+                fuelCopy.setCount(1);
+                items.set(6, fuelCopy);
                 fuelCookSpeed = info.cookSpeed;
                 cookTimeTotal = fuelCookSpeed;
                 setChanged();
@@ -376,13 +406,15 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     public boolean lightFurnace() {
         if (burnTime > 0) return false;
 
-        if (!storedFuel.isEmpty() && isValidFuel(storedFuel)) {
-            FuelInfo info = getFuelInfo(storedFuel);
+        ItemStack stored = items.get(6);
+        if (!stored.isEmpty() && isValidFuel(stored)) {
+            FuelInfo info = getFuelInfo(stored);
             burnTime = info.burnDuration;
             maxBurnTime = info.burnDuration;
             fuelCookSpeed = info.cookSpeed;
             cookTimeTotal = fuelCookSpeed;
-            storedFuel = ItemStack.EMPTY;
+            wasLitOnce = true;
+            items.set(6, ItemStack.EMPTY);
             setChanged();
             return true;
         }
@@ -390,17 +422,17 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     }
 
     public boolean hasStoredFuel() {
-        return !storedFuel.isEmpty();
+        return !items.get(6).isEmpty();
     }
 
     public boolean isLit() {
         return burnTime > 0;
     }
 
-    // Container implementation (6 slots: 0..2 input, 3..5 output)
+    // Container implementation (7 slots: 0..2 input, 3..5 output, 6 fuel)
     @Override
     public int getContainerSize() {
-        return 6;
+        return 7;
     }
 
     @Override
@@ -450,29 +482,72 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return slot < 3; // Only slots 0, 1, 2 can receive inputs
+        if (slot < 3) return true;
+        if (slot == 6) return isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+        return false;
     }
 
     // WorldlyContainer for hoppers
     private static final int[] SLOTS_TOP = new int[]{0, 1, 2};
-    private static final int[] SLOTS_BOTTOM = new int[]{3, 4, 5};
-    private static final int[] SLOTS_SIDES = new int[]{0, 1, 2};
+    private static final int[] SLOTS_OUTPUT = new int[]{3, 4, 5};
+    private static final int[] SLOTS_FUEL = new int[]{6};
+    private static final int[] SLOTS_NONE = new int[]{};
 
     @Override
     public int[] getSlotsForFace(Direction side) {
-        if (side == Direction.DOWN) return SLOTS_BOTTOM;
-        return SLOTS_TOP;
+        if (side == null) return SLOTS_NONE;
+
+        Direction facing = this.getBlockState().hasProperty(BrickFurnaceBlock.FACING) ?
+                this.getBlockState().getValue(BrickFurnaceBlock.FACING) : Direction.NORTH;
+        Direction back = facing.getOpposite();
+
+        if (side == back) {
+            return SLOTS_FUEL;
+        }
+        if (side == Direction.DOWN) {
+            return SLOTS_OUTPUT;
+        }
+        if (side == Direction.UP) {
+            return SLOTS_TOP;
+        }
+        // Output from sides (left, right, front)
+        return SLOTS_OUTPUT;
     }
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
-        return slot < 3;
+        if (side == null) return false;
+
+        Direction facing = this.getBlockState().hasProperty(BrickFurnaceBlock.FACING) ?
+                this.getBlockState().getValue(BrickFurnaceBlock.FACING) : Direction.NORTH;
+        Direction back = facing.getOpposite();
+
+        // Fuel from back: only when old fuel finished burning (burnTime <= 0) and fuel slot is empty
+        if (side == back && slot == 6) {
+            return isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+        }
+
+        // Inputs from top
+        if (side == Direction.UP && slot < 3) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
-        return slot >= 3;
+        if (side == null) return false;
+
+        Direction facing = this.getBlockState().hasProperty(BrickFurnaceBlock.FACING) ?
+                this.getBlockState().getValue(BrickFurnaceBlock.FACING) : Direction.NORTH;
+        Direction back = facing.getOpposite();
+
+        if (side == back || side == Direction.UP) {
+            return false;
+        }
+
+        // Outputs from down and sides
+        return slot >= 3 && slot <= 5;
     }
 }
-
-

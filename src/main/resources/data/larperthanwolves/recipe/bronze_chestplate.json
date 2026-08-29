@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": [
+    "# #",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "larperthanwolves:bronze_ingot"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:bronze_chestplate"
+  }
+}

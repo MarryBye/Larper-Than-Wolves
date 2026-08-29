@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "larperthanwolves:bronze_nugget"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:bronze_ingot"
+  }
+}

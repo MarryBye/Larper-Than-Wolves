@@ -27,5 +27,8 @@ public class LarperThanWolves {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        io.marrybye.github.larperthanwolves.loot.ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
+
+        modEventBus.addListener(io.marrybye.github.larperthanwolves.event.DisabledItemsHandler::onBuildCreativeTabs);
     }
 }

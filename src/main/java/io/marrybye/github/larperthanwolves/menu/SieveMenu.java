@@ -89,7 +89,7 @@ public class SieveMenu extends AbstractContainerMenu {
             }
             // From player inventory (18..53)
             else {
-                if (stackInSlot.is(Blocks.GRAVEL.asItem()) || stackInSlot.is(Blocks.SUSPICIOUS_GRAVEL.asItem())) {
+                if (io.marrybye.github.larperthanwolves.block.entity.SieveBlockEntity.isSiftable(stackInSlot)) {
                     if (!this.moveItemStackTo(stackInSlot, 0, 9, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -132,7 +132,7 @@ public class SieveMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return stack.is(Blocks.GRAVEL.asItem()) || stack.is(Blocks.SUSPICIOUS_GRAVEL.asItem());
+            return io.marrybye.github.larperthanwolves.block.entity.SieveBlockEntity.isSiftable(stack);
         }
     }
 

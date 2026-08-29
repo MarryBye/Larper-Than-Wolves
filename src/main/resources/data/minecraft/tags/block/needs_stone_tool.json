@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "larperthanwolves:tin_ore",
+    "larperthanwolves:raw_tin_block",
+    "larperthanwolves:tin_block",
+    "larperthanwolves:bronze_block"
+  ]
+}

@@ -46,5 +46,35 @@ public class ModBlocks {
                     .strength(2.0F, 3.0F)
                     .sound(net.minecraft.world.level.block.SoundType.WOOD)
                     .noOcclusion()));
+
+    public static final DeferredBlock<Block> TIN_ORE = BLOCKS.register("tin_ore",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 3.0F)
+                    .sound(net.minecraft.world.level.block.SoundType.STONE)));
+
+    public static final DeferredBlock<Block> DEEPSLATE_TIN_ORE = BLOCKS.register("deepslate_tin_ore",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(4.5F, 3.0F)
+                    .sound(net.minecraft.world.level.block.SoundType.DEEPSLATE)));
+
+    public static final DeferredBlock<Block> RAW_TIN_BLOCK = BLOCKS.register("raw_tin_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(net.minecraft.world.level.block.SoundType.STONE)));
+
+    public static final DeferredBlock<Block> TIN_BLOCK = BLOCKS.register("tin_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(net.minecraft.world.level.block.SoundType.METAL)));
+
+    public static final DeferredBlock<Block> BRONZE_BLOCK = BLOCKS.register("bronze_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(net.minecraft.world.level.block.SoundType.METAL)));
 }
 

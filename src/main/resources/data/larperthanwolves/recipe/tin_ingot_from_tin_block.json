@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:tin_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "larperthanwolves:tin_ingot"
+  }
+}

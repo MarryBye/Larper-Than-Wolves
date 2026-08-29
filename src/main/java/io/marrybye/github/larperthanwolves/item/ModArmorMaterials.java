@@ -11,20 +11,36 @@ import java.util.List;
 
 public class ModArmorMaterials {
     public static Holder<ArmorMaterial> COPPER;
+    public static Holder<ArmorMaterial> BRONZE;
     public static Holder<ArmorMaterial> REINFORCED_IRON;
 
     static {
         COPPER = Holder.direct(new ArmorMaterial(
                 Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-                    map.put(ArmorItem.Type.BOOTS, 2);
-                    map.put(ArmorItem.Type.LEGGINGS, 5);
-                    map.put(ArmorItem.Type.CHESTPLATE, 6);
-                    map.put(ArmorItem.Type.HELMET, 2);
+                    map.put(ArmorItem.Type.BOOTS, 1);
+                    map.put(ArmorItem.Type.LEGGINGS, 3);
+                    map.put(ArmorItem.Type.CHESTPLATE, 4);
+                    map.put(ArmorItem.Type.HELMET, 1);
                 }),
-                15,
+                9,
                 SoundEvents.ARMOR_EQUIP_IRON,
                 () -> Ingredient.of(net.minecraft.world.item.Items.COPPER_INGOT, ModItems.COPPER_DUST.get()),
                 List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("larperthanwolves", "copper"))),
+                0.0f,
+                0.0f
+        ));
+
+        BRONZE = Holder.direct(new ArmorMaterial(
+                Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                    map.put(ArmorItem.Type.BOOTS, 2);
+                    map.put(ArmorItem.Type.LEGGINGS, 4);
+                    map.put(ArmorItem.Type.CHESTPLATE, 5);
+                    map.put(ArmorItem.Type.HELMET, 2);
+                }),
+                12,
+                SoundEvents.ARMOR_EQUIP_IRON,
+                () -> Ingredient.of(ModItems.BRONZE_INGOT.get()),
+                List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("larperthanwolves", "bronze"))),
                 0.0f,
                 0.0f
         ));
@@ -40,7 +56,7 @@ public class ModArmorMaterials {
                 SoundEvents.ARMOR_EQUIP_IRON,
                 () -> Ingredient.of(ModItems.DIAMOND_INGOT.get()),
                 List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("larperthanwolves", "reinforced_iron"))),
-                2.0f,
+                1.5f,
                 0.0f
         ));
     }

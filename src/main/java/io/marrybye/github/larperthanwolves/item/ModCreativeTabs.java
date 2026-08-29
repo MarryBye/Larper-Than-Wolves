@@ -31,7 +31,15 @@ public class ModCreativeTabs {
 
                         output.accept(ModItems.IRON_DUST.get());
                         output.accept(ModItems.COPPER_DUST.get());
+                        output.accept(ModItems.TIN_DUST.get());
                         output.accept(ModItems.GOLD_DUST.get());
+                        output.accept(ModItems.BRONZE_DUST.get());
+
+                        output.accept(ModItems.RAW_TIN.get());
+                        output.accept(ModItems.TIN_NUGGET.get());
+                        output.accept(ModItems.TIN_INGOT.get());
+                        output.accept(ModItems.BRONZE_NUGGET.get());
+                        output.accept(ModItems.BRONZE_INGOT.get());
 
                         output.accept(ModItems.SILICON_SHEARS.get());
                         output.accept(ModItems.SILICON_SPEAR.get());
@@ -49,6 +57,23 @@ public class ModCreativeTabs {
                         output.accept(ModItems.COPPER_CHESTPLATE.get());
                         output.accept(ModItems.COPPER_LEGGINGS.get());
                         output.accept(ModItems.COPPER_BOOTS.get());
+
+                        output.accept(ModItems.BRONZE_SWORD.get());
+                        output.accept(ModItems.BRONZE_PICKAXE.get());
+                        output.accept(ModItems.BRONZE_AXE.get());
+                        output.accept(ModItems.BRONZE_SHOVEL.get());
+                        output.accept(ModItems.BRONZE_HOE.get());
+
+                        output.accept(ModItems.BRONZE_HELMET.get());
+                        output.accept(ModItems.BRONZE_CHESTPLATE.get());
+                        output.accept(ModItems.BRONZE_LEGGINGS.get());
+                        output.accept(ModItems.BRONZE_BOOTS.get());
+
+                        output.accept(ModItems.TIN_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_TIN_ORE.get());
+                        output.accept(ModItems.RAW_TIN_BLOCK.get());
+                        output.accept(ModItems.TIN_BLOCK.get());
+                        output.accept(ModItems.BRONZE_BLOCK.get());
 
                         output.accept(ModItems.BRICK_FURNACE.get());
                         output.accept(ModItems.UNFIRED_BRICK.get());

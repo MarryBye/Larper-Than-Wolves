@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:bronze_ingot"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "larperthanwolves:bronze_nugget"
+  }
+}

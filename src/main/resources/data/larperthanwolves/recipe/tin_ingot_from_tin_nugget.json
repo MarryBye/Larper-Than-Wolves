@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "larperthanwolves:tin_nugget"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:tin_ingot"
+  }
+}
