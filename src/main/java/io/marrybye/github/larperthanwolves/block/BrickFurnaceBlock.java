@@ -92,11 +92,6 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
                         }
                         level.setBlock(pos, state.setValue(STAGE, furnace.isLit() ? (furnace.getBurnTime() <= furnace.getMaxBurnTime() / 4 ? 3 : 2) : 1), 3);
                         level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
-                        player.displayClientMessage(Component.literal("§aТопливо загружено в печь."), true);
-                    } else if (furnace.isLit()) {
-                        player.displayClientMessage(Component.literal("§eПечь уже горит с максимальной длительностью."), true);
-                    } else {
-                        player.displayClientMessage(Component.literal("§eТопливо уже загружено. Подожгите печь зажигалкой!"), true);
                     }
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -105,15 +100,10 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
             // 2. Check if holding lighter or flint & steel
             if (stack.is(ModItems.LIGHTER.get()) || stack.is(Items.FLINT_AND_STEEL)) {
                 if (!level.isClientSide) {
-                    if (furnace.isLit()) {
-                        player.displayClientMessage(Component.literal("§eПечь уже горит!"), true);
-                    } else if (furnace.lightFurnace()) {
+                    if (!furnace.isLit() && furnace.lightFurnace()) {
                         level.setBlock(pos, state.setValue(STAGE, 2), 3);
                         level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
                         stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
-                        player.displayClientMessage(Component.literal("§6Кирпичная печь успешно зажжена!"), true);
-                    } else {
-                        player.displayClientMessage(Component.literal("§cВ печи нет топлива! Загрузите сухую траву, дерево или уголь."), true);
                     }
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);

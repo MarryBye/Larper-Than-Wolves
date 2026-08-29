@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "larperthanwolves:block/oak_stump"
+    },
+    "axis=z": {
+      "model": "larperthanwolves:block/oak_stump_horizontal",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "larperthanwolves:block/oak_stump_horizontal",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

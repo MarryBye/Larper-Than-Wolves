@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "larperthanwolves:block/mangrove_stump"
+    },
+    "axis=z": {
+      "model": "larperthanwolves:block/mangrove_stump_horizontal",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "larperthanwolves:block/mangrove_stump_horizontal",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

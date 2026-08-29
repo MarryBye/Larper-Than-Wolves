@@ -95,11 +95,6 @@ public class AlloyMixerBlock extends BaseEntityBlock {
                         int targetStage = mixer.isLit() ? (mixer.getBurnTime() <= mixer.getMaxBurnTime() / 4 ? 3 : 2) : 1;
                         level.setBlock(pos, state.setValue(STAGE, targetStage), 3);
                         level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
-                        player.displayClientMessage(Component.literal("§aТопливо загружено в нижнюю часть смешивателя."), true);
-                    } else if (mixer.isLit()) {
-                        player.displayClientMessage(Component.literal("§eСмешиватель уже горит с максимальной длительностью."), true);
-                    } else {
-                        player.displayClientMessage(Component.literal("§eТопливо уже загружено. Подожгите смешиватель зажигалкой!"), true);
                     }
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -108,15 +103,10 @@ public class AlloyMixerBlock extends BaseEntityBlock {
             // 2. Igniting with lighter or flint & steel
             if (stack.is(ModItems.LIGHTER.get()) || stack.is(Items.FLINT_AND_STEEL)) {
                 if (!level.isClientSide) {
-                    if (mixer.isLit()) {
-                        player.displayClientMessage(Component.literal("§eСмешиватель уже горит!"), true);
-                    } else if (mixer.lightMixer()) {
+                    if (!mixer.isLit() && mixer.lightMixer()) {
                         level.setBlock(pos, state.setValue(STAGE, 2), 3);
                         level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
                         stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
-                        player.displayClientMessage(Component.literal("§6Смешиватель сплавов успешно зажжён!"), true);
-                    } else {
-                        player.displayClientMessage(Component.literal("§cВ смешивателе нет топлива! Загрузите дерево, сухую траву или уголь."), true);
                     }
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);

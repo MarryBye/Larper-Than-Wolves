@@ -99,15 +99,6 @@ public class UnfiredBrickBlock extends BaseEntityBlock {
                 level.removeBlock(pos, false);
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
-        } else if (!level.isClientSide) {
-            int stage = state.getValue(STAGE);
-            String progressMsg = switch (stage) {
-                case 0 -> "§7Кирпич сырой (0% - 33%). Для сушки нужен открытый солнечный свет днём.";
-                case 1 -> "§eКирпич подсыхает (33% - 66%)...";
-                case 2 -> "§6Кирпич почти высох (66% - 99%)...";
-                default -> "";
-            };
-            player.displayClientMessage(net.minecraft.network.chat.Component.literal(progressMsg), true);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

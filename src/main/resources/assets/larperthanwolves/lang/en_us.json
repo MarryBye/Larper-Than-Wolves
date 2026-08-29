@@ -70,5 +70,15 @@
   "block.larperthanwolves.deepslate_tin_ore": "Deepslate Tin Ore",
   "block.larperthanwolves.raw_tin_block": "Block of Raw Tin",
   "block.larperthanwolves.tin_block": "Block of Tin",
-  "block.larperthanwolves.bronze_block": "Block of Bronze"
+  "block.larperthanwolves.bronze_block": "Block of Bronze",
+  "block.larperthanwolves.oak_stump": "Oak Stump",
+  "block.larperthanwolves.birch_stump": "Birch Stump",
+  "block.larperthanwolves.spruce_stump": "Spruce Stump",
+  "block.larperthanwolves.jungle_stump": "Jungle Stump",
+  "block.larperthanwolves.acacia_stump": "Acacia Stump",
+  "block.larperthanwolves.dark_oak_stump": "Dark Oak Stump",
+  "block.larperthanwolves.mangrove_stump": "Mangrove Stump",
+  "block.larperthanwolves.cherry_stump": "Cherry Stump",
+  "block.larperthanwolves.crimson_stump": "Crimson Stump",
+  "block.larperthanwolves.warped_stump": "Warped Stump"
 }

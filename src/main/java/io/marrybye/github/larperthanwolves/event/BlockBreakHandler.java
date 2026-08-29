@@ -5,10 +5,10 @@ import io.marrybye.github.larperthanwolves.block.UnfiredBrickBlock;
 import io.marrybye.github.larperthanwolves.config.ModConfig;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
@@ -260,6 +261,14 @@ public class BlockBreakHandler {
         BlockPos pos = event.getPosition().orElse(player.blockPosition());
         Level level = player.level();
 
+        // Chisel on logs / stumps: allow visual breaking animation (cracks) without stopping speed
+        if (held.is(ModItems.CHISEL.get())) {
+            if (state.is(BlockTags.LOGS) || state.is(ModBlocks.WORK_STUMP.get()) || ModBlocks.isStump(state)) {
+                event.setNewSpeed(1.5f);
+                return;
+            }
+        }
+
         if (isStoneOrOre(block) || isObsidianOrNetheriteTier(block) || isDeepslateLayerOrBlock(level, pos, block)) {
             if (!canToolMineBlock(held, level, pos, block)) {
                 event.setNewSpeed(0.0f);
@@ -281,20 +290,17 @@ public class BlockBreakHandler {
         Level level = player.level();
         ItemStack held = player.getMainHandItem();
 
+        // Chisel CANNOT break logs/stumps on Left Click (animation only)
+        if (held.is(ModItems.CHISEL.get())) {
+            if (state.is(BlockTags.LOGS) || state.is(ModBlocks.WORK_STUMP.get()) || ModBlocks.isStump(state)) {
+                event.setCanceled(true);
+                return;
+            }
+        }
+
         if (isStoneOrOre(block) || isObsidianOrNetheriteTier(block) || isDeepslateLayerOrBlock(level, pos, block)) {
             if (!canToolMineBlock(held, level, pos, block)) {
                 event.setCanceled(true);
-                if (isDeepslateLayerOrBlock(level, pos, block)) {
-                    player.displayClientMessage(Component.literal("§cЭтот инструмент не может добывать породу глубинного сланца!"), true);
-                } else if (isObsidianOrNetheriteTier(block)) {
-                    player.displayClientMessage(Component.literal("§cДля добычи этого блока нужна алмазная (укрепленная) или незеритовая кирка!"), true);
-                } else if (isNetherOrEndRockOrOre(block)) {
-                    player.displayClientMessage(Component.literal("§cДля добычи адских/эндер пород и руд требуется железная кирка или выше!"), true);
-                } else if (isHighTierOre(block)) {
-                    player.displayClientMessage(Component.literal("§cДля этой руды требуется железная кирка или выше!"), true);
-                } else if (isSiliconPickaxe(held) && (block == Blocks.IRON_ORE || block == ModBlocks.TIN_ORE.get())) {
-                    player.displayClientMessage(Component.literal("§cКремниевая кирка не может добывать железную или оловянную руду!"), true);
-                }
                 return;
             }
         }
@@ -310,6 +316,19 @@ public class BlockBreakHandler {
                 ItemEntity seedDrop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
                 seedDrop.setDefaultPickUpDelay();
                 level.addFreshEntity(seedDrop);
+            }
+        }
+    }
+
+    // Prevent damage / camera recoil when hitting wood/blocks with Chisel
+    @SubscribeEvent
+    public static void onLivingIncomingDamage(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (player.getMainHandItem().is(ModItems.CHISEL.get())) {
+                // If damage source has no attacker entity (e.g. tree punching penalty / environmental wood damage)
+                if (event.getSource().getEntity() == null && event.getSource().getDirectEntity() == null) {
+                    event.setCanceled(true);
+                }
             }
         }
     }

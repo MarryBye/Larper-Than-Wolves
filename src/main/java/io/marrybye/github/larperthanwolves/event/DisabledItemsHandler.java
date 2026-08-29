@@ -130,9 +130,6 @@ public class DisabledItemsHandler {
         ItemStack to = event.getTo();
         if (!to.isEmpty() && isDisabled(to.getItem())) {
             event.getEntity().setItemSlot(event.getSlot(), ItemStack.EMPTY);
-            if (event.getEntity() instanceof Player player && !player.level().isClientSide) {
-                player.displayClientMessage(Component.literal("§cЭтот предмет вырезан модификацией Larper Than Wolves!"), true);
-            }
         }
     }
 
@@ -145,7 +142,6 @@ public class DisabledItemsHandler {
             Player player = event.getEntity();
             if (player != null && !event.getLevel().isClientSide) {
                 player.setItemInHand(event.getHand(), ItemStack.EMPTY);
-                player.displayClientMessage(Component.literal("§cЭтот предмет вырезан модификацией Larper Than Wolves!"), true);
             }
         }
     }
@@ -159,7 +155,6 @@ public class DisabledItemsHandler {
             Player player = event.getEntity();
             if (player != null && !event.getLevel().isClientSide) {
                 player.setItemInHand(event.getHand(), ItemStack.EMPTY);
-                player.displayClientMessage(Component.literal("§cЭтот предмет вырезан модификацией Larper Than Wolves!"), true);
             }
         }
     }
@@ -173,7 +168,6 @@ public class DisabledItemsHandler {
             Player player = event.getEntity();
             if (player != null && !event.getLevel().isClientSide) {
                 player.setItemInHand(event.getHand(), ItemStack.EMPTY);
-                player.displayClientMessage(Component.literal("§cЭтот предмет вырезан модификацией Larper Than Wolves!"), true);
             }
         }
     }

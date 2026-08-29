@@ -272,5 +272,35 @@ public class ModItems {
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRONZE_BLOCK = ITEMS.register("bronze_block",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRONZE_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> OAK_STUMP = ITEMS.register("oak_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.OAK_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BIRCH_STUMP = ITEMS.register("birch_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BIRCH_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> SPRUCE_STUMP = ITEMS.register("spruce_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.SPRUCE_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> JUNGLE_STUMP = ITEMS.register("jungle_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.JUNGLE_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> ACACIA_STUMP = ITEMS.register("acacia_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.ACACIA_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> DARK_OAK_STUMP = ITEMS.register("dark_oak_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.DARK_OAK_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MANGROVE_STUMP = ITEMS.register("mangrove_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.MANGROVE_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> CHERRY_STUMP = ITEMS.register("cherry_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.CHERRY_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> CRIMSON_STUMP = ITEMS.register("crimson_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.CRIMSON_STUMP.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> WARPED_STUMP = ITEMS.register("warped_stump",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.WARPED_STUMP.get(), new Item.Properties()));
 }
 

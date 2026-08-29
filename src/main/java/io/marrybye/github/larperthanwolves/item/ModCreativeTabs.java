@@ -95,5 +95,16 @@ public class ModCreativeTabs {
                         output.accept(ModItems.REINFORCED_IRON_CHESTPLATE.get());
                         output.accept(ModItems.REINFORCED_IRON_LEGGINGS.get());
                         output.accept(ModItems.REINFORCED_IRON_BOOTS.get());
+
+                        output.accept(ModItems.OAK_STUMP.get());
+                        output.accept(ModItems.BIRCH_STUMP.get());
+                        output.accept(ModItems.SPRUCE_STUMP.get());
+                        output.accept(ModItems.JUNGLE_STUMP.get());
+                        output.accept(ModItems.ACACIA_STUMP.get());
+                        output.accept(ModItems.DARK_OAK_STUMP.get());
+                        output.accept(ModItems.MANGROVE_STUMP.get());
+                        output.accept(ModItems.CHERRY_STUMP.get());
+                        output.accept(ModItems.CRIMSON_STUMP.get());
+                        output.accept(ModItems.WARPED_STUMP.get());
                     }).build());
 }

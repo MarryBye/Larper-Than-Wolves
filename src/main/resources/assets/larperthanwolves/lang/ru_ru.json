@@ -70,5 +70,15 @@
   "block.larperthanwolves.deepslate_tin_ore": "Глубинносланцевая оловянная руда",
   "block.larperthanwolves.raw_tin_block": "Блок сырого олова",
   "block.larperthanwolves.tin_block": "Оловянный блок",
-  "block.larperthanwolves.bronze_block": "Бронзовый блок"
+  "block.larperthanwolves.bronze_block": "Бронзовый блок",
+  "block.larperthanwolves.oak_stump": "Дубовый пень",
+  "block.larperthanwolves.birch_stump": "Берёзовый пень",
+  "block.larperthanwolves.spruce_stump": "Еловый пень",
+  "block.larperthanwolves.jungle_stump": "Тропический пень",
+  "block.larperthanwolves.acacia_stump": "Акациевый пень",
+  "block.larperthanwolves.dark_oak_stump": "Пень тёмного дуба",
+  "block.larperthanwolves.mangrove_stump": "Мангровый пень",
+  "block.larperthanwolves.cherry_stump": "Вишнёвый пень",
+  "block.larperthanwolves.crimson_stump": "Багровый пень",
+  "block.larperthanwolves.warped_stump": "Искажённый пень"
 }

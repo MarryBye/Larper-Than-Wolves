@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "larperthanwolves:block/warped_stump"
+    },
+    "axis=z": {
+      "model": "larperthanwolves:block/warped_stump_horizontal",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "larperthanwolves:block/warped_stump_horizontal",
+      "x": 90,
+      "y": 90
+    }
+  }
+}
