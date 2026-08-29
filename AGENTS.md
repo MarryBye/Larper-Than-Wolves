@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.14.0
+- **Current Version**: 1.14.1
 
 ## Project Architecture & Progression
 
@@ -242,6 +242,9 @@ All commits must follow:
 
 ### 6. Full JEI Mechanics Integration (`jei-mechanics-documenter`)
 **MANDATORY**: Whenever adding any unique, custom, or non-standard mechanic (in-world crafting, chisel carving, sun drying, custom fuels/speeds, manual ignition, altered block drops), automatically create corresponding JEI categories, recipes, and `addIngredientInfo` tabs to guarantee total in-game discoverability.
+
+### 7. Mojang Asset Adaptation & JAPPA Artistry (`mojang-asset-artist`)
+**MANDATORY**: When creating or modifying any pixel art textures (items, blocks, UI, armor layers), always follow JAPPA standards and MUST base the artwork upon official Mojang vanilla assets (from `minecraft_1.21.1_client.jar`), adapting, combining, and justifiable re-coloring them to guarantee seamless aesthetic harmony with modern Minecraft.
 
 ## Best Practices & Guidelines
 - Use `ThreadLocalRandom.current()` instead of `new Random()` for thread safety in server event handlers.
