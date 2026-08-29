@@ -131,6 +131,11 @@ public class ModItems {
                     .durability(ModToolMaterials.SILICON.getUses())
                     .attributes(ShovelItem.createAttributes(ModToolMaterials.SILICON, 1.5f, -3.0f))));
 
+    public static final DeferredItem<HoeItem> SILICON_HOE = ITEMS.register("silicon_hoe",
+            () -> new HoeItem(ModToolMaterials.SILICON, new Item.Properties()
+                    .durability(ModToolMaterials.SILICON.getUses())
+                    .attributes(HoeItem.createAttributes(ModToolMaterials.SILICON, -3, 0.0f))));
+
     public static final DeferredItem<ShearsItem> SILICON_SHEARS = ITEMS.register("silicon_shears",
             () -> new ShearsItem(new Item.Properties().durability(20)));
 

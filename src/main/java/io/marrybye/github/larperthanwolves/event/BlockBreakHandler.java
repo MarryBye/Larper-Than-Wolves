@@ -507,12 +507,21 @@ public class BlockBreakHandler {
         BlockState state = level.getBlockState(pos);
         ItemStack held = event.getItemStack();
 
-        if (state.is(Blocks.GRASS_BLOCK) && held.getItem() instanceof HoeItem && event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK) {
-            if (!level.isClientSide && ThreadLocalRandom.current().nextFloat() < 0.35f) {
-                ItemEntity seed = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
-                seed.setDefaultPickUpDelay();
-                level.addFreshEntity(seed);
+        if (state.is(Blocks.GRASS_BLOCK) && held.getItem() instanceof HoeItem) {
+            if (!level.isClientSide) {
+                // Convert grass block to plain dirt
+                level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 3);
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.HOE_TILL, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
+
+                if (ThreadLocalRandom.current().nextFloat() < 0.40f) {
+                    ItemEntity seed = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
+                    seed.setDefaultPickUpDelay();
+                    level.addFreshEntity(seed);
+                }
+
+                held.hurtAndBreak(1, player, event.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
             }
+            event.cancelWithResult(net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide));
         }
     }
 }

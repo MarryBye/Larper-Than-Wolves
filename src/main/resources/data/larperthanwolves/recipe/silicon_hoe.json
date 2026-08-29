@@ -1,0 +1,24 @@
+﻿{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    "## ",
+    " R ",
+    " X "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:flint"
+    },
+    "R": {
+      "item": "larperthanwolves:rope"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:silicon_hoe"
+  }
+}

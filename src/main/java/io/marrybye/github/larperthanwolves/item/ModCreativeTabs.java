@@ -52,6 +52,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.SILICON_AXE.get());
                         output.accept(ModItems.SILICON_PICKAXE.get());
                         output.accept(ModItems.SILICON_SHOVEL.get());
+                        output.accept(ModItems.SILICON_HOE.get());
 
                         output.accept(ModItems.COPPER_SWORD.get());
                         output.accept(ModItems.COPPER_PICKAXE.get());
