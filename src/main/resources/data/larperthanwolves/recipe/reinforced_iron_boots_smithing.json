@@ -1,8 +1,6 @@
 {
   "type": "minecraft:smithing_transform",
-  "template": {
-    "item": "minecraft:stick"
-  },
+  "template": [],
   "base": {
     "item": "minecraft:iron_boots"
   },

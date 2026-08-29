@@ -21,22 +21,46 @@ public class ModJeiPlugin implements IModPlugin {
     }
 
     @Override
+    public void registerCategories(mezz.jei.api.registration.IRecipeCategoryRegistration registration) {
+        registration.addRecipeCategories(new AlloyMixerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+    }
+
+    @Override
+    public void registerRecipes(mezz.jei.api.registration.IRecipeRegistration registration) {
+        int cookTime = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ?
+                io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.alloyMixerCookTimeTicks.get() : 600;
+
+        registration.addRecipes(AlloyMixerRecipeCategory.TYPE, java.util.List.of(
+                new AlloyMixerRecipe(
+                        java.util.List.of(
+                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND),
+                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_INGOT),
+                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.COPPER_INGOT)
+                        ),
+                        new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.DIAMOND_INGOT.get()),
+                        cookTime
+                )
+        ));
+    }
+
+    @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), RecipeTypes.SMELTING);
         registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(ModBlocks.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.ALLOY_MIXER.get(), RecipeTypes.FUELING);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(BrickFurnaceScreen.class, 79, 34, 24, 17, RecipeTypes.SMELTING);
-        registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.AlloyMixerScreen.class, 79, 24, 24, 17, RecipeTypes.SMELTING);
+        registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.AlloyMixerScreen.class, 79, 24, 24, 17, AlloyMixerRecipeCategory.TYPE);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), RecipeTypes.SMELTING, 0, 3, 6, 36);
-        registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), RecipeTypes.SMELTING, 0, 3, 4, 36);
+        registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE, 0, 3, 4, 36);
     }
 
     @Override
