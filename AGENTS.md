@@ -9,18 +9,31 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.8.1
+- **Current Version**: 1.9.0
 
-## Project Architecture
+## Project Architecture & Progression
 
-The project is a hardcore survival mod inspired by Better Than Wolves. It overhauls Minecraft's progression system with:
-- Custom tool/armor tiers: Silicon → Copper → Bronze → Iron → Reinforced Iron → Netherite
-- Custom machines: Brick Furnace (replaces vanilla), Alloy Mixer, Sieve
-- Disabled vanilla items: wooden/stone/diamond tools, chainmail armor, vanilla furnace
-- Custom block break mechanics with tier-gated mining
-- Tree stump system with chisel-based crafting table creation
-- Tin ore worldgen and bronze metallurgy
-- JEI integration
+Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the early and mid-game:
+
+### ⛏️ Tool Tiers & Dig Tier Matrix
+- **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Cannot mine deepslate or any other ores.
+- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Cannot mine deepslate or iron+.
+- **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4).
+- **Iron (Железо)**: Standard metal. Full mining access for all standard rocks & ores as whole blocks / raw chunks. Cannot mine Ancient Debris or Obsidian.
+- **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
+
+### 🔄 Material Conversion Rules
+- **Natural Metals (Iron, Copper, Gold, Tin)**:
+  - 2 Ore Dust $\rightarrow$ 1 Raw Ore (chunk)
+  - 1 Raw Ore in Brick Furnace $\rightarrow$ 1 Metal Nugget
+  - 4 Metal Nuggets $\rightarrow$ 1 Ingot
+- **Bronze**:
+  - 2 Bronze Dust $\rightarrow$ 1 Bronze Nugget
+  - 4 Bronze Nuggets $\rightarrow$ 1 Bronze Ingot
+  - 2 Copper Ingot + 1 Tin Ingot in Alloy Mixer $\rightarrow$ 1 Bronze Ingot
+- **Reinforced Iron (Diamond Ingot)**:
+  - 1 Diamond + 1 Iron Ingot + 1 Copper Ingot in Alloy Mixer $\rightarrow$ 1 Diamond Ingot
+  - Used in Smithing Table to upgrade Iron tools & armor to Reinforced Iron.
 
 ## File Structure
 ```
@@ -192,6 +205,9 @@ All commits must follow:
 
 ### 4. Push Permission Check
 **MANDATORY**: Never push to remote (`git push`, `git push origin --tags`) automatically. At the end of every action, ask the user for confirmation (Yes / No).
+
+### 5. Mandatory AGENTS.md Update (`agents-md-updater`)
+**MANDATORY**: After completing any changes in the project, review the diff and update `AGENTS.md` to guarantee that the documentation always accurately reflects current systems, registries, and item lists.
 
 ## Best Practices & Guidelines
 - Use `ThreadLocalRandom.current()` instead of `new Random()` for thread safety in server event handlers.

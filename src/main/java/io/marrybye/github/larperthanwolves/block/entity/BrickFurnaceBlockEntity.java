@@ -249,9 +249,9 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(fuelStack);
 
         if (burnTime > 0) {
-            // Already lit: extend burn time up to max allowed for that fuel
-            burnTime = Math.min(burnTime + info.burnDuration, info.burnDuration);
-            maxBurnTime = Math.max(maxBurnTime, info.burnDuration);
+            // Already lit: extend burn time
+            burnTime = Math.min(burnTime + info.burnDuration, 72000);
+            maxBurnTime = Math.max(maxBurnTime, burnTime);
             fuelCookSpeed = info.cookSpeed;
             cookTimeTotal = fuelCookSpeed;
             wasLitOnce = true;

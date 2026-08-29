@@ -28,6 +28,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.ANDESITE_NUGGET.get());
                         output.accept(ModItems.TUFF_NUGGET.get());
                         output.accept(ModItems.CALCITE_NUGGET.get());
+                        output.accept(ModItems.DEEPSLATE_NUGGET.get());
+                        output.accept(ModItems.DRIPSTONE_NUGGET.get());
+                        output.accept(ModItems.NETHERRACK_NUGGET.get());
                         output.accept(ModItems.COPPER_NUGGET.get());
 
                         output.accept(ModItems.IRON_DUST.get());

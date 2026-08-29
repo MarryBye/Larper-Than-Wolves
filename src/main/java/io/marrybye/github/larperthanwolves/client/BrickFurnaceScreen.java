@@ -29,11 +29,11 @@ public class BrickFurnaceScreen extends AbstractContainerScreen<BrickFurnaceMenu
         int y = this.topPos;
         guiGraphics.blit(TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
-        // Animated burning flame at (80, 54)
+        // Animated burning flame at (84, 54)
         if (this.menu.isLit()) {
             int litProgress = this.menu.getLitProgress();
             if (litProgress > 0) {
-                guiGraphics.blit(TEXTURE, x + 80, y + 54 + 14 - litProgress, 176, 14 - litProgress, 14, litProgress);
+                guiGraphics.blit(TEXTURE, x + 84, y + 54 + 14 - litProgress, 176, 14 - litProgress, 14, litProgress);
             }
         }
 

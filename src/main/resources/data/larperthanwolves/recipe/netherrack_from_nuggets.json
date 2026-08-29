@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "category": "building",
   "pattern": [
     "##",
     "##"
   ],
   "key": {
     "#": {
-      "item": "larperthanwolves:copper_dust"
+      "item": "larperthanwolves:netherrack_nugget"
     }
   },
   "result": {
     "count": 1,
-    "id": "minecraft:copper_ingot"
+    "id": "minecraft:netherrack"
   }
 }

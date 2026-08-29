@@ -48,58 +48,55 @@ public class BlockBreakHandler {
     private static ItemStack getDropForBlock(Block block, PickaxeTier tier) {
         if (tier == PickaxeTier.IRON_PLUS) return null;
 
-        if (block == Blocks.COAL_ORE) {
+        if (block == Blocks.COAL_ORE || block == Blocks.DEEPSLATE_COAL_ORE) {
             return new ItemStack(Items.COAL, 1);
-        } else if (block == Blocks.COPPER_ORE) {
+        } else if (block == Blocks.COPPER_ORE || block == Blocks.DEEPSLATE_COPPER_ORE) {
             if (tier == PickaxeTier.SILICON) {
                 return new ItemStack(ModItems.COPPER_DUST.get(), 1);
             }
             return new ItemStack(Items.RAW_COPPER, 1);
-        } else if (block == Blocks.IRON_ORE) {
+        } else if (block == ModBlocks.TIN_ORE.get() || block == ModBlocks.DEEPSLATE_TIN_ORE.get()) {
             if (tier == PickaxeTier.SILICON) return null;
-            if (tier == PickaxeTier.COPPER) return new ItemStack(ModItems.IRON_DUST.get(), 1);
-            return new ItemStack(Items.RAW_IRON, 1);
-        } else if (block == ModBlocks.TIN_ORE.get()) {
-            if (tier == PickaxeTier.SILICON) return null;
+            if (tier == PickaxeTier.COPPER) return new ItemStack(ModItems.TIN_DUST.get(), 1);
             return new ItemStack(ModItems.RAW_TIN.get(), 1);
+        } else if (block == Blocks.IRON_ORE || block == Blocks.DEEPSLATE_IRON_ORE) {
+            if (tier == PickaxeTier.SILICON || tier == PickaxeTier.COPPER) return null;
+            return new ItemStack(ModItems.IRON_DUST.get(), 1);
         }
 
+        int count = 2 + ThreadLocalRandom.current().nextInt(3);
+
+        if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
+            return new ItemStack(ModItems.STONE_NUGGET.get(), count);
+        } else if (block == Blocks.GRANITE) {
+            return new ItemStack(ModItems.GRANITE_NUGGET.get(), count);
+        } else if (block == Blocks.DIORITE) {
+            return new ItemStack(ModItems.DIORITE_NUGGET.get(), count);
+        } else if (block == Blocks.ANDESITE) {
+            return new ItemStack(ModItems.ANDESITE_NUGGET.get(), count);
+        } else if (block == Blocks.CALCITE) {
+            return new ItemStack(ModItems.CALCITE_NUGGET.get(), count);
+        } else if (isSandstone(block)) {
+            boolean isRed = block == Blocks.RED_SANDSTONE || block == Blocks.SMOOTH_RED_SANDSTONE ||
+                    block == Blocks.CUT_RED_SANDSTONE || block == Blocks.CHISELED_RED_SANDSTONE;
+            return new ItemStack(isRed ? Items.RED_SAND : Items.SAND, count);
+        }
+
+        // Bronze tier drops pebbles for deepslate, tuff, dripstone, and netherrack
         if (tier == PickaxeTier.BRONZE) {
-            if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
-                return new ItemStack(Blocks.COBBLESTONE.asItem(), 1);
-            } else if (block == Blocks.GRANITE) {
-                return new ItemStack(Blocks.GRANITE.asItem(), 1);
-            } else if (block == Blocks.DIORITE) {
-                return new ItemStack(Blocks.DIORITE.asItem(), 1);
-            } else if (block == Blocks.ANDESITE) {
-                return new ItemStack(Blocks.ANDESITE.asItem(), 1);
-            } else if (block == Blocks.CALCITE) {
-                return new ItemStack(Blocks.CALCITE.asItem(), 1);
+            if (block == Blocks.DEEPSLATE || block == Blocks.COBBLED_DEEPSLATE) {
+                return new ItemStack(ModItems.DEEPSLATE_NUGGET.get(), count);
+            } else if (block == Blocks.TUFF) {
+                return new ItemStack(ModItems.TUFF_NUGGET.get(), count);
             } else if (block == Blocks.DRIPSTONE_BLOCK) {
-                return new ItemStack(Blocks.DRIPSTONE_BLOCK.asItem(), 1);
-            } else if (isSandstone(block)) {
-                return new ItemStack(block.asItem(), 1);
-            }
-        } else {
-            int count = 2 + java.util.concurrent.ThreadLocalRandom.current().nextInt(3);
-            if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
-                return new ItemStack(ModItems.STONE_NUGGET.get(), count);
-            } else if (block == Blocks.GRANITE) {
-                return new ItemStack(ModItems.GRANITE_NUGGET.get(), count);
-            } else if (block == Blocks.DIORITE) {
-                return new ItemStack(ModItems.DIORITE_NUGGET.get(), count);
-            } else if (block == Blocks.ANDESITE) {
-                return new ItemStack(ModItems.ANDESITE_NUGGET.get(), count);
-            } else if (block == Blocks.CALCITE) {
-                return new ItemStack(ModItems.CALCITE_NUGGET.get(), count);
-            } else if (block == Blocks.DRIPSTONE_BLOCK) {
-                return new ItemStack(Items.POINTED_DRIPSTONE, count);
-            } else if (isSandstone(block)) {
-                boolean isRed = block == Blocks.RED_SANDSTONE || block == Blocks.SMOOTH_RED_SANDSTONE ||
-                        block == Blocks.CUT_RED_SANDSTONE || block == Blocks.CHISELED_RED_SANDSTONE;
-                return new ItemStack(isRed ? Items.RED_SAND : Items.SAND, count);
+                return new ItemStack(ModItems.DRIPSTONE_NUGGET.get(), count);
+            } else if (block == Blocks.POINTED_DRIPSTONE) {
+                return new ItemStack(ModItems.DRIPSTONE_NUGGET.get(), 1);
+            } else if (block == Blocks.NETHERRACK) {
+                return new ItemStack(ModItems.NETHERRACK_NUGGET.get(), count);
             }
         }
+
         return null;
     }
 
@@ -201,6 +198,8 @@ public class BlockBreakHandler {
                 block == Blocks.ANDESITE ||
                 block == Blocks.CALCITE ||
                 block == Blocks.DRIPSTONE_BLOCK ||
+                block == Blocks.POINTED_DRIPSTONE ||
+                block == Blocks.NETHERRACK ||
                 isSandstone(block) ||
                 block == Blocks.COAL_ORE ||
                 block == Blocks.COPPER_ORE ||
@@ -253,9 +252,11 @@ public class BlockBreakHandler {
             return !isObsidianOrNetheriteTier(block);
         }
 
-        // Silicon, Copper, Bronze tiers CANNOT mine deepslate layer or deepslate blocks
-        if (isDeepslateLayerOrBlock(level, pos, block)) {
-            return false;
+        // Silicon and Copper tiers CANNOT mine deepslate layer or deepslate blocks
+        if (isSiliconPickaxe(tool) || isCopperPickaxe(tool)) {
+            if (isDeepslateLayerOrBlock(level, pos, block)) {
+                return false;
+            }
         }
 
         // Silicon, Copper, Bronze tiers CANNOT mine Obsidian / Ancient Debris, High Tier ores, or Nether/End rocks/ores
@@ -264,17 +265,22 @@ public class BlockBreakHandler {
         }
 
         if (isBronzePickaxe(tool)) {
-            return block == Blocks.COAL_ORE ||
-                    block == Blocks.COPPER_ORE ||
-                    block == Blocks.IRON_ORE ||
-                    block == ModBlocks.TIN_ORE.get() ||
+            return block == Blocks.COAL_ORE || block == Blocks.DEEPSLATE_COAL_ORE ||
+                    block == Blocks.COPPER_ORE || block == Blocks.DEEPSLATE_COPPER_ORE ||
+                    block == Blocks.IRON_ORE || block == Blocks.DEEPSLATE_IRON_ORE ||
+                    block == ModBlocks.TIN_ORE.get() || block == ModBlocks.DEEPSLATE_TIN_ORE.get() ||
                     block == Blocks.STONE ||
                     block == Blocks.COBBLESTONE ||
                     block == Blocks.GRANITE ||
                     block == Blocks.DIORITE ||
                     block == Blocks.ANDESITE ||
                     block == Blocks.CALCITE ||
+                    block == Blocks.DEEPSLATE ||
+                    block == Blocks.COBBLED_DEEPSLATE ||
+                    block == Blocks.TUFF ||
                     block == Blocks.DRIPSTONE_BLOCK ||
+                    block == Blocks.POINTED_DRIPSTONE ||
+                    block == Blocks.NETHERRACK ||
                     isSandstone(block) ||
                     block == ModBlocks.RAW_TIN_BLOCK.get() ||
                     block == ModBlocks.TIN_BLOCK.get() ||
@@ -284,7 +290,6 @@ public class BlockBreakHandler {
         if (isCopperPickaxe(tool)) {
             return block == Blocks.COAL_ORE ||
                     block == Blocks.COPPER_ORE ||
-                    block == Blocks.IRON_ORE ||
                     block == ModBlocks.TIN_ORE.get() ||
                     block == Blocks.STONE ||
                     block == Blocks.COBBLESTONE ||
@@ -292,7 +297,6 @@ public class BlockBreakHandler {
                     block == Blocks.DIORITE ||
                     block == Blocks.ANDESITE ||
                     block == Blocks.CALCITE ||
-                    block == Blocks.DRIPSTONE_BLOCK ||
                     isSandstone(block) ||
                     block == ModBlocks.RAW_TIN_BLOCK.get() ||
                     block == ModBlocks.TIN_BLOCK.get() ||
@@ -308,7 +312,6 @@ public class BlockBreakHandler {
                     block == Blocks.DIORITE ||
                     block == Blocks.ANDESITE ||
                     block == Blocks.CALCITE ||
-                    block == Blocks.DRIPSTONE_BLOCK ||
                     isSandstone(block);
         }
 

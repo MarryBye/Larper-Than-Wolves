@@ -51,6 +51,15 @@ public class ModItems {
     public static final DeferredItem<Item> CALCITE_NUGGET = ITEMS.register("calcite_nugget",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> DEEPSLATE_NUGGET = ITEMS.register("deepslate_nugget",
+            () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> DRIPSTONE_NUGGET = ITEMS.register("dripstone_nugget",
+            () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> NETHERRACK_NUGGET = ITEMS.register("netherrack_nugget",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
             () -> new Item(new Item.Properties()));
 
