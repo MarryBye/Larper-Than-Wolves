@@ -16,17 +16,25 @@ public class AlloyRecipe {
 
     private final String id;
     private final List<IngredientEntry> ingredients;
-    private final ItemStack result;
+    private final java.util.function.Supplier<ItemStack> resultSupplier;
     private final int cookTime; // 0 to use server config default
 
     public AlloyRecipe(String id, List<IngredientEntry> ingredients, ItemStack result) {
-        this(id, ingredients, result, 0);
+        this(id, ingredients, () -> result, 0);
     }
 
     public AlloyRecipe(String id, List<IngredientEntry> ingredients, ItemStack result, int cookTime) {
+        this(id, ingredients, () -> result, cookTime);
+    }
+
+    public AlloyRecipe(String id, List<IngredientEntry> ingredients, java.util.function.Supplier<ItemStack> resultSupplier) {
+        this(id, ingredients, resultSupplier, 0);
+    }
+
+    public AlloyRecipe(String id, List<IngredientEntry> ingredients, java.util.function.Supplier<ItemStack> resultSupplier, int cookTime) {
         this.id = id;
         this.ingredients = ingredients;
-        this.result = result;
+        this.resultSupplier = resultSupplier;
         this.cookTime = cookTime;
     }
 
@@ -39,7 +47,7 @@ public class AlloyRecipe {
     }
 
     public ItemStack getResult() {
-        return result.copy();
+        return resultSupplier.get().copy();
     }
 
     public int getCookTime() {
@@ -47,34 +55,30 @@ public class AlloyRecipe {
     }
 
     public boolean matches(NonNullList<ItemStack> inventory, int startSlot, int endSlot) {
-        List<ItemStack> available = new ArrayList<>();
+        boolean hasAny = false;
+        // 1. Check for any extraneous items that do not belong to this recipe
         for (int i = startSlot; i < endSlot; i++) {
             ItemStack stack = inventory.get(i);
             if (!stack.isEmpty()) {
-                available.add(stack.copy());
-            }
-        }
-
-        if (available.isEmpty()) return false;
-
-        for (IngredientEntry required : ingredients) {
-            int needed = required.count();
-            for (ItemStack avail : available) {
-                if (required.test(avail)) {
-                    int taken = Math.min(needed, avail.getCount());
-                    avail.shrink(taken);
-                    needed -= taken;
-                    if (needed <= 0) break;
+                hasAny = true;
+                if (!containsIngredient(stack)) {
+                    return false;
                 }
             }
-            if (needed > 0) {
-                return false;
-            }
         }
 
-        // Ensure there are no extraneous items in the input slots
-        for (ItemStack leftover : available) {
-            if (!leftover.isEmpty()) {
+        if (!hasAny) return false;
+
+        // 2. Ensure each required ingredient is satisfied with sufficient count
+        for (IngredientEntry required : ingredients) {
+            int availableCount = 0;
+            for (int i = startSlot; i < endSlot; i++) {
+                ItemStack stack = inventory.get(i);
+                if (!stack.isEmpty() && required.test(stack)) {
+                    availableCount += stack.getCount();
+                }
+            }
+            if (availableCount < required.count()) {
                 return false;
             }
         }

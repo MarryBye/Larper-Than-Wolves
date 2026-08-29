@@ -38,6 +38,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -159,41 +160,53 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
 
         input.shrink(1);
 
-        // 1. Regular dust / shard / flint drops
-        double copperChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandCopperDustChance.get() : 0.15) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.15);
-        double tinChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandTinDustChance.get() : 0.12) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveTinDustChance.get() : 0.12);
-        double ironChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandIronDustChance.get() : 0.08) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveIronDustChance.get() : 0.08);
-        double goldChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandGoldDustChance.get() : 0.02) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveGoldDustChance.get() : 0.02);
+        // 1. Regular dust / shard / flint drops ordered from most frequent to rarest:
+        // Silicon shard -> Flint -> Copper dust -> Tin dust -> Bronze dust -> Iron dust -> Gold dust -> Diamond dust
         double siliconChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandSiliconShardChance.get() : 0.15) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.15);
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandSiliconShardChance.get() : 0.25) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.25);
         double flintChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandFlintChance.get() : 0.20) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.20);
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandFlintChance.get() : 0.12) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.12);
+        double copperChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandCopperDustChance.get() : 0.06) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.06);
+        double tinChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandTinDustChance.get() : 0.04) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveTinDustChance.get() : 0.04);
+        double bronzeChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandBronzeDustChance.get() : 0.03) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveBronzeDustChance.get() : 0.03);
+        double ironChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandIronDustChance.get() : 0.02) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveIronDustChance.get() : 0.02);
+        double goldChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandGoldDustChance.get() : 0.01) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveGoldDustChance.get() : 0.01);
+        double diamondChance = isSandType ?
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandDiamondDustChance.get() : 0.002) :
+                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveDiamondDustChance.get() : 0.002);
 
-        float roll = RANDOM.nextFloat();
+        float roll = ThreadLocalRandom.current().nextFloat();
         ItemStack regularResult = ItemStack.EMPTY;
+        double cumulative = 0.0;
 
-        if (roll < copperChance) {
-            regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
-        } else if (roll < copperChance + tinChance) {
-            regularResult = new ItemStack(ModItems.TIN_DUST.get(), 1);
-        } else if (roll < copperChance + tinChance + ironChance) {
-            regularResult = new ItemStack(ModItems.IRON_DUST.get(), 1);
-        } else if (roll < copperChance + tinChance + ironChance + goldChance) {
-            regularResult = new ItemStack(ModItems.GOLD_DUST.get(), 1);
-        } else if (roll < copperChance + tinChance + ironChance + goldChance + siliconChance) {
+        if (roll < (cumulative += siliconChance)) {
             regularResult = new ItemStack(ModItems.SILICON_SHARD.get(), 1);
-        } else if (roll < copperChance + tinChance + ironChance + goldChance + siliconChance + flintChance) {
+        } else if (roll < (cumulative += flintChance)) {
             regularResult = new ItemStack(Items.FLINT, 1);
+        } else if (roll < (cumulative += copperChance)) {
+            regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
+        } else if (roll < (cumulative += tinChance)) {
+            regularResult = new ItemStack(ModItems.TIN_DUST.get(), 1);
+        } else if (roll < (cumulative += bronzeChance)) {
+            regularResult = new ItemStack(ModItems.BRONZE_DUST.get(), 1);
+        } else if (roll < (cumulative += ironChance)) {
+            regularResult = new ItemStack(ModItems.IRON_DUST.get(), 1);
+        } else if (roll < (cumulative += goldChance)) {
+            regularResult = new ItemStack(ModItems.GOLD_DUST.get(), 1);
+        } else if (roll < (cumulative += diamondChance)) {
+            regularResult = new ItemStack(ModItems.DIAMOND_DUST.get(), 1);
         }
 
         if (!regularResult.isEmpty()) {

@@ -59,42 +59,50 @@ public class ModJeiPlugin implements IModPlugin {
         // 1. Sieve recipes
         int sieveTime = ModConfig.SERVER != null ? ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;
         List<ItemStack> gravelOutputs = List.of(
+                new ItemStack(ModItems.SILICON_SHARD.get()),
+                new ItemStack(Items.FLINT),
                 new ItemStack(ModItems.COPPER_DUST.get()),
                 new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.BRONZE_DUST.get()),
                 new ItemStack(ModItems.IRON_DUST.get()),
                 new ItemStack(ModItems.GOLD_DUST.get()),
-                new ItemStack(ModItems.SILICON_SHARD.get()),
-                new ItemStack(Items.FLINT)
+                new ItemStack(ModItems.DIAMOND_DUST.get())
         );
 
         List<ItemStack> sandOutputs = List.of(
+                new ItemStack(ModItems.SILICON_SHARD.get()),
+                new ItemStack(Items.FLINT),
                 new ItemStack(ModItems.COPPER_DUST.get()),
                 new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.BRONZE_DUST.get()),
                 new ItemStack(ModItems.IRON_DUST.get()),
                 new ItemStack(ModItems.GOLD_DUST.get()),
-                new ItemStack(ModItems.SILICON_SHARD.get()),
-                new ItemStack(Items.FLINT)
+                new ItemStack(ModItems.DIAMOND_DUST.get())
         );
 
         List<ItemStack> suspGravelOutputs = List.of(
-                new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(ModItems.GOLD_DUST.get()),
                 new ItemStack(ModItems.SILICON_SHARD.get()),
                 new ItemStack(Items.FLINT),
+                new ItemStack(ModItems.COPPER_DUST.get()),
+                new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.BRONZE_DUST.get()),
+                new ItemStack(ModItems.IRON_DUST.get()),
+                new ItemStack(ModItems.GOLD_DUST.get()),
+                new ItemStack(ModItems.DIAMOND_DUST.get()),
                 new ItemStack(Items.EMERALD),
                 new ItemStack(Items.WHEAT),
                 new ItemStack(Items.BURN_POTTERY_SHERD)
         );
 
         List<ItemStack> suspSandOutputs = List.of(
-                new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(ModItems.GOLD_DUST.get()),
                 new ItemStack(ModItems.SILICON_SHARD.get()),
                 new ItemStack(Items.FLINT),
+                new ItemStack(ModItems.COPPER_DUST.get()),
+                new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.BRONZE_DUST.get()),
+                new ItemStack(ModItems.IRON_DUST.get()),
+                new ItemStack(ModItems.GOLD_DUST.get()),
+                new ItemStack(ModItems.DIAMOND_DUST.get()),
                 new ItemStack(Items.DIAMOND),
                 new ItemStack(Items.EMERALD),
                 new ItemStack(Items.SNIFFER_EGG),
