@@ -30,8 +30,8 @@ public class ChiselItem extends Item {
         Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
 
-        // 1. Interacting ONLY with StumpBlock! Regular logs cannot be chiseled into work stumps!
-        if (ModBlocks.isStump(state)) {
+        // 1. Interacting ONLY with overworld carvable StumpBlock (Nether stumps cannot be carved)!
+        if (ModBlocks.isCarvableStump(state)) {
             if (!level.isClientSide) {
                 level.setBlock(pos, ModBlocks.WORK_STUMP.get().defaultBlockState().setValue(WorkStumpBlock.STAGE, 0), 3);
                 level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0f, 1.0f);

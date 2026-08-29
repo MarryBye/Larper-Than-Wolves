@@ -143,4 +143,9 @@ public class ModBlocks {
     public static boolean isStump(BlockState state) {
         return state.getBlock() instanceof StumpBlock;
     }
+
+    public static boolean isCarvableStump(BlockState state) {
+        if (!(state.getBlock() instanceof StumpBlock)) return false;
+        return !state.is(CRIMSON_STUMP.get()) && !state.is(WARPED_STUMP.get());
+    }
 }

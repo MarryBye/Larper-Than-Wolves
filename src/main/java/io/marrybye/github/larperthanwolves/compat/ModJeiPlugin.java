@@ -109,8 +109,8 @@ public class ModJeiPlugin implements IModPlugin {
                 new SieveJeiRecipe(new ItemStack(Blocks.SUSPICIOUS_SAND), suspSandOutputs, sieveTime)
         ));
 
-        // 2. Chisel In-World Carving
-        List<ItemStack> stumpsAndLogs = List.of(
+        // 2. Chisel In-World Carving (Overworld tree stumps only)
+        List<ItemStack> carvableStumps = List.of(
                 new ItemStack(ModBlocks.OAK_STUMP.get()),
                 new ItemStack(ModBlocks.BIRCH_STUMP.get()),
                 new ItemStack(ModBlocks.SPRUCE_STUMP.get()),
@@ -118,22 +118,12 @@ public class ModJeiPlugin implements IModPlugin {
                 new ItemStack(ModBlocks.ACACIA_STUMP.get()),
                 new ItemStack(ModBlocks.DARK_OAK_STUMP.get()),
                 new ItemStack(ModBlocks.MANGROVE_STUMP.get()),
-                new ItemStack(ModBlocks.CHERRY_STUMP.get()),
-                new ItemStack(ModBlocks.CRIMSON_STUMP.get()),
-                new ItemStack(ModBlocks.WARPED_STUMP.get()),
-                new ItemStack(Items.OAK_LOG),
-                new ItemStack(Items.BIRCH_LOG),
-                new ItemStack(Items.SPRUCE_LOG),
-                new ItemStack(Items.JUNGLE_LOG),
-                new ItemStack(Items.ACACIA_LOG),
-                new ItemStack(Items.DARK_OAK_LOG),
-                new ItemStack(Items.MANGROVE_LOG),
-                new ItemStack(Items.CHERRY_LOG)
+                new ItemStack(ModBlocks.CHERRY_STUMP.get())
         );
 
         registration.addRecipes(ChiselRecipeCategory.TYPE, List.of(
                 new ChiselRecipe(
-                        stumpsAndLogs,
+                        carvableStumps,
                         new ItemStack(ModItems.CHISEL.get()),
                         new ItemStack(ModBlocks.WORK_STUMP.get()),
                         new ItemStack(Items.CRAFTING_TABLE),
