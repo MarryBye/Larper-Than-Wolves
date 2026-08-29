@@ -121,9 +121,9 @@ public class ModItems {
                     .durability(ModToolMaterials.SILICON.getUses())
                     .attributes(SwordItem.createAttributes(ModToolMaterials.SILICON, 2, -2.4f))));
 
-    // Work Stump Tool
-    public static final DeferredItem<WorkStumpItem> WORK_STUMP = ITEMS.register("work_stump",
-            () -> new WorkStumpItem(new Item.Properties().durability(64)));
+    // Chisel Tool (Стамеска)
+    public static final DeferredItem<ChiselItem> CHISEL = ITEMS.register("chisel",
+            () -> new ChiselItem(new Item.Properties().durability(64)));
 
     // Diamond Ingot
     public static final DeferredItem<Item> DIAMOND_INGOT = ITEMS.register("diamond_ingot",

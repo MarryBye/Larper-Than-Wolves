@@ -19,8 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class WorkStumpItem extends Item {
-    public WorkStumpItem(Properties properties) {
+public class ChiselItem extends Item {
+    public ChiselItem(Properties properties) {
         super(properties);
     }
 
@@ -44,7 +44,7 @@ public class WorkStumpItem extends Item {
                     stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                 }
                 if (player != null) {
-                    player.displayClientMessage(Component.literal("§6[1/4] Вы начали вытёсывать верстак из бревна..."), true);
+                    player.displayClientMessage(Component.literal("§6[1/4] Вы начали вытёсывать верстак стамеской из бревна..."), true);
                 }
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
