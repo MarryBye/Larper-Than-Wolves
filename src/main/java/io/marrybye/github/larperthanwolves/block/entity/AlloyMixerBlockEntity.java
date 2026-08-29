@@ -174,25 +174,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         boolean hasIngredients = entity.hasValidIngredients();
         boolean canOutput = entity.canOutputResult();
 
-        // Smart fuel auto-consumption when old fuel finishes
-        if (entity.burnTime <= 0) {
-            ItemStack fuelInSlot = entity.items.get(4);
-            if (!fuelInSlot.isEmpty() && BrickFurnaceBlockEntity.isValidFuel(fuelInSlot)) {
-                if ((hasIngredients && canOutput) || entity.wasLitOnce) {
-                    BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(fuelInSlot);
-                    if (info != null) {
-                        entity.burnTime = info.burnDuration;
-                        entity.maxBurnTime = info.burnDuration;
-                        entity.wasLitOnce = true;
-                        fuelInSlot.shrink(1);
-                        if (fuelInSlot.isEmpty()) {
-                            entity.items.set(4, ItemStack.EMPTY);
-                        }
-                        changed = true;
-                    }
-                }
-            }
-        }
+        // When burnTime reaches 0, mixer stops and requires manual ignition with lighter/flint&steel
 
         if (hasIngredients && canOutput && entity.burnTime > 0) {
             entity.cookTime++;

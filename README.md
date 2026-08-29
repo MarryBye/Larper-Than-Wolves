@@ -1,4 +1,4 @@
-# 🐺 Larper Than Wolves (v1.6.0)
+# 🐺 Larper Than Wolves (v1.7.0)
 
 **Larper Than Wolves** (`larperthanwolves`) — хардкорная модификация для **Minecraft 1.21.1 (NeoForge)**, полностью перерабатывающая прогрессию выживания, механику добычи ресурсов, раннюю игру, металлургию и баланс экипировки.
 

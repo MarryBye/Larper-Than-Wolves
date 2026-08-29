@@ -206,27 +206,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
             changed = true;
         }
 
-        // Smart fuel auto-consumption when old fuel finishes
-        if (entity.burnTime <= 0) {
-            ItemStack fuelInSlot = entity.items.get(6);
-            if (!fuelInSlot.isEmpty() && isValidFuel(fuelInSlot)) {
-                if (entity.hasSmeltableItem(level) || entity.wasLitOnce) {
-                    FuelInfo info = getFuelInfo(fuelInSlot);
-                    if (info != null) {
-                        entity.burnTime = info.burnDuration;
-                        entity.maxBurnTime = info.burnDuration;
-                        entity.fuelCookSpeed = info.cookSpeed;
-                        entity.cookTimeTotal = entity.fuelCookSpeed;
-                        entity.wasLitOnce = true;
-                        fuelInSlot.shrink(1);
-                        if (fuelInSlot.isEmpty()) {
-                            entity.items.set(6, ItemStack.EMPTY);
-                        }
-                        changed = true;
-                    }
-                }
-            }
-        }
+        // When burnTime reaches 0, furnace stops burning and requires manual ignition with lighter/flint&steel
 
         // Cooking logic
         if (entity.burnTime > 0) {

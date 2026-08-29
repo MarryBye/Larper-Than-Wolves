@@ -59,18 +59,49 @@ public class DisabledItemsHandler {
             Items.DIAMOND_SHOVEL,
             Items.DIAMOND_HOE,
 
-            // Diamond armor
+            // Diamond armor & horse armor
             Items.DIAMOND_HELMET,
             Items.DIAMOND_CHESTPLATE,
             Items.DIAMOND_LEGGINGS,
             Items.DIAMOND_BOOTS,
+            Items.DIAMOND_HORSE_ARMOR,
 
             // Vanilla Furnace
             Items.FURNACE
     );
 
     public static boolean isDisabled(Item item) {
-        return DISABLED_ITEMS.contains(item);
+        if (item == null) return false;
+        if (DISABLED_ITEMS.contains(item)) return true;
+
+        net.minecraft.resources.ResourceLocation id = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
+        if (id != null) {
+            String path = id.getPath();
+            String namespace = id.getNamespace();
+            if ("minecraft".equals(namespace)) {
+                if (path.startsWith("wooden_") && (path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe"))) {
+                    return true;
+                }
+                if (path.startsWith("stone_") && (path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe"))) {
+                    return true;
+                }
+                if (path.startsWith("chainmail_")) {
+                    return true;
+                }
+                if (path.startsWith("diamond_") && (path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe")
+                        || path.endsWith("_helmet") || path.endsWith("_chestplate") || path.endsWith("_leggings") || path.endsWith("_boots") || path.endsWith("_horse_armor"))) {
+                    return true;
+                }
+                if ("furnace".equals(path)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isDisabled(ItemStack stack) {
+        return stack != null && !stack.isEmpty() && isDisabled(stack.getItem());
     }
 
     // Remove disabled items from all Creative Tabs (called via mod event bus listener)
@@ -83,7 +114,7 @@ public class DisabledItemsHandler {
         } catch (Throwable ignored) {}
     }
 
-    // Remove dropped or spawned item entities in the world
+    // Remove dropped or spawned item entities in the world and purge mob equipment
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
         if (event.getLevel().isClientSide) return;
@@ -91,6 +122,8 @@ public class DisabledItemsHandler {
         if (event.getEntity() instanceof ItemEntity itemEntity) {
             if (isDisabled(itemEntity.getItem().getItem())) {
                 itemEntity.discard();
+                event.setCanceled(true);
+                return;
             }
         } else if (event.getEntity() instanceof LivingEntity living && !(living instanceof Player)) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -118,10 +151,26 @@ public class DisabledItemsHandler {
         }
     }
 
+    // Strip mob equipment before death drops are created
+    @SubscribeEvent
+    public static void onLivingDeath(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
+        if (event.getEntity() instanceof LivingEntity living && !(living instanceof Player)) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack stack = living.getItemBySlot(slot);
+                if (!stack.isEmpty() && isDisabled(stack.getItem())) {
+                    living.setItemSlot(slot, ItemStack.EMPTY);
+                    if (living instanceof Mob mob) {
+                        mob.setDropChance(slot, 0.0f);
+                    }
+                }
+            }
+        }
+    }
+
     // Prevent mobs dropping disabled items upon death
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
-        event.getDrops().removeIf(itemEntity -> !itemEntity.getItem().isEmpty() && isDisabled(itemEntity.getItem().getItem()));
+        event.getDrops().removeIf(itemEntity -> itemEntity == null || itemEntity.getItem().isEmpty() || isDisabled(itemEntity.getItem().getItem()));
     }
 
     // Prevent equipping disabled items
@@ -130,6 +179,9 @@ public class DisabledItemsHandler {
         ItemStack to = event.getTo();
         if (!to.isEmpty() && isDisabled(to.getItem())) {
             event.getEntity().setItemSlot(event.getSlot(), ItemStack.EMPTY);
+            if (event.getEntity() instanceof Mob mob) {
+                mob.setDropChance(event.getSlot(), 0.0f);
+            }
         }
     }
 

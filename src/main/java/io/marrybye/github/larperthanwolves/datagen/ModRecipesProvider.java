@@ -140,53 +140,53 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
 
         // --- 5. Silicon Tools (2x2 craftable, except pickaxe) ---
 
-        // Silicon Shears (2 silicon shards) - 2x2 grid
+        // Silicon Shears (2 flint) - 2x2 grid
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_SHEARS.get())
                 .pattern(" #")
                 .pattern("# ")
-                .define('#', ModItems.SILICON_SHARD.get())
-                .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
+                .define('#', Items.FLINT)
+                .unlockedBy("has_flint", has(Items.FLINT))
                 .save(pRecipeOutput, "silicon_shears");
 
-        // Silicon Spear (1 silicon shard, 1 rope, 1 stick) - 2x2 grid
+        // Silicon Spear (1 flint, 1 rope, 1 stick) - 2x2 grid
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SILICON_SPEAR.get())
                 .pattern("#R")
                 .pattern("X ")
-                .define('#', ModItems.SILICON_SHARD.get())
+                .define('#', Items.FLINT)
                 .define('R', ModItems.ROPE.get())
                 .define('X', Items.STICK)
-                .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
+                .unlockedBy("has_flint", has(Items.FLINT))
                 .save(pRecipeOutput, "silicon_spear");
 
-        // Silicon Axe (1 silicon shard, 1 rope, 2 sticks) - 2x2 grid
+        // Silicon Axe (1 flint, 1 rope, 2 sticks) - 2x2 grid
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_AXE.get())
                 .pattern("#R")
                 .pattern("XX")
-                .define('#', ModItems.SILICON_SHARD.get())
+                .define('#', Items.FLINT)
                 .define('R', ModItems.ROPE.get())
                 .define('X', Items.STICK)
-                .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
+                .unlockedBy("has_flint", has(Items.FLINT))
                 .save(pRecipeOutput, "silicon_axe");
 
-        // Silicon Shovel (1 silicon shard, 1 rope, 1 stick) - 2x2 grid
+        // Silicon Shovel (1 flint, 1 rope, 1 stick) - 2x2 grid
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_SHOVEL.get())
                 .pattern("#R")
                 .pattern(" X")
-                .define('#', ModItems.SILICON_SHARD.get())
+                .define('#', Items.FLINT)
                 .define('R', ModItems.ROPE.get())
                 .define('X', Items.STICK)
-                .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
+                .unlockedBy("has_flint", has(Items.FLINT))
                 .save(pRecipeOutput, "silicon_shovel");
 
-        // Silicon Pickaxe (3 silicon shards, 1 rope, 2 sticks) - 3x3 crafting table
+        // Silicon Pickaxe (3 flint, 1 rope, 2 sticks) - 3x3 crafting table
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SILICON_PICKAXE.get())
                 .pattern("###")
                 .pattern(" R ")
                 .pattern(" X ")
-                .define('#', ModItems.SILICON_SHARD.get())
+                .define('#', Items.FLINT)
                 .define('R', ModItems.ROPE.get())
                 .define('X', Items.STICK)
-                .unlockedBy("has_silicon_shard", has(ModItems.SILICON_SHARD.get()))
+                .unlockedBy("has_flint", has(Items.FLINT))
                 .save(pRecipeOutput, "silicon_pickaxe");
 
         // --- 6. Copper Tools & Armor ---

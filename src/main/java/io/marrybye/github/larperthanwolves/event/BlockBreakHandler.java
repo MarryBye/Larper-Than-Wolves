@@ -395,10 +395,6 @@ public class BlockBreakHandler {
                 ItemEntity shard = new ItemEntity(level, x, y, z, new ItemStack(ModItems.SILICON_SHARD.get(), 1));
                 shard.setDefaultPickUpDelay();
                 drops.add(shard);
-            } else if (roll < copperChance + siliconChance + 0.10f) {
-                ItemEntity flint = new ItemEntity(level, x, y, z, new ItemStack(Items.FLINT, 1));
-                flint.setDefaultPickUpDelay();
-                drops.add(flint);
             } else {
                 ItemEntity gravel = new ItemEntity(level, x, y, z, new ItemStack(Blocks.GRAVEL.asItem(), 1));
                 gravel.setDefaultPickUpDelay();
