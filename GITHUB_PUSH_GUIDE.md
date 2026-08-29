@@ -4,7 +4,7 @@
 
 * **GitHub URL**: `https://github.com/MarryBye/Larper-Than-Wolves`
 * **Основная ветка**: `main`
-* **Актуальный тег релиза**: `v1.5.0`
+* **Актуальный тег релиза**: `v1.8.0`
 
 ---
 
@@ -14,7 +14,7 @@
 ```bash
 ./gradlew build
 ```
-Готовый JAR файл: `build/libs/larperthanwolves-1.5.0.jar`.
+Готовый JAR файл: `build/libs/larperthanwolves-1.8.0.jar`.
 
 ### 2. Фиксация изменений и отправка в репозиторий
 ```bash
@@ -30,10 +30,9 @@ git push origin main
 
 ### 3. Обновление тега релиза
 ```bash
-# Удалить старый локальный тег и создать новый на текущем коммите
-git tag -d v1.5.0
-git tag -a v1.5.0 -m "Release v1.5.0"
+# Создать тег релиза на текущем коммите
+git tag -a v1.8.0 -m "Release v1.8.0"
 
-# Отправить тег на GitHub с флагом перезаписи
-git push origin v1.5.0 --force
+# Отправить тег на GitHub
+git push origin v1.8.0
 ```

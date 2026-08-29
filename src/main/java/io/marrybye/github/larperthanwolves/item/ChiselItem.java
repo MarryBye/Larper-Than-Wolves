@@ -39,7 +39,8 @@ public class ChiselItem extends Item {
                     serverLevel.sendParticles(ParticleTypes.CRIT, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 10, 0.2, 0.1, 0.2, 0.05);
                 }
                 if (player != null && !player.getAbilities().instabuild) {
-                    stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                    EquipmentSlot equipSlot = context.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                    stack.hurtAndBreak(1, player, equipSlot);
                 }
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
@@ -68,7 +69,8 @@ public class ChiselItem extends Item {
                     serverLevel.sendParticles(ParticleTypes.CRIT, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 8, 0.2, 0.1, 0.2, 0.05);
                 }
                 if (player != null && !player.getAbilities().instabuild) {
-                    stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                    EquipmentSlot equipSlot = context.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                    stack.hurtAndBreak(1, player, equipSlot);
                 }
             }
             return InteractionResult.sidedSuccess(level.isClientSide);

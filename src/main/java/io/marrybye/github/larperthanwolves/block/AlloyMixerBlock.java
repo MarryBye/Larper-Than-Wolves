@@ -2,7 +2,7 @@ package io.marrybye.github.larperthanwolves.block;
 
 import com.mojang.serialization.MapCodec;
 import io.marrybye.github.larperthanwolves.block.entity.AlloyMixerBlockEntity;
-import io.marrybye.github.larperthanwolves.block.entity.BrickFurnaceBlockEntity;
+import io.marrybye.github.larperthanwolves.block.entity.FuelRegistry;
 import io.marrybye.github.larperthanwolves.block.entity.ModBlockEntities;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import net.minecraft.core.BlockPos;
@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -86,7 +87,7 @@ public class AlloyMixerBlock extends BaseEntityBlock {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof AlloyMixerBlockEntity mixer) {
             // 1. Loading fuel
-            if (BrickFurnaceBlockEntity.isValidFuel(stack)) {
+            if (FuelRegistry.isValidFuel(stack)) {
                 if (!level.isClientSide) {
                     if (mixer.addFuel(stack)) {
                         if (!player.getAbilities().instabuild) {
@@ -106,7 +107,8 @@ public class AlloyMixerBlock extends BaseEntityBlock {
                     if (!mixer.isLit() && mixer.lightMixer()) {
                         level.setBlock(pos, state.setValue(STAGE, 2), 3);
                         level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
-                        stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                        EquipmentSlot equipSlot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                        stack.hurtAndBreak(1, player, equipSlot);
                     }
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -125,5 +127,17 @@ public class AlloyMixerBlock extends BaseEntityBlock {
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof AlloyMixerBlockEntity mixer) {
+                Containers.dropContents(level, pos, mixer);
+                level.updateNeighbourForOutputSignal(pos, this);
+            }
+            super.onRemove(state, level, pos, newState, isMoving);
+        }
     }
 }

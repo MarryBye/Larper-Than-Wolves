@@ -21,10 +21,14 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import io.marrybye.github.larperthanwolves.recipe.AlloyRecipe;
+import io.marrybye.github.larperthanwolves.recipe.AlloyRegistry;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
     // 0: Diamond, 1: Iron, 2: Copper, 3: Result Diamond Ingot, 4: Stored Fuel
@@ -58,9 +62,9 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     }
 
     public boolean addFuel(ItemStack fuelStack) {
-        if (!BrickFurnaceBlockEntity.isValidFuel(fuelStack)) return false;
+        if (!FuelRegistry.isValidFuel(fuelStack)) return false;
 
-        BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(fuelStack);
+        FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(fuelStack);
         if (info == null) return false;
 
         if (this.burnTime > 0) {
@@ -87,8 +91,8 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         if (this.burnTime > 0) return false;
 
         ItemStack stored = this.items.get(4);
-        if (!stored.isEmpty() && BrickFurnaceBlockEntity.isValidFuel(stored)) {
-            BrickFurnaceBlockEntity.FuelInfo info = BrickFurnaceBlockEntity.getFuelInfo(stored);
+        if (!stored.isEmpty() && FuelRegistry.isValidFuel(stored)) {
+            FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(stored);
             if (info != null) {
                 this.burnTime = info.burnDuration;
                 this.maxBurnTime = info.burnDuration;
@@ -212,142 +216,39 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         }
     }
 
-    private int findDiamondSlot() {
-        for (int i = 0; i < 3; i++) {
-            if (items.get(i).is(Items.DIAMOND)) return i;
-        }
-        return -1;
-    }
-
-    private int findIronSlot(int excludeSlot) {
-        for (int i = 0; i < 3; i++) {
-            if (i != excludeSlot && items.get(i).is(Items.IRON_INGOT)) return i;
-        }
-        return -1;
-    }
-
-    private int findCopperSlot(int exclude1, int exclude2) {
-        for (int i = 0; i < 3; i++) {
-            if (i != exclude1 && i != exclude2 && items.get(i).is(Items.COPPER_INGOT)) return i;
-        }
-        return -1;
-    }
-
-    public enum ActiveRecipe {
-        NONE,
-        DIAMOND_INGOT,
-        BRONZE_INGOT
-    }
-
-    public ActiveRecipe getActiveRecipe() {
-        if (canMakeDiamondIngot()) return ActiveRecipe.DIAMOND_INGOT;
-        if (canMakeBronzeIngot()) return ActiveRecipe.BRONZE_INGOT;
-        return ActiveRecipe.NONE;
-    }
-
-    private boolean canMakeDiamondIngot() {
-        int d = findDiamondSlot();
-        if (d == -1) return false;
-        int fe = findIronSlot(d);
-        if (fe == -1) return false;
-        int cu = findCopperSlot(d, fe);
-        return cu != -1;
-    }
-
-    private boolean canMakeBronzeIngot() {
-        int copperCount = 0;
-        int tinCount = 0;
-        for (int i = 0; i < 3; i++) {
-            ItemStack stack = items.get(i);
-            if (stack.isEmpty()) continue;
-            if (stack.is(Items.COPPER_INGOT)) {
-                copperCount += stack.getCount();
-            } else if (stack.is(ModItems.TIN_INGOT.get())) {
-                tinCount += stack.getCount();
-            } else {
-                return false;
-            }
-        }
-        return copperCount >= 2 && tinCount >= 1;
+    public Optional<AlloyRecipe> getActiveRecipe() {
+        return AlloyRegistry.findMatchingRecipe(this.items, 0, 3);
     }
 
     public boolean hasValidIngredients() {
-        return getActiveRecipe() != ActiveRecipe.NONE;
+        return getActiveRecipe().isPresent();
     }
 
     public boolean canOutputResult() {
-        ActiveRecipe recipe = getActiveRecipe();
-        if (recipe == ActiveRecipe.NONE) return false;
+        Optional<AlloyRecipe> recipe = getActiveRecipe();
+        if (recipe.isEmpty()) return false;
 
-        ItemStack targetResult = (recipe == ActiveRecipe.DIAMOND_INGOT) ?
-                new ItemStack(ModItems.DIAMOND_INGOT.get(), 1) :
-                new ItemStack(ModItems.BRONZE_INGOT.get(), 1);
-
-        ItemStack out = items.get(3);
+        ItemStack targetResult = recipe.get().getResult();
+        ItemStack out = this.items.get(3);
         if (out.isEmpty()) return true;
         if (!ItemStack.isSameItemSameComponents(out, targetResult)) return false;
         return out.getCount() + targetResult.getCount() <= out.getMaxStackSize();
     }
 
     private void mixAlloy() {
-        ActiveRecipe recipe = getActiveRecipe();
-        if (recipe == ActiveRecipe.NONE) return;
+        Optional<AlloyRecipe> recipeOpt = getActiveRecipe();
+        if (recipeOpt.isEmpty()) return;
 
-        if (recipe == ActiveRecipe.DIAMOND_INGOT) {
-            int d = findDiamondSlot();
-            if (d == -1) return;
-            int fe = findIronSlot(d);
-            if (fe == -1) return;
-            int cu = findCopperSlot(d, fe);
-            if (cu == -1) return;
+        AlloyRecipe recipe = recipeOpt.get();
+        ItemStack targetResult = recipe.getResult();
 
-            items.get(d).shrink(1);
-            items.get(fe).shrink(1);
-            items.get(cu).shrink(1);
+        recipe.consumeInputs(this.items, 0, 3);
 
-            if (items.get(d).isEmpty()) items.set(d, ItemStack.EMPTY);
-            if (items.get(fe).isEmpty()) items.set(fe, ItemStack.EMPTY);
-            if (items.get(cu).isEmpty()) items.set(cu, ItemStack.EMPTY);
-
-            ItemStack out = items.get(3);
-            if (out.isEmpty()) {
-                items.set(3, new ItemStack(ModItems.DIAMOND_INGOT.get(), 1));
-            } else {
-                out.grow(1);
-            }
-        } else if (recipe == ActiveRecipe.BRONZE_INGOT) {
-            int neededCopper = 2;
-            for (int i = 0; i < 3 && neededCopper > 0; i++) {
-                ItemStack stack = items.get(i);
-                if (stack.is(Items.COPPER_INGOT)) {
-                    int take = Math.min(neededCopper, stack.getCount());
-                    stack.shrink(take);
-                    neededCopper -= take;
-                }
-            }
-
-            int neededTin = 1;
-            for (int i = 0; i < 3 && neededTin > 0; i++) {
-                ItemStack stack = items.get(i);
-                if (stack.is(ModItems.TIN_INGOT.get())) {
-                    int take = Math.min(neededTin, stack.getCount());
-                    stack.shrink(take);
-                    neededTin -= take;
-                }
-            }
-
-            for (int i = 0; i < 3; i++) {
-                if (items.get(i).isEmpty()) {
-                    items.set(i, ItemStack.EMPTY);
-                }
-            }
-
-            ItemStack out = items.get(3);
-            if (out.isEmpty()) {
-                items.set(3, new ItemStack(ModItems.BRONZE_INGOT.get(), 1));
-            } else {
-                out.grow(1);
-            }
+        ItemStack out = this.items.get(3);
+        if (out.isEmpty()) {
+            this.items.set(3, targetResult);
+        } else {
+            out.grow(targetResult.getCount());
         }
     }
 
@@ -387,15 +288,12 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
 
         // Fuel from back: only when old fuel finished burning (burnTime <= 0) and slot 4 is empty
         if (side == back && index == 4) {
-            return BrickFurnaceBlockEntity.isValidFuel(itemStack) && this.burnTime <= 0 && this.items.get(4).isEmpty();
+            return FuelRegistry.isValidFuel(itemStack) && this.burnTime <= 0 && this.items.get(4).isEmpty();
         }
 
-        // Inputs from top: allow placing valid mixer ingredients (Diamond, Iron Ingot, Copper Ingot, Tin Ingot)
+        // Inputs from top: allow placing any valid alloy mixer ingredient
         if (side == Direction.UP && index < 3) {
-            return itemStack.is(Items.DIAMOND) ||
-                    itemStack.is(Items.IRON_INGOT) ||
-                    itemStack.is(Items.COPPER_INGOT) ||
-                    itemStack.is(ModItems.TIN_INGOT.get());
+            return AlloyRegistry.isValidInput(itemStack);
         }
 
         return false;

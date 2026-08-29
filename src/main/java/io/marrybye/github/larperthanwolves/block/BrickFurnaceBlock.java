@@ -1,10 +1,12 @@
 package io.marrybye.github.larperthanwolves.block;
 
 import io.marrybye.github.larperthanwolves.block.entity.BrickFurnaceBlockEntity;
+import io.marrybye.github.larperthanwolves.block.entity.FuelRegistry;
 import io.marrybye.github.larperthanwolves.block.entity.ModBlockEntities;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -84,7 +86,7 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof BrickFurnaceBlockEntity furnace) {
             // 1. Check if holding valid fuel
-            if (BrickFurnaceBlockEntity.isValidFuel(stack)) {
+            if (FuelRegistry.isValidFuel(stack)) {
                 if (!level.isClientSide) {
                     if (furnace.addFuel(stack)) {
                         if (!player.getAbilities().instabuild) {
@@ -103,7 +105,8 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
                     if (!furnace.isLit() && furnace.lightFurnace()) {
                         level.setBlock(pos, state.setValue(STAGE, 2), 3);
                         level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
-                        stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                        EquipmentSlot equipSlot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                        stack.hurtAndBreak(1, player, equipSlot);
                     }
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -122,6 +125,18 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof BrickFurnaceBlockEntity furnace) {
+                Containers.dropContents(level, pos, furnace);
+                level.updateNeighbourForOutputSignal(pos, this);
+            }
+            super.onRemove(state, level, pos, newState, isMoving);
+        }
     }
 }
 

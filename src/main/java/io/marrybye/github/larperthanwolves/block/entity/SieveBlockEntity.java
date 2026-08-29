@@ -273,12 +273,15 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         }
     }
 
+    private static final int[] SLOTS_INPUT = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
+    private static final int[] SLOTS_OUTPUT = new int[]{9, 10, 11, 12, 13, 14, 15, 16, 17};
+
     @Override
     public int[] getSlotsForFace(Direction side) {
         if (side == Direction.DOWN) {
-            return new int[]{9, 10, 11, 12, 13, 14, 15, 16, 17};
+            return SLOTS_OUTPUT;
         }
-        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
+        return SLOTS_INPUT;
     }
 
     @Override

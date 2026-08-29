@@ -1,4 +1,4 @@
-# 🐺 Larper Than Wolves (v1.7.0)
+# 🐺 Larper Than Wolves (v1.8.0)
 
 **Larper Than Wolves** (`larperthanwolves`) — хардкорная модификация для **Minecraft 1.21.1 (NeoForge)**, полностью перерабатывающая прогрессию выживания, механику добычи ресурсов, раннюю игру, металлургию и баланс экипировки.
 
@@ -113,7 +113,7 @@
 
 ## 📦 Сборка и установка
 
-1. Скачайте `larperthanwolves-1.5.0.jar` из раздела [Releases](https://github.com/MarryBye/Larper-Than-Wolves/releases).
+1. Скачайте `larperthanwolves-1.8.0.jar` из раздела [Releases](https://github.com/MarryBye/Larper-Than-Wolves/releases).
 2. Поместите файл в папку `mods` вашего профиля Minecraft 1.21.1 с установленным **NeoForge 21.1.248+**.
 3. Запустите игру.
 

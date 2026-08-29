@@ -4,6 +4,7 @@ import io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock;
 import io.marrybye.github.larperthanwolves.block.ModBlocks;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import io.marrybye.github.larperthanwolves.menu.BrickFurnaceMenu;
+import io.marrybye.github.larperthanwolves.recipe.SmeltingRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -47,85 +48,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     private int fuelCookSpeed = 200;
     private boolean wasLitOnce = false;
 
-    public static class FuelInfo {
-        public final int burnDuration;
-        public final int cookSpeed;
 
-        public FuelInfo(int burnDuration, int cookSpeed) {
-            this.burnDuration = burnDuration;
-            this.cookSpeed = cookSpeed;
-        }
-    }
-
-    private static final Map<Item, FuelInfo> FUEL_REGISTRY = new HashMap<>();
-
-    static {
-        // Wood / Logs / Planks: 60s burn (1200 ticks), 8s cook speed (160 ticks)
-        FuelInfo woodInfo = new FuelInfo(1200, 160);
-        FUEL_REGISTRY.put(Items.OAK_LOG, woodInfo);
-        FUEL_REGISTRY.put(Items.BIRCH_LOG, woodInfo);
-        FUEL_REGISTRY.put(Items.SPRUCE_LOG, woodInfo);
-        FUEL_REGISTRY.put(Items.JUNGLE_LOG, woodInfo);
-        FUEL_REGISTRY.put(Items.ACACIA_LOG, woodInfo);
-        FUEL_REGISTRY.put(Items.DARK_OAK_LOG, woodInfo);
-        FUEL_REGISTRY.put(Items.MANGROVE_LOG, woodInfo);
-        FUEL_REGISTRY.put(Items.CHERRY_LOG, woodInfo);
-        FUEL_REGISTRY.put(Items.OAK_WOOD, woodInfo);
-        FUEL_REGISTRY.put(Items.BIRCH_WOOD, woodInfo);
-        FUEL_REGISTRY.put(Items.SPRUCE_WOOD, woodInfo);
-        FUEL_REGISTRY.put(Items.JUNGLE_WOOD, woodInfo);
-        FUEL_REGISTRY.put(Items.ACACIA_WOOD, woodInfo);
-        FUEL_REGISTRY.put(Items.DARK_OAK_WOOD, woodInfo);
-        FUEL_REGISTRY.put(Items.OAK_PLANKS, woodInfo);
-        FUEL_REGISTRY.put(Items.BIRCH_PLANKS, woodInfo);
-        FUEL_REGISTRY.put(Items.SPRUCE_PLANKS, woodInfo);
-        FUEL_REGISTRY.put(Items.JUNGLE_PLANKS, woodInfo);
-        FUEL_REGISTRY.put(Items.ACACIA_PLANKS, woodInfo);
-        FUEL_REGISTRY.put(Items.DARK_OAK_PLANKS, woodInfo);
-
-        // Charcoal: 80s burn (1600 ticks), 6s cook speed (120 ticks)
-        FUEL_REGISTRY.put(Items.CHARCOAL, new FuelInfo(1600, 120));
-
-        // Coal: 100s burn (2000 ticks), 5s cook speed (100 ticks)
-        FUEL_REGISTRY.put(Items.COAL, new FuelInfo(2000, 100));
-
-        // Coal Block: 900s burn (18000 ticks), 4s cook speed (80 ticks)
-        FUEL_REGISTRY.put(Items.COAL_BLOCK, new FuelInfo(18000, 80));
-    }
-
-    public static boolean isValidFuel(ItemStack stack) {
-        return getFuelInfo(stack) != null;
-    }
-
-    public static FuelInfo getFuelInfo(ItemStack stack) {
-        if (stack.isEmpty()) return null;
-        if (stack.is(ModItems.DRY_GRASS.get())) {
-            int burn = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.dryGrassBurnTicks.get() : 400;
-            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.dryGrassCookSpeed.get() : 200;
-            return new FuelInfo(burn, speed);
-        }
-        if (stack.is(Items.STICK)) {
-            int burn = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.stickBurnTicks.get() : 300;
-            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.stickCookSpeed.get() : 250;
-            return new FuelInfo(burn, speed);
-        }
-        if (stack.is(ItemTags.LOGS) || stack.is(ItemTags.PLANKS) || stack.is(ItemTags.WOODEN_SLABS) || stack.is(ItemTags.WOODEN_STAIRS)) {
-            int burn = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.logBurnTicks.get() : 800;
-            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.logCookSpeed.get() : 160;
-            return new FuelInfo(burn, speed);
-        }
-        if (stack.is(Items.COAL) || stack.is(Items.CHARCOAL)) {
-            int burn = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.coalBurnTicks.get() : 1600;
-            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.coalCookSpeed.get() : 100;
-            return new FuelInfo(burn, speed);
-        }
-        if (stack.is(Items.COAL_BLOCK)) {
-            int burn = (io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.coalBurnTicks.get() : 1600) * 9;
-            int speed = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ? io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.coalCookSpeed.get() : 80;
-            return new FuelInfo(burn, speed);
-        }
-        return FUEL_REGISTRY.get(stack.getItem());
-    }
 
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -286,40 +209,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     }
 
     private static ItemStack getSmeltingResult(Level level, ItemStack input) {
-        Item inputItem = input.getItem();
-
-        // 1. LarperThanWolves Ore processing: Raw ores -> 1 nugget (dust does not smelt)
-        if (inputItem == Items.RAW_IRON) return new ItemStack(Items.IRON_NUGGET, 1);
-        if (inputItem == Items.RAW_COPPER) return new ItemStack(ModItems.COPPER_NUGGET.get(), 1);
-        if (inputItem == Items.RAW_GOLD) return new ItemStack(Items.GOLD_NUGGET, 1);
-        if (inputItem == ModItems.RAW_TIN.get()) return new ItemStack(ModItems.TIN_NUGGET.get(), 1);
-
-        // 2. Food & basic blocks
-        if (inputItem == Items.BEEF) return new ItemStack(Items.COOKED_BEEF);
-        if (inputItem == Items.PORKCHOP) return new ItemStack(Items.COOKED_PORKCHOP);
-        if (inputItem == Items.MUTTON) return new ItemStack(Items.COOKED_MUTTON);
-        if (inputItem == Items.CHICKEN) return new ItemStack(Items.COOKED_CHICKEN);
-        if (inputItem == Items.RABBIT) return new ItemStack(Items.COOKED_RABBIT);
-        if (inputItem == Items.COD) return new ItemStack(Items.COOKED_COD);
-        if (inputItem == Items.SALMON) return new ItemStack(Items.COOKED_SALMON);
-        if (inputItem == Items.POTATO) return new ItemStack(Items.BAKED_POTATO);
-        if (inputItem == Items.KELP) return new ItemStack(Items.DRIED_KELP);
-        if (inputItem == Items.COBBLESTONE) return new ItemStack(Items.STONE);
-        if (inputItem == Items.SAND) return new ItemStack(Items.GLASS);
-        if (inputItem == ModBlocks.UNFIRED_BRICK.asItem()) return new ItemStack(Items.BRICK, 1);
-        if (inputItem == Items.CLAY) return new ItemStack(Items.TERRACOTTA);
-        if (inputItem == Items.WET_SPONGE) return new ItemStack(Items.SPONGE);
-
-        // 3. Fallback to vanilla Smelting recipe registry
-        SingleRecipeInput recipeInput = new SingleRecipeInput(input);
-        Optional<RecipeHolder<SmeltingRecipe>> match = level.getRecipeManager()
-                .getRecipeFor(RecipeType.SMELTING, recipeInput, level);
-
-        if (match.isPresent()) {
-            return match.get().value().assemble(recipeInput, level.registryAccess());
-        }
-
-        return ItemStack.EMPTY;
+        return SmeltingRegistry.getSmeltingResult(level, input);
     }
 
     private boolean canOutput(ItemStack result) {
@@ -354,9 +244,9 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
 
     // Load 1 fuel item into furnace
     public boolean addFuel(ItemStack fuelStack) {
-        if (!isValidFuel(fuelStack)) return false;
+        if (!FuelRegistry.isValidFuel(fuelStack)) return false;
 
-        FuelInfo info = getFuelInfo(fuelStack);
+        FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(fuelStack);
 
         if (burnTime > 0) {
             // Already lit: extend burn time up to max allowed for that fuel
@@ -387,8 +277,8 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         if (burnTime > 0) return false;
 
         ItemStack stored = items.get(6);
-        if (!stored.isEmpty() && isValidFuel(stored)) {
-            FuelInfo info = getFuelInfo(stored);
+        if (!stored.isEmpty() && FuelRegistry.isValidFuel(stored)) {
+            FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(stored);
             burnTime = info.burnDuration;
             maxBurnTime = info.burnDuration;
             fuelCookSpeed = info.cookSpeed;
@@ -463,7 +353,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot < 3) return true;
-        if (slot == 6) return isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+        if (slot == 6) return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
         return false;
     }
 
@@ -504,7 +394,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
 
         // Fuel from back: only when old fuel finished burning (burnTime <= 0) and fuel slot is empty
         if (side == back && slot == 6) {
-            return isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+            return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
         }
 
         // Inputs from top

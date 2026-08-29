@@ -13,8 +13,8 @@ import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipesProvider extends RecipeProvider implements IConditionBuilder {
-    public ModRecipesProvider(PackOutput pOutput) {
-        super(pOutput, CompletableFuture.completedFuture(HolderLookup.Provider.create(java.util.stream.Stream.empty())));
+    public ModRecipesProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> registries) {
+        super(pOutput, registries);
     }
 
     @Override

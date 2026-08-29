@@ -31,25 +31,8 @@ public class ModJeiPlugin implements IModPlugin {
         int cookTime = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ?
                 io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.alloyMixerCookTimeTicks.get() : 600;
 
-        registration.addRecipes(AlloyMixerRecipeCategory.TYPE, java.util.List.of(
-                new AlloyMixerRecipe(
-                        java.util.List.of(
-                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND),
-                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_INGOT),
-                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.COPPER_INGOT)
-                        ),
-                        new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.DIAMOND_INGOT.get()),
-                        cookTime
-                ),
-                new AlloyMixerRecipe(
-                        java.util.List.of(
-                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.COPPER_INGOT, 2),
-                                new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.TIN_INGOT.get())
-                        ),
-                        new net.minecraft.world.item.ItemStack(io.marrybye.github.larperthanwolves.item.ModItems.BRONZE_INGOT.get()),
-                        cookTime
-                )
-        ));
+        registration.addRecipes(AlloyMixerRecipeCategory.TYPE,
+                io.marrybye.github.larperthanwolves.recipe.AlloyRegistry.getJeiRecipes(cookTime));
 
         int sieveTime = io.marrybye.github.larperthanwolves.config.ModConfig.SERVER != null ?
                 io.marrybye.github.larperthanwolves.config.ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;

@@ -29,12 +29,79 @@ import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @EventBusSubscriber(modid = "larperthanwolves")
 public class BlockBreakHandler {
 
-    private static final Random RANDOM = new Random();
+    private enum PickaxeTier {
+        SILICON, COPPER, BRONZE, IRON_PLUS;
+    }
+
+    private static PickaxeTier getPickaxeTier(ItemStack tool) {
+        if (isSiliconPickaxe(tool)) return PickaxeTier.SILICON;
+        if (isCopperPickaxe(tool)) return PickaxeTier.COPPER;
+        if (isBronzePickaxe(tool)) return PickaxeTier.BRONZE;
+        return PickaxeTier.IRON_PLUS;
+    }
+
+    private static ItemStack getDropForBlock(Block block, PickaxeTier tier) {
+        if (tier == PickaxeTier.IRON_PLUS) return null;
+
+        if (block == Blocks.COAL_ORE) {
+            return new ItemStack(Items.COAL, 1);
+        } else if (block == Blocks.COPPER_ORE) {
+            if (tier == PickaxeTier.SILICON) {
+                return new ItemStack(ModItems.COPPER_DUST.get(), 1);
+            }
+            return new ItemStack(Items.RAW_COPPER, 1);
+        } else if (block == Blocks.IRON_ORE) {
+            if (tier == PickaxeTier.SILICON) return null;
+            if (tier == PickaxeTier.COPPER) return new ItemStack(ModItems.IRON_DUST.get(), 1);
+            return new ItemStack(Items.RAW_IRON, 1);
+        } else if (block == ModBlocks.TIN_ORE.get()) {
+            if (tier == PickaxeTier.SILICON) return null;
+            return new ItemStack(ModItems.RAW_TIN.get(), 1);
+        }
+
+        if (tier == PickaxeTier.BRONZE) {
+            if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
+                return new ItemStack(Blocks.COBBLESTONE.asItem(), 1);
+            } else if (block == Blocks.GRANITE) {
+                return new ItemStack(Blocks.GRANITE.asItem(), 1);
+            } else if (block == Blocks.DIORITE) {
+                return new ItemStack(Blocks.DIORITE.asItem(), 1);
+            } else if (block == Blocks.ANDESITE) {
+                return new ItemStack(Blocks.ANDESITE.asItem(), 1);
+            } else if (block == Blocks.CALCITE) {
+                return new ItemStack(Blocks.CALCITE.asItem(), 1);
+            } else if (block == Blocks.DRIPSTONE_BLOCK) {
+                return new ItemStack(Blocks.DRIPSTONE_BLOCK.asItem(), 1);
+            } else if (isSandstone(block)) {
+                return new ItemStack(block.asItem(), 1);
+            }
+        } else {
+            int count = 2 + java.util.concurrent.ThreadLocalRandom.current().nextInt(3);
+            if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
+                return new ItemStack(ModItems.STONE_NUGGET.get(), count);
+            } else if (block == Blocks.GRANITE) {
+                return new ItemStack(ModItems.GRANITE_NUGGET.get(), count);
+            } else if (block == Blocks.DIORITE) {
+                return new ItemStack(ModItems.DIORITE_NUGGET.get(), count);
+            } else if (block == Blocks.ANDESITE) {
+                return new ItemStack(ModItems.ANDESITE_NUGGET.get(), count);
+            } else if (block == Blocks.CALCITE) {
+                return new ItemStack(ModItems.CALCITE_NUGGET.get(), count);
+            } else if (block == Blocks.DRIPSTONE_BLOCK) {
+                return new ItemStack(Items.POINTED_DRIPSTONE, count);
+            } else if (isSandstone(block)) {
+                boolean isRed = block == Blocks.RED_SANDSTONE || block == Blocks.SMOOTH_RED_SANDSTONE ||
+                        block == Blocks.CUT_RED_SANDSTONE || block == Blocks.CHISELED_RED_SANDSTONE;
+                return new ItemStack(isRed ? Items.RED_SAND : Items.SAND, count);
+            }
+        }
+        return null;
+    }
 
     public static boolean isSiliconPickaxe(ItemStack stack) {
         return stack.is(ModItems.SILICON_PICKAXE.get());
@@ -312,7 +379,7 @@ public class BlockBreakHandler {
             level.playSound(null, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0f, 1.0f);
             held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
 
-            if (RANDOM.nextFloat() < 0.35f) {
+            if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.35f) {
                 ItemEntity seedDrop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
                 seedDrop.setDefaultPickUpDelay();
                 level.addFreshEntity(seedDrop);
@@ -386,7 +453,7 @@ public class BlockBreakHandler {
             double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.copperDustGravelDropChance.get() : 0.05;
             double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.siliconShardGravelDropChance.get() : 0.08;
 
-            float roll = RANDOM.nextFloat();
+            float roll = java.util.concurrent.ThreadLocalRandom.current().nextFloat();
             if (roll < copperChance) {
                 ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.COPPER_DUST.get(), 1));
                 dust.setDefaultPickUpDelay();
@@ -410,165 +477,14 @@ public class BlockBreakHandler {
             }
         }
 
-        // --- 1. SILICON PICKAXE DROPS ---
-        if (isSiliconPickaxe(tool)) {
+        PickaxeTier tier = getPickaxeTier(tool);
+        if (tier != PickaxeTier.IRON_PLUS && isStoneOrOre(block)) {
             drops.clear();
-            if (block == Blocks.COPPER_ORE) {
-                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.COPPER_DUST.get(), 1));
-                dust.setDefaultPickUpDelay();
-                drops.add(dust);
-            } else if (block == Blocks.COAL_ORE) {
-                ItemEntity coal = new ItemEntity(level, x, y, z, new ItemStack(Items.COAL, 1));
-                coal.setDefaultPickUpDelay();
-                drops.add(coal);
-            } else if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.STONE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.GRANITE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.GRANITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.DIORITE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.DIORITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.ANDESITE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.ANDESITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.CALCITE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.CALCITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.DRIPSTONE_BLOCK) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity d = new ItemEntity(level, x, y, z, new ItemStack(Items.POINTED_DRIPSTONE, count));
-                d.setDefaultPickUpDelay();
-                drops.add(d);
-            } else if (isSandstone(block)) {
-                boolean isRed = block == Blocks.RED_SANDSTONE || block == Blocks.SMOOTH_RED_SANDSTONE ||
-                        block == Blocks.CUT_RED_SANDSTONE || block == Blocks.CHISELED_RED_SANDSTONE;
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity s = new ItemEntity(level, x, y, z, new ItemStack(isRed ? Items.RED_SAND : Items.SAND, count));
-                s.setDefaultPickUpDelay();
-                drops.add(s);
-            }
-            return;
-        }
-
-        // --- 2. COPPER PICKAXE DROPS ---
-        if (isCopperPickaxe(tool)) {
-            drops.clear();
-            if (block == Blocks.COAL_ORE) {
-                ItemEntity coal = new ItemEntity(level, x, y, z, new ItemStack(Items.COAL, 1));
-                coal.setDefaultPickUpDelay();
-                drops.add(coal);
-            } else if (block == Blocks.COPPER_ORE) {
-                ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(Items.RAW_COPPER, 1));
-                raw.setDefaultPickUpDelay();
-                drops.add(raw);
-            } else if (block == Blocks.IRON_ORE) {
-                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.IRON_DUST.get(), 1));
-                dust.setDefaultPickUpDelay();
-                drops.add(dust);
-            } else if (block == ModBlocks.TIN_ORE.get()) {
-                ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(ModItems.RAW_TIN.get(), 1));
-                raw.setDefaultPickUpDelay();
-                drops.add(raw);
-            } else if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.STONE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.GRANITE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.GRANITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.DIORITE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.DIORITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.ANDESITE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.ANDESITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.CALCITE) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity nug = new ItemEntity(level, x, y, z, new ItemStack(ModItems.CALCITE_NUGGET.get(), count));
-                nug.setDefaultPickUpDelay();
-                drops.add(nug);
-            } else if (block == Blocks.DRIPSTONE_BLOCK) {
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity d = new ItemEntity(level, x, y, z, new ItemStack(Items.POINTED_DRIPSTONE, count));
-                d.setDefaultPickUpDelay();
-                drops.add(d);
-            } else if (isSandstone(block)) {
-                boolean isRed = block == Blocks.RED_SANDSTONE || block == Blocks.SMOOTH_RED_SANDSTONE ||
-                        block == Blocks.CUT_RED_SANDSTONE || block == Blocks.CHISELED_RED_SANDSTONE;
-                int count = 2 + RANDOM.nextInt(3);
-                ItemEntity s = new ItemEntity(level, x, y, z, new ItemStack(isRed ? Items.RED_SAND : Items.SAND, count));
-                s.setDefaultPickUpDelay();
-                drops.add(s);
-            }
-            return;
-        }
-
-        // --- 3. BRONZE PICKAXE DROPS ---
-        if (isBronzePickaxe(tool)) {
-            drops.clear();
-            if (block == Blocks.COAL_ORE) {
-                ItemEntity coal = new ItemEntity(level, x, y, z, new ItemStack(Items.COAL, 1));
-                coal.setDefaultPickUpDelay();
-                drops.add(coal);
-            } else if (block == Blocks.COPPER_ORE) {
-                ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(Items.RAW_COPPER, 1));
-                raw.setDefaultPickUpDelay();
-                drops.add(raw);
-            } else if (block == Blocks.IRON_ORE) {
-                ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(Items.RAW_IRON, 1));
-                raw.setDefaultPickUpDelay();
-                drops.add(raw);
-            } else if (block == ModBlocks.TIN_ORE.get()) {
-                ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(ModItems.RAW_TIN.get(), 1));
-                raw.setDefaultPickUpDelay();
-                drops.add(raw);
-            } else if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
-                ItemEntity cobble = new ItemEntity(level, x, y, z, new ItemStack(Blocks.COBBLESTONE.asItem(), 1));
-                cobble.setDefaultPickUpDelay();
-                drops.add(cobble);
-            } else if (block == Blocks.GRANITE) {
-                ItemEntity g = new ItemEntity(level, x, y, z, new ItemStack(Blocks.GRANITE.asItem(), 1));
-                g.setDefaultPickUpDelay();
-                drops.add(g);
-            } else if (block == Blocks.DIORITE) {
-                ItemEntity d = new ItemEntity(level, x, y, z, new ItemStack(Blocks.DIORITE.asItem(), 1));
-                d.setDefaultPickUpDelay();
-                drops.add(d);
-            } else if (block == Blocks.ANDESITE) {
-                ItemEntity a = new ItemEntity(level, x, y, z, new ItemStack(Blocks.ANDESITE.asItem(), 1));
-                a.setDefaultPickUpDelay();
-                drops.add(a);
-            } else if (block == Blocks.CALCITE) {
-                ItemEntity c = new ItemEntity(level, x, y, z, new ItemStack(Blocks.CALCITE.asItem(), 1));
-                c.setDefaultPickUpDelay();
-                drops.add(c);
-            } else if (block == Blocks.DRIPSTONE_BLOCK) {
-                ItemEntity d = new ItemEntity(level, x, y, z, new ItemStack(Blocks.DRIPSTONE_BLOCK.asItem(), 1));
-                d.setDefaultPickUpDelay();
-                drops.add(d);
-            } else if (isSandstone(block)) {
-                ItemEntity s = new ItemEntity(level, x, y, z, new ItemStack(block.asItem(), 1));
-                s.setDefaultPickUpDelay();
-                drops.add(s);
+            ItemStack customDrop = getDropForBlock(block, tier);
+            if (customDrop != null && !customDrop.isEmpty()) {
+                ItemEntity dropEntity = new ItemEntity(level, x, y, z, customDrop);
+                dropEntity.setDefaultPickUpDelay();
+                drops.add(dropEntity);
             }
             return;
         }
@@ -589,7 +505,7 @@ public class BlockBreakHandler {
         ItemStack held = event.getItemStack();
 
         if (state.is(Blocks.GRASS_BLOCK) && held.getItem() instanceof HoeItem && event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK) {
-            if (!level.isClientSide && RANDOM.nextFloat() < 0.35f) {
+            if (!level.isClientSide && ThreadLocalRandom.current().nextFloat() < 0.35f) {
                 ItemEntity seed = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
                 seed.setDefaultPickUpDelay();
                 level.addFreshEntity(seed);

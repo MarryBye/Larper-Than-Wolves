@@ -14,9 +14,11 @@ public class DataGenerators {
         PackOutput packOutput = generator.getPackOutput();
 
         if (event.includeServer()) {
-            generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput));
+            generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput, event.getLookupProvider()));
         }
-        // Additional providers can be added here (language, block states, item models, etc.)
+        if (event.includeClient()) {
+            generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, event.getExistingFileHelper()));
+        }
     }
 }
 
