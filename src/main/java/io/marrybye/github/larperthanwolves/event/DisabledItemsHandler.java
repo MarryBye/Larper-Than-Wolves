@@ -1,17 +1,15 @@
 package io.marrybye.github.larperthanwolves.event;
 
 import io.marrybye.github.larperthanwolves.LarperThanWolves;
-import net.minecraft.network.chat.Component;
+import io.marrybye.github.larperthanwolves.item.ModItems;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.MerchantOffer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -21,11 +19,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.event.village.VillagerTradesEvent;
-import net.neoforged.neoforge.event.village.WandererTradesEvent;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @EventBusSubscriber(modid = LarperThanWolves.MODID)
@@ -167,9 +161,16 @@ public class DisabledItemsHandler {
         }
     }
 
-    // Prevent mobs dropping disabled items upon death
+    // Prevent mobs dropping disabled items upon death and strip iron from iron golems
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
+        if (event.getEntity() instanceof net.minecraft.world.entity.animal.IronGolem) {
+            event.getDrops().removeIf(itemEntity -> itemEntity != null && (
+                    itemEntity.getItem().is(Items.IRON_INGOT) ||
+                    itemEntity.getItem().is(Items.IRON_NUGGET) ||
+                    itemEntity.getItem().is(ModItems.IRON_DUST.get())
+            ));
+        }
         event.getDrops().removeIf(itemEntity -> itemEntity == null || itemEntity.getItem().isEmpty() || isDisabled(itemEntity.getItem().getItem()));
     }
 
@@ -236,48 +237,5 @@ public class DisabledItemsHandler {
                 }
             }
         }
-    }
-
-    // Filter villager trades
-    @SubscribeEvent
-    public static void onVillagerTrades(VillagerTradesEvent event) {
-        for (int tier : event.getTrades().keySet()) {
-            List<VillagerTrades.ItemListing> listings = event.getTrades().get(tier);
-            if (listings != null) {
-                List<VillagerTrades.ItemListing> wrapped = new ArrayList<>(listings.size());
-                for (VillagerTrades.ItemListing listing : listings) {
-                    wrapped.add(filterListing(listing));
-                }
-                event.getTrades().put(tier, wrapped);
-            }
-        }
-    }
-
-    // Filter wandering trader trades
-    @SubscribeEvent
-    public static void onWandererTrades(WandererTradesEvent event) {
-        List<VillagerTrades.ItemListing> generic = event.getGenericTrades();
-        for (int i = 0; i < generic.size(); i++) {
-            generic.set(i, filterListing(generic.get(i)));
-        }
-        List<VillagerTrades.ItemListing> rare = event.getRareTrades();
-        for (int i = 0; i < rare.size(); i++) {
-            rare.set(i, filterListing(rare.get(i)));
-        }
-    }
-
-    private static VillagerTrades.ItemListing filterListing(VillagerTrades.ItemListing original) {
-        return (entity, random) -> {
-            try {
-                MerchantOffer offer = original.getOffer(entity, random);
-                if (offer == null) return null;
-                if (isDisabled(offer.getResult().getItem())) return null;
-                if (offer.getItemCostA() != null && isDisabled(offer.getItemCostA().item().value())) return null;
-                if (offer.getItemCostB().isPresent() && isDisabled(offer.getItemCostB().get().item().value())) return null;
-                return offer;
-            } catch (Exception e) {
-                return null;
-            }
-        };
     }
 }

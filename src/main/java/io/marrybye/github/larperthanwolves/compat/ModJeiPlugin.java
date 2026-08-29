@@ -294,6 +294,32 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.tanned_leather"));
         registration.addIngredientInfo(new ItemStack(ModItems.SILICON_AXE.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.axe_planks"));
+
+        // Hoe 2-stage tilling & seed harvesting
+        List<ItemStack> allHoes = List.of(
+                new ItemStack(ModItems.SILICON_HOE.get()),
+                new ItemStack(ModItems.COPPER_HOE.get()),
+                new ItemStack(ModItems.BRONZE_HOE.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_HOE.get()),
+                new ItemStack(Items.IRON_HOE),
+                new ItemStack(Items.NETHERITE_HOE)
+        );
+        registration.addIngredientInfo(allHoes, VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.hoe_tilling"));
+
+        // Villager Trading
+        List<ItemStack> tradeSamples = List.of(
+                new ItemStack(ModItems.BRONZE_SWORD.get()),
+                new ItemStack(ModItems.BRONZE_PICKAXE.get()),
+                new ItemStack(ModItems.BRONZE_CHESTPLATE.get()),
+                new ItemStack(Items.EMERALD)
+        );
+        registration.addIngredientInfo(tradeSamples, VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.villager_trades"));
+
+        // Iron Golem drops
+        registration.addIngredientInfo(new ItemStack(Items.POPPY), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.iron_golem"));
     }
 
     @Override

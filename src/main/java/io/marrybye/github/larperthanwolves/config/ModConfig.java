@@ -51,6 +51,9 @@ public class ModConfig {
         public final ModConfigSpec.DoubleValue sieveSandGoldDustChance;
         public final ModConfigSpec.DoubleValue sieveSandDiamondDustChance;
 
+        public final ModConfigSpec.DoubleValue villageMinDistanceFromSpawn;
+        public final ModConfigSpec.DoubleValue hoeGrassSeedDropChance;
+
         public Server(ModConfigSpec.Builder builder) {
             builder.push("drying");
             unfiredBrickDryingTimeTicks = builder
@@ -152,6 +155,18 @@ public class ModConfig {
             sieveSandDiamondDustChance = builder
                     .comment("Chance of sifting Diamond Dust from 1 sand block (default: 0.002 = 0.2%)")
                     .defineInRange("sieveSandDiamondDustChance", 0.002, 0.0, 1.0);
+            builder.pop();
+
+            builder.push("village_generation");
+            villageMinDistanceFromSpawn = builder
+                    .comment("Minimum distance in blocks from world spawn (0,0) for village structures to generate (default: 3000.0 blocks)")
+                    .defineInRange("villageMinDistanceFromSpawn", 3000.0, 0.0, 100000.0);
+            builder.pop();
+
+            builder.push("farming");
+            hoeGrassSeedDropChance = builder
+                    .comment("Chance of dropping a crop seed when a grass block is tilled into dirt with a hoe (default: 0.35 = 35%)")
+                    .defineInRange("hoeGrassSeedDropChance", 0.35, 0.0, 1.0);
             builder.pop();
         }
     }

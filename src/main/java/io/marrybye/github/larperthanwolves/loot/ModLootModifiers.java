@@ -13,4 +13,7 @@ public class ModLootModifiers {
 
     public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<RemoveDisabledItemsModifier>> REMOVE_DISABLED_ITEMS =
             LOOT_MODIFIERS.register("remove_disabled_items", RemoveDisabledItemsModifier.CODEC);
+
+    public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<ChestLootModifier>> CHEST_LOOT =
+            LOOT_MODIFIERS.register("chest_loot", ChestLootModifier.CODEC);
 }

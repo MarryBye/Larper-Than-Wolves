@@ -417,20 +417,6 @@ public class BlockBreakHandler {
                 return;
             }
         }
-
-        // Hoeing grass block with hoe
-        if (block == Blocks.GRASS_BLOCK && held.getItem() instanceof HoeItem) {
-            event.setCanceled(true);
-            level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 3);
-            level.playSound(null, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0f, 1.0f);
-            held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
-
-            if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.35f) {
-                ItemEntity seedDrop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
-                seedDrop.setDefaultPickUpDelay();
-                level.addFreshEntity(seedDrop);
-            }
-        }
     }
 
     // Prevent damage / camera recoil when hitting wood/blocks with Chisel
@@ -575,7 +561,7 @@ public class BlockBreakHandler {
         // Default vanilla loot tables
     }
 
-    // 4. Use item on block
+    // 4. Use item on block (2-stage hoe tilling & seed harvesting)
     @SubscribeEvent
     public static void onUseItemOnBlock(UseItemOnBlockEvent event) {
         Player player = event.getPlayer();
@@ -586,21 +572,40 @@ public class BlockBreakHandler {
         BlockState state = level.getBlockState(pos);
         ItemStack held = event.getItemStack();
 
-        if (state.is(Blocks.GRASS_BLOCK) && held.getItem() instanceof HoeItem) {
+        if ((state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.PODZOL) || state.is(Blocks.MYCELIUM)) && held.getItem() instanceof HoeItem) {
             if (!level.isClientSide) {
-                // Convert grass block to plain dirt
+                // Convert grassy block to plain dirt
                 level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 3);
-                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.HOE_TILL, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(null, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 
-                if (ThreadLocalRandom.current().nextFloat() < 0.40f) {
-                    ItemEntity seed = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.WHEAT_SEEDS));
+                double seedChance = ModConfig.SERVER != null ? ModConfig.SERVER.hoeGrassSeedDropChance.get() : 0.35;
+                if (ThreadLocalRandom.current().nextFloat() < seedChance) {
+                    ItemStack dropStack = getRandomWildCropSeed();
+                    ItemEntity seed = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, dropStack);
                     seed.setDefaultPickUpDelay();
                     level.addFreshEntity(seed);
                 }
 
-                held.hurtAndBreak(1, player, event.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
+                held.hurtAndBreak(1, player, event.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
             }
             event.cancelWithResult(net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide));
+        }
+    }
+
+    public static ItemStack getRandomWildCropSeed() {
+        float roll = ThreadLocalRandom.current().nextFloat();
+        if (roll < 0.50f) {
+            return new ItemStack(Items.WHEAT_SEEDS, 1);
+        } else if (roll < 0.65f) {
+            return new ItemStack(Items.CARROT, 1);
+        } else if (roll < 0.80f) {
+            return new ItemStack(Items.POTATO, 1);
+        } else if (roll < 0.90f) {
+            return new ItemStack(Items.BEETROOT_SEEDS, 1);
+        } else if (roll < 0.95f) {
+            return new ItemStack(Items.PUMPKIN_SEEDS, 1);
+        } else {
+            return new ItemStack(Items.MELON_SEEDS, 1);
         }
     }
 }

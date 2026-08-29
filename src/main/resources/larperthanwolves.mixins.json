@@ -3,7 +3,8 @@
   "package": "io.marrybye.github.larperthanwolves.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "TrunkPlacerMixin"
+    "TrunkPlacerMixin",
+    "StructureMixin"
   ],
   "injectors": {
     "defaultRequire": 1

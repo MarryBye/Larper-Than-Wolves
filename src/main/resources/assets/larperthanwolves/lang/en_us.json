@@ -117,5 +117,8 @@
   "jei.larperthanwolves.info.drying_rack": "Crafted in a 2x2 grid using 4 sticks. Place outdoors in daytime without blocks above to passively dry grass into Dry Grass and leather into Tanned Leather.",
   "jei.larperthanwolves.info.dry_grass": "Obtained by harvesting grass with shears and drying it on a Drying Rack outdoors under sunlight. Used to craft early ropes and as furnace fuel.",
   "jei.larperthanwolves.info.tanned_leather": "Obtained by placing regular leather on a Drying Rack outdoors under sunlight. Used to craft leather armor sets and sturdy ropes.",
-  "jei.larperthanwolves.info.axe_planks": "Logs cannot be turned into planks by hand in the 2x2 inventory grid. Combine any axe with wood or logs to obtain 2 planks (the axe loses 1 durability). On a 3x3 Crafting Table, wood yields 4 planks without requiring an axe."
+  "jei.larperthanwolves.info.axe_planks": "Logs cannot be turned into planks by hand in the 2x2 inventory grid. Combine any axe with wood or logs to obtain 2 planks (the axe loses 1 durability). On a 3x3 Crafting Table, wood yields 4 planks without requiring an axe.",
+  "jei.larperthanwolves.info.hoe_tilling": "Right-click grass blocks with any hoe to till away grass into dirt with a 35% chance to discover wild seeds (Wheat Seeds, Carrots, Potatoes, Beetroot Seeds, Pumpkin Seeds, Melon Seeds). Right-click plain dirt with a hoe to prepare Farmland for planting.",
+  "jei.larperthanwolves.info.villager_trades": "Villager armorers, weaponsmiths, and toolsmiths trade equipment up to Bronze tier in exchange for Emeralds. Basic items can be bartered with villagers and wandering traders.",
+  "jei.larperthanwolves.info.iron_golem": "Iron Golems protect villages and drop only poppies upon defeat. They do not drop iron ingots."
 }

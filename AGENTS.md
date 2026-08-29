@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.14.1
+- **Current Version**: 1.15.0
 
 ## Project Architecture & Progression
 
@@ -21,6 +21,21 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4).
 - **Iron (Железо)**: Standard metal. Full mining access for all standard rocks & ores as whole blocks / raw chunks. Cannot mine Ancient Debris or Obsidian.
 - **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
+
+### 🌾 Farming & 2-Stage Hoe Tilling
+- **2-Stage Tilling**:
+  - **Stage 1 (Grass/Podzol/Mycelium $\rightarrow$ Dirt)**: Right-click grassy ground with any hoe to till away the grass layer into plain dirt with a **35% chance** to harvest wild seeds (`Wheat Seeds` 50%, `Carrot` 15%, `Potato` 15%, `Beetroot Seeds` 10%, `Pumpkin Seeds` 5%, `Melon Seeds` 5%).
+  - **Stage 2 (Dirt $\rightarrow$ Farmland)**: Right-click plain dirt with any hoe to prepare farmland for crop planting.
+  - Breaking (left-clicking) grass blocks simply breaks the block normally into dirt without special seed harvesting.
+
+### 🏘️ World Exploration, Villages & Trading
+- **Village Rarity & Distance**: Villages generate rarely (`spacing: 200`, `separation: 80`) and are strictly prevented from generating within **3000 blocks** of world spawn / origin (`villageMinDistanceFromSpawn: 3000.0`). Pillager Outposts are also spaced out.
+- **Iron Golem Balance**: Iron Golems drop **no iron ingots or nuggets** upon death (only poppies).
+- **Villager & Wandering Trader Trades**:
+  - Armorer, Weaponsmith, and Toolsmith villagers sell tools, weapons, and armor up to **Bronze tier** in exchange for emeralds.
+  - Basic / flavor trades (sticks, pebbles, silicon shards, saplings, dyes, wild crops, dry grass) allow fair early-game bartering.
+  - All iron/diamond/chainmail tool and armor offers, as well as disabled item purchases, are purged.
+- **Chest Loot Rebalancing**: All generated chest loot tables (villages, pillager outposts, mineshafts, dungeons, temples) are rebalanced: iron gear is replaced with copper/bronze tiers, raw metals/ingots with dusts/nuggets, and supernatural endgame items with grounded survival alternatives.
 
 ### 🪓 Woodcutting & Plank Crafting Rules
 - **Tree & Plank Harvesting**: Trees (logs, wood, stripped wood) and planks cannot be broken by hand. An axe is strictly required.
@@ -96,10 +111,11 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── AlloyMixerScreen.java      — Mixer GUI renderer
 │   └── SieveScreen.java           — Sieve GUI renderer
 ├── event/
-│   ├── BlockBreakHandler.java     — Mining tier enforcement, axe-only wood breaking, shears drops, hoeing
-│   └── DisabledItemsHandler.java  — Vanilla item removal system (creative tabs, mob equipment, trades, loot)
+│   ├── BlockBreakHandler.java     — Mining tier enforcement, axe-only wood breaking, shears drops, 2-stage hoe tilling
+│   ├── DisabledItemsHandler.java  — Vanilla item removal system (creative tabs, mob equipment, iron golem drops, player inventory)
+│   └── VillagerTradeHandler.java  — Balanced villager professions (up to Bronze) and wandering trader trades
 ├── config/
-│   └── ModConfig.java             — NeoForge config spec (fuel, sieve, bricks, drying, drops)
+│   └── ModConfig.java             — NeoForge config spec (fuel, sieve, bricks, drying, drops, village distance, farming)
 ├── compat/
 │   ├── ModJeiPlugin.java          — JEI integration plugin (all categories & info tabs)
 │   ├── AlloyMixerRecipe.java      — JEI alloy recipe POJO
@@ -118,13 +134,15 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   └── GravelDiggingRecipeCategory.java — JEI gravel drops category
 ├── loot/
 │   ├── ModLootModifiers.java      — Loot modifier registration
-│   └── RemoveDisabledItemsModifier.java — Global loot modifier that strips disabled items
+│   ├── RemoveDisabledItemsModifier.java — Global loot modifier that strips disabled items
+│   └── ChestLootModifier.java     — Global loot modifier rebalancing chest loot across structures
 ├── datagen/
 │   ├── DataGenerators.java        — Data generation entry point
 │   ├── ModRecipesProvider.java    — Recipe data generation
 │   └── ModItemModelProvider.java  — Item model data generation
 └── mixin/
-    └── TrunkPlacerMixin.java      — Places stump blocks at tree bases during worldgen
+    ├── TrunkPlacerMixin.java      — Places stump blocks at tree bases during worldgen
+    └── StructureMixin.java        — Enforces minimum distance from spawn for village generation
 ```
 
 ## Resources
