@@ -352,7 +352,8 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        if (slot < 3) return true;
+        // Food CANNOT be placed in Brick Furnace input slots (0..2)!
+        if (slot < 3) return !io.marrybye.github.larperthanwolves.recipe.FoodCookingRegistry.isFood(stack);
         if (slot == 6) return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
         return false;
     }
@@ -397,9 +398,9 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
             return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
         }
 
-        // Inputs from top
+        // Inputs from top (No food allowed)
         if (side == Direction.UP && slot < 3) {
-            return true;
+            return !io.marrybye.github.larperthanwolves.recipe.FoodCookingRegistry.isFood(stack);
         }
 
         return false;

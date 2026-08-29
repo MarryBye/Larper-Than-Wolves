@@ -190,8 +190,23 @@ public class BlockBreakHandler {
                 block == Blocks.CHISELED_RED_SANDSTONE;
     }
 
+    public static boolean isZincOre(Block block) {
+        if (block == null) return false;
+        net.minecraft.resources.ResourceLocation key = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block);
+        if (key != null) {
+            if ("create".equals(key.getNamespace()) && (key.getPath().equals("zinc_ore") || key.getPath().equals("deepslate_zinc_ore"))) {
+                return true;
+            }
+            if (key.getPath().contains("zinc_ore")) {
+                return true;
+            }
+        }
+        return block.defaultBlockState().is(BlockTags.create(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("c", "ores/zinc")));
+    }
+
     public static boolean isStoneOrOre(Block block) {
-        return block == Blocks.STONE ||
+        return isZincOre(block) ||
+                block == Blocks.STONE ||
                 block == Blocks.COBBLESTONE ||
                 block == Blocks.GRANITE ||
                 block == Blocks.DIORITE ||
@@ -227,7 +242,8 @@ public class BlockBreakHandler {
     }
 
     public static boolean isHighTierOre(Block block) {
-        return block == Blocks.GOLD_ORE ||
+        return isZincOre(block) ||
+                block == Blocks.GOLD_ORE ||
                 block == Blocks.REDSTONE_ORE ||
                 block == Blocks.LAPIS_ORE ||
                 block == Blocks.DIAMOND_ORE ||

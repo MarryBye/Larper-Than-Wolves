@@ -9,17 +9,17 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.15.0
+- **Current Version**: 1.16.0
 
 ## Project Architecture & Progression
 
 Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the early and mid-game:
 
 ### ⛏️ Tool Tiers & Dig Tier Matrix
-- **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Cannot mine deepslate or any other ores.
-- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Cannot mine deepslate or iron+.
-- **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4).
-- **Iron (Железо)**: Standard metal. Full mining access for all standard rocks & ores as whole blocks / raw chunks. Cannot mine Ancient Debris or Obsidian.
+- **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Cannot mine deepslate, zinc, or any other ores.
+- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Cannot mine deepslate, zinc, or iron+.
+- **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Cannot mine zinc ore or high-tier ores.
+- **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`). Cannot mine Ancient Debris or Obsidian.
 - **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
 
 ### 🌾 Farming & 2-Stage Hoe Tilling
@@ -30,12 +30,13 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 
 ### 🏘️ World Exploration, Villages & Trading
 - **Village Rarity & Distance**: Villages generate rarely (`spacing: 200`, `separation: 80`) and are strictly prevented from generating within **3000 blocks** of world spawn / origin (`villageMinDistanceFromSpawn: 3000.0`). Pillager Outposts are also spaced out.
+- **Workstations & POIs**: Vanilla Smoker and Blast Furnace are disabled and removed. In villages and worldgen, Blast Furnaces automatically convert to **Brick Furnaces** (Armorer POI) and Smokers convert to **Ovens** (Butcher POI).
 - **Iron Golem Balance**: Iron Golems drop **no iron ingots or nuggets** upon death (only poppies).
 - **Villager & Wandering Trader Trades**:
   - Armorer, Weaponsmith, and Toolsmith villagers sell tools, weapons, and armor up to **Bronze tier** in exchange for emeralds.
   - Basic / flavor trades (sticks, pebbles, silicon shards, saplings, dyes, wild crops, dry grass) allow fair early-game bartering.
   - All iron/diamond/chainmail tool and armor offers, as well as disabled item purchases, are purged.
-- **Chest Loot Rebalancing**: All generated chest loot tables (villages, pillager outposts, mineshafts, dungeons, temples) are rebalanced: iron gear is replaced with copper/bronze tiers, raw metals/ingots with dusts/nuggets, and supernatural endgame items with grounded survival alternatives.
+- **Chest Loot Rebalancing**: All generated chest loot tables (villages, pillager outposts, mineshafts, dungeons, temples) are rebalanced: iron gear is replaced with copper/bronze tiers, raw metals/ingots with dusts/nuggets, furnaces/smokers with brick furnaces/ovens, and supernatural endgame items with grounded survival alternatives.
 
 ### 🪓 Woodcutting & Plank Crafting Rules
 - **Tree & Plank Harvesting**: Trees (logs, wood, stripped wood) and planks cannot be broken by hand. An axe is strictly required.
@@ -49,21 +50,36 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Grass** (Short Grass, Tall Grass, Fern, Large Fern, Seagrass) $\rightarrow$ **Dry Grass** (wilted straw, used for ropes & furnace fuel). Shears are required to harvest grass.
   - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and horse armor).
 
-### 🔄 Material Conversion Rules
-- **Natural Metals (Iron, Copper, Gold, Tin)**:
+### 🍞 Oven (Духовка) & Brick Furnace Specialization
+- **Oven (Духовка)**: Crafted from 1 Brick Furnace + 1 Iron Nugget or 2 Brick Slabs + 2 Bricks (`oven`).
+  - **Food Only**: Accepts exclusively food items (raw beef, porkchop, mutton, chicken, rabbit, fish, potato, kelp). Non-food materials and ores cannot be placed in the oven.
+  - Requires manual fueling and ignition with a Lighter or Flint & Steel.
+- **Brick Furnace (Кирпичная печь)**: Replaces vanilla Furnace and Blast Furnace.
+  - **Ores & Blocks Only**: Food items cannot be placed or smelted in the Brick Furnace.
+
+### 🔄 Material Conversion & Create 6.0.10 Compatibility
+- **Natural Metals (Iron, Copper, Gold, Tin, Zinc)**:
   - 2 Ore Dust $\rightarrow$ 1 Raw Ore (chunk)
-  - 1 Raw Ore in Brick Furnace $\rightarrow$ 1 Metal Nugget
+  - 1 Raw Ore in Brick Furnace $\rightarrow$ 1 Metal Nugget (Iron, Copper, Gold, Tin, Zinc)
   - 4 Metal Nuggets $\rightarrow$ 1 Ingot
 - **Bronze**:
   - 2 Bronze Dust $\rightarrow$ 1 Bronze Nugget
   - 4 Bronze Nuggets $\rightarrow$ 1 Bronze Ingot
   - 2 Copper Ingot + 1 Tin Ingot in Alloy Mixer $\rightarrow$ 1 Bronze Ingot
+- **Brass (Латунь)**:
+  - 1 Copper Ingot + 1 Zinc Ingot in Alloy Mixer $\rightarrow$ 1 Brass Ingot (`create:brass_ingot`)
 - **Diamond**:
   - 2 Diamond Dust $\rightarrow$ 1 Diamond Nugget
   - 4 Diamond Nuggets $\rightarrow$ 1 Diamond (and 1 Diamond $\rightarrow$ 4 Diamond Nuggets)
 - **Reinforced Iron (Diamond Ingot)**:
   - 1 Diamond + 1 Iron Ingot + 1 Copper Ingot in Alloy Mixer $\rightarrow$ 1 Diamond Ingot
   - Used in Smithing Table to upgrade Iron tools & armor to Reinforced Iron.
+- **Create Machine Parity**:
+  - Mechanical Mixer (Heated): Bronze Ingot, Brass Ingot, Diamond Ingot.
+  - Millstone / Crushing Wheels: Gravel, Sand, and Ore chunk processing into dusts and pebbles.
+  - Fan Bulk Blasting: Raw Ores into Nuggets.
+  - Fan Bulk Smoking: Grass to Dry Grass, Leather to Tanned Leather.
+  - Mechanical Saw: Log and Tree Stump cutting into 4 Planks.
 
 ## File Structure
 ```
@@ -72,6 +88,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 ├── block/
 │   ├── ModBlocks.java             — Block registration (DeferredRegister)
 │   ├── BrickFurnaceBlock.java     — Brick furnace block (facing, 4 stages)
+│   ├── OvenBlock.java             — Food oven block (facing, 4 stages)
 │   ├── AlloyMixerBlock.java       — Alloy mixer block (facing, 4 stages)
 │   ├── SieveBlock.java            — Sieve block
 │   ├── DryingRackBlock.java       — Daylight drying rack block (horizontal facing, 5 content states)
@@ -80,8 +97,9 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── UnfiredBrickBlock.java     — Unfired brick (dries under sunlight, 4 stages)
 │   └── entity/
 │       ├── ModBlockEntities.java           — BlockEntity type registration
-│       ├── BrickFurnaceBlockEntity.java    — Furnace logic (7 slots, custom fuel, WorldlyContainer)
-│       ├── AlloyMixerBlockEntity.java      — Alloy mixing logic (5 slots, 2 recipes)
+│       ├── BrickFurnaceBlockEntity.java    — Furnace logic (7 slots, custom fuel, WorldlyContainer, no food)
+│       ├── OvenBlockEntity.java            — Food oven logic (7 slots, custom fuel, WorldlyContainer, food only)
+│       ├── AlloyMixerBlockEntity.java      — Alloy mixing logic (5 slots, 3 recipes)
 │       ├── SieveBlockEntity.java           — Sieve passive processing (18 slots)
 │       ├── DryingRackBlockEntity.java      — Daylight drying rack ticking logic (1 slot, WorldlyContainer)
 │       ├── UnfiredBrickBlockEntity.java    — Brick drying ticking logic
@@ -92,8 +110,9 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── AxePlankRecipe.java        — Log + Axe -> 2 Planks crafting recipe (axe damage retention)
 │   ├── WorkbenchPlankRecipe.java  — 3x3 Crafting Table Log -> 4 Planks crafting recipe
 │   ├── AlloyRecipe.java           — Modular alloy mixer recipe model
-│   ├── AlloyRegistry.java         — Central alloy mixer recipe registry & JEI sync
-│   └── SmeltingRegistry.java      — Brick furnace custom smelting overrides & fallback
+│   ├── AlloyRegistry.java         — Central alloy mixer recipe registry & JEI sync (Bronze, Brass, Diamond Ingot)
+│   ├── SmeltingRegistry.java      — Brick furnace custom smelting overrides & fallback (no food, zinc support)
+│   └── FoodCookingRegistry.java   — Food oven cooking recipes & validator
 ├── item/
 │   ├── ModItems.java              — Item registration (all tools, armor, materials, block items)
 │   ├── ModToolMaterials.java      — Custom tool tiers (SILICON, COPPER, BRONZE, REINFORCED_IRON)
@@ -102,17 +121,19 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   └── ChiselItem.java            — Chisel right-click logic (stump → work stump → crafting table)
 ├── menu/
 │   ├── ModMenuTypes.java          — Menu type registration
-│   ├── BrickFurnaceMenu.java      — Furnace container menu (7 slots)
+│   ├── BrickFurnaceMenu.java      — Furnace container menu (7 slots, no food)
+│   ├── OvenMenu.java              — Food oven container menu (7 slots, food only)
 │   ├── AlloyMixerMenu.java        — Mixer container menu (5 slots)
 │   └── SieveMenu.java             — Sieve container menu (18 slots)
 ├── client/
 │   ├── ModClientEvents.java       — Client-side screen registration
 │   ├── BrickFurnaceScreen.java    — Furnace GUI renderer
+│   ├── OvenScreen.java            — Oven GUI renderer
 │   ├── AlloyMixerScreen.java      — Mixer GUI renderer
 │   └── SieveScreen.java           — Sieve GUI renderer
 ├── event/
-│   ├── BlockBreakHandler.java     — Mining tier enforcement, axe-only wood breaking, shears drops, 2-stage hoe tilling
-│   ├── DisabledItemsHandler.java  — Vanilla item removal system (creative tabs, mob equipment, iron golem drops, player inventory)
+│   ├── BlockBreakHandler.java     — Mining tier enforcement (Zinc iron-only), axe wood breaking, shears drops, 2-stage hoe tilling
+│   ├── DisabledItemsHandler.java  — Vanilla item removal (Blast furnace/smoker/furnace/chainmail/diamond gear, chunk replacement, player inventory)
 │   └── VillagerTradeHandler.java  — Balanced villager professions (up to Bronze) and wandering trader trades
 ├── config/
 │   └── ModConfig.java             — NeoForge config spec (fuel, sieve, bricks, drying, drops, village distance, farming)
@@ -155,12 +176,16 @@ src/main/resources/
 │   ├── models/block/, models/item/ — Block and item models
 │   ├── textures/block/, item/, gui/container/, models/armor/ — Textures
 │   └── ...                        — Other assets
-├── data/larperthanwolves/
-│   ├── recipe/                    — Crafting and smelting recipes
-│   ├── loot_table/                — Loot tables  
-│   ├── tags/                      — Block and item tags
-│   ├── worldgen/                  — Tin ore generation
-│   └── neoforge/                  — Biome modifiers, global loot modifiers
+├── data/
+│   ├── create/recipe/             — Create machine parity recipes (mixing, splashing, milling, crushing, smoking, blasting, cutting)
+│   ├── minecraft/recipe/          — Disabled vanilla recipes (blast furnace, smoker)
+│   ├── minecraft/tags/point_of_interest_type/ — Villager workstation tags (armorer -> brick_furnace, butcher -> oven)
+│   └── larperthanwolves/
+│       ├── recipe/                — Crafting and smelting recipes
+│       ├── loot_tables/           — Loot tables
+│       ├── tags/                  — Block and item tags
+│       ├── worldgen/              — Tin ore generation
+│       └── neoforge/              — Biome modifiers, global loot modifiers
 └── larperthanwolves.mixins.json   — Mixin configuration
 ```
 

@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "minecraft:raw_gold"
+    }
+  ],
+  "processingTime": 200,
+  "results": [
+    {
+      "count": 2,
+      "item": "larperthanwolves:gold_dust"
+    }
+  ]
+}

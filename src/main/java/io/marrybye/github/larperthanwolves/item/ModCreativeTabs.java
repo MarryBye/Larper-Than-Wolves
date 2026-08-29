@@ -84,6 +84,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.BRONZE_BLOCK.get());
 
                         output.accept(ModItems.BRICK_FURNACE.get());
+                        output.accept(ModItems.OVEN.get());
                         output.accept(ModItems.UNFIRED_BRICK.get());
                         output.accept(ModItems.DRYING_RACK.get());
                         output.accept(ModItems.ALLOY_MIXER.get());

@@ -105,7 +105,7 @@
   "jei.larperthanwolves.info.chisel": "Used to carve tree stumps and logs into Work Stumps and Crafting Tables, as well as crafting wooden components.",
   "jei.larperthanwolves.info.unfired_brick": "Unfired Bricks can be smelted in a Brick Furnace or placed in the world exposed to direct sunlight to dry into Bricks naturally over time.",
   "jei.larperthanwolves.info.brick": "Obtained by smelting Unfired Bricks in a Brick Furnace or drying Unfired Brick blocks under direct sunlight.",
-  "jei.larperthanwolves.info.brick_furnace": "Replaces the vanilla furnace. Accepts logs, planks, coal, charcoal, sticks, dry grass, and rope. Must be manually ignited with a Lighter or Flint and Steel.",
+  "jei.larperthanwolves.info.brick_furnace": "Replaces the regular furnace and blast furnace. Used for smelting ores, metals, and blocks (food cannot be placed into the furnace). Accepts logs, planks, coal, charcoal, sticks, dry grass, and rope. Must be manually ignited with a Lighter or Flint and Steel.",
   "jei.larperthanwolves.info.alloy_mixer": "Used to mix metal alloys (such as Bronze and Diamond Ingots). Place fuel in the bottom slot and ignite with a Lighter or Flint and Steel.",
   "jei.larperthanwolves.info.lighter": "Crafted early from sticks. Used to ignite Brick Furnaces, Alloy Mixers, and start fires.",
   "item.larperthanwolves.tanned_leather": "Tanned Leather",
@@ -120,5 +120,10 @@
   "jei.larperthanwolves.info.axe_planks": "Logs cannot be turned into planks by hand in the 2x2 inventory grid. Combine any axe with wood or logs to obtain 2 planks (the axe loses 1 durability). On a 3x3 Crafting Table, wood yields 4 planks without requiring an axe.",
   "jei.larperthanwolves.info.hoe_tilling": "Right-click grass blocks with any hoe to till away grass into dirt with a 35% chance to discover wild seeds (Wheat Seeds, Carrots, Potatoes, Beetroot Seeds, Pumpkin Seeds, Melon Seeds). Right-click plain dirt with a hoe to prepare Farmland for planting.",
   "jei.larperthanwolves.info.villager_trades": "Villager armorers, weaponsmiths, and toolsmiths trade equipment up to Bronze tier in exchange for Emeralds. Basic items can be bartered with villagers and wandering traders.",
-  "jei.larperthanwolves.info.iron_golem": "Iron Golems protect villages and drop only poppies upon defeat. They do not drop iron ingots."
+  "jei.larperthanwolves.info.iron_golem": "Iron Golems protect villages and drop only poppies upon defeat. They do not drop iron ingots.",
+  "block.larperthanwolves.oven": "Oven",
+  "item.larperthanwolves.oven": "Oven",
+  "container.larperthanwolves.oven": "Oven",
+  "container.oven": "Oven",
+  "jei.larperthanwolves.info.oven": "Replaces the smoker. Used exclusively for baking and cooking food (meat, fish, potatoes, kelp). Non-food materials cannot be placed in the oven. Accepts logs, planks, coal, sticks, dry grass, and rope. Must be manually ignited with a Lighter or Flint and Steel."
 }

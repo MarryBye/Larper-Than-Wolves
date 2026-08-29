@@ -151,8 +151,11 @@ public class ChestLootModifier extends LootModifier {
         if (item == Items.FLINT) {
             return new ItemStack(ModItems.SILICON_SHARD.get(), count);
         }
-        if (item == Items.FURNACE) {
+        if (item == Items.FURNACE || item == Items.BLAST_FURNACE) {
             return new ItemStack(ModItems.BRICK_FURNACE.get(), 1);
+        }
+        if (item == Items.SMOKER) {
+            return new ItemStack(ModItems.OVEN.get(), 1);
         }
 
         return stack;

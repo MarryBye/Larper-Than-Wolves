@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:iron_dust"
+    },
+    {
+      "item": "larperthanwolves:iron_dust"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:raw_iron"
+  }
+}

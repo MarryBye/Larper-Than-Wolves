@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:gold_dust"
+    },
+    {
+      "item": "larperthanwolves:gold_dust"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:raw_gold"
+  }
+}

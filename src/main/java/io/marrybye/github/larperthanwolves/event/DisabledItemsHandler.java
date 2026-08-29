@@ -60,8 +60,10 @@ public class DisabledItemsHandler {
             Items.DIAMOND_BOOTS,
             Items.DIAMOND_HORSE_ARMOR,
 
-            // Vanilla Furnace
-            Items.FURNACE
+            // Vanilla Furnace, Blast Furnace, Smoker
+            Items.FURNACE,
+            Items.BLAST_FURNACE,
+            Items.SMOKER
     );
 
     public static boolean isDisabled(Item item) {
@@ -86,7 +88,7 @@ public class DisabledItemsHandler {
                         || path.endsWith("_helmet") || path.endsWith("_chestplate") || path.endsWith("_leggings") || path.endsWith("_boots") || path.endsWith("_horse_armor"))) {
                     return true;
                 }
-                if ("furnace".equals(path)) {
+                if ("furnace".equals(path) || "blast_furnace".equals(path) || "smoker".equals(path)) {
                     return true;
                 }
             }
@@ -199,7 +201,7 @@ public class DisabledItemsHandler {
         }
     }
 
-    // Prevent placing or using disabled items on blocks
+    // Prevent placing or using disabled items on blocks, and replace vanilla blast furnace / smoker on click
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         ItemStack stack = event.getItemStack();
@@ -208,6 +210,50 @@ public class DisabledItemsHandler {
             Player player = event.getEntity();
             if (player != null && !event.getLevel().isClientSide) {
                 player.setItemInHand(event.getHand(), ItemStack.EMPTY);
+            }
+            return;
+        }
+
+        net.minecraft.world.level.Level level = event.getLevel();
+        net.minecraft.core.BlockPos pos = event.getPos();
+        net.minecraft.world.level.block.state.BlockState state = level.getBlockState(pos);
+
+        if (!level.isClientSide) {
+            if (state.is(net.minecraft.world.level.block.Blocks.BLAST_FURNACE)) {
+                net.minecraft.core.Direction facing = state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
+                        state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
+                level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState()
+                        .setValue(io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock.FACING, facing), 3);
+                event.setCanceled(true);
+                return;
+            } else if (state.is(net.minecraft.world.level.block.Blocks.SMOKER)) {
+                net.minecraft.core.Direction facing = state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
+                        state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
+                level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.OVEN.get().defaultBlockState()
+                        .setValue(io.marrybye.github.larperthanwolves.block.OvenBlock.FACING, facing), 3);
+                event.setCanceled(true);
+                return;
+            }
+        }
+    }
+
+    // Replace blast furnaces and smokers when chunks load in the world
+    @SubscribeEvent
+    public static void onChunkLoad(net.neoforged.neoforge.event.level.ChunkEvent.Load event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel level) {
+            for (net.minecraft.core.BlockPos pos : event.getChunk().getBlockEntitiesPos()) {
+                net.minecraft.world.level.block.state.BlockState state = level.getBlockState(pos);
+                if (state.is(net.minecraft.world.level.block.Blocks.BLAST_FURNACE)) {
+                    net.minecraft.core.Direction facing = state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
+                            state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
+                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState()
+                            .setValue(io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock.FACING, facing), 3);
+                } else if (state.is(net.minecraft.world.level.block.Blocks.SMOKER)) {
+                    net.minecraft.core.Direction facing = state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
+                            state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
+                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.OVEN.get().defaultBlockState()
+                            .setValue(io.marrybye.github.larperthanwolves.block.OvenBlock.FACING, facing), 3);
+                }
             }
         }
     }

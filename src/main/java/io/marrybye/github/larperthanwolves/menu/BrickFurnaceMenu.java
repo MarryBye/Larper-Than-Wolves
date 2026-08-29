@@ -34,10 +34,10 @@ public class BrickFurnaceMenu extends AbstractContainerMenu {
 
         container.startOpen(playerInventory.player);
 
-        // 3 Input slots (left)
-        this.addSlot(new Slot(container, 0, 56, 17));
-        this.addSlot(new Slot(container, 1, 56, 35));
-        this.addSlot(new Slot(container, 2, 56, 53));
+        // 3 Input slots (left) - strictly NO FOOD
+        this.addSlot(new FurnaceInputSlot(container, 0, 56, 17));
+        this.addSlot(new FurnaceInputSlot(container, 1, 56, 35));
+        this.addSlot(new FurnaceInputSlot(container, 2, 56, 53));
 
         // 3 Output slots (right - cannot place items)
         this.addSlot(new OutputSlot(container, 3, 116, 17));
@@ -102,8 +102,12 @@ public class BrickFurnaceMenu extends AbstractContainerMenu {
             }
             // From player inventory / hotbar (6..41)
             else {
-                // Try moving into input slots (0..2)
-                if (!this.moveItemStackTo(stackInSlot, 0, 3, false)) {
+                // Strictly disallow food from entering Brick Furnace!
+                if (!io.marrybye.github.larperthanwolves.recipe.FoodCookingRegistry.isFood(stackInSlot)) {
+                    if (!this.moveItemStackTo(stackInSlot, 0, 3, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
                     return ItemStack.EMPTY;
                 }
             }
@@ -133,6 +137,17 @@ public class BrickFurnaceMenu extends AbstractContainerMenu {
     public void removed(Player player) {
         super.removed(player);
         this.container.stopOpen(player);
+    }
+
+    public static class FurnaceInputSlot extends Slot {
+        public FurnaceInputSlot(Container container, int slot, int x, int y) {
+            super(container, slot, x, y);
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return !io.marrybye.github.larperthanwolves.recipe.FoodCookingRegistry.isFood(stack);
+        }
     }
 
     public static class OutputSlot extends Slot {

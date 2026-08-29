@@ -21,6 +21,15 @@ public class ModBlocks {
                         return stage == 2 ? 14 : (stage == 3 ? 8 : 0);
                     })));
 
+    public static final DeferredBlock<OvenBlock> OVEN = BLOCKS.register("oven",
+            () -> new OvenBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 10.0F)
+                    .lightLevel(state -> {
+                        int stage = state.hasProperty(OvenBlock.STAGE) ? state.getValue(OvenBlock.STAGE) : 0;
+                        return stage == 2 ? 14 : (stage == 3 ? 8 : 0);
+                    })));
+
     public static final DeferredBlock<UnfiredBrickBlock> UNFIRED_BRICK = BLOCKS.register("unfired_brick",
             () -> new UnfiredBrickBlock(BlockBehaviour.Properties.of()
                     .strength(0.3F, 0.3F)

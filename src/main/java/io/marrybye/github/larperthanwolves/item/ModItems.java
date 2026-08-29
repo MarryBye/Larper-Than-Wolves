@@ -272,6 +272,9 @@ public class ModItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRICK_FURNACE = ITEMS.register("brick_furnace",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get(), new Item.Properties()));
 
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> OVEN = ITEMS.register("oven",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.OVEN.get(), new Item.Properties()));
+
     public static final DeferredItem<net.minecraft.world.item.BlockItem> UNFIRED_BRICK = ITEMS.register("unfired_brick",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.UNFIRED_BRICK.get(), new Item.Properties()));
 

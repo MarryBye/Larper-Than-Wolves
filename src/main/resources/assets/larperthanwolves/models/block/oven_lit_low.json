@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "larperthanwolves:block/oven_top",
+    "front": "larperthanwolves:block/oven_front_lit_low",
+    "side": "larperthanwolves:block/oven_side",
+    "bottom": "larperthanwolves:block/oven_bottom"
+  }
+}

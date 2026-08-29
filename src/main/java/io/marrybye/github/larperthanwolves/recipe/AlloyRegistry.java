@@ -46,6 +46,30 @@ public class AlloyRegistry {
                 ),
                 () -> new ItemStack(ModItems.DIAMOND_INGOT.get(), 1)
         ));
+
+        // 3. Brass Ingot: 1 Copper Ingot + 1 Zinc Ingot -> 1 Brass Ingot (Create compatibility)
+        net.minecraft.world.item.Item zincIngot = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("create", "zinc_ingot"));
+        Ingredient zincIngredient;
+        if (zincIngot != Items.AIR) {
+            zincIngredient = Ingredient.of(zincIngot);
+        } else {
+            zincIngredient = Ingredient.of(net.minecraft.tags.ItemTags.create(
+                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("c", "ingots/zinc")));
+        }
+
+        register(new AlloyRecipe(
+                "brass_ingot",
+                List.of(
+                        new AlloyRecipe.IngredientEntry(Ingredient.of(Items.COPPER_INGOT), 1),
+                        new AlloyRecipe.IngredientEntry(zincIngredient, 1)
+                ),
+                () -> {
+                    net.minecraft.world.item.Item brass = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(
+                            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("create", "brass_ingot"));
+                    return brass != Items.AIR ? new ItemStack(brass, 1) : ItemStack.EMPTY;
+                }
+        ));
     }
 
     public static synchronized void register(AlloyRecipe recipe) {

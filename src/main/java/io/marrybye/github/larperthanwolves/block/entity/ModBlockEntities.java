@@ -15,6 +15,12 @@ public class ModBlockEntities {
                             io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get())
                             .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OvenBlockEntity>> OVEN =
+            BLOCK_ENTITIES.register("oven", () ->
+                    BlockEntityType.Builder.of(OvenBlockEntity::new,
+                            io.marrybye.github.larperthanwolves.block.ModBlocks.OVEN.get())
+                            .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<UnfiredBrickBlockEntity>> UNFIRED_BRICK =
             BLOCK_ENTITIES.register("unfired_brick", () ->
                     BlockEntityType.Builder.of(UnfiredBrickBlockEntity::new,
