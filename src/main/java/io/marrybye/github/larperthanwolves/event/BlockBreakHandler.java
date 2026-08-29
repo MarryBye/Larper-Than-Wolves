@@ -3,6 +3,7 @@ package io.marrybye.github.larperthanwolves.event;
 import io.marrybye.github.larperthanwolves.block.ModBlocks;
 import io.marrybye.github.larperthanwolves.block.UnfiredBrickBlock;
 import io.marrybye.github.larperthanwolves.block.WorkStumpBlock;
+import io.marrybye.github.larperthanwolves.config.ModConfig;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -194,13 +195,30 @@ public class BlockBreakHandler {
         }
 
         // --- Gravel drops ---
-        if (block == Blocks.GRAVEL) {
+        if (block == Blocks.GRAVEL || block == Blocks.SUSPICIOUS_GRAVEL) {
             drops.clear();
-            if (RANDOM.nextFloat() < 0.08f) {
+
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.copperDustGravelDropChance.get() : 0.05;
+            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.siliconShardGravelDropChance.get() : 0.08;
+
+            float roll = RANDOM.nextFloat();
+            if (roll < copperChance) {
+                // Rare chance to find Copper Dust in gravel (no iron or gold)
+                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.COPPER_DUST.get(), 1));
+                dust.setDefaultPickUpDelay();
+                drops.add(dust);
+            } else if (roll < copperChance + siliconChance) {
+                // Silicon Shard
                 ItemEntity shard = new ItemEntity(level, x, y, z, new ItemStack(ModItems.SILICON_SHARD.get(), 1));
                 shard.setDefaultPickUpDelay();
                 drops.add(shard);
+            } else if (roll < copperChance + siliconChance + 0.10f) {
+                // Flint (vanilla 10%)
+                ItemEntity flint = new ItemEntity(level, x, y, z, new ItemStack(Items.FLINT, 1));
+                flint.setDefaultPickUpDelay();
+                drops.add(flint);
             } else {
+                // Gravel block
                 ItemEntity gravel = new ItemEntity(level, x, y, z, new ItemStack(Blocks.GRAVEL.asItem(), 1));
                 gravel.setDefaultPickUpDelay();
                 drops.add(gravel);
