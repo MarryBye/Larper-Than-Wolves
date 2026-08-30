@@ -1,6 +1,6 @@
 {
   "type": "neoforge:add_features",
-  "biomes": "#minecraft:is_overworld",
+  "biomes": "#larperthanwolves:has_forest_twigs",
   "features": [
     "larperthanwolves:forest_twigs"
   ],

@@ -21,7 +21,12 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.EAT;
+        return UseAnim.BRUSH;
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return slotChanged || oldStack.getItem() != newStack.getItem();
     }
 
     @Override
@@ -39,13 +44,19 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int count) {
-        int progress = Math.min(MAX_PROGRESS_SECONDS, stack.getDamageValue());
-        int totalTicks = (MAX_PROGRESS_SECONDS - progress) * 20;
+        int initialProgress = Math.min(MAX_PROGRESS_SECONDS, stack.getDamageValue());
+        int totalTicks = (MAX_PROGRESS_SECONDS - initialProgress) * 20;
         int ticksUsed = totalTicks - count;
 
         if (ticksUsed > 0 && ticksUsed % 20 == 0) {
             level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
                     SoundEvents.BRUSH_GENERIC, SoundSource.PLAYERS, 0.8F, 0.85F + level.random.nextFloat() * 0.3F);
+
+            int secondsElapsed = ticksUsed / 20;
+            int newProgress = Math.min(MAX_PROGRESS_SECONDS, initialProgress + secondsElapsed);
+            if (newProgress != stack.getDamageValue()) {
+                stack.setDamageValue(newProgress);
+            }
         }
     }
 
