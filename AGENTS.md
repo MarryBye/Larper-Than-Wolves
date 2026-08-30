@@ -330,8 +330,8 @@ All commits must follow:
 ### 4. Push Permission Check
 **MANDATORY**: Never push to remote (`git push`, `git push origin --tags`) automatically. At the end of every action, ask the user for confirmation (Yes / No).
 
-### 5. Mandatory AGENTS.md Update (`agents-md-updater`)
-**MANDATORY**: After completing any changes in the project, review the diff and update `AGENTS.md` to guarantee that the documentation always accurately reflects current systems, registries, and item lists.
+### 5. Mandatory AGENTS.md & README.md Update (`agents-md-updater`)
+**MANDATORY**: After completing any changes in the project, review the diff and update `AGENTS.md` to guarantee that the technical documentation always accurately reflects current systems, registries, and item lists. In addition, update `README.md` whenever game mechanics, features, recipes, or balance rules are added or altered.
 
 ### 6. Full JEI Mechanics Integration (`jei-mechanics-documenter`)
 **MANDATORY**: Whenever adding any unique, custom, or non-standard mechanic (in-world crafting, chisel carving, sun drying, custom fuels/speeds, manual ignition, altered block drops), automatically create corresponding JEI categories, recipes, and `addIngredientInfo` tabs to guarantee total in-game discoverability.
