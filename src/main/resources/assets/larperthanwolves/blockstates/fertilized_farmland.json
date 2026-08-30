@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "moisture=0": {
+      "model": "larperthanwolves:block/fertilized_farmland"
+    },
+    "moisture=1": {
+      "model": "larperthanwolves:block/fertilized_farmland"
+    },
+    "moisture=2": {
+      "model": "larperthanwolves:block/fertilized_farmland"
+    },
+    "moisture=3": {
+      "model": "larperthanwolves:block/fertilized_farmland"
+    },
+    "moisture=4": {
+      "model": "larperthanwolves:block/fertilized_farmland"
+    },
+    "moisture=5": {
+      "model": "larperthanwolves:block/fertilized_farmland"
+    },
+    "moisture=6": {
+      "model": "larperthanwolves:block/fertilized_farmland"
+    },
+    "moisture=7": {
+      "model": "larperthanwolves:block/fertilized_farmland_moist"
+    }
+  }
+}

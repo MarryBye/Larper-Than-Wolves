@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.22.0
+- **Current Version**: 1.23.0
 
 ## Project Architecture & Progression
 
@@ -86,7 +86,13 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     8. Diamond Dust (`diamond_dust`)
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
-### 🌾 Farming & 2-Stage Hoe Tilling
+### 🌾 Farming, Mandatory Soil Fertilization & 2-Stage Hoe Tilling
+- **Mandatory Bone Meal Fertilization (`fertilized_farmland` / `FertilizedFarmlandBlock`)**:
+  - Crops planted on standard farmland will **NOT** grow (growth ticks are completely blocked on unfertilized soil).
+  - Right-clicking farmland or a planted crop with **Bone Meal** fertilizes the soil, turning it into **Fertilized Farmland**.
+  - **Growth Behavior**: Bone meal **does not** advance crop growth stages instantly; it strictly activates natural crop growth.
+  - **Visuals**: Fertilized farmland features distinct ivory/white bone meal mineral flecks on both dry and moist soil textures.
+  - **Crop Harvesting Cycle**: When a mature crop is harvested or broken, the fertilized farmland resets back to standard unfertilized farmland (`Blocks.FARMLAND`), requiring fertilization again for new seeds.
 - **2-Stage Tilling**:
   - **Stage 1 (Grass/Podzol/Mycelium/Rich Grass $\rightarrow$ Dirt/Rich Dirt)**: Right-click grassy ground with any hoe to till away the grass layer into plain dirt (or rich dirt) with a **35% chance** to harvest wild seeds (`Wheat Seeds` 50%, `Carrot` 15%, `Potato` 15%, `Beetroot Seeds` 10%, `Pumpkin Seeds` 5%, `Melon Seeds` 5%).
   - **Stage 2 (Dirt/Rich Dirt $\rightarrow$ Farmland)**: Right-click plain dirt or rich dirt with any hoe to prepare farmland for crop planting.
@@ -160,6 +166,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── ModBlocks.java             — Block registration (DeferredRegister)
 │   ├── MillBlock.java             — Hand mill / quern block
 │   ├── MillCrankBlock.java        — Rotating mill crank handle block
+│   ├── FertilizedFarmlandBlock.java — Fertilized farmland required for crop growth
 │   ├── RichGrassBlock.java        — Rich grass block with daylight spreading & snowy states
 │   ├── RichFallingBlock.java      — Falling block with custom dust particle color for rich gravel & sand
 │   ├── TwigBlock.java             — Small ground forest twig block

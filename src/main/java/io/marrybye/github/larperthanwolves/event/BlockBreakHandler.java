@@ -723,6 +723,128 @@ public class BlockBreakHandler {
         }
     }
 
+    public static boolean isCrop(Block block) {
+        return block instanceof net.minecraft.world.level.block.CropBlock
+                || block instanceof net.minecraft.world.level.block.StemBlock
+                || block instanceof net.minecraft.world.level.block.AttachedStemBlock
+                || block instanceof net.minecraft.world.level.block.TorchflowerCropBlock
+                || block instanceof net.minecraft.world.level.block.PitcherCropBlock
+                || block instanceof net.minecraft.world.level.block.SweetBerryBushBlock;
+    }
+
+    // 5. Bone meal fertilization mechanic (soil fertilization instead of instant growth)
+    @SubscribeEvent
+    public static void onBonemeal(net.neoforged.neoforge.event.entity.player.BonemealEvent event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = event.getState();
+
+        // 1. Direct use on Farmland
+        if (state.is(Blocks.FARMLAND)) {
+            if (!level.isClientSide) {
+                int moisture = state.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
+                        state.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
+                level.setBlock(pos, ModBlocks.FERTILIZED_FARMLAND.get().defaultBlockState()
+                        .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture), 3);
+                level.playSound(null, pos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
+                            pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 10, 0.3, 0.1, 0.3, 0.05);
+                }
+            }
+            event.setSuccessful(true);
+            return;
+        }
+
+        // If farmland is already fertilized, do not consume/waste bone meal
+        if (state.is(ModBlocks.FERTILIZED_FARMLAND.get())) {
+            event.setCanceled(true);
+            return;
+        }
+
+        // 2. Use on a Crop planted on Farmland
+        if (isCrop(state.getBlock())) {
+            BlockPos belowPos = pos.below();
+            BlockState belowState = level.getBlockState(belowPos);
+
+            if (belowState.is(Blocks.FARMLAND)) {
+                if (!level.isClientSide) {
+                    int moisture = belowState.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
+                            belowState.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
+                    level.setBlock(belowPos, ModBlocks.FERTILIZED_FARMLAND.get().defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture), 3);
+                    level.playSound(null, pos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
+                                pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 10, 0.3, 0.2, 0.3, 0.05);
+                    }
+                }
+                // Successfully fertilized! Prevents vanilla instant growth and consumes bone meal
+                event.setSuccessful(true);
+                return;
+            } else if (belowState.is(ModBlocks.FERTILIZED_FARMLAND.get())) {
+                // Already fertilized! Prevent instant growth and do not consume extra bone meal
+                event.setCanceled(true);
+                return;
+            }
+        }
+    }
+
+    // 6. Crop growth prevention on unfertilized soil
+    @SubscribeEvent
+    public static void onCropGrowPre(net.neoforged.neoforge.event.level.block.CropGrowEvent.Pre event) {
+        BlockPos pos = event.getPos();
+        BlockState state = event.getState();
+
+        if (isCrop(state.getBlock())) {
+            BlockPos belowPos = pos.below();
+            BlockState belowState = event.getLevel().getBlockState(belowPos);
+
+            // Soil MUST be Fertilized Farmland for crops to grow
+            if (!belowState.is(ModBlocks.FERTILIZED_FARMLAND.get())) {
+                event.setResult(net.neoforged.neoforge.event.level.block.CropGrowEvent.Pre.Result.DO_NOT_GROW);
+            }
+        }
+    }
+
+    // 7. Crop harvest/break resets fertilized farmland back to regular farmland
+    @SubscribeEvent
+    public static void onCropBreak(BlockEvent.BreakEvent event) {
+        BlockPos pos = event.getPos();
+        BlockState state = event.getState();
+
+        if (isCrop(state.getBlock())) {
+            BlockPos belowPos = pos.below();
+            BlockState belowState = event.getLevel().getBlockState(belowPos);
+            if (belowState.is(ModBlocks.FERTILIZED_FARMLAND.get())) {
+                int moisture = belowState.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
+                        belowState.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
+                event.getLevel().setBlock(belowPos, Blocks.FARMLAND.defaultBlockState()
+                        .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture), 3);
+            }
+        }
+    }
+
+    // 8. Right click harvest (e.g. Sweet Berry Bush) resets fertilized farmland
+    @SubscribeEvent
+    public static void onCropRightClick(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = level.getBlockState(pos);
+
+        if (state.getBlock() instanceof net.minecraft.world.level.block.SweetBerryBushBlock &&
+                state.getValue(net.minecraft.world.level.block.SweetBerryBushBlock.AGE) >= 2) {
+            BlockPos belowPos = pos.below();
+            BlockState belowState = level.getBlockState(belowPos);
+            if (belowState.is(ModBlocks.FERTILIZED_FARMLAND.get())) {
+                int moisture = belowState.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
+                        belowState.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
+                level.setBlock(belowPos, Blocks.FARMLAND.defaultBlockState()
+                        .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture), 3);
+            }
+        }
+    }
+
     public static ItemStack getRandomWildCropSeed() {
         float roll = ThreadLocalRandom.current().nextFloat();
         if (roll < 0.50f) {

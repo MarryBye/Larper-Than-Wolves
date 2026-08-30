@@ -21,6 +21,9 @@ public class ModBlocks {
                         return stage == 2 ? 14 : (stage == 3 ? 8 : 0);
                     })));
 
+    public static final DeferredBlock<FertilizedFarmlandBlock> FERTILIZED_FARMLAND = BLOCKS.register("fertilized_farmland",
+            () -> new FertilizedFarmlandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FARMLAND)));
+
     public static final DeferredBlock<OvenBlock> OVEN = BLOCKS.register("oven",
             () -> new OvenBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()

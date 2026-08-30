@@ -97,6 +97,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.SIEVE.get());
                         output.accept(ModItems.MILL.get());
                         output.accept(ModItems.MILL_CRANK.get());
+                        output.accept(ModItems.FERTILIZED_FARMLAND.get());
                         output.accept(ModItems.BASKET.get());
 
                         output.accept(ModItems.UNBOUND_MESH.get());

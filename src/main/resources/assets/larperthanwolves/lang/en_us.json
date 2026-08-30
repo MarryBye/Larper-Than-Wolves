@@ -157,5 +157,8 @@
   "jei.larperthanwolves.category.milling": "Hand Milling",
   "jei.larperthanwolves.info.mill": "The Hand Mill is used to grind metal ingots into 8 dusts, raw ores and nuggets into 2 dusts, rocks into soils, and bones into bone meal. Place a Mill Crank on top and right-click it 20 times (0.5s per turn) to grind.",
   "jei.larperthanwolves.info.mill_crank": "Placed on top of a Hand Mill. Right-click to rotate the handle. Each full revolution takes 0.5 seconds and adds 5% grinding progress (20 turns = 100%).",
-  "jei.larperthanwolves.info.bone_meal": "Bone Meal can no longer be crafted in crafting grids. Grind 2 Bones in a Hand Mill to produce 1 Bone Meal. Peaceful animals and zombies drop bones with a realistic chance."
+  "jei.larperthanwolves.info.bone_meal": "Bone Meal is obtained by grinding 2 Bones in a Hand Mill. When applied to farmland or planted crops, it fertilizes the soil so crops can grow (crops will NOT grow on unfertilized farmland). It does not instantly advance growth stages.",
+  "block.larperthanwolves.fertilized_farmland": "Fertilized Farmland",
+  "item.larperthanwolves.fertilized_farmland": "Fertilized Farmland",
+  "jei.larperthanwolves.info.fertilized_farmland": "Crops will only grow if planted on Fertilized Farmland. Apply Bone Meal to farmland or a planted crop to fertilize the soil (displays white bone meal specks). After harvesting the crop, the soil reverts to unfertilized farmland and must be fertilized again for new crops."
 }

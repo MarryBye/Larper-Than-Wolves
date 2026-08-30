@@ -418,6 +418,8 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.mill_crank"));
         registration.addIngredientInfo(new ItemStack(Items.BONE_MEAL), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.bone_meal"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.FERTILIZED_FARMLAND.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.fertilized_farmland"));
     }
 
     @Override
