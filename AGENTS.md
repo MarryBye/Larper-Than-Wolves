@@ -115,6 +115,12 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Fan Bulk Smoking: Grass to Dry Grass, Leather to Tanned Leather.
   - Mechanical Saw: Log and Tree Stump cutting into 4 Planks.
 
+### 🧺 Early Storage: Woven Basket (`basket` / `BasketBlock`)
+- **Crafting**: 4 Meshes in 2x2 grid $\rightarrow$ **Basket** (`basket`). Accessible very early before crafting tables or chests are available.
+- **Storage**: 9 slots (3x3 inventory container).
+- **Design & Model**: Custom 3D block model with woven wicker panels, reinforced rim, arched handle, and rope cross-bindings. Supports horizontal rotation and proper collision voxel bounds (`14x12x14`).
+- **Interactions & Automation**: Right-click opens custom 3x3 GUI. Supports hopper input/output through all faces (`WorldlyContainer`). Drops contents when broken with an axe.
+
 ## File Structure
 ```
 src/main/java/io/marrybye/github/larperthanwolves/
@@ -124,6 +130,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── RichGrassBlock.java        — Rich grass block with daylight spreading & snowy states
 │   ├── RichFallingBlock.java      — Falling block with custom dust particle color for rich gravel & sand
 │   ├── TwigBlock.java             — Small ground forest twig block
+│   ├── BasketBlock.java           — 3x3 early storage woven basket block
 │   ├── BrickFurnaceBlock.java     — Brick furnace block (facing, 4 stages)
 │   ├── OvenBlock.java             — Food oven block (facing, 4 stages)
 │   ├── AlloyMixerBlock.java       — Alloy mixer block (facing, 4 stages)
@@ -134,6 +141,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── UnfiredBrickBlock.java     — Unfired brick (dries under sunlight, 4 stages)
 │   └── entity/
 │       ├── ModBlockEntities.java           — BlockEntity type registration
+│       ├── BasketBlockEntity.java          — 9-slot storage basket container logic
 │       ├── BrickFurnaceBlockEntity.java    — Furnace logic (7 slots, custom fuel, WorldlyContainer, no food)
 │       ├── OvenBlockEntity.java            — Food oven logic (7 slots, custom fuel, WorldlyContainer, food only)
 │       ├── AlloyMixerBlockEntity.java      — Alloy mixing logic (5 slots, 3 recipes)

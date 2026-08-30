@@ -331,6 +331,8 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.unbound_mesh"));
         registration.addIngredientInfo(new ItemStack(ModItems.MESH.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.mesh"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.BASKET.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.basket"));
 
         registration.addIngredientInfo(new ItemStack(Items.CRAFTING_TABLE), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.crafting_table"));

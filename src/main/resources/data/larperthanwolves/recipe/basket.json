@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MM",
+    "MM"
+  ],
+  "key": {
+    "M": {
+      "item": "larperthanwolves:mesh"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:basket"
+  }
+}

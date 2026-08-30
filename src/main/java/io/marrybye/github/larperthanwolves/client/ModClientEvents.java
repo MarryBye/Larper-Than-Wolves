@@ -15,6 +15,7 @@ public class ModClientEvents {
         event.register(ModMenuTypes.OVEN.get(), OvenScreen::new);
         event.register(ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerScreen::new);
         event.register(ModMenuTypes.SIEVE.get(), SieveScreen::new);
+        event.register(ModMenuTypes.BASKET.get(), BasketScreen::new);
     }
 
     @SubscribeEvent

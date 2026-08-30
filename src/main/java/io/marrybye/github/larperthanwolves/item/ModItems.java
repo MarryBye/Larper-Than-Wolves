@@ -287,6 +287,9 @@ public class ModItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SIEVE = ITEMS.register("sieve",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.SIEVE.get(), new Item.Properties()));
 
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BASKET = ITEMS.register("basket",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BASKET.get(), new Item.Properties()));
+
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DRYING_RACK = ITEMS.register("drying_rack",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.DRYING_RACK.get(), new Item.Properties()));
 

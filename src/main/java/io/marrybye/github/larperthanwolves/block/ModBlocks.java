@@ -59,6 +59,13 @@ public class ModBlocks {
                     .sound(SoundType.WOOD)
                     .noOcclusion()));
 
+    public static final DeferredBlock<BasketBlock> BASKET = BLOCKS.register("basket",
+            () -> new BasketBlock(BlockBehaviour.Properties.of()
+                    .mapColor(net.minecraft.world.level.material.MapColor.WOOD)
+                    .strength(0.8F, 1.0F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
+
     public static final DeferredBlock<DryingRackBlock> DRYING_RACK = BLOCKS.register("drying_rack",
             () -> new DryingRackBlock(BlockBehaviour.Properties.of()
                     .mapColor(net.minecraft.world.level.material.MapColor.WOOD)

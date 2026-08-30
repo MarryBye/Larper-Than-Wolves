@@ -39,6 +39,12 @@ public class ModBlockEntities {
                             io.marrybye.github.larperthanwolves.block.ModBlocks.SIEVE.get())
                             .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BasketBlockEntity>> BASKET =
+            BLOCK_ENTITIES.register("basket", () ->
+                    BlockEntityType.Builder.of(BasketBlockEntity::new,
+                            io.marrybye.github.larperthanwolves.block.ModBlocks.BASKET.get())
+                            .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DryingRackBlockEntity>> DRYING_RACK =
             BLOCK_ENTITIES.register("drying_rack", () ->
                     BlockEntityType.Builder.of(DryingRackBlockEntity::new,

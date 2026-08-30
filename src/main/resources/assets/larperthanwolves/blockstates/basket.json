@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "larperthanwolves:block/basket"
+    },
+    "facing=east": {
+      "model": "larperthanwolves:block/basket",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "larperthanwolves:block/basket",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "larperthanwolves:block/basket",
+      "y": 270
+    }
+  }
+}
