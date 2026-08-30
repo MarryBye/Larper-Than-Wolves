@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
+    "particle": "larperthanwolves:block/kinetic_piston_top",
     "top": "larperthanwolves:block/kinetic_piston_top",
     "bottom": "larperthanwolves:block/kinetic_piston_bottom",
     "side": "larperthanwolves:block/kinetic_piston_side"

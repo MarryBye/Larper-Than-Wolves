@@ -30,6 +30,13 @@ public class FilterGrateBlock extends BaseEntityBlock {
         return CODEC;
     }
 
+    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = Block.box(0, 8, 0, 16, 16, 16);
+
+    @Override
+    public net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state, net.minecraft.world.level.BlockGetter level, BlockPos pos, net.minecraft.world.phys.shapes.CollisionContext context) {
+        return SHAPE;
+    }
+
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;

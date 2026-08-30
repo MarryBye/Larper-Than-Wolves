@@ -1,12 +1,67 @@
 {
-  "parent": "minecraft:block/cube",
+  "render_type": "minecraft:cutout",
   "textures": {
-    "particle": "larperthanwolves:block/filter_grate_top",
-    "north": "larperthanwolves:block/filter_grate_side",
-    "south": "larperthanwolves:block/filter_grate_side",
-    "east": "larperthanwolves:block/filter_grate_side",
-    "west": "larperthanwolves:block/filter_grate_side",
-    "up": "larperthanwolves:block/filter_grate_top",
-    "down": "larperthanwolves:block/filter_grate_side"
-  }
+    "particle": "minecraft:block/oak_planks",
+    "oak": "minecraft:block/oak_planks",
+    "mesh": "larperthanwolves:block/filter_grate_mesh"
+  },
+  "elements": [
+    {
+      "name": "north_rim",
+      "from": [0, 8, 0],
+      "to": [16, 16, 2],
+      "faces": {
+        "north": { "uv": [0, 8, 16, 16], "texture": "#oak", "cullface": "north" },
+        "south": { "uv": [0, 8, 16, 16], "texture": "#oak" },
+        "west": { "uv": [0, 8, 2, 16], "texture": "#oak", "cullface": "west" },
+        "east": { "uv": [14, 8, 16, 16], "texture": "#oak", "cullface": "east" },
+        "up": { "uv": [0, 0, 16, 2], "texture": "#oak", "cullface": "up" },
+        "down": { "uv": [0, 14, 16, 16], "texture": "#oak", "cullface": "down" }
+      }
+    },
+    {
+      "name": "south_rim",
+      "from": [0, 8, 14],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "uv": [0, 8, 16, 16], "texture": "#oak" },
+        "south": { "uv": [0, 8, 16, 16], "texture": "#oak", "cullface": "south" },
+        "west": { "uv": [14, 8, 16, 16], "texture": "#oak", "cullface": "west" },
+        "east": { "uv": [0, 8, 2, 16], "texture": "#oak", "cullface": "east" },
+        "up": { "uv": [0, 14, 16, 16], "texture": "#oak", "cullface": "up" },
+        "down": { "uv": [0, 0, 16, 2], "texture": "#oak", "cullface": "down" }
+      }
+    },
+    {
+      "name": "west_rim",
+      "from": [0, 8, 2],
+      "to": [2, 16, 14],
+      "faces": {
+        "west": { "uv": [2, 8, 14, 16], "texture": "#oak", "cullface": "west" },
+        "east": { "uv": [2, 8, 14, 16], "texture": "#oak" },
+        "up": { "uv": [0, 2, 2, 14], "texture": "#oak", "cullface": "up" },
+        "down": { "uv": [0, 2, 2, 14], "texture": "#oak", "cullface": "down" }
+      }
+    },
+    {
+      "name": "east_rim",
+      "from": [14, 8, 2],
+      "to": [16, 16, 14],
+      "faces": {
+        "east": { "uv": [2, 8, 14, 16], "texture": "#oak", "cullface": "east" },
+        "west": { "uv": [2, 8, 14, 16], "texture": "#oak" },
+        "up": { "uv": [14, 2, 16, 14], "texture": "#oak", "cullface": "up" },
+        "down": { "uv": [14, 2, 16, 14], "texture": "#oak", "cullface": "down" }
+      }
+    },
+    {
+      "name": "top_mesh",
+      "from": [0, 15.9, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "up": { "uv": [0, 0, 16, 16], "texture": "#mesh", "cullface": "up" },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#mesh" }
+      }
+    }
+  ]
 }

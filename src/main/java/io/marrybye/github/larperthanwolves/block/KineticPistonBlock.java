@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -30,13 +31,13 @@ import java.util.List;
 public class KineticPistonBlock extends DirectionalBlock {
     public static final MapCodec<KineticPistonBlock> CODEC = simpleCodec(KineticPistonBlock::new);
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
-    public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
+    public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
 
     public KineticPistonBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(TRIGGERED, Boolean.FALSE));
+                .setValue(EXTENDED, Boolean.FALSE));
     }
 
     @Override
@@ -46,14 +47,14 @@ public class KineticPistonBlock extends DirectionalBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, TRIGGERED);
+        builder.add(FACING, EXTENDED);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState()
                 .setValue(FACING, context.getNearestLookingDirection().getOpposite())
-                .setValue(TRIGGERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));
+                .setValue(EXTENDED, Boolean.FALSE);
     }
 
     @Override
@@ -62,23 +63,32 @@ public class KineticPistonBlock extends DirectionalBlock {
         if (level.isClientSide) return;
 
         boolean hasSignal = level.hasNeighborSignal(pos);
-        boolean isTriggered = state.getValue(TRIGGERED);
+        boolean isExtended = state.getValue(EXTENDED);
 
-        if (hasSignal && !isTriggered) {
-            level.setBlock(pos, state.setValue(TRIGGERED, true), 2);
-            triggerPiston(level, pos, state.getValue(FACING));
-        } else if (!hasSignal && isTriggered) {
-            level.setBlock(pos, state.setValue(TRIGGERED, false), 2);
+        if (hasSignal && !isExtended) {
+            triggerPiston(level, pos, state);
         }
     }
 
-    private void triggerPiston(Level level, BlockPos pos, Direction facing) {
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (state.getValue(EXTENDED)) {
+            // Retract the piston head
+            level.setBlock(pos, state.setValue(EXTENDED, false), 3);
+            level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.8F, 1.1F);
+        }
+    }
+
+    private void triggerPiston(Level level, BlockPos pos, BlockState state) {
+        Direction facing = state.getValue(FACING);
         BlockPos targetPos = pos.relative(facing);
         BlockState targetState = level.getBlockState(targetPos);
 
-        boolean didAction = false;
+        // 1. Physically extend the piston mechanism
+        level.setBlock(pos, state.setValue(EXTENDED, true), 3);
+        level.scheduleTick(pos, this, 4); // Retract after 4 ticks (0.2s)
 
-        // 1. Launch entities in front (~10 blocks velocity)
+        // 2. Launch entities in front (~10 blocks velocity)
         AABB entityBox = new AABB(targetPos).inflate(0.3D);
         List<Entity> entities = level.getEntities((Entity) null, entityBox, e -> !e.isSpectator());
         for (Entity entity : entities) {
@@ -95,10 +105,9 @@ public class KineticPistonBlock extends DirectionalBlock {
             if (entity instanceof ServerPlayer serverPlayer) {
                 serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(serverPlayer));
             }
-            didAction = true;
         }
 
-        // 2. Launch single block as physical falling block projectile
+        // 3. Launch single block as physical falling block projectile
         if (!targetState.isAir() && targetState.getDestroySpeed(level, targetPos) >= 0
                 && targetState.getPistonPushReaction() != PushReaction.BLOCK
                 && targetState.getPistonPushReaction() != PushReaction.DESTROY
@@ -125,11 +134,10 @@ public class KineticPistonBlock extends DirectionalBlock {
                 }
                 falling.setDeltaMovement(blockVel);
                 falling.hurtMarked = true;
-                didAction = true;
             }
         }
 
-        // Sound effects & particle bursts
+        // Extension sounds & air burst effects
         level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 1.0F, 1.2F);
         level.playSound(null, pos, SoundEvents.WIND_CHARGE_BURST.value(), SoundSource.BLOCKS, 0.8F, 0.9F);
 
