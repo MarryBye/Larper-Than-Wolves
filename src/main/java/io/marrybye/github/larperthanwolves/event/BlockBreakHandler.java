@@ -390,12 +390,17 @@ public class BlockBreakHandler {
                 tool.is(net.minecraft.tags.ItemTags.create(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("minecraft", "shears")));
     }
 
+    public static boolean isShovel(ItemStack tool) {
+        if (tool == null || tool.isEmpty()) return false;
+        return tool.getItem() instanceof net.minecraft.world.item.ShovelItem ||
+                tool.is(net.minecraft.tags.ItemTags.SHOVELS);
+    }
+
     // 1. Mining speed checks
     @SubscribeEvent
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
-        if (player.isCreative() || player.getAbilities().instabuild) return;
-
+        if (player == null) return;
         ItemStack held = player.getMainHandItem();
         BlockState state = event.getState();
         Block block = state.getBlock();
@@ -407,6 +412,15 @@ public class BlockBreakHandler {
             if (state.is(BlockTags.LOGS) || state.is(ModBlocks.WORK_STUMP.get()) || ModBlocks.isStump(state)) {
                 event.setNewSpeed(1.5f);
                 return;
+            }
+        }
+
+        // Clay breaks slightly slower
+        if (state.is(Blocks.CLAY)) {
+            if (isShovel(held)) {
+                event.setNewSpeed(event.getOriginalSpeed() * 0.55f);
+            } else {
+                event.setNewSpeed(event.getOriginalSpeed() * 0.35f);
             }
         }
 
@@ -510,6 +524,17 @@ public class BlockBreakHandler {
                 ItemEntity unfired = new ItemEntity(level, x, y, z, new ItemStack(ModItems.UNFIRED_BRICK.get(), 1));
                 unfired.setDefaultPickUpDelay();
                 drops.add(unfired);
+            }
+            return;
+        }
+
+        // --- Clay Block (strictly requires shovel, drops 1 clay ball instead of 4) ---
+        if (block == Blocks.CLAY) {
+            drops.clear();
+            if (isShovel(tool)) {
+                ItemEntity clayDrop = new ItemEntity(level, x, y, z, new ItemStack(Items.CLAY_BALL, 1));
+                clayDrop.setDefaultPickUpDelay();
+                drops.add(clayDrop);
             }
             return;
         }

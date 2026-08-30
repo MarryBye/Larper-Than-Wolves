@@ -143,6 +143,7 @@
   "jei.larperthanwolves.info.hoe_tilling": "Right-click grass blocks with any hoe to till away grass into dirt with a 35% chance to discover wild seeds (Wheat Seeds, Carrots, Potatoes, Beetroot Seeds, Pumpkin Seeds, Melon Seeds). Right-click plain dirt with a hoe to prepare Farmland for planting.",
   "jei.larperthanwolves.info.villager_trades": "Villager armorers, weaponsmiths, and toolsmiths trade equipment up to Bronze tier in exchange for Emeralds. Basic items can be bartered with villagers and wandering traders.",
   "jei.larperthanwolves.info.iron_golem": "Iron Golems protect villages and drop only poppies upon defeat. They do not drop iron ingots.",
+  "jei.larperthanwolves.info.clay": "Clay blocks can ONLY be harvested with a Shovel. Breaking clay by hand or with other tools yields no drops. Mining clay with a shovel yields 1 Clay Ball.",
   "block.larperthanwolves.oven": "Oven",
   "item.larperthanwolves.oven": "Oven",
   "container.larperthanwolves.oven": "Oven",

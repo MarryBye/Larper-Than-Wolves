@@ -9,17 +9,17 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.20.4
+- **Current Version**: 1.21.0
 
 ## Project Architecture & Progression
 
 Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the early and mid-game:
 
 ### ⛏️ Tool Tiers & Dig Tier Matrix
-- **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Cannot mine deepslate, zinc, or any other ores.
-- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`). Cannot mine deepslate, zinc, or iron+.
-- **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils. Cannot mine zinc ore or high-tier ores.
-- **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`). Shovel mines Rich Soils. Cannot mine Ancient Debris or Obsidian.
+- **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Shovel mines Clay (1 Clay Ball) and basic soils. Cannot mine deepslate, zinc, or any other ores.
+- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`) and Clay. Cannot mine deepslate, zinc, or iron+.
+- **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils and Clay. Cannot mine zinc ore or high-tier ores.
+- **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`). Shovel mines Rich Soils and Clay. Cannot mine Ancient Debris or Obsidian.
 - **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
 
 ### 🌲 Flora, Twigs & Forest Foraging
@@ -30,9 +30,14 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Silicon Shears (Кремниевые ножницы)**: Rebuilt with authentic wooden stick handle loops bound with cord and chipped flint/silicon blades.
 
 ### 🌍 Soils, Digging, Sieve & Hand-Woven Mesh
+- **Clay Mining & Harvesting Rules (Добыча глины)**:
+  - **Shovel Requirement**: Clay blocks (`minecraft:clay`) can **strictly be harvested ONLY with a shovel** (Silicon, Copper, Bronze, Iron, etc.).
+  - **Hand / Tool Penalty**: Breaking clay blocks by hand or using any tool other than a shovel will destroy the block completely with **0 drops**.
+  - **Drop Yield**: Digging clay with a shovel drops **1 Clay Ball** (`minecraft:clay_ball`) per block (reduced from vanilla's 4).
+  - **Mining Speed**: Clay block digging speed is adjusted to take slightly longer to dig (~1.5x - 1.8x longer).
 - **Hand-Woven Mesh (`unbound_mesh` $\rightarrow$ `mesh`)**:
   - Crafting: 2 Sticks + 2 Ropes in crafting grid $\rightarrow$ **Unbound Mesh** (`unbound_mesh`).
-  - Hand Weaving: Hold Right-Click with Unbound Mesh in hand for **15 seconds** (eating animation + scratching brush sound effects).
+  - Hand Weaving: Hold Right-Click with Unbound Mesh in hand for **15 seconds** (eating animation + continuous scratching brush sound effects).
   - Progress Bar: Durability bar dynamically fills from 0 to 15 (1 tick of durability = 1 second of weaving). Progress is saved if interrupted.
   - Completion: At 15 seconds, transforms into the finished **Mesh** (`mesh`).
 - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel/Sand)**:
@@ -53,7 +58,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     6. Iron Dust (`iron_dust`)
     7. Gold Dust (`gold_dust`)
     8. Diamond Dust (`diamond_dust`)
-  - World Generation: Spawns in small veins (size 14) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
+  - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
 ### 🌾 Farming & 2-Stage Hoe Tilling
 - **2-Stage Tilling**:
