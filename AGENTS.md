@@ -175,13 +175,13 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 
 ### ⚙️ Redstone & Advanced Mechanisms (Kinetic Piston, Filter Grate, Entity Observer)
 - **Kinetic Piston (`kinetic_piston` / `KineticPistonBlock`)**:
-  - Crafted from 3 Planks + 4 Cobblestone + 1 Bronze Ingot + 1 Redstone Dust.
+  - Crafted from 3 Bronze Blocks + 4 Cobblestone + 1 Bronze Ingot + 1 Redstone Dust.
   - Directional in all 6 orientations (Up, Down, North, South, East, West).
   - **Visuals & Model**: Dark stone base casing, heavy bronze metal pusher face, and fully animated extending piston shaft mechanism (`extended` property).
   - **Block Projectile Launch**: Checks the front face. If there are 2 or more blocks in front, it does NOT trigger. If there is exactly 1 block in front, launches it as a physical projectile / falling block entity ~10 blocks forward (or until impacting a wall, dropping under gravity and settling back as a solid block).
   - **Entity Catapult**: Launches players, mobs, and items ~10 blocks in the facing direction.
 - **Filter Grate (`filter_grate` / `FilterGrateBlock` / `FilterGrateBlockEntity`)**:
-  - Crafted from 4 Planks + 4 Bronze Nuggets + 1 Mesh.
+  - Crafted from 4 Planks + 4 Sticks + 1 Mesh.
   - **Visuals & Model**: Oak plank half-block / slab hopper frame hollowed from the bottom up to a transparent wire mesh grating top (`RenderType.cutout`).
   - Solid collision for players and living mobs (entities cannot fall or walk through the grating).
   - **Phantom Filter GUI**: Right-click opens a 3x3 filter grid. Clicking with an item sets a ghost/phantom filter copy (original item is not consumed); clicking with an empty hand clears the slot.
@@ -189,7 +189,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - **Unpowered (Normal Mode)**: Only item entities matching the set filters are allowed to pass through the grate to below.
     - **Powered by Redstone (Inverted Mode)**: Filter is inverted — items matching the filters are blocked on top, while all other items pass through.
 - **Entity Observer (`entity_observer` / `EntityObserverBlock`)**:
-  - Crafted from 6 Cobblestone + 2 Redstone Dust + 1 Silicon Shard.
+  - Crafted from 6 Cobblestone + 2 Redstone Dust + 1 Bone.
   - **Visuals**: Authentic vanilla Observer stone casing, with a carved Minecraft **Skeleton face parody** on the front sensor side, and vanilla redstone output port on the back.
   - Directional sensor block detecting any entity (players, mobs, dropped items, vehicles) moving in front of its sensor face.
   - Emits a **4-tick redstone pulse** on its back face upon entity detection.

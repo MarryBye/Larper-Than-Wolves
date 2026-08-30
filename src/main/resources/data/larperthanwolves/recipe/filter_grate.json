@@ -2,21 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "PNP",
-    "NMN",
-    "PNP"
+    "PSP",
+    "SMS",
+    "PSP"
   ],
   "key": {
     "P": {
       "tag": "minecraft:planks"
     },
-    "N": {
-      "item": "larperthanwolves:bronze_nugget"
+    "S": {
+      "item": "minecraft:stick"
     },
     "M": {
       "item": "larperthanwolves:mesh"
     }
-  ],
+  },
   "result": {
     "count": 1,
     "id": "larperthanwolves:filter_grate"

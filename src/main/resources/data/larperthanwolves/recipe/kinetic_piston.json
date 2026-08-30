@@ -2,24 +2,24 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "pattern": [
-    "PPP",
-    "CBC",
+    "BBB",
+    "CIC",
     "CRC"
   ],
   "key": {
-    "P": {
-      "tag": "minecraft:planks"
+    "B": {
+      "item": "larperthanwolves:bronze_block"
     },
     "C": {
       "tag": "minecraft:stone_tool_materials"
     },
-    "B": {
+    "I": {
       "item": "larperthanwolves:bronze_ingot"
     },
     "R": {
       "item": "minecraft:redstone"
     }
-  ],
+  },
   "result": {
     "count": 1,
     "id": "larperthanwolves:kinetic_piston"

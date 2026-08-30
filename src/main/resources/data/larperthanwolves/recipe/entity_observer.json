@@ -3,7 +3,7 @@
   "category": "redstone",
   "pattern": [
     "CCC",
-    "RRS",
+    "RRB",
     "CCC"
   ],
   "key": {
@@ -13,10 +13,10 @@
     "R": {
       "item": "minecraft:redstone"
     },
-    "S": {
-      "item": "larperthanwolves:silicon_shard"
+    "B": {
+      "item": "minecraft:bone"
     }
-  ],
+  },
   "result": {
     "count": 1,
     "id": "larperthanwolves:entity_observer"
