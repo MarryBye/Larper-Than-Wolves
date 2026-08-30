@@ -327,6 +327,11 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(richSoils, VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.rich_soil"));
 
+        registration.addIngredientInfo(new ItemStack(ModItems.UNBOUND_MESH.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.unbound_mesh"));
+        registration.addIngredientInfo(new ItemStack(ModItems.MESH.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.mesh"));
+
         registration.addIngredientInfo(new ItemStack(Items.CRAFTING_TABLE), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.crafting_table"));
         registration.addIngredientInfo(new ItemStack(ModBlocks.WORK_STUMP.get()), VanillaTypes.ITEM_STACK,

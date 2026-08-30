@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.18.0
+- **Current Version**: 1.19.0
 
 ## Project Architecture & Progression
 
@@ -29,7 +29,12 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Crafting**: 2 Twigs $\rightarrow$ 1 Stick (`Items.STICK`).
 - **Silicon Shears (Кремниевые ножницы)**: Rebuilt with authentic wooden stick handle loops bound with cord and chipped flint/silicon blades.
 
-### 🌍 Soils, Digging & Sieve Processing
+### 🌍 Soils, Digging, Sieve & Hand-Woven Mesh
+- **Hand-Woven Mesh (`unbound_mesh` $\rightarrow$ `mesh`)**:
+  - Crafting: 2 Sticks + 2 Ropes in crafting grid $\rightarrow$ **Unbound Mesh** (`unbound_mesh`).
+  - Hand Weaving: Hold Right-Click with Unbound Mesh in hand for **15 seconds** (eating animation + scratching brush sound effects).
+  - Progress Bar: Durability bar dynamically fills from 0 to 15 (1 tick of durability = 1 second of weaving). Progress is saved if interrupted.
+  - Completion: At 15 seconds, transforms into the finished **Mesh** (`mesh`).
 - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel/Sand)**:
   - Digging & Sifting drops maximum: **Silicon Shards** (most common, 20-30%), **Flint** (rarer, 8-15%), **Copper Dust** (rarest, 2-5%).
   - Suspicious gravel and sand additionally yield their built-in archaeology loot tables.

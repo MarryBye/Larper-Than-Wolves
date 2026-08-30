@@ -198,7 +198,10 @@ public class ModItems {
             () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.BOOTS, new Item.Properties()
                     .durability(ArmorItem.Type.BOOTS.getDurability(25))));
 
-    // Mesh item
+    // Mesh items
+    public static final DeferredItem<UnboundMeshItem> UNBOUND_MESH = ITEMS.register("unbound_mesh",
+            () -> new UnboundMeshItem(new Item.Properties().durability(UnboundMeshItem.MAX_PROGRESS_SECONDS).stacksTo(1)));
+
     public static final DeferredItem<Item> MESH = ITEMS.register("mesh",
             () -> new Item(new Item.Properties()));
 
