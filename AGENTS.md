@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.27.3
+- **Current Version**: 1.27.4
 
 ## Project Architecture & Progression
 
@@ -427,6 +427,12 @@ All commits must follow:
 
 ### 7. Mojang Asset Adaptation & JAPPA Artistry (`mojang-asset-artist`)
 **MANDATORY**: When creating or modifying any pixel art textures (items, blocks, UI, armor layers), always follow JAPPA standards and MUST base the artwork upon official Mojang vanilla assets (from `minecraft_1.21.1_client.jar`), adapting, combining, and justifiable re-coloring them to guarantee seamless aesthetic harmony with modern Minecraft.
+
+### 8. Optional Libraries & Cross-Mod Compatibility (`optional-libs-compat`)
+**MANDATORY**: All mod JAR files in `libs/` (e.g. `create-*.jar`, `jei-*.jar`, etc.) are strictly **optional dependencies**.
+- The mod must compile, launch, and run standalone without any optional mods installed.
+- Guard all mod-specific calls with `net.neoforged.fml.ModList.get().isLoaded(...)` or isolated compatibility classes to avoid `ClassNotFoundException` / `NoClassDefFoundError`.
+- Whenever developing new features, machines, blocks, recipes, or balance updates, always inspect all mods currently located in `libs/` and implement thoughtful cross-mod compatibility (e.g. Create rotational force, mechanical mixers/saws/fans, JEI categories/catalysts/phantom handlers, and conventional tags).
 
 ## Best Practices & Guidelines
 - Use `ThreadLocalRandom.current()` instead of `new Random()` for thread safety in server event handlers.
