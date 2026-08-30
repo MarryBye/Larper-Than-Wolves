@@ -1,4 +1,5 @@
 {
+  "render_type": "minecraft:cutout",
   "textures": {
     "particle": "larperthanwolves:block/drying_rack_frame",
     "frame": "larperthanwolves:block/drying_rack_frame"
