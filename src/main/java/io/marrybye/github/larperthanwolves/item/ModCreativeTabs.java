@@ -95,6 +95,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.DRYING_RACK.get());
                         output.accept(ModItems.ALLOY_MIXER.get());
                         output.accept(ModItems.SIEVE.get());
+                        output.accept(ModItems.MILL.get());
+                        output.accept(ModItems.MILL_CRANK.get());
                         output.accept(ModItems.BASKET.get());
 
                         output.accept(ModItems.UNBOUND_MESH.get());

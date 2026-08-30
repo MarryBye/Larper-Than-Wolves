@@ -174,6 +174,40 @@ public class DisabledItemsHandler {
             ));
         }
         event.getDrops().removeIf(itemEntity -> itemEntity == null || itemEntity.getItem().isEmpty() || isDisabled(itemEntity.getItem().getItem()));
+
+        // Realistic bone drops from peaceful animals, zombies and their subspecies
+        LivingEntity entity = event.getEntity();
+        if (!entity.level().isClientSide) {
+            java.util.Random rand = new java.util.Random();
+
+            if (entity instanceof net.minecraft.world.entity.animal.Animal) {
+                boolean isLarge = (entity instanceof net.minecraft.world.entity.animal.Cow ||
+                        entity instanceof net.minecraft.world.entity.animal.Pig ||
+                        entity instanceof net.minecraft.world.entity.animal.Sheep ||
+                        entity instanceof net.minecraft.world.entity.animal.horse.AbstractHorse ||
+                        entity instanceof net.minecraft.world.entity.animal.goat.Goat ||
+                        entity instanceof net.minecraft.world.entity.animal.camel.Camel ||
+                        entity instanceof net.minecraft.world.entity.animal.sniffer.Sniffer ||
+                        entity instanceof net.minecraft.world.entity.animal.PolarBear ||
+                        entity instanceof net.minecraft.world.entity.animal.Panda ||
+                        entity instanceof net.minecraft.world.entity.monster.hoglin.Hoglin);
+
+                float chance = isLarge ? 0.30f : 0.15f;
+                if (rand.nextFloat() < chance) {
+                    int count = (isLarge && rand.nextFloat() < 0.25f) ? 2 : 1;
+                    ItemEntity boneDrop = new ItemEntity(entity.level(), entity.getX(), entity.getY(), entity.getZ(), new ItemStack(Items.BONE, count));
+                    boneDrop.setDefaultPickUpDelay();
+                    event.getDrops().add(boneDrop);
+                }
+            } else if (entity instanceof net.minecraft.world.entity.monster.Zombie || entity instanceof net.minecraft.world.entity.monster.Zoglin) {
+                float chance = 0.25f;
+                if (rand.nextFloat() < chance) {
+                    ItemEntity boneDrop = new ItemEntity(entity.level(), entity.getX(), entity.getY(), entity.getZ(), new ItemStack(Items.BONE, 1));
+                    boneDrop.setDefaultPickUpDelay();
+                    event.getDrops().add(boneDrop);
+                }
+            }
+        }
     }
 
     // Prevent equipping disabled items

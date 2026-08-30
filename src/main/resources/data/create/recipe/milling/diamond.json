@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond"
+    }
+  ],
+  "processingTime": 300,
+  "results": [
+    {
+      "count": 8,
+      "item": "larperthanwolves:diamond_dust"
+    }
+  ]
+}

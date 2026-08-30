@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:diamond_ingot"
+    }
+  ],
+  "processingTime": 350,
+  "results": [
+    {
+      "count": 8,
+      "item": "larperthanwolves:diamond_dust"
+    },
+    {
+      "count": 8,
+      "item": "larperthanwolves:iron_dust"
+    },
+    {
+      "count": 8,
+      "item": "larperthanwolves:copper_dust"
+    }
+  ]
+}

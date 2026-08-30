@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "larperthanwolves:block/mill",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "larperthanwolves:block/mill",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "larperthanwolves:block/mill",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "larperthanwolves:block/mill",
+      "y": 270
+    }
+  }
+}

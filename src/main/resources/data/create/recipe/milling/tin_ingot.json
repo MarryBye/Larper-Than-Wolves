@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:tin_ingot"
+    }
+  ],
+  "processingTime": 250,
+  "results": [
+    {
+      "count": 8,
+      "item": "larperthanwolves:tin_dust"
+    }
+  ]
+}

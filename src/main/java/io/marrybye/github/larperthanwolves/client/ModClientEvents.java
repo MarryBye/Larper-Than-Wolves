@@ -1,10 +1,12 @@
 package io.marrybye.github.larperthanwolves.client;
 
 import io.marrybye.github.larperthanwolves.LarperThanWolves;
+import io.marrybye.github.larperthanwolves.block.entity.ModBlockEntities;
 import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
 @EventBusSubscriber(modid = LarperThanWolves.MODID, value = Dist.CLIENT)
@@ -15,7 +17,18 @@ public class ModClientEvents {
         event.register(ModMenuTypes.OVEN.get(), OvenScreen::new);
         event.register(ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerScreen::new);
         event.register(ModMenuTypes.SIEVE.get(), SieveScreen::new);
+        event.register(ModMenuTypes.MILL.get(), MillScreen::new);
         event.register(ModMenuTypes.BASKET.get(), BasketScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModBlockEntities.MILL_CRANK.get(), MillCrankRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(MillCrankRenderer.LAYER_LOCATION, MillCrankRenderer::createBodyLayer);
     }
 
     @SubscribeEvent

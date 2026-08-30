@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SS ",
+    " S ",
+    " R "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "R": {
+      "item": "larperthanwolves:rope"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:mill_crank"
+  }
+}

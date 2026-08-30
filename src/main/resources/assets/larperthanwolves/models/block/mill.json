@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "larperthanwolves:block/mill_top",
+    "front": "larperthanwolves:block/mill_front",
+    "side": "larperthanwolves:block/mill_side",
+    "bottom": "larperthanwolves:block/mill_bottom"
+  }
+}

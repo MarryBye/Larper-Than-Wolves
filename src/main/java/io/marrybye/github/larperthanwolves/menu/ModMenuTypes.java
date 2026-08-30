@@ -29,6 +29,11 @@ public class ModMenuTypes {
             () -> IMenuTypeExtension.create(SieveMenu::new)
     );
 
+    public static final DeferredHolder<MenuType<?>, MenuType<MillMenu>> MILL = MENUS.register(
+            "mill",
+            () -> IMenuTypeExtension.create(MillMenu::new)
+    );
+
     public static final DeferredHolder<MenuType<?>, MenuType<BasketMenu>> BASKET = MENUS.register(
             "basket",
             () -> IMenuTypeExtension.create((windowId, inv, data) -> new BasketMenu(windowId, inv))

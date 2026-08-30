@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.21.0
+- **Current Version**: 1.22.0
 
 ## Project Architecture & Progression
 
@@ -24,6 +24,29 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils and Clay. Cannot mine zinc ore or high-tier ores.
 - **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`). Shovel mines Rich Soils and Clay. Cannot mine Ancient Debris or Obsidian.
 - **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
+
+### ⚙️ Hand Mill & Mill Crank (Молотилка и Рукоять)
+- **Hand Mill (`mill` / `MillBlock`)**:
+  - Crafted from 4 Smooth Stone + 2 Bronze Ingots + 2 Planks + 1 Stone.
+  - Grind Items into Dusts: 1 input slot, 3 output slots, 100% progress threshold.
+  - Mechanical Crank Operation: Operated via a **Mill Crank** placed directly on top of the mill.
+  - Right-Click Cranking: Right-clicking the crank rotates the handle 360° over **0.5 seconds (10 ticks)** and advances progress by **5%** (20 rotations = 100% completion). Subsequent right-clicks are locked until the current 0.5s rotation finishes.
+  - Base Grinding Ratios:
+    - 1 Ingot (Iron, Copper, Gold, Tin, Bronze) $\rightarrow$ 8 Dusts (2 Dust = 1 Nugget, 4 Nuggets = 1 Ingot).
+    - 1 Diamond $\rightarrow$ 8 Diamond Dust.
+    - 1 Diamond Ingot $\rightarrow$ 8 Diamond Dust + 8 Iron Dust + 8 Copper Dust (conserves alloy ingredients).
+    - 1 Raw Ore chunk / Metal Nugget $\rightarrow$ 2 Dusts.
+    - 2 Bones $\rightarrow$ 1 Bone Meal (`minecraft:bone_meal`).
+    - Rocks / Stones $\rightarrow$ Gravel / Sand.
+  - Hopper & Automation: Inputs through top/sides, outputs extracted through bottom face (`WorldlyContainer`).
+- **Mill Crank (`mill_crank` / `MillCrankBlock`)**:
+  - Crafted from 3 Sticks + 1 Rope.
+  - Animated 3D rotating handle rendered via client-side `MillCrankRenderer` with tick interpolation.
+- **Bone Meal & Mob Drops Overhaul**:
+  - Vanilla bone meal crafting (bone $\rightarrow$ 3 bone meal, bone block $\rightarrow$ 9 bone meal) is disabled and purged.
+  - Bones can only be turned into bone meal in the Hand Mill (2 Bones $\rightarrow$ 1 Bone Meal).
+  - Peaceful animals (cows, sheep, pigs, horses, goats, camels, sniffers, etc.) drop 1–2 bones (30% chance for large animals, 15% for small).
+  - Zombies and subspecies (Zombie, Husk, Drowned, Zombie Villager, Zombified Piglin, Zoglin) drop 1 bone with a 25% chance.
 
 ### 🌲 Flora, Twigs & Forest Foraging
 - **Twigs (Веточки)**: Small fallen wood branches on the ground (`twig` / `TwigBlock`).
@@ -135,6 +158,8 @@ src/main/java/io/marrybye/github/larperthanwolves/
 ├── LarperThanWolves.java          — Main mod entry point, registers all systems
 ├── block/
 │   ├── ModBlocks.java             — Block registration (DeferredRegister)
+│   ├── MillBlock.java             — Hand mill / quern block
+│   ├── MillCrankBlock.java        — Rotating mill crank handle block
 │   ├── RichGrassBlock.java        — Rich grass block with daylight spreading & snowy states
 │   ├── RichFallingBlock.java      — Falling block with custom dust particle color for rich gravel & sand
 │   ├── TwigBlock.java             — Small ground forest twig block
@@ -149,6 +174,8 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── UnfiredBrickBlock.java     — Unfired brick (dries under sunlight, 4 stages)
 │   └── entity/
 │       ├── ModBlockEntities.java           — BlockEntity type registration
+│       ├── MillBlockEntity.java            — Hand mill logic (4 slots, WorldlyContainer, MenuProvider)
+│       ├── MillCrankBlockEntity.java       — Mill crank rotation animation logic (10-tick duration, synced)
 │       ├── BasketBlockEntity.java          — 9-slot storage basket container logic
 │       ├── BrickFurnaceBlockEntity.java    — Furnace logic (7 slots, custom fuel, WorldlyContainer, no food)
 │       ├── OvenBlockEntity.java            — Food oven logic (7 slots, custom fuel, WorldlyContainer, food only)
@@ -164,6 +191,8 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── WorkbenchPlankRecipe.java  — 3x3 Crafting Table Log -> 4 Planks crafting recipe
 │   ├── AlloyRecipe.java           — Modular alloy mixer recipe model
 │   ├── AlloyRegistry.java         — Central alloy mixer recipe registry & JEI sync (Bronze, Brass, Diamond Ingot)
+│   ├── MillRecipe.java            — Hand mill recipe POJO model
+│   ├── MillRegistry.java          — Hand mill recipe registry & JEI sync (Ingots -> 8 dusts, bones -> bone meal)
 │   ├── SmeltingRegistry.java      — Brick furnace custom smelting overrides & fallback (no food, zinc support)
 │   └── FoodCookingRegistry.java   — Food oven cooking recipes & validator
 ├── item/
@@ -174,24 +203,29 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   └── ChiselItem.java            — Chisel right-click logic (stump → work stump → crafting table)
 ├── menu/
 │   ├── ModMenuTypes.java          — Menu type registration
+│   ├── MillMenu.java              — Hand mill container menu (4 slots)
 │   ├── BrickFurnaceMenu.java      — Furnace container menu (7 slots, no food)
 │   ├── OvenMenu.java              — Food oven container menu (7 slots, food only)
 │   ├── AlloyMixerMenu.java        — Mixer container menu (5 slots)
 │   └── SieveMenu.java             — Sieve container menu (18 slots)
 ├── client/
-│   ├── ModClientEvents.java       — Client-side screen registration
+│   ├── ModClientEvents.java       — Client-side screen registration & renderer registration
+│   ├── MillScreen.java            — Hand mill GUI renderer
+│   ├── MillCrankRenderer.java     — Animated 3D rotating crank handle BlockEntityRenderer
 │   ├── BrickFurnaceScreen.java    — Furnace GUI renderer
 │   ├── OvenScreen.java            — Oven GUI renderer
 │   ├── AlloyMixerScreen.java      — Mixer GUI renderer
 │   └── SieveScreen.java           — Sieve GUI renderer
 ├── event/
 │   ├── BlockBreakHandler.java     — Mining tier enforcement (Zinc iron-only), axe wood breaking, shears drops, 2-stage hoe tilling
-│   ├── DisabledItemsHandler.java  — Vanilla item removal (Blast furnace/smoker/furnace/chainmail/diamond gear, chunk replacement, player inventory)
+│   ├── DisabledItemsHandler.java  — Vanilla item removal (Blast furnace/smoker/furnace/chainmail/diamond gear, chunk replacement, mob drops: realistic bones from animals & zombies)
 │   └── VillagerTradeHandler.java  — Balanced villager professions (up to Bronze) and wandering trader trades
 ├── config/
 │   └── ModConfig.java             — NeoForge config spec (fuel, sieve, bricks, drying, drops, village distance, farming)
 ├── compat/
 │   ├── ModJeiPlugin.java          — JEI integration plugin (all categories & info tabs)
+│   ├── MillJeiRecipe.java         — JEI hand mill recipe POJO
+│   ├── MillRecipeCategory.java    — JEI hand mill category
 │   ├── AlloyMixerRecipe.java      — JEI alloy recipe POJO
 │   ├── AlloyMixerRecipeCategory.java — JEI alloy mixer category
 │   ├── SieveJeiRecipe.java        — JEI sieve recipe POJO

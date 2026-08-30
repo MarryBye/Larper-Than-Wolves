@@ -293,6 +293,12 @@ public class ModItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DRYING_RACK = ITEMS.register("drying_rack",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.DRYING_RACK.get(), new Item.Properties()));
 
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MILL = ITEMS.register("mill",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.MILL.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MILL_CRANK = ITEMS.register("mill_crank",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.MILL_CRANK.get(), new Item.Properties()));
+
     public static final DeferredItem<net.minecraft.world.item.BlockItem> TIN_ORE = ITEMS.register("tin_ore",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.TIN_ORE.get(), new Item.Properties()));
 

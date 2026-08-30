@@ -50,5 +50,17 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(DryingRackBlockEntity::new,
                             io.marrybye.github.larperthanwolves.block.ModBlocks.DRYING_RACK.get())
                             .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MillBlockEntity>> MILL =
+            BLOCK_ENTITIES.register("mill", () ->
+                    BlockEntityType.Builder.of(MillBlockEntity::new,
+                            io.marrybye.github.larperthanwolves.block.ModBlocks.MILL.get())
+                            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MillCrankBlockEntity>> MILL_CRANK =
+            BLOCK_ENTITIES.register("mill_crank", () ->
+                    BlockEntityType.Builder.of(MillCrankBlockEntity::new,
+                            io.marrybye.github.larperthanwolves.block.ModBlocks.MILL_CRANK.get())
+                            .build(null));
 }
 

@@ -16,6 +16,10 @@ import io.marrybye.github.larperthanwolves.menu.OvenMenu;
 import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
 import io.marrybye.github.larperthanwolves.menu.SieveMenu;
 import io.marrybye.github.larperthanwolves.recipe.AlloyRegistry;
+import io.marrybye.github.larperthanwolves.client.MillScreen;
+import io.marrybye.github.larperthanwolves.menu.MillMenu;
+import io.marrybye.github.larperthanwolves.recipe.MillRecipe;
+import io.marrybye.github.larperthanwolves.recipe.MillRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -47,6 +51,7 @@ public class ModJeiPlugin implements IModPlugin {
         var guiHelper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(new AlloyMixerRecipeCategory(guiHelper));
         registration.addRecipeCategories(new SieveRecipeCategory(guiHelper));
+        registration.addRecipeCategories(new MillRecipeCategory(guiHelper));
         registration.addRecipeCategories(new ChiselRecipeCategory(guiHelper));
         registration.addRecipeCategories(new SunDryingRecipeCategory(guiHelper));
         registration.addRecipeCategories(new DryingRackRecipeCategory(guiHelper));
@@ -109,6 +114,18 @@ public class ModJeiPlugin implements IModPlugin {
                 new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_SAND.get()), richSoilOutputs, sieveTime),
                 new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_RED_SAND.get()), richSoilOutputs, sieveTime)
         ));
+
+        // 1b. Hand Mill Recipes
+        List<MillJeiRecipe> jeiMillRecipes = new ArrayList<>();
+        for (MillRecipe recipe : MillRegistry.getRecipes()) {
+            ItemStack[] matching = recipe.getIngredient().getItems();
+            if (matching.length > 0) {
+                ItemStack display = matching[0].copy();
+                display.setCount(recipe.getInputCount());
+                jeiMillRecipes.add(new MillJeiRecipe(display, recipe.getResults(), 20));
+            }
+        }
+        registration.addRecipes(MillRecipeCategory.TYPE, jeiMillRecipes);
 
         // 2. Chisel In-World Carving (Overworld tree stumps only)
         List<ItemStack> carvableStumps = List.of(
@@ -393,6 +410,14 @@ public class ModJeiPlugin implements IModPlugin {
         // Iron Golem drops
         registration.addIngredientInfo(new ItemStack(Items.POPPY), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.iron_golem"));
+
+        // Mill & Crank & Bone Meal
+        registration.addIngredientInfo(new ItemStack(ModBlocks.MILL.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.mill"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.MILL_CRANK.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.mill_crank"));
+        registration.addIngredientInfo(new ItemStack(Items.BONE_MEAL), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.bone_meal"));
     }
 
     @Override
@@ -405,6 +430,8 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(ModBlocks.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.ALLOY_MIXER.get(), MachineFuelRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.SIEVE.get(), SieveRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(ModBlocks.MILL.get(), MillRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(ModBlocks.MILL_CRANK.get(), MillRecipeCategory.TYPE);
 
         registration.addRecipeCatalyst(ModItems.CHISEL.get(), ChiselRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.WORK_STUMP.get(), ChiselRecipeCategory.TYPE);
@@ -421,6 +448,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(OvenScreen.class, 79, 34, 24, 17, RecipeTypes.SMOKING, RecipeTypes.CAMPFIRE_COOKING, MachineFuelRecipeCategory.TYPE);
         registration.addRecipeClickArea(AlloyMixerScreen.class, 79, 24, 24, 17, AlloyMixerRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
         registration.addRecipeClickArea(SieveScreen.class, 76, 34, 24, 17, SieveRecipeCategory.TYPE);
+        registration.addRecipeClickArea(MillScreen.class, 74, 34, 24, 17, MillRecipeCategory.TYPE);
     }
 
     @Override
@@ -430,6 +458,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.CAMPFIRE_COOKING, 0, 3, 6, 36);
         registration.addRecipeTransferHandler(AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE, 0, 3, 4, 36);
         registration.addRecipeTransferHandler(SieveMenu.class, ModMenuTypes.SIEVE.get(), SieveRecipeCategory.TYPE, 0, 9, 18, 36);
+        registration.addRecipeTransferHandler(MillMenu.class, ModMenuTypes.MILL.get(), MillRecipeCategory.TYPE, 0, 1, 4, 36);
     }
 
     @Override

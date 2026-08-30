@@ -74,6 +74,19 @@ public class ModBlocks {
                     .sound(SoundType.WOOD)
                     .noOcclusion()));
 
+    public static final DeferredBlock<MillBlock> MILL = BLOCKS.register("mill",
+            () -> new MillBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(3.5F, 10.0F)
+                    .sound(SoundType.STONE)
+                    .noOcclusion()));
+
+    public static final DeferredBlock<MillCrankBlock> MILL_CRANK = BLOCKS.register("mill_crank",
+            () -> new MillCrankBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5F, 2.0F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
+
     public static final DeferredBlock<Block> TIN_ORE = BLOCKS.register("tin_ore",
             () -> new Block(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
