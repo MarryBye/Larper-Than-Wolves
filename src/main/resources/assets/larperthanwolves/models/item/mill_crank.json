@@ -1,6 +1,110 @@
 {
-  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "larperthanwolves:item/mill_crank"
+    "particle": "larperthanwolves:block/mill_crank",
+    "texture": "larperthanwolves:block/mill_crank"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [5, 0, 5],
+      "to": [11, 2, 11],
+      "faces": {
+        "north": { "uv": [0, 0, 6, 2], "texture": "#texture" },
+        "east": { "uv": [0, 0, 6, 2], "texture": "#texture" },
+        "south": { "uv": [0, 0, 6, 2], "texture": "#texture" },
+        "west": { "uv": [0, 0, 6, 2], "texture": "#texture" },
+        "up": { "uv": [0, 0, 6, 6], "texture": "#texture" },
+        "down": { "uv": [0, 0, 6, 6], "texture": "#texture" }
+      }
+    },
+    {
+      "name": "hub",
+      "from": [5.5, 2, 5.5],
+      "to": [10.5, 4, 10.5],
+      "faces": {
+        "north": { "uv": [0, 8, 5, 10], "texture": "#texture" },
+        "east": { "uv": [0, 8, 5, 10], "texture": "#texture" },
+        "south": { "uv": [0, 8, 5, 10], "texture": "#texture" },
+        "west": { "uv": [0, 8, 5, 10], "texture": "#texture" },
+        "up": { "uv": [0, 8, 5, 13], "texture": "#texture" },
+        "down": { "uv": [0, 8, 5, 13], "texture": "#texture" }
+      }
+    },
+    {
+      "name": "arm",
+      "from": [6.5, 2, 7],
+      "to": [9.5, 4, 15],
+      "faces": {
+        "north": { "uv": [0, 16, 3, 18], "texture": "#texture" },
+        "east": { "uv": [0, 16, 8, 18], "texture": "#texture" },
+        "south": { "uv": [0, 16, 3, 18], "texture": "#texture" },
+        "west": { "uv": [0, 16, 8, 18], "texture": "#texture" },
+        "up": { "uv": [0, 16, 3, 24], "texture": "#texture" },
+        "down": { "uv": [0, 16, 3, 24], "texture": "#texture" }
+      }
+    },
+    {
+      "name": "grip",
+      "from": [7, 4, 13],
+      "to": [9, 11, 15],
+      "faces": {
+        "north": { "uv": [16, 0, 18, 7], "texture": "#texture" },
+        "east": { "uv": [16, 0, 18, 7], "texture": "#texture" },
+        "south": { "uv": [16, 0, 18, 7], "texture": "#texture" },
+        "west": { "uv": [16, 0, 18, 7], "texture": "#texture" },
+        "up": { "uv": [16, 0, 18, 2], "texture": "#texture" },
+        "down": { "uv": [16, 0, 18, 2], "texture": "#texture" }
+      }
+    },
+    {
+      "name": "knob",
+      "from": [6.5, 10, 12.5],
+      "to": [9.5, 11, 15.5],
+      "faces": {
+        "north": { "uv": [24, 0, 27, 1], "texture": "#texture" },
+        "east": { "uv": [24, 0, 27, 1], "texture": "#texture" },
+        "south": { "uv": [24, 0, 27, 1], "texture": "#texture" },
+        "west": { "uv": [24, 0, 27, 1], "texture": "#texture" },
+        "up": { "uv": [24, 0, 27, 3], "texture": "#texture" },
+        "down": { "uv": [24, 0, 27, 3], "texture": "#texture" }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 225, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.35, 0.35, 0.35]
+    },
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 1.5, 0],
+      "scale": [0.65, 0.65, 0.65]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    }
   }
 }

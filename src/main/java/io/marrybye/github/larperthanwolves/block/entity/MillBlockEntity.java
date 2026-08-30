@@ -35,6 +35,45 @@ public class MillBlockEntity extends BlockEntity implements WorldlyContainer, Me
 
     private NonNullList<ItemStack> items = NonNullList.withSize(TOTAL_SLOTS, ItemStack.EMPTY);
     private int progress = 0;
+    private float kineticBuffer = 0.0f;
+    private int particleTimer = 0;
+
+    public static void serverTick(net.minecraft.world.level.Level level, BlockPos pos, BlockState state, MillBlockEntity mill) {
+        if (!mill.canGrind()) {
+            if (mill.progress != 0) {
+                mill.progress = 0;
+                mill.setChanged();
+            }
+            mill.kineticBuffer = 0.0f;
+            return;
+        }
+
+        // Support kinetic rotational force automation if Create is installed
+        if (net.neoforged.fml.ModList.get().isLoaded("create")) {
+            float speed = io.marrybye.github.larperthanwolves.compat.CreateCompatHelper.getKineticSpeed(level, pos);
+            if (speed > 0.0f) {
+                // 16 RPM (Hand Crank) = 0.5 progress/tick (10 ticks per 5%)
+                // 64 RPM = 2.0 progress/tick
+                // 256 RPM = 8.0 progress/tick
+                float progressPerTick = speed / 32.0f;
+                mill.kineticBuffer += progressPerTick;
+
+                if (mill.kineticBuffer >= 1.0f) {
+                    int toAdd = (int) mill.kineticBuffer;
+                    mill.kineticBuffer -= toAdd;
+                    mill.addGrindProgress(toAdd);
+                }
+
+                mill.particleTimer++;
+                if (mill.particleTimer >= 10) {
+                    mill.particleTimer = 0;
+                    level.playSound(null, pos, net.minecraft.sounds.SoundEvents.GRINDSTONE_USE, net.minecraft.sounds.SoundSource.BLOCKS, 0.4f, 1.1f + level.random.nextFloat() * 0.2f);
+                }
+            } else {
+                mill.kineticBuffer = 0.0f;
+            }
+        }
+    }
 
     private final ContainerData dataAccess = new ContainerData() {
         @Override

@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.24.0
+- **Current Version**: 1.25.0
 
 ## Project Architecture & Progression
 
@@ -29,8 +29,14 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Hand Mill (`mill` / `MillBlock`)**:
   - Crafted from 4 Smooth Stone + 2 Bronze Ingots + 2 Planks + 1 Stone.
   - Grind Items into Dusts: 1 input slot, 3 output slots, 100% progress threshold.
+  - GUI Progress Indicator: Animated filling arrow (24x17) smoothly indicates active grinding progress (0% $\rightarrow$ 100%).
   - Mechanical Crank Operation: Operated via a **Mill Crank** placed directly on top of the mill.
   - Right-Click Cranking: Right-clicking the crank rotates the handle 360° over **0.5 seconds (10 ticks)** and advances progress by **5%** (20 rotations = 100% completion). Subsequent right-clicks are locked until the current 0.5s rotation finishes.
+  - **Create Rotational Force Automation**:
+    - Optional integration with Create 6.0.10+.
+    - Connecting Create rotating shafts, cogs, or engines directly to the Mill automatically grinds items continuously.
+    - Grinding speed scales directly with rotational RPM (e.g. 16 RPM = normal speed, 64 RPM = 4x speed, 256 RPM = 16x speed).
+    - Supports Create Hand Cranks placed on the mill.
   - Base Grinding Ratios:
     - 1 Ingot (Iron, Copper, Gold, Tin, Bronze) $\rightarrow$ 8 Dusts (2 Dust = 1 Nugget, 4 Nuggets = 1 Ingot).
     - 1 Diamond $\rightarrow$ 8 Diamond Dust.
@@ -41,6 +47,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Hopper & Automation: Inputs through top/sides, outputs extracted through bottom face (`WorldlyContainer`).
 - **Mill Crank (`mill_crank` / `MillCrankBlock`)**:
   - Crafted from 3 Sticks + 1 Rope.
+  - Custom Create-style 3D block model and full 3D inventory item model (wide hub, extended horizontal lever arm, vertical grip handle with top knob).
   - Animated 3D rotating handle rendered via client-side `MillCrankRenderer` with tick interpolation.
 - **Bone Meal & Mob Drops Overhaul**:
   - Vanilla bone meal crafting (bone $\rightarrow$ 3 bone meal, bone block $\rightarrow$ 9 bone meal) is disabled and purged.
@@ -235,6 +242,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 ├── config/
 │   └── ModConfig.java             — NeoForge config spec (fuel, sieve, bricks, drying, drops, village distance, farming)
 ├── compat/
+│   ├── CreateCompatHelper.java    — Safe optional reflection helper for Create 6.0.10 kinetic rotation automation
 │   ├── ModJeiPlugin.java          — JEI integration plugin (all categories & info tabs)
 │   ├── MillJeiRecipe.java         — JEI hand mill recipe POJO
 │   ├── MillRecipeCategory.java    — JEI hand mill category

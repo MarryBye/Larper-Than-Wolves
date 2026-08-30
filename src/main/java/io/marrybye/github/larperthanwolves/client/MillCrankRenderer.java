@@ -37,20 +37,22 @@ public class MillCrankRenderer implements BlockEntityRenderer<MillCrankBlockEnti
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        // 1. Static base pivot post: 4x2x4 centered at (0, 0, 0)
+        // 1. Static base pivot post: 6x2x6 centered at (0, 0, 0)
         root.addOrReplaceChild("base", CubeListBuilder.create()
                 .texOffs(0, 0)
-                .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 2.0F, 4.0F),
+                .addBox(-3.0F, 0.0F, -3.0F, 6.0F, 2.0F, 6.0F),
                 PartPose.ZERO);
 
-        // 2. Rotating handle: Collar (5x2x5), Arm (2x2x6), Grip Peg (2x5x2)
+        // 2. Rotating large handle (Create-inspired style: large hub, long horizontal arm, vertical upright grip peg with top knob)
         root.addOrReplaceChild("handle", CubeListBuilder.create()
-                // Central collar
-                .texOffs(0, 6).addBox(-2.5F, 1.9F, -2.5F, 5.0F, 2.0F, 5.0F)
-                // Horizontal arm (extends along Z+)
-                .texOffs(0, 13).addBox(-1.0F, 2.0F, 0.0F, 2.0F, 2.0F, 6.0F)
-                // Vertical grip peg
-                .texOffs(16, 0).addBox(-1.0F, 4.0F, 4.0F, 2.0F, 5.0F, 2.0F),
+                // Central hub/collar
+                .texOffs(0, 8).addBox(-2.5F, 1.9F, -2.5F, 5.0F, 2.0F, 5.0F)
+                // Long horizontal arm (3x2x8, extends from Z = -1 to Z = 7)
+                .texOffs(0, 16).addBox(-1.5F, 2.0F, -1.0F, 3.0F, 2.0F, 8.0F)
+                // Vertical upright grip handle (2x7x2 at end of arm, Z = 5)
+                .texOffs(16, 0).addBox(-1.0F, 4.0F, 5.0F, 2.0F, 7.0F, 2.0F)
+                // Handle top knob / rounded cap
+                .texOffs(24, 0).addBox(-1.5F, 10.0F, 4.5F, 3.0F, 1.0F, 3.0F),
                 PartPose.ZERO);
 
         return LayerDefinition.create(mesh, 32, 32);

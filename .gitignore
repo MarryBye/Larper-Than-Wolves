@@ -32,3 +32,6 @@ run/
 **/src/generated/**/.cache/
 repo/
 !**/src/**/repo/
+libs/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
