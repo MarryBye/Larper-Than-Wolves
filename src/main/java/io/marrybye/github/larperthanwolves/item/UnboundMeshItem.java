@@ -21,7 +21,12 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.BRUSH;
+        return UseAnim.EAT;
+    }
+
+    @Override
+    public net.minecraft.sounds.SoundEvent getEatingSound() {
+        return SoundEvents.BRUSH_GENERIC;
     }
 
     @Override
@@ -48,14 +53,20 @@ public class UnboundMeshItem extends Item {
         int totalTicks = (MAX_PROGRESS_SECONDS - initialProgress) * 20;
         int ticksUsed = totalTicks - count;
 
-        if (ticksUsed > 0 && ticksUsed % 20 == 0) {
-            level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
-                    SoundEvents.BRUSH_GENERIC, SoundSource.PLAYERS, 0.8F, 0.85F + level.random.nextFloat() * 0.3F);
+        if (ticksUsed > 0) {
+            // Play scratching sound frequently (every 4 ticks) so it sounds constant
+            if (ticksUsed % 4 == 0) {
+                level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
+                        SoundEvents.BRUSH_GENERIC, SoundSource.PLAYERS, 0.7F, 0.85F + level.random.nextFloat() * 0.3F);
+            }
 
-            int secondsElapsed = ticksUsed / 20;
-            int newProgress = Math.min(MAX_PROGRESS_SECONDS, initialProgress + secondsElapsed);
-            if (newProgress != stack.getDamageValue()) {
-                stack.setDamageValue(newProgress);
+            // Update progress and durability bar every second (20 ticks)
+            if (ticksUsed % 20 == 0) {
+                int secondsElapsed = ticksUsed / 20;
+                int newProgress = Math.min(MAX_PROGRESS_SECONDS, initialProgress + secondsElapsed);
+                if (newProgress != stack.getDamageValue()) {
+                    stack.setDamageValue(newProgress);
+                }
             }
         }
     }
