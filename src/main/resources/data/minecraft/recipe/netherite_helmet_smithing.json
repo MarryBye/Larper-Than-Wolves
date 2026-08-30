@@ -1,15 +1,13 @@
 {
-  "type": "minecraft:smithing_transform",
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  },
-  "base": {
-    "item": "larperthanwolves:reinforced_iron_helmet"
-  },
-  "addition": {
-    "item": "minecraft:netherite_ingot"
-  },
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [],
   "result": {
+    "count": 1,
     "id": "minecraft:netherite_helmet"
   }
 }

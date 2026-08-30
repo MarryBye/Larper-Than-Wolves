@@ -1,16 +1,11 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "pattern": [
-    "# #",
-    "###",
-    "###"
-  ],
-  "key": {
-    "#": {
-      "item": "larperthanwolves:tanned_leather"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
     }
-  },
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [],
   "result": {
     "count": 1,
     "id": "minecraft:leather_chestplate"

@@ -475,11 +475,19 @@ public class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-        jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(
-                VanillaTypes.ITEM_STACK,
+        List<ItemStack> toHide = new ArrayList<>(
                 DisabledItemsHandler.DISABLED_ITEMS.stream()
                         .map(ItemStack::new)
                         .toList()
+        );
+        toHide.add(new ItemStack(Items.BARRIER));
+        toHide.add(new ItemStack(Items.STRUCTURE_VOID));
+        toHide.add(new ItemStack(Items.STRUCTURE_BLOCK));
+        toHide.add(new ItemStack(Items.JIGSAW));
+
+        jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(
+                VanillaTypes.ITEM_STACK,
+                toHide
         );
     }
 }
