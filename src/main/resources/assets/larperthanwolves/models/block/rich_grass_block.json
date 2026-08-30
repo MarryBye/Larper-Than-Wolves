@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/grass_block",
+  "textures": {
+    "particle": "larperthanwolves:block/rich_dirt",
+    "bottom": "larperthanwolves:block/rich_dirt",
+    "top": "larperthanwolves:block/rich_grass_block_top",
+    "side": "larperthanwolves:block/rich_grass_block_side",
+    "overlay": "larperthanwolves:block/rich_grass_block_side_overlay"
+  }
+}

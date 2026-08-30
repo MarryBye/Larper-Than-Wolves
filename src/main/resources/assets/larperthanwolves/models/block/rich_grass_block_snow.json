@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "particle": "larperthanwolves:block/rich_dirt",
+    "bottom": "larperthanwolves:block/rich_dirt",
+    "top": "minecraft:block/snow",
+    "side": "minecraft:block/grass_block_snow"
+  }
+}

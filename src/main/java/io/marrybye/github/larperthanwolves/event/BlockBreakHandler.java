@@ -559,14 +559,34 @@ public class BlockBreakHandler {
             }
         }
 
+        // --- Leaves Drops (Twigs) ---
+        if (block.defaultBlockState().is(net.minecraft.tags.BlockTags.LEAVES)) {
+            if (!(tool.getItem() instanceof net.minecraft.world.item.ShearsItem)) {
+                float twigRoll = ThreadLocalRandom.current().nextFloat();
+                if (twigRoll < 0.35f) {
+                    int count = ThreadLocalRandom.current().nextFloat() < 0.70f ? 1 : 2;
+                    ItemEntity twigDrop = new ItemEntity(level, x, y, z, new ItemStack(ModItems.TWIG.get(), count));
+                    twigDrop.setDefaultPickUpDelay();
+                    drops.add(twigDrop);
+                }
+            }
+        }
+
         // --- Rich Soils Drops (Only drops rich block if mined with copper+ shovel, otherwise regular soil) ---
-        if (block == ModBlocks.RICH_DIRT.get() || block == ModBlocks.RICH_GRAVEL.get() ||
-                block == ModBlocks.RICH_SAND.get() || block == ModBlocks.RICH_RED_SAND.get()) {
+        if (block == ModBlocks.RICH_GRASS_BLOCK.get() || block == ModBlocks.RICH_DIRT.get() ||
+                block == ModBlocks.RICH_GRAVEL.get() || block == ModBlocks.RICH_SAND.get() ||
+                block == ModBlocks.RICH_RED_SAND.get()) {
             drops.clear();
             if (isCopperPlusShovel(tool)) {
-                ItemEntity richDrop = new ItemEntity(level, x, y, z, new ItemStack(block.asItem(), 1));
-                richDrop.setDefaultPickUpDelay();
-                drops.add(richDrop);
+                if (block == ModBlocks.RICH_GRASS_BLOCK.get()) {
+                    ItemEntity richDrop = new ItemEntity(level, x, y, z, new ItemStack(ModBlocks.RICH_DIRT.get().asItem(), 1));
+                    richDrop.setDefaultPickUpDelay();
+                    drops.add(richDrop);
+                } else {
+                    ItemEntity richDrop = new ItemEntity(level, x, y, z, new ItemStack(block.asItem(), 1));
+                    richDrop.setDefaultPickUpDelay();
+                    drops.add(richDrop);
+                }
             } else {
                 Block regularCounterpart = Blocks.DIRT;
                 if (block == ModBlocks.RICH_GRAVEL.get()) regularCounterpart = Blocks.GRAVEL;
@@ -646,10 +666,11 @@ public class BlockBreakHandler {
         BlockState state = level.getBlockState(pos);
         ItemStack held = event.getItemStack();
 
-        if ((state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.PODZOL) || state.is(Blocks.MYCELIUM)) && held.getItem() instanceof HoeItem) {
+        if ((state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.PODZOL) || state.is(Blocks.MYCELIUM) || state.is(ModBlocks.RICH_GRASS_BLOCK.get())) && held.getItem() instanceof HoeItem) {
             if (!level.isClientSide) {
-                // Convert grassy block to plain dirt
-                level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 3);
+                // Convert grassy block to plain dirt / rich dirt
+                Block targetSoil = state.is(ModBlocks.RICH_GRASS_BLOCK.get()) ? ModBlocks.RICH_DIRT.get() : Blocks.DIRT;
+                level.setBlock(pos, targetSoil.defaultBlockState(), 3);
                 level.playSound(null, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 
                 double seedChance = ModConfig.SERVER != null ? ModConfig.SERVER.hoeGrassSeedDropChance.get() : 0.35;
@@ -663,6 +684,17 @@ public class BlockBreakHandler {
                 held.hurtAndBreak(1, player, event.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
             }
             event.cancelWithResult(net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide));
+            return;
+        }
+
+        if (state.is(ModBlocks.RICH_DIRT.get()) && held.getItem() instanceof HoeItem) {
+            if (!level.isClientSide) {
+                level.setBlock(pos, Blocks.FARMLAND.defaultBlockState(), 3);
+                level.playSound(null, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                held.hurtAndBreak(1, player, event.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+            }
+            event.cancelWithResult(net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide));
+            return;
         }
     }
 

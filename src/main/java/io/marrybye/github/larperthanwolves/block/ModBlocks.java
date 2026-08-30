@@ -98,6 +98,12 @@ public class ModBlocks {
                     .sound(SoundType.METAL)));
 
     // --- Rich Soils (Hardness 1.0f: 2x slower break than regular, mined with copper+ shovel) ---
+    public static final DeferredBlock<RichGrassBlock> RICH_GRASS_BLOCK = BLOCKS.register("rich_grass_block",
+            () -> new RichGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                    .strength(1.2F, 1.2F)
+                    .randomTicks()
+                    .sound(SoundType.GRASS)));
+
     public static final DeferredBlock<Block> RICH_DIRT = BLOCKS.register("rich_dirt",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
                     .strength(1.0F, 1.0F)
@@ -117,6 +123,14 @@ public class ModBlocks {
             () -> new RichFallingBlock(11098145, BlockBehaviour.Properties.ofFullCopy(Blocks.RED_SAND)
                     .strength(1.0F, 1.0F)
                     .sound(SoundType.SAND)));
+
+    // --- Ground Forest Flora / Twigs ---
+    public static final DeferredBlock<TwigBlock> TWIG = BLOCKS.register("twig",
+            () -> new TwigBlock(BlockBehaviour.Properties.of()
+                    .instabreak()
+                    .noCollission()
+                    .noOcclusion()
+                    .sound(SoundType.WOOD)));
 
     // --- Tree Stumps (Hardness 25.0f: Ultra slow break, requires axe) ---
     private static BlockBehaviour.Properties stumpProps() {

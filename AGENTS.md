@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.17.0
+- **Current Version**: 1.18.0
 
 ## Project Architecture & Progression
 
@@ -17,10 +17,17 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 
 ### ⛏️ Tool Tiers & Dig Tier Matrix
 - **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Cannot mine deepslate, zinc, or any other ores.
-- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`). Cannot mine deepslate, zinc, or iron+.
+- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`). Cannot mine deepslate, zinc, or iron+.
 - **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils. Cannot mine zinc ore or high-tier ores.
 - **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`). Shovel mines Rich Soils. Cannot mine Ancient Debris or Obsidian.
 - **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
+
+### 🌲 Flora, Twigs & Forest Foraging
+- **Twigs (Веточки)**: Small fallen wood branches on the ground (`twig` / `TwigBlock`).
+  - **Ground Gathering**: Spawns naturally in patches under tree canopies in overworld forests and biomes (0–2 twigs per spot, frequently 0–1). Instantly harvested by clicking or breaking by hand.
+  - **Tree Leaves Drop**: Breaking or decaying leaves drops 1–2 Twigs with a **35% chance** (unless harvested with shears).
+  - **Crafting**: 2 Twigs $\rightarrow$ 1 Stick (`Items.STICK`).
+- **Silicon Shears (Кремниевые ножницы)**: Rebuilt with authentic wooden stick handle loops bound with cord and chipped flint/silicon blades.
 
 ### 🌍 Soils, Digging & Sieve Processing
 - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel/Sand)**:
@@ -28,10 +35,10 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Suspicious gravel and sand additionally yield their built-in archaeology loot tables.
   - Plain Dirt can now be sifted in the Sieve just like gravel and sand.
 - **Rich Soils (Богатая почва)**:
-  - 4 variants: **Rich Dirt** (`rich_dirt`), **Rich Gravel** (`rich_gravel`), **Rich Sand** (`rich_sand`), **Rich Red Sand** (`rich_red_sand`).
+  - 5 variants: **Rich Grass Block** (`rich_grass_block`), **Rich Dirt** (`rich_dirt`), **Rich Gravel** (`rich_gravel`), **Rich Sand** (`rich_sand`), **Rich Red Sand** (`rich_red_sand`).
   - Textures: Counterpart vanilla textures with distinct white/silver mineral flecks and top-left lighting.
-  - Digging Hardness: 2x slower (`destroyTime: 1.0f`).
-  - Mining Requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich block item. Breaking with hands or other tools drops standard soil (Dirt/Gravel/Sand/Red Sand).
+  - Digging Hardness: 2x slower (`destroyTime: 1.0f - 1.2f`).
+  - Mining Requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich block item (Rich Grass drops Rich Dirt unless Silk Touch is used). Breaking with hands or other tools drops standard soil (Dirt/Gravel/Sand/Red Sand).
   - Sifting in Sieve: Yields metal dusts and materials in order of rarity:
     1. Silicon Shards (`silicon_shard`)
     2. Flint / Silicon (`flint`)
@@ -41,12 +48,12 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     6. Iron Dust (`iron_dust`)
     7. Gold Dust (`gold_dust`)
     8. Diamond Dust (`diamond_dust`)
-  - World Generation: Spawns in small veins (size 14) embedded naturally inside their ordinary soil counterparts in overworld biomes.
+  - World Generation: Spawns in small veins (size 14) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
 ### 🌾 Farming & 2-Stage Hoe Tilling
 - **2-Stage Tilling**:
-  - **Stage 1 (Grass/Podzol/Mycelium $\rightarrow$ Dirt)**: Right-click grassy ground with any hoe to till away the grass layer into plain dirt with a **35% chance** to harvest wild seeds (`Wheat Seeds` 50%, `Carrot` 15%, `Potato` 15%, `Beetroot Seeds` 10%, `Pumpkin Seeds` 5%, `Melon Seeds` 5%).
-  - **Stage 2 (Dirt $\rightarrow$ Farmland)**: Right-click plain dirt with any hoe to prepare farmland for crop planting.
+  - **Stage 1 (Grass/Podzol/Mycelium/Rich Grass $\rightarrow$ Dirt/Rich Dirt)**: Right-click grassy ground with any hoe to till away the grass layer into plain dirt (or rich dirt) with a **35% chance** to harvest wild seeds (`Wheat Seeds` 50%, `Carrot` 15%, `Potato` 15%, `Beetroot Seeds` 10%, `Pumpkin Seeds` 5%, `Melon Seeds` 5%).
+  - **Stage 2 (Dirt/Rich Dirt $\rightarrow$ Farmland)**: Right-click plain dirt or rich dirt with any hoe to prepare farmland for crop planting.
   - Breaking (left-clicking) grass blocks simply breaks the block normally into dirt without special seed harvesting.
 
 ### 🏘️ World Exploration, Villages & Trading
@@ -109,7 +116,9 @@ src/main/java/io/marrybye/github/larperthanwolves/
 ├── LarperThanWolves.java          — Main mod entry point, registers all systems
 ├── block/
 │   ├── ModBlocks.java             — Block registration (DeferredRegister)
+│   ├── RichGrassBlock.java        — Rich grass block with daylight spreading & snowy states
 │   ├── RichFallingBlock.java      — Falling block with custom dust particle color for rich gravel & sand
+│   ├── TwigBlock.java             — Small ground forest twig block
 │   ├── BrickFurnaceBlock.java     — Brick furnace block (facing, 4 stages)
 │   ├── OvenBlock.java             — Food oven block (facing, 4 stages)
 │   ├── AlloyMixerBlock.java       — Alloy mixer block (facing, 4 stages)

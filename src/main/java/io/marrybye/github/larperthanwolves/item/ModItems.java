@@ -302,6 +302,12 @@ public class ModItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRONZE_BLOCK = ITEMS.register("bronze_block",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRONZE_BLOCK.get(), new Item.Properties()));
 
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> TWIG = ITEMS.register("twig",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.TWIG.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> RICH_GRASS_BLOCK = ITEMS.register("rich_grass_block",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRASS_BLOCK.get(), new Item.Properties()));
+
     public static final DeferredItem<net.minecraft.world.item.BlockItem> RICH_DIRT = ITEMS.register("rich_dirt",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_DIRT.get(), new Item.Properties()));
 

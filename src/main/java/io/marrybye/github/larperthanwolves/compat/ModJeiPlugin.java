@@ -295,10 +295,19 @@ public class ModJeiPlugin implements IModPlugin {
                                 new GravelDiggingRecipe.DropEntry(new ItemStack(ModBlocks.RICH_RED_SAND.get()), "Cu+"),
                                 new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.RED_SAND), "Other")
                         )
+                ),
+                new GravelDiggingRecipe(
+                        new ItemStack(ModBlocks.RICH_GRASS_BLOCK.get()),
+                        List.of(
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModBlocks.RICH_DIRT.get()), "Cu+"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.DIRT), "Other")
+                        )
                 )
         ));
 
         // 6. In-Depth Ingredient Information (JEI Info Pages)
+        registration.addIngredientInfo(new ItemStack(ModItems.TWIG.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.twig"));
         registration.addIngredientInfo(new ItemStack(ModItems.SILICON_SHARD.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.silicon_shard"));
         registration.addIngredientInfo(new ItemStack(Items.FLINT), VanillaTypes.ITEM_STACK,
@@ -309,6 +318,7 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.dirt"));
 
         List<ItemStack> richSoils = List.of(
+                new ItemStack(ModBlocks.RICH_GRASS_BLOCK.get()),
                 new ItemStack(ModBlocks.RICH_DIRT.get()),
                 new ItemStack(ModBlocks.RICH_GRAVEL.get()),
                 new ItemStack(ModBlocks.RICH_SAND.get()),

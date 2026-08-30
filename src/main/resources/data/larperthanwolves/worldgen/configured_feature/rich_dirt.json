@@ -15,7 +15,7 @@
       },
       {
         "state": {
-          "Name": "larperthanwolves:rich_dirt"
+          "Name": "larperthanwolves:rich_grass_block"
         },
         "target": {
           "predicate_type": "minecraft:block_match",

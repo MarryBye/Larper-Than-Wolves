@@ -16,4 +16,19 @@ public class ModClientEvents {
         event.register(ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerScreen::new);
         event.register(ModMenuTypes.SIEVE.get(), SieveScreen::new);
     }
+
+    @SubscribeEvent
+    public static void registerBlockColors(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block event) {
+        event.register((state, level, pos, tintIndex) -> {
+            if (level != null && pos != null) {
+                return net.minecraft.client.renderer.BiomeColors.getAverageGrassColor(level, pos);
+            }
+            return net.minecraft.world.level.GrassColor.getDefaultColor();
+        }, io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRASS_BLOCK.get());
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Item event) {
+        event.register((stack, tintIndex) -> net.minecraft.world.level.GrassColor.getDefaultColor(), io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRASS_BLOCK.get());
+    }
 }
