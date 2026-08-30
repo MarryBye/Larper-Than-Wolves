@@ -5,6 +5,9 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 ## Project Overview
 - **Mod ID**: `larperthanwolves`
 - **Package**: `io.marrybye.github.larperthanwolves`
+- **Author**: MarryBye
+- **AI Assistance**: Gemini (Google DeepMind)
+- **License**: MIT License (Copyright (c) 2026 MarryBye)
 - **Minecraft**: 1.21.1
 - **NeoForge**: 21.1.248
 - **Java**: 21
