@@ -305,6 +305,15 @@ public class ModItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> MILL_CRANK = ITEMS.register("mill_crank",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.MILL_CRANK.get(), new Item.Properties()));
 
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> KINETIC_PISTON = ITEMS.register("kinetic_piston",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.KINETIC_PISTON.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> FILTER_GRATE = ITEMS.register("filter_grate",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.FILTER_GRATE.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> ENTITY_OBSERVER = ITEMS.register("entity_observer",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.ENTITY_OBSERVER.get(), new Item.Properties()));
+
     public static final DeferredItem<net.minecraft.world.item.BlockItem> TIN_ORE = ITEMS.register("tin_ore",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.TIN_ORE.get(), new Item.Properties()));
 

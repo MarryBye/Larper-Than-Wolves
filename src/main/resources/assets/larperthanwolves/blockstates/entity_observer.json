@@ -1,0 +1,60 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "larperthanwolves:block/entity_observer",
+      "x": 180,
+      "y": 0
+    },
+    "facing=down,powered=true": {
+      "model": "larperthanwolves:block/entity_observer_on",
+      "x": 180,
+      "y": 0
+    },
+    "facing=up,powered=false": {
+      "model": "larperthanwolves:block/entity_observer"
+    },
+    "facing=up,powered=true": {
+      "model": "larperthanwolves:block/entity_observer_on"
+    },
+    "facing=north,powered=false": {
+      "model": "larperthanwolves:block/entity_observer",
+      "x": 90,
+      "y": 0
+    },
+    "facing=north,powered=true": {
+      "model": "larperthanwolves:block/entity_observer_on",
+      "x": 90,
+      "y": 0
+    },
+    "facing=south,powered=false": {
+      "model": "larperthanwolves:block/entity_observer",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "larperthanwolves:block/entity_observer_on",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "larperthanwolves:block/entity_observer",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,powered=true": {
+      "model": "larperthanwolves:block/entity_observer_on",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,powered=false": {
+      "model": "larperthanwolves:block/entity_observer",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,powered=true": {
+      "model": "larperthanwolves:block/entity_observer_on",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

@@ -38,4 +38,9 @@ public class ModMenuTypes {
             "basket",
             () -> IMenuTypeExtension.create((windowId, inv, data) -> new BasketMenu(windowId, inv))
     );
+
+    public static final DeferredHolder<MenuType<?>, MenuType<FilterGrateMenu>> FILTER_GRATE = MENUS.register(
+            "filter_grate",
+            () -> IMenuTypeExtension.create(FilterGrateMenu::new)
+    );
 }

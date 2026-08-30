@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "CCC",
+    "RRS",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "tag": "minecraft:stone_tool_materials"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "larperthanwolves:silicon_shard"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:entity_observer"
+  }
+}

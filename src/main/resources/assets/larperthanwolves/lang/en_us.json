@@ -162,5 +162,15 @@
   "item.larperthanwolves.fertilized_farmland": "Fertilized Farmland",
   "jei.larperthanwolves.info.fertilized_farmland": "Crops will only grow if planted on Fertilized Farmland. Apply Bone Meal (1 charge) or Dung (3 charges) to farmland or a planted crop to fertilize the soil. After harvesting the crop, charges decrement until depleted.",
   "item.larperthanwolves.dung": "Dung",
-  "jei.larperthanwolves.info.dung": "Produced by animals (cows, pigs, sheep, wolves, horses, etc.) 3 minutes after eating food, grazing, or hunting prey. When applied to farmland or crops, it provides potent fertilization that lasts for 3 full harvest cycles."
+  "jei.larperthanwolves.info.dung": "Produced by animals (cows, pigs, sheep, wolves, horses, etc.) 3 minutes after eating food, grazing, or hunting prey. When applied to farmland or crops, it provides potent fertilization that lasts for 3 full harvest cycles.",
+  "block.larperthanwolves.kinetic_piston": "Kinetic Piston",
+  "item.larperthanwolves.kinetic_piston": "Kinetic Piston",
+  "jei.larperthanwolves.info.kinetic_piston": "The Kinetic Piston catapults entities and single blocks 10 blocks forward or upward. If there are 2 or more blocks in front, it will not activate. Launched blocks become physical projectiles that drop under gravity upon impact, placing themselves as solid blocks when they land.",
+  "block.larperthanwolves.filter_grate": "Filter Grate",
+  "item.larperthanwolves.filter_grate": "Filter Grate",
+  "container.larperthanwolves.filter_grate": "Filter Grate",
+  "jei.larperthanwolves.info.filter_grate": "A grate with configurable phantom filter slots (3x3). Click with an item in the GUI to set a ghost filter (original is not consumed) or click to remove. Only filtered items can fall through the grate. Applying a redstone signal inverts the filter.",
+  "block.larperthanwolves.entity_observer": "Entity Observer",
+  "item.larperthanwolves.entity_observer": "Entity Observer",
+  "jei.larperthanwolves.info.entity_observer": "Detects any entities (players, mobs, items) moving in front of its sensor eye and emits a 4-tick redstone pulse from its back face upon detection."
 }

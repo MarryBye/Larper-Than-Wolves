@@ -422,6 +422,14 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.fertilized_farmland"));
         registration.addIngredientInfo(new ItemStack(ModItems.DUNG.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.dung"));
+
+        // New Mechanisms
+        registration.addIngredientInfo(new ItemStack(ModBlocks.KINETIC_PISTON.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.kinetic_piston"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.FILTER_GRATE.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.filter_grate"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.ENTITY_OBSERVER.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.entity_observer"));
     }
 
     @Override

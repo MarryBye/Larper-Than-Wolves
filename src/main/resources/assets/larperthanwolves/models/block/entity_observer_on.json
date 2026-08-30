@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube_directional",
+  "textures": {
+    "particle": "larperthanwolves:block/entity_observer_front",
+    "north": "larperthanwolves:block/entity_observer_front",
+    "south": "larperthanwolves:block/entity_observer_back_on",
+    "east": "larperthanwolves:block/entity_observer_side",
+    "west": "larperthanwolves:block/entity_observer_side",
+    "up": "larperthanwolves:block/entity_observer_top",
+    "down": "larperthanwolves:block/entity_observer_top"
+  }
+}

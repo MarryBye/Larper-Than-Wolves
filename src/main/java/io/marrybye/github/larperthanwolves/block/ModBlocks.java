@@ -90,6 +90,24 @@ public class ModBlocks {
                     .sound(SoundType.WOOD)
                     .noOcclusion()));
 
+    public static final DeferredBlock<KineticPistonBlock> KINETIC_PISTON = BLOCKS.register("kinetic_piston",
+            () -> new KineticPistonBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(3.5F, 12.0F)
+                    .sound(SoundType.STONE)));
+
+    public static final DeferredBlock<FilterGrateBlock> FILTER_GRATE = BLOCKS.register("filter_grate",
+            () -> new FilterGrateBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0F, 3.0F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
+
+    public static final DeferredBlock<EntityObserverBlock> ENTITY_OBSERVER = BLOCKS.register("entity_observer",
+            () -> new EntityObserverBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 3.0F)
+                    .sound(SoundType.STONE)));
+
     public static final DeferredBlock<Block> TIN_ORE = BLOCKS.register("tin_ore",
             () -> new Block(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "larperthanwolves:block/filter_grate_top",
+    "north": "larperthanwolves:block/filter_grate_side",
+    "south": "larperthanwolves:block/filter_grate_side",
+    "east": "larperthanwolves:block/filter_grate_side",
+    "west": "larperthanwolves:block/filter_grate_side",
+    "up": "larperthanwolves:block/filter_grate_top",
+    "down": "larperthanwolves:block/filter_grate_side"
+  }
+}

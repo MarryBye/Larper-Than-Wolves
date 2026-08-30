@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.26.0
+- **Current Version**: 1.27.0
 
 ## Project Architecture & Progression
 
@@ -173,6 +173,25 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Design & Model**: Custom 3D block model with woven wicker panels, reinforced rim, arched handle, and rope cross-bindings. Supports horizontal rotation and proper collision voxel bounds (`14x12x14`).
 - **Interactions & Automation**: Right-click opens custom 3x3 GUI. Supports hopper input/output through all faces (`WorldlyContainer`). Drops contents when broken with an axe.
 
+### ⚙️ Redstone & Advanced Mechanisms (Kinetic Piston, Filter Grate, Entity Observer)
+- **Kinetic Piston (`kinetic_piston` / `KineticPistonBlock`)**:
+  - Crafted from 3 Planks + 4 Cobblestone + 1 Bronze Ingot + 1 Redstone Dust.
+  - Directional in all 6 orientations (Up, Down, North, South, East, West).
+  - **Block Projectile Launch**: Checks the front face. If there are 2 or more blocks in front, it does NOT trigger. If there is exactly 1 block in front, launches it as a physical projectile / falling block entity ~10 blocks forward (or until impacting a wall, dropping under gravity and settling back as a solid block).
+  - **Entity Catapult**: Launches players, mobs, and items ~10 blocks in the facing direction.
+- **Filter Grate (`filter_grate` / `FilterGrateBlock` / `FilterGrateBlockEntity`)**:
+  - Crafted from 4 Planks + 4 Bronze Nuggets + 1 Mesh.
+  - Solid collision for players and living mobs (entities cannot fall or walk through the grating).
+  - **Phantom Filter GUI**: Right-click opens a 3x3 filter grid. Clicking with an item sets a ghost/phantom filter copy (original item is not consumed); clicking with an empty hand clears the slot.
+  - **Item Passing Logic**:
+    - **Unpowered (Normal Mode)**: Only item entities matching the set filters are allowed to pass through the grate to below.
+    - **Powered by Redstone (Inverted Mode)**: Filter is inverted — items matching the filters are blocked on top, while all other items pass through.
+- **Entity Observer (`entity_observer` / `EntityObserverBlock`)**:
+  - Crafted from 6 Cobblestone + 2 Redstone Dust + 1 Silicon Shard.
+  - Directional sensor block with front sensor eye and back redstone emitter port.
+  - Detects any entity (players, mobs, dropped items, vehicles) moving in front of its sensor face.
+  - Emits a **4-tick redstone pulse** on its back face upon entity detection.
+
 ## File Structure
 ```
 src/main/java/io/marrybye/github/larperthanwolves/
@@ -181,6 +200,9 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── ModBlocks.java             — Block registration (DeferredRegister)
 │   ├── MillBlock.java             — Hand mill / quern block
 │   ├── MillCrankBlock.java        — Rotating mill crank handle block
+│   ├── KineticPistonBlock.java    — 10-block projectile kinetic catapult piston
+│   ├── FilterGrateBlock.java      — Filter grate with phantom slots & redstone inversion
+│   ├── EntityObserverBlock.java   — Directional entity motion detection sensor
 │   ├── FertilizedFarmlandBlock.java — Fertilized farmland required for crop growth
 │   ├── RichGrassBlock.java        — Rich grass block with daylight spreading & snowy states
 │   ├── RichFallingBlock.java      — Falling block with custom dust particle color for rich gravel & sand
@@ -198,6 +220,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │       ├── ModBlockEntities.java           — BlockEntity type registration
 │       ├── MillBlockEntity.java            — Hand mill logic (4 slots, WorldlyContainer, MenuProvider)
 │       ├── MillCrankBlockEntity.java       — Mill crank rotation animation logic (10-tick duration, synced)
+│       ├── FilterGrateBlockEntity.java     — 9-slot phantom filter & item passing logic
 │       ├── BasketBlockEntity.java          — 9-slot storage basket container logic
 │       ├── BrickFurnaceBlockEntity.java    — Furnace logic (7 slots, custom fuel, WorldlyContainer, no food)
 │       ├── OvenBlockEntity.java            — Food oven logic (7 slots, custom fuel, WorldlyContainer, food only)
@@ -226,6 +249,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 ├── menu/
 │   ├── ModMenuTypes.java          — Menu type registration
 │   ├── MillMenu.java              — Hand mill container menu (4 slots)
+│   ├── FilterGrateMenu.java       — Filter grate container menu (9 phantom slots)
 │   ├── BrickFurnaceMenu.java      — Furnace container menu (7 slots, no food)
 │   ├── OvenMenu.java              — Food oven container menu (7 slots, food only)
 │   ├── AlloyMixerMenu.java        — Mixer container menu (5 slots)
@@ -234,6 +258,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── ModClientEvents.java       — Client-side screen registration & renderer registration
 │   ├── MillScreen.java            — Hand mill GUI renderer
 │   ├── MillCrankRenderer.java     — Animated 3D rotating crank handle BlockEntityRenderer
+│   ├── FilterGrateScreen.java     — Filter grate GUI renderer
 │   ├── BrickFurnaceScreen.java    — Furnace GUI renderer
 │   ├── OvenScreen.java            — Oven GUI renderer
 │   ├── AlloyMixerScreen.java      — Mixer GUI renderer

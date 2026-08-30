@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "larperthanwolves:entity_observer"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

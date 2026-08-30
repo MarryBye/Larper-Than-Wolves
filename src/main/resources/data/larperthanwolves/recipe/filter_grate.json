@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PNP",
+    "NMN",
+    "PNP"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "N": {
+      "item": "larperthanwolves:bronze_nugget"
+    },
+    "M": {
+      "item": "larperthanwolves:mesh"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:filter_grate"
+  }
+}
