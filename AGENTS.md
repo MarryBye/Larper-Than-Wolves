@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.27.4
+- **Current Version**: 1.27.5
 
 ## Project Architecture & Progression
 
@@ -433,6 +433,11 @@ All commits must follow:
 - The mod must compile, launch, and run standalone without any optional mods installed.
 - Guard all mod-specific calls with `net.neoforged.fml.ModList.get().isLoaded(...)` or isolated compatibility classes to avoid `ClassNotFoundException` / `NoClassDefFoundError`.
 - Whenever developing new features, machines, blocks, recipes, or balance updates, always inspect all mods currently located in `libs/` and implement thoughtful cross-mod compatibility (e.g. Create rotational force, mechanical mixers/saws/fans, JEI categories/catalysts/phantom handlers, and conventional tags).
+
+### 9. Granular Feature Documentation (`docs/` -> `feature-docs-manager`)
+**MANDATORY**: Every mechanic, machine, tool, and overhaul system must have a dedicated markdown file in `docs/<feature_name>.md`.
+- **Pre-Modification Reading**: Before modifying or refactoring any feature, the agent **MUST** read its corresponding documentation in `docs/` to maintain full context and design invariants.
+- **Post-Modification Sync (3-Pillar Rule)**: Every change must be documented across all three tiers: `docs/<feature>.md` (deep technical details & testing), `AGENTS.md` (codebase architecture & registries), and `README.md` (player gameplay guide).
 
 ## Best Practices & Guidelines
 - Use `ThreadLocalRandom.current()` instead of `new Random()` for thread safety in server event handlers.
