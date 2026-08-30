@@ -21,6 +21,9 @@ public class ModItems {
     public static final DeferredItem<Item> DRY_GRASS = ITEMS.register("dry_grass",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> DUNG = ITEMS.register("dung",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> TANNED_LEATHER = ITEMS.register("tanned_leather",
             () -> new Item(new Item.Properties()));
 

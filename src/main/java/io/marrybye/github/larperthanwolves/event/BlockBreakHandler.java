@@ -732,7 +732,7 @@ public class BlockBreakHandler {
                 || block instanceof net.minecraft.world.level.block.SweetBerryBushBlock;
     }
 
-    // 5. Bone meal fertilization mechanic (soil fertilization instead of instant growth)
+    // 5. Bone meal fertilization mechanic (soil fertilization instead of instant growth, 1 charge)
     @SubscribeEvent
     public static void onBonemeal(net.neoforged.neoforge.event.entity.player.BonemealEvent event) {
         Level level = event.getLevel();
@@ -745,7 +745,8 @@ public class BlockBreakHandler {
                 int moisture = state.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
                         state.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
                 level.setBlock(pos, ModBlocks.FERTILIZED_FARMLAND.get().defaultBlockState()
-                        .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture), 3);
+                        .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture)
+                        .setValue(io.marrybye.github.larperthanwolves.block.FertilizedFarmlandBlock.CHARGES, 1), 3);
                 level.playSound(null, pos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
                 if (level instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
@@ -772,7 +773,8 @@ public class BlockBreakHandler {
                     int moisture = belowState.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
                             belowState.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
                     level.setBlock(belowPos, ModBlocks.FERTILIZED_FARMLAND.get().defaultBlockState()
-                            .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture), 3);
+                            .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture)
+                            .setValue(io.marrybye.github.larperthanwolves.block.FertilizedFarmlandBlock.CHARGES, 1), 3);
                     level.playSound(null, pos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
                     if (level instanceof ServerLevel serverLevel) {
                         serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
@@ -807,7 +809,7 @@ public class BlockBreakHandler {
         }
     }
 
-    // 7. Crop harvest/break resets fertilized farmland back to regular farmland
+    // 7. Crop harvest/break decrements fertilized farmland charges (or resets when depleted)
     @SubscribeEvent
     public static void onCropBreak(BlockEvent.BreakEvent event) {
         BlockPos pos = event.getPos();
@@ -817,30 +819,80 @@ public class BlockBreakHandler {
             BlockPos belowPos = pos.below();
             BlockState belowState = event.getLevel().getBlockState(belowPos);
             if (belowState.is(ModBlocks.FERTILIZED_FARMLAND.get())) {
-                int moisture = belowState.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
-                        belowState.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
-                event.getLevel().setBlock(belowPos, Blocks.FARMLAND.defaultBlockState()
-                        .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture), 3);
+                BlockState nextState = io.marrybye.github.larperthanwolves.block.FertilizedFarmlandBlock.getAfterHarvestState(belowState);
+                event.getLevel().setBlock(belowPos, nextState, 3);
             }
         }
     }
 
-    // 8. Right click harvest (e.g. Sweet Berry Bush) resets fertilized farmland
+    // 8. Right click handlers for Dung fertilization and Sweet Berry harvesting
     @SubscribeEvent
     public static void onCropRightClick(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = level.getBlockState(pos);
+        Player player = event.getEntity();
+        ItemStack held = event.getItemStack();
 
+        // Dung fertilization (Provides 3 harvest charges)
+        if (held.is(ModItems.DUNG.get())) {
+            // Direct click on Farmland
+            if (state.is(Blocks.FARMLAND) || (state.is(ModBlocks.FERTILIZED_FARMLAND.get()) && state.getValue(io.marrybye.github.larperthanwolves.block.FertilizedFarmlandBlock.CHARGES) < 3)) {
+                if (!level.isClientSide) {
+                    int moisture = state.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
+                            state.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
+                    level.setBlock(pos, ModBlocks.FERTILIZED_FARMLAND.get().defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture)
+                            .setValue(io.marrybye.github.larperthanwolves.block.FertilizedFarmlandBlock.CHARGES, 3), 3);
+                    level.playSound(null, pos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0f, 0.8f);
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
+                                pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 12, 0.3, 0.1, 0.3, 0.05);
+                    }
+                    if (!player.isCreative()) {
+                        held.shrink(1);
+                    }
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(net.minecraft.world.InteractionResult.sidedSuccess(level.isClientSide));
+                return;
+            }
+
+            // Click on a crop planted on Farmland
+            if (isCrop(state.getBlock())) {
+                BlockPos belowPos = pos.below();
+                BlockState belowState = level.getBlockState(belowPos);
+                if (belowState.is(Blocks.FARMLAND) || (belowState.is(ModBlocks.FERTILIZED_FARMLAND.get()) && belowState.getValue(io.marrybye.github.larperthanwolves.block.FertilizedFarmlandBlock.CHARGES) < 3)) {
+                    if (!level.isClientSide) {
+                        int moisture = belowState.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
+                                belowState.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
+                        level.setBlock(belowPos, ModBlocks.FERTILIZED_FARMLAND.get().defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture)
+                                .setValue(io.marrybye.github.larperthanwolves.block.FertilizedFarmlandBlock.CHARGES, 3), 3);
+                        level.playSound(null, pos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0f, 0.8f);
+                        if (level instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
+                                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 12, 0.3, 0.2, 0.3, 0.05);
+                        }
+                        if (!player.isCreative()) {
+                            held.shrink(1);
+                        }
+                    }
+                    event.setCanceled(true);
+                    event.setCancellationResult(net.minecraft.world.InteractionResult.sidedSuccess(level.isClientSide));
+                    return;
+                }
+            }
+        }
+
+        // Sweet berry bush harvesting decrements fertilizer charges
         if (state.getBlock() instanceof net.minecraft.world.level.block.SweetBerryBushBlock &&
                 state.getValue(net.minecraft.world.level.block.SweetBerryBushBlock.AGE) >= 2) {
             BlockPos belowPos = pos.below();
             BlockState belowState = level.getBlockState(belowPos);
             if (belowState.is(ModBlocks.FERTILIZED_FARMLAND.get())) {
-                int moisture = belowState.hasProperty(net.minecraft.world.level.block.FarmBlock.MOISTURE) ?
-                        belowState.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) : 0;
-                level.setBlock(belowPos, Blocks.FARMLAND.defaultBlockState()
-                        .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, moisture), 3);
+                BlockState nextState = io.marrybye.github.larperthanwolves.block.FertilizedFarmlandBlock.getAfterHarvestState(belowState);
+                level.setBlock(belowPos, nextState, 3);
             }
         }
     }

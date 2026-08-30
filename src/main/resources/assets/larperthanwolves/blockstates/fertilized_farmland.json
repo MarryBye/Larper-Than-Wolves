@@ -1,28 +1,30 @@
 {
   "variants": {
-    "moisture=0": {
-      "model": "larperthanwolves:block/fertilized_farmland"
-    },
-    "moisture=1": {
-      "model": "larperthanwolves:block/fertilized_farmland"
-    },
-    "moisture=2": {
-      "model": "larperthanwolves:block/fertilized_farmland"
-    },
-    "moisture=3": {
-      "model": "larperthanwolves:block/fertilized_farmland"
-    },
-    "moisture=4": {
-      "model": "larperthanwolves:block/fertilized_farmland"
-    },
-    "moisture=5": {
-      "model": "larperthanwolves:block/fertilized_farmland"
-    },
-    "moisture=6": {
-      "model": "larperthanwolves:block/fertilized_farmland"
-    },
-    "moisture=7": {
-      "model": "larperthanwolves:block/fertilized_farmland_moist"
-    }
+    "charges=1,moisture=0": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=1,moisture=1": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=1,moisture=2": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=1,moisture=3": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=1,moisture=4": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=1,moisture=5": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=1,moisture=6": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=1,moisture=7": { "model": "larperthanwolves:block/fertilized_farmland_moist" },
+
+    "charges=2,moisture=0": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=2,moisture=1": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=2,moisture=2": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=2,moisture=3": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=2,moisture=4": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=2,moisture=5": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=2,moisture=6": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=2,moisture=7": { "model": "larperthanwolves:block/fertilized_farmland_moist" },
+
+    "charges=3,moisture=0": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=3,moisture=1": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=3,moisture=2": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=3,moisture=3": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=3,moisture=4": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=3,moisture=5": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=3,moisture=6": { "model": "larperthanwolves:block/fertilized_farmland" },
+    "charges=3,moisture=7": { "model": "larperthanwolves:block/fertilized_farmland_moist" }
   }
 }

@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.23.0
+- **Current Version**: 1.24.0
 
 ## Project Architecture & Progression
 
@@ -86,13 +86,17 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     8. Diamond Dust (`diamond_dust`)
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
-### 🌾 Farming, Mandatory Soil Fertilization & 2-Stage Hoe Tilling
-- **Mandatory Bone Meal Fertilization (`fertilized_farmland` / `FertilizedFarmlandBlock`)**:
+### 🌾 Farming, Mandatory Fertilization (Bone Meal & Dung) & 2-Stage Hoe Tilling
+- **Mandatory Soil Fertilization (`fertilized_farmland` / `FertilizedFarmlandBlock`)**:
   - Crops planted on standard farmland will **NOT** grow (growth ticks are completely blocked on unfertilized soil).
-  - Right-clicking farmland or a planted crop with **Bone Meal** fertilizes the soil, turning it into **Fertilized Farmland**.
-  - **Growth Behavior**: Bone meal **does not** advance crop growth stages instantly; it strictly activates natural crop growth.
+  - **Bone Meal Fertilization**: Right-clicking farmland or a planted crop with **Bone Meal** fertilizes the soil for **1 harvest cycle** (`charges = 1`).
+  - **Dung Fertilization (Навоз)**: Right-clicking farmland or a planted crop with **Dung** (`dung`) provides powerful long-lasting fertilization for **3 full harvest cycles** (`charges = 3`).
+  - **Growth Behavior**: Fertilizers do not skip or instantly advance crop growth stages; they unlock natural crop growth.
   - **Visuals**: Fertilized farmland features distinct ivory/white bone meal mineral flecks on both dry and moist soil textures.
-  - **Crop Harvesting Cycle**: When a mature crop is harvested or broken, the fertilized farmland resets back to standard unfertilized farmland (`Blocks.FARMLAND`), requiring fertilization again for new seeds.
+  - **Crop Harvesting Cycle**: When a mature crop is harvested, the soil decrements 1 charge. When all charges are exhausted, the soil resets back to standard unfertilized farmland (`Blocks.FARMLAND`).
+- **Animal Digestion & Dung Production (`dung` / `AnimalDungHandler`)**:
+  - Animals (Cows, Sheep, Pigs, Horses, Goats, Camels, Sniffers, Wolves, etc.) produce Dung **3 minutes (3600 ticks)** after eating.
+  - Triggered by player feeding, sheep grazing on grass, and wild wolves hunting and killing prey.
 - **2-Stage Tilling**:
   - **Stage 1 (Grass/Podzol/Mycelium/Rich Grass $\rightarrow$ Dirt/Rich Dirt)**: Right-click grassy ground with any hoe to till away the grass layer into plain dirt (or rich dirt) with a **35% chance** to harvest wild seeds (`Wheat Seeds` 50%, `Carrot` 15%, `Potato` 15%, `Beetroot Seeds` 10%, `Pumpkin Seeds` 5%, `Melon Seeds` 5%).
   - **Stage 2 (Dirt/Rich Dirt $\rightarrow$ Farmland)**: Right-click plain dirt or rich dirt with any hoe to prepare farmland for crop planting.
@@ -224,7 +228,8 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   ├── AlloyMixerScreen.java      — Mixer GUI renderer
 │   └── SieveScreen.java           — Sieve GUI renderer
 ├── event/
-│   ├── BlockBreakHandler.java     — Mining tier enforcement (Zinc iron-only), axe wood breaking, shears drops, 2-stage hoe tilling
+│   ├── BlockBreakHandler.java     — Mining tier enforcement (Zinc iron-only), axe wood breaking, shears drops, 2-stage hoe tilling, bone meal & dung fertilization
+│   ├── AnimalDungHandler.java     — Animal feeding, grazing & hunting 3-min digestion timer to drop Dung
 │   ├── DisabledItemsHandler.java  — Vanilla item removal (Blast furnace/smoker/furnace/chainmail/diamond gear, chunk replacement, mob drops: realistic bones from animals & zombies)
 │   └── VillagerTradeHandler.java  — Balanced villager professions (up to Bronze) and wandering trader trades
 ├── config/

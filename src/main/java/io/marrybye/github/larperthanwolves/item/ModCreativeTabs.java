@@ -19,6 +19,7 @@ public class ModCreativeTabs {
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.SILICON_SHARD.get());
                         output.accept(ModItems.DRY_GRASS.get());
+                        output.accept(ModItems.DUNG.get());
                         output.accept(ModItems.TANNED_LEATHER.get());
                         output.accept(ModItems.ROPE.get());
                         output.accept(ModItems.LIGHTER.get());
