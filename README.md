@@ -1,6 +1,12 @@
+<div align="center">
+
 # 🐺 Larper Than Wolves (v1.24.0)
 
-**Larper Than Wolves** (`larperthanwolves`) — хардкорная модификация для **Minecraft 1.21.1 (NeoForge)**, вдохновлённая философией *Better Than Wolves*. Мод полностью перерабатывает прогрессию выживания, раннюю игру, сельское хозяйство, раскопки грунтов, лесную фуражировку, металлургию и баланс мира.
+<img src="logo.png" alt="Larper Than Wolves Logo" width="300"/>
+
+**Хардкорная модификация для Minecraft 1.21.1 (NeoForge), вдохновлённая Better Than Wolves**
+
+</div>
 
 ---
 
