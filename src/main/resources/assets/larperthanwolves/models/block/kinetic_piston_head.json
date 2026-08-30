@@ -2,7 +2,7 @@
   "parent": "minecraft:block/template_piston_head",
   "textures": {
     "platform": "larperthanwolves:block/kinetic_piston_top",
-    "unsticky": "larperthanwolves:block/kinetic_piston_inner",
-    "side": "larperthanwolves:block/kinetic_piston_side"
+    "side": "larperthanwolves:block/kinetic_piston_side",
+    "unsticky": "larperthanwolves:block/kinetic_piston_top"
   }
 }

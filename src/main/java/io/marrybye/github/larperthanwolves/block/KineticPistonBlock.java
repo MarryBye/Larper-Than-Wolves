@@ -9,10 +9,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -25,6 +25,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
@@ -32,6 +35,13 @@ public class KineticPistonBlock extends DirectionalBlock {
     public static final MapCodec<KineticPistonBlock> CODEC = simpleCodec(KineticPistonBlock::new);
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
     public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
+
+    protected static final VoxelShape BASE_UP = Block.box(0, 0, 0, 16, 12, 16);
+    protected static final VoxelShape BASE_DOWN = Block.box(0, 4, 0, 16, 16, 16);
+    protected static final VoxelShape BASE_NORTH = Block.box(0, 0, 4, 16, 16, 16);
+    protected static final VoxelShape BASE_SOUTH = Block.box(0, 0, 0, 16, 16, 12);
+    protected static final VoxelShape BASE_WEST = Block.box(4, 0, 0, 16, 16, 16);
+    protected static final VoxelShape BASE_EAST = Block.box(0, 0, 0, 12, 16, 16);
 
     public KineticPistonBlock(Properties properties) {
         super(properties);
@@ -58,6 +68,21 @@ public class KineticPistonBlock extends DirectionalBlock {
     }
 
     @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (!state.getValue(EXTENDED)) {
+            return Shapes.block();
+        }
+        return switch (state.getValue(FACING)) {
+            case DOWN -> BASE_DOWN;
+            case UP -> BASE_UP;
+            case SOUTH -> BASE_SOUTH;
+            case WEST -> BASE_WEST;
+            case EAST -> BASE_EAST;
+            default -> BASE_NORTH;
+        };
+    }
+
+    @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         super.neighborChanged(state, level, pos, block, fromPos, isMoving);
         if (level.isClientSide) return;
@@ -66,35 +91,11 @@ public class KineticPistonBlock extends DirectionalBlock {
         boolean isExtended = state.getValue(EXTENDED);
 
         if (hasSignal && !isExtended) {
+            // Redstone activated -> extend and launch
             triggerPiston(level, pos, state);
-        }
-    }
-
-    @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (state.getValue(EXTENDED)) {
-            // Retract the piston base and remove extended head
-            Direction facing = state.getValue(FACING);
-            BlockPos targetPos = pos.relative(facing);
-
-            level.setBlock(pos, state.setValue(EXTENDED, false), 3);
-            if (level.getBlockState(targetPos).is(ModBlocks.KINETIC_PISTON_HEAD.get())) {
-                level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
-            }
-            level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.8F, 1.1F);
-        }
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.is(newState.getBlock())) {
-            super.onRemove(state, level, pos, newState, isMoving);
-            if (state.getValue(EXTENDED)) {
-                BlockPos targetPos = pos.relative(state.getValue(FACING));
-                if (level.getBlockState(targetPos).is(ModBlocks.KINETIC_PISTON_HEAD.get())) {
-                    level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
-                }
-            }
+        } else if (!hasSignal && isExtended) {
+            // Redstone deactivated -> retract
+            retractPiston(level, pos, state);
         }
     }
 
@@ -130,7 +131,7 @@ public class KineticPistonBlock extends DirectionalBlock {
                 falling.setDeltaMovement(blockVel);
                 falling.hurtMarked = true;
             } else {
-                // Obstructed by 2+ blocks: do not trigger
+                // Obstructed by 2+ blocks: cannot extend
                 return;
             }
         }
@@ -154,15 +155,14 @@ public class KineticPistonBlock extends DirectionalBlock {
             }
         }
 
-        // 3. Physically extend the piston mechanism & spawn piston head block in front
+        // 3. Physically extend base and place extending piston head block in front
         level.setBlock(pos, state.setValue(EXTENDED, true), 3);
         if (level.getBlockState(targetPos).isAir() || level.getBlockState(targetPos).canBeReplaced()) {
             level.setBlock(targetPos, ModBlocks.KINETIC_PISTON_HEAD.get().defaultBlockState()
                     .setValue(KineticPistonHeadBlock.FACING, facing), 3);
         }
-        level.scheduleTick(pos, this, 4); // Retract after 4 ticks (0.2s)
 
-        // Extension sounds & air burst effects
+        // Sound effects & particle bursts ONCE on activation
         level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 1.0F, 1.2F);
         level.playSound(null, pos, SoundEvents.WIND_CHARGE_BURST.value(), SoundSource.BLOCKS, 0.8F, 0.9F);
 
@@ -173,6 +173,30 @@ public class KineticPistonBlock extends DirectionalBlock {
             serverLevel.sendParticles(ParticleTypes.CRIT,
                     targetPos.getX() + 0.5D, targetPos.getY() + 0.5D, targetPos.getZ() + 0.5D,
                     8, 0.2D, 0.2D, 0.2D, 0.1D);
+        }
+    }
+
+    private void retractPiston(Level level, BlockPos pos, BlockState state) {
+        Direction facing = state.getValue(FACING);
+        BlockPos targetPos = pos.relative(facing);
+
+        level.setBlock(pos, state.setValue(EXTENDED, false), 3);
+        if (level.getBlockState(targetPos).is(ModBlocks.KINETIC_PISTON_HEAD.get())) {
+            level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
+        }
+        level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.8F, 1.1F);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            super.onRemove(state, level, pos, newState, isMoving);
+            if (state.getValue(EXTENDED)) {
+                BlockPos targetPos = pos.relative(state.getValue(FACING));
+                if (level.getBlockState(targetPos).is(ModBlocks.KINETIC_PISTON_HEAD.get())) {
+                    level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
         }
     }
 }
