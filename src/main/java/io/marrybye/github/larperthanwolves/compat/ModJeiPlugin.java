@@ -61,37 +61,16 @@ public class ModJeiPlugin implements IModPlugin {
 
         // 1. Sieve recipes
         int sieveTime = ModConfig.SERVER != null ? ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;
-        List<ItemStack> gravelOutputs = List.of(
+        List<ItemStack> regularSoilOutputs = List.of(
                 new ItemStack(ModItems.SILICON_SHARD.get()),
                 new ItemStack(Items.FLINT),
-                new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.BRONZE_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(ModItems.GOLD_DUST.get()),
-                new ItemStack(ModItems.DIAMOND_DUST.get())
-        );
-
-        List<ItemStack> sandOutputs = List.of(
-                new ItemStack(ModItems.SILICON_SHARD.get()),
-                new ItemStack(Items.FLINT),
-                new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.BRONZE_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(ModItems.GOLD_DUST.get()),
-                new ItemStack(ModItems.DIAMOND_DUST.get())
+                new ItemStack(ModItems.COPPER_DUST.get())
         );
 
         List<ItemStack> suspGravelOutputs = List.of(
                 new ItemStack(ModItems.SILICON_SHARD.get()),
                 new ItemStack(Items.FLINT),
                 new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.BRONZE_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(ModItems.GOLD_DUST.get()),
-                new ItemStack(ModItems.DIAMOND_DUST.get()),
                 new ItemStack(Items.EMERALD),
                 new ItemStack(Items.WHEAT),
                 new ItemStack(Items.BURN_POTTERY_SHERD)
@@ -101,23 +80,34 @@ public class ModJeiPlugin implements IModPlugin {
                 new ItemStack(ModItems.SILICON_SHARD.get()),
                 new ItemStack(Items.FLINT),
                 new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.BRONZE_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(ModItems.GOLD_DUST.get()),
-                new ItemStack(ModItems.DIAMOND_DUST.get()),
                 new ItemStack(Items.DIAMOND),
                 new ItemStack(Items.EMERALD),
                 new ItemStack(Items.SNIFFER_EGG),
                 new ItemStack(Items.ARCHER_POTTERY_SHERD)
         );
 
+        List<ItemStack> richSoilOutputs = List.of(
+                new ItemStack(ModItems.SILICON_SHARD.get()),
+                new ItemStack(Items.FLINT),
+                new ItemStack(ModItems.COPPER_DUST.get()),
+                new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.BRONZE_DUST.get()),
+                new ItemStack(ModItems.IRON_DUST.get()),
+                new ItemStack(ModItems.GOLD_DUST.get()),
+                new ItemStack(ModItems.DIAMOND_DUST.get())
+        );
+
         registration.addRecipes(SieveRecipeCategory.TYPE, List.of(
-                new SieveJeiRecipe(new ItemStack(Blocks.GRAVEL), gravelOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.SAND), sandOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.RED_SAND), sandOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.GRAVEL), regularSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.SAND), regularSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.RED_SAND), regularSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.DIRT), regularSoilOutputs, sieveTime),
                 new SieveJeiRecipe(new ItemStack(Blocks.SUSPICIOUS_GRAVEL), suspGravelOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.SUSPICIOUS_SAND), suspSandOutputs, sieveTime)
+                new SieveJeiRecipe(new ItemStack(Blocks.SUSPICIOUS_SAND), suspSandOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_DIRT.get()), richSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_GRAVEL.get()), richSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_SAND.get()), richSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_RED_SAND.get()), richSoilOutputs, sieveTime)
         ));
 
         // 2. Chisel In-World Carving (Overworld tree stumps only)
@@ -240,22 +230,70 @@ public class ModJeiPlugin implements IModPlugin {
 
         registration.addRecipes(MachineFuelRecipeCategory.TYPE, fuelRecipes);
 
-        // 5. Gravel Digging
+        // 5. Gravel & Soil Digging
         registration.addRecipes(GravelDiggingRecipeCategory.TYPE, List.of(
                 new GravelDiggingRecipe(
                         new ItemStack(Blocks.GRAVEL),
                         List.of(
                                 new GravelDiggingRecipe.DropEntry(new ItemStack(ModItems.SILICON_SHARD.get()), "20%"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Items.FLINT), "8%"),
                                 new GravelDiggingRecipe.DropEntry(new ItemStack(ModItems.COPPER_DUST.get()), "2%"),
-                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.GRAVEL.asItem()), "78%")
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.GRAVEL.asItem()), "70%")
                         )
                 ),
                 new GravelDiggingRecipe(
-                        new ItemStack(Blocks.SUSPICIOUS_GRAVEL),
+                        new ItemStack(Blocks.DIRT),
                         List.of(
                                 new GravelDiggingRecipe.DropEntry(new ItemStack(ModItems.SILICON_SHARD.get()), "20%"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Items.FLINT), "8%"),
                                 new GravelDiggingRecipe.DropEntry(new ItemStack(ModItems.COPPER_DUST.get()), "2%"),
-                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.GRAVEL.asItem()), "78%")
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.DIRT.asItem()), "70%")
+                        )
+                ),
+                new GravelDiggingRecipe(
+                        new ItemStack(Blocks.SAND),
+                        List.of(
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModItems.SILICON_SHARD.get()), "20%"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Items.FLINT), "8%"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModItems.COPPER_DUST.get()), "2%"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.SAND.asItem()), "70%")
+                        )
+                ),
+                new GravelDiggingRecipe(
+                        new ItemStack(Blocks.RED_SAND),
+                        List.of(
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModItems.SILICON_SHARD.get()), "20%"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Items.FLINT), "8%"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModItems.COPPER_DUST.get()), "2%"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.RED_SAND.asItem()), "70%")
+                        )
+                ),
+                new GravelDiggingRecipe(
+                        new ItemStack(ModBlocks.RICH_DIRT.get()),
+                        List.of(
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModBlocks.RICH_DIRT.get()), "Cu+"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.DIRT), "Other")
+                        )
+                ),
+                new GravelDiggingRecipe(
+                        new ItemStack(ModBlocks.RICH_GRAVEL.get()),
+                        List.of(
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModBlocks.RICH_GRAVEL.get()), "Cu+"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.GRAVEL), "Other")
+                        )
+                ),
+                new GravelDiggingRecipe(
+                        new ItemStack(ModBlocks.RICH_SAND.get()),
+                        List.of(
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModBlocks.RICH_SAND.get()), "Cu+"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.SAND), "Other")
+                        )
+                ),
+                new GravelDiggingRecipe(
+                        new ItemStack(ModBlocks.RICH_RED_SAND.get()),
+                        List.of(
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(ModBlocks.RICH_RED_SAND.get()), "Cu+"),
+                                new GravelDiggingRecipe.DropEntry(new ItemStack(Blocks.RED_SAND), "Other")
                         )
                 )
         ));
@@ -267,6 +305,17 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.flint"));
         registration.addIngredientInfo(new ItemStack(Blocks.GRAVEL), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.gravel"));
+        registration.addIngredientInfo(new ItemStack(Blocks.DIRT), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.dirt"));
+
+        List<ItemStack> richSoils = List.of(
+                new ItemStack(ModBlocks.RICH_DIRT.get()),
+                new ItemStack(ModBlocks.RICH_GRAVEL.get()),
+                new ItemStack(ModBlocks.RICH_SAND.get()),
+                new ItemStack(ModBlocks.RICH_RED_SAND.get())
+        );
+        registration.addIngredientInfo(richSoils, VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.rich_soil"));
 
         registration.addIngredientInfo(new ItemStack(Items.CRAFTING_TABLE), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.crafting_table"));

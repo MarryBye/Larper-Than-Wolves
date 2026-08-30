@@ -112,7 +112,19 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
                 stack.is(Blocks.SUSPICIOUS_GRAVEL.asItem()) ||
                 stack.is(Blocks.SAND.asItem()) ||
                 stack.is(Blocks.RED_SAND.asItem()) ||
-                stack.is(Blocks.SUSPICIOUS_SAND.asItem());
+                stack.is(Blocks.SUSPICIOUS_SAND.asItem()) ||
+                stack.is(Blocks.DIRT.asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_DIRT.get().asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRAVEL.get().asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_SAND.get().asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_RED_SAND.get().asItem());
+    }
+
+    public static boolean isRichSoil(ItemStack stack) {
+        return stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_DIRT.get().asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRAVEL.get().asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_SAND.get().asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_RED_SAND.get().asItem());
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SieveBlockEntity entity) {
@@ -152,61 +164,59 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         if (input.isEmpty()) return;
 
         boolean isSuspicious = input.is(Blocks.SUSPICIOUS_GRAVEL.asItem()) || input.is(Blocks.SUSPICIOUS_SAND.asItem());
-        boolean isSandType = input.is(Blocks.SAND.asItem()) || input.is(Blocks.RED_SAND.asItem()) || input.is(Blocks.SUSPICIOUS_SAND.asItem());
         boolean isSuspiciousSand = input.is(Blocks.SUSPICIOUS_SAND.asItem());
         boolean isSuspiciousGravel = input.is(Blocks.SUSPICIOUS_GRAVEL.asItem());
+        boolean isRich = isRichSoil(input);
 
         CustomData blockEntityData = isSuspicious ? input.get(DataComponents.BLOCK_ENTITY_DATA) : null;
 
         input.shrink(1);
 
-        // 1. Regular dust / shard / flint drops ordered from most frequent to rarest:
-        // Silicon shard -> Flint -> Copper dust -> Tin dust -> Bronze dust -> Iron dust -> Gold dust -> Diamond dust
-        double siliconChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandSiliconShardChance.get() : 0.25) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.25);
-        double flintChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandFlintChance.get() : 0.12) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.12);
-        double copperChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandCopperDustChance.get() : 0.06) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.06);
-        double tinChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandTinDustChance.get() : 0.04) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveTinDustChance.get() : 0.04);
-        double bronzeChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandBronzeDustChance.get() : 0.03) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveBronzeDustChance.get() : 0.03);
-        double ironChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandIronDustChance.get() : 0.02) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveIronDustChance.get() : 0.02);
-        double goldChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandGoldDustChance.get() : 0.01) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveGoldDustChance.get() : 0.01);
-        double diamondChance = isSandType ?
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveSandDiamondDustChance.get() : 0.002) :
-                (ModConfig.SERVER != null ? ModConfig.SERVER.sieveDiamondDustChance.get() : 0.002);
-
-        float roll = ThreadLocalRandom.current().nextFloat();
         ItemStack regularResult = ItemStack.EMPTY;
+        float roll = ThreadLocalRandom.current().nextFloat();
         double cumulative = 0.0;
 
-        if (roll < (cumulative += siliconChance)) {
-            regularResult = new ItemStack(ModItems.SILICON_SHARD.get(), 1);
-        } else if (roll < (cumulative += flintChance)) {
-            regularResult = new ItemStack(Items.FLINT, 1);
-        } else if (roll < (cumulative += copperChance)) {
-            regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
-        } else if (roll < (cumulative += tinChance)) {
-            regularResult = new ItemStack(ModItems.TIN_DUST.get(), 1);
-        } else if (roll < (cumulative += bronzeChance)) {
-            regularResult = new ItemStack(ModItems.BRONZE_DUST.get(), 1);
-        } else if (roll < (cumulative += ironChance)) {
-            regularResult = new ItemStack(ModItems.IRON_DUST.get(), 1);
-        } else if (roll < (cumulative += goldChance)) {
-            regularResult = new ItemStack(ModItems.GOLD_DUST.get(), 1);
-        } else if (roll < (cumulative += diamondChance)) {
-            regularResult = new ItemStack(ModItems.DIAMOND_DUST.get(), 1);
+        if (isRich) {
+            // Rich Soils: Silicon Shard -> Flint -> Copper Dust -> Tin Dust -> Bronze Dust -> Iron Dust -> Gold Dust -> Diamond Dust
+            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichSiliconShardChance.get() : 0.30;
+            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichFlintChance.get() : 0.18;
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.12;
+            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.08;
+            double bronzeChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichBronzeDustChance.get() : 0.05;
+            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.03;
+            double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichGoldDustChance.get() : 0.015;
+            double diamondChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichDiamondDustChance.get() : 0.005;
+
+            if (roll < (cumulative += siliconChance)) {
+                regularResult = new ItemStack(ModItems.SILICON_SHARD.get(), 1);
+            } else if (roll < (cumulative += flintChance)) {
+                regularResult = new ItemStack(Items.FLINT, 1);
+            } else if (roll < (cumulative += copperChance)) {
+                regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
+            } else if (roll < (cumulative += tinChance)) {
+                regularResult = new ItemStack(ModItems.TIN_DUST.get(), 1);
+            } else if (roll < (cumulative += bronzeChance)) {
+                regularResult = new ItemStack(ModItems.BRONZE_DUST.get(), 1);
+            } else if (roll < (cumulative += ironChance)) {
+                regularResult = new ItemStack(ModItems.IRON_DUST.get(), 1);
+            } else if (roll < (cumulative += goldChance)) {
+                regularResult = new ItemStack(ModItems.GOLD_DUST.get(), 1);
+            } else if (roll < (cumulative += diamondChance)) {
+                regularResult = new ItemStack(ModItems.DIAMOND_DUST.get(), 1);
+            }
+        } else {
+            // Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious): Silicon Shard -> Flint -> Copper Dust
+            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.30;
+            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.15;
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.05;
+
+            if (roll < (cumulative += siliconChance)) {
+                regularResult = new ItemStack(ModItems.SILICON_SHARD.get(), 1);
+            } else if (roll < (cumulative += flintChance)) {
+                regularResult = new ItemStack(Items.FLINT, 1);
+            } else if (roll < (cumulative += copperChance)) {
+                regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
+            }
         }
 
         if (!regularResult.isEmpty()) {

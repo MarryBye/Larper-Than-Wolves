@@ -117,13 +117,6 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
 
         // --- 4. Survival Utilities (Rope & Lighter) ---
 
-        // Rope from leather + shears
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROPE.get(), 2)
-                .requires(Items.LEATHER)
-                .requires(ModItems.SILICON_SHEARS.get())
-                .unlockedBy("has_leather", has(Items.LEATHER))
-                .save(pRecipeOutput, "rope_from_leather");
-
         // Rope from tanned leather + shears
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROPE.get(), 2)
                 .requires(ModItems.TANNED_LEATHER.get())

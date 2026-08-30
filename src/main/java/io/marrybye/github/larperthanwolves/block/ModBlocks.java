@@ -97,6 +97,27 @@ public class ModBlocks {
                     .strength(5.0F, 6.0F)
                     .sound(SoundType.METAL)));
 
+    // --- Rich Soils (Hardness 1.0f: 2x slower break than regular, mined with copper+ shovel) ---
+    public static final DeferredBlock<Block> RICH_DIRT = BLOCKS.register("rich_dirt",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
+                    .strength(1.0F, 1.0F)
+                    .sound(SoundType.GRAVEL)));
+
+    public static final DeferredBlock<Block> RICH_GRAVEL = BLOCKS.register("rich_gravel",
+            () -> new RichFallingBlock(-8356741, BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL)
+                    .strength(1.0F, 1.0F)
+                    .sound(SoundType.GRAVEL)));
+
+    public static final DeferredBlock<Block> RICH_SAND = BLOCKS.register("rich_sand",
+            () -> new RichFallingBlock(14406560, BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)
+                    .strength(1.0F, 1.0F)
+                    .sound(SoundType.SAND)));
+
+    public static final DeferredBlock<Block> RICH_RED_SAND = BLOCKS.register("rich_red_sand",
+            () -> new RichFallingBlock(11098145, BlockBehaviour.Properties.ofFullCopy(Blocks.RED_SAND)
+                    .strength(1.0F, 1.0F)
+                    .sound(SoundType.SAND)));
+
     // --- Tree Stumps (Hardness 25.0f: Ultra slow break, requires axe) ---
     private static BlockBehaviour.Properties stumpProps() {
         return BlockBehaviour.Properties.of()

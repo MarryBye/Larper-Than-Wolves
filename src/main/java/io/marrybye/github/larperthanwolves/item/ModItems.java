@@ -302,6 +302,18 @@ public class ModItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRONZE_BLOCK = ITEMS.register("bronze_block",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRONZE_BLOCK.get(), new Item.Properties()));
 
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> RICH_DIRT = ITEMS.register("rich_dirt",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_DIRT.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> RICH_GRAVEL = ITEMS.register("rich_gravel",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRAVEL.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> RICH_SAND = ITEMS.register("rich_sand",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_SAND.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> RICH_RED_SAND = ITEMS.register("rich_red_sand",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_RED_SAND.get(), new Item.Properties()));
+
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OAK_STUMP = ITEMS.register("oak_stump",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.OAK_STUMP.get(), new Item.Properties()));
 

@@ -82,6 +82,10 @@ public class ModCreativeTabs {
                         output.accept(ModItems.RAW_TIN_BLOCK.get());
                         output.accept(ModItems.TIN_BLOCK.get());
                         output.accept(ModItems.BRONZE_BLOCK.get());
+                        output.accept(ModItems.RICH_DIRT.get());
+                        output.accept(ModItems.RICH_GRAVEL.get());
+                        output.accept(ModItems.RICH_SAND.get());
+                        output.accept(ModItems.RICH_RED_SAND.get());
 
                         output.accept(ModItems.BRICK_FURNACE.get());
                         output.accept(ModItems.OVEN.get());

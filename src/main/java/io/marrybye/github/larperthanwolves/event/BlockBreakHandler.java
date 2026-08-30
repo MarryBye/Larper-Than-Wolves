@@ -124,6 +124,35 @@ public class BlockBreakHandler {
         return stack.is(Items.NETHERITE_PICKAXE);
     }
 
+    public static boolean isSiliconShovel(ItemStack stack) {
+        return stack.is(ModItems.SILICON_SHOVEL.get());
+    }
+
+    public static boolean isCopperShovel(ItemStack stack) {
+        return stack.is(ModItems.COPPER_SHOVEL.get());
+    }
+
+    public static boolean isBronzeShovel(ItemStack stack) {
+        return stack.is(ModItems.BRONZE_SHOVEL.get());
+    }
+
+    public static boolean isIronShovel(ItemStack stack) {
+        return stack.is(Items.IRON_SHOVEL);
+    }
+
+    public static boolean isReinforcedIronShovel(ItemStack stack) {
+        return stack.is(ModItems.REINFORCED_IRON_SHOVEL.get());
+    }
+
+    public static boolean isNetheriteShovel(ItemStack stack) {
+        return stack.is(Items.NETHERITE_SHOVEL);
+    }
+
+    public static boolean isCopperPlusShovel(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return false;
+        return isCopperShovel(stack) || isBronzeShovel(stack) || isIronShovel(stack) || isReinforcedIronShovel(stack) || isNetheriteShovel(stack);
+    }
+
     public static boolean isDeepslateLayerOrBlock(Level level, BlockPos pos, Block block) {
         if (block == Blocks.DEEPSLATE ||
                 block == Blocks.COBBLED_DEEPSLATE ||
@@ -530,26 +559,55 @@ public class BlockBreakHandler {
             }
         }
 
-        // --- Gravel drops ---
-        if (block == Blocks.GRAVEL || block == Blocks.SUSPICIOUS_GRAVEL) {
+        // --- Rich Soils Drops (Only drops rich block if mined with copper+ shovel, otherwise regular soil) ---
+        if (block == ModBlocks.RICH_DIRT.get() || block == ModBlocks.RICH_GRAVEL.get() ||
+                block == ModBlocks.RICH_SAND.get() || block == ModBlocks.RICH_RED_SAND.get()) {
+            drops.clear();
+            if (isCopperPlusShovel(tool)) {
+                ItemEntity richDrop = new ItemEntity(level, x, y, z, new ItemStack(block.asItem(), 1));
+                richDrop.setDefaultPickUpDelay();
+                drops.add(richDrop);
+            } else {
+                Block regularCounterpart = Blocks.DIRT;
+                if (block == ModBlocks.RICH_GRAVEL.get()) regularCounterpart = Blocks.GRAVEL;
+                else if (block == ModBlocks.RICH_SAND.get()) regularCounterpart = Blocks.SAND;
+                else if (block == ModBlocks.RICH_RED_SAND.get()) regularCounterpart = Blocks.RED_SAND;
+
+                ItemEntity regDrop = new ItemEntity(level, x, y, z, new ItemStack(regularCounterpart.asItem(), 1));
+                regDrop.setDefaultPickUpDelay();
+                drops.add(regDrop);
+            }
+            return;
+        }
+
+        // --- Regular Soils Drops (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel, Suspicious Sand) ---
+        if (block == Blocks.GRAVEL || block == Blocks.SUSPICIOUS_GRAVEL ||
+                block == Blocks.SAND || block == Blocks.RED_SAND ||
+                block == Blocks.SUSPICIOUS_SAND || block == Blocks.DIRT) {
             drops.clear();
 
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.copperDustGravelDropChance.get() : 0.05;
-            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.siliconShardGravelDropChance.get() : 0.08;
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.copperDustGravelDropChance.get() : 0.02;
+            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.flintGravelDropChance.get() : 0.08;
+            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.siliconShardGravelDropChance.get() : 0.20;
 
-            float roll = java.util.concurrent.ThreadLocalRandom.current().nextFloat();
+            float roll = ThreadLocalRandom.current().nextFloat();
             if (roll < copperChance) {
                 ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.COPPER_DUST.get(), 1));
                 dust.setDefaultPickUpDelay();
                 drops.add(dust);
-            } else if (roll < copperChance + siliconChance) {
+            } else if (roll < copperChance + flintChance) {
+                ItemEntity flint = new ItemEntity(level, x, y, z, new ItemStack(Items.FLINT, 1));
+                flint.setDefaultPickUpDelay();
+                drops.add(flint);
+            } else if (roll < copperChance + flintChance + siliconChance) {
                 ItemEntity shard = new ItemEntity(level, x, y, z, new ItemStack(ModItems.SILICON_SHARD.get(), 1));
                 shard.setDefaultPickUpDelay();
                 drops.add(shard);
             } else {
-                ItemEntity gravel = new ItemEntity(level, x, y, z, new ItemStack(Blocks.GRAVEL.asItem(), 1));
-                gravel.setDefaultPickUpDelay();
-                drops.add(gravel);
+                Block itemBlock = (block == Blocks.SUSPICIOUS_GRAVEL) ? Blocks.GRAVEL : (block == Blocks.SUSPICIOUS_SAND ? Blocks.SAND : block);
+                ItemEntity regular = new ItemEntity(level, x, y, z, new ItemStack(itemBlock.asItem(), 1));
+                regular.setDefaultPickUpDelay();
+                drops.add(regular);
             }
             return;
         }

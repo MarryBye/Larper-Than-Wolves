@@ -1,0 +1,11 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "larperthanwolves:rich_dirt",
+    "larperthanwolves:rich_gravel",
+    "larperthanwolves:rich_sand",
+    "larperthanwolves:rich_red_sand"
+  ],
+  "step": "underground_ores"
+}

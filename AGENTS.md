@@ -9,7 +9,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.16.0
+- **Current Version**: 1.17.0
 
 ## Project Architecture & Progression
 
@@ -17,10 +17,31 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 
 ### ⛏️ Tool Tiers & Dig Tier Matrix
 - **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Cannot mine deepslate, zinc, or any other ores.
-- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Cannot mine deepslate, zinc, or iron+.
-- **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Cannot mine zinc ore or high-tier ores.
-- **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`). Cannot mine Ancient Debris or Obsidian.
+- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`). Cannot mine deepslate, zinc, or iron+.
+- **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils. Cannot mine zinc ore or high-tier ores.
+- **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`). Shovel mines Rich Soils. Cannot mine Ancient Debris or Obsidian.
 - **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
+
+### 🌍 Soils, Digging & Sieve Processing
+- **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel/Sand)**:
+  - Digging & Sifting drops maximum: **Silicon Shards** (most common, 20-30%), **Flint** (rarer, 8-15%), **Copper Dust** (rarest, 2-5%).
+  - Suspicious gravel and sand additionally yield their built-in archaeology loot tables.
+  - Plain Dirt can now be sifted in the Sieve just like gravel and sand.
+- **Rich Soils (Богатая почва)**:
+  - 4 variants: **Rich Dirt** (`rich_dirt`), **Rich Gravel** (`rich_gravel`), **Rich Sand** (`rich_sand`), **Rich Red Sand** (`rich_red_sand`).
+  - Textures: Counterpart vanilla textures with distinct white/silver mineral flecks and top-left lighting.
+  - Digging Hardness: 2x slower (`destroyTime: 1.0f`).
+  - Mining Requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich block item. Breaking with hands or other tools drops standard soil (Dirt/Gravel/Sand/Red Sand).
+  - Sifting in Sieve: Yields metal dusts and materials in order of rarity:
+    1. Silicon Shards (`silicon_shard`)
+    2. Flint / Silicon (`flint`)
+    3. Copper Dust (`copper_dust`)
+    4. Tin Dust (`tin_dust`)
+    5. Bronze Dust (`bronze_dust`)
+    6. Iron Dust (`iron_dust`)
+    7. Gold Dust (`gold_dust`)
+    8. Diamond Dust (`diamond_dust`)
+  - World Generation: Spawns in small veins (size 14) embedded naturally inside their ordinary soil counterparts in overworld biomes.
 
 ### 🌾 Farming & 2-Stage Hoe Tilling
 - **2-Stage Tilling**:
@@ -48,7 +69,8 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 ### ☀️ Drying Rack & Material Processing
 - **Drying Rack (Сушилка)**: Crafted in 2x2 grid from 4 sticks (`drying_rack`). Operates passively when placed outdoors under open sky during daytime (`isDay() && canSeeSky() && !isRaining()`).
   - **Grass** (Short Grass, Tall Grass, Fern, Large Fern, Seagrass) $\rightarrow$ **Dry Grass** (wilted straw, used for ropes & furnace fuel). Shears are required to harvest grass.
-  - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and horse armor).
+  - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and ropes).
+  - **Rope Crafting**: Ropes can only be crafted from Tanned Leather + Shears (or Dry Grass / vines). Standard leather rope crafting is removed.
 
 ### 🍞 Oven (Духовка) & Brick Furnace Specialization
 - **Oven (Духовка)**: Crafted from 1 Brick Furnace + 1 Iron Nugget or 2 Brick Slabs + 2 Bricks (`oven`).
@@ -87,6 +109,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 ├── LarperThanWolves.java          — Main mod entry point, registers all systems
 ├── block/
 │   ├── ModBlocks.java             — Block registration (DeferredRegister)
+│   ├── RichFallingBlock.java      — Falling block with custom dust particle color for rich gravel & sand
 │   ├── BrickFurnaceBlock.java     — Brick furnace block (facing, 4 stages)
 │   ├── OvenBlock.java             — Food oven block (facing, 4 stages)
 │   ├── AlloyMixerBlock.java       — Alloy mixer block (facing, 4 stages)

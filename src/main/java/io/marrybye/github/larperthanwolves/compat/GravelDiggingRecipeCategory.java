@@ -24,7 +24,7 @@ public class GravelDiggingRecipeCategory implements IRecipeCategory<GravelDiggin
     private final IDrawable slotBackground;
 
     public GravelDiggingRecipeCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createBlankDrawable(140, 52);
+        this.background = guiHelper.createBlankDrawable(160, 52);
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(ModItems.SILICON_SHARD.get()));
         this.slotBackground = guiHelper.getSlotDrawable();
     }
@@ -41,7 +41,7 @@ public class GravelDiggingRecipeCategory implements IRecipeCategory<GravelDiggin
 
     @Override
     public int getWidth() {
-        return 140;
+        return 160;
     }
 
     @Override
@@ -61,12 +61,12 @@ public class GravelDiggingRecipeCategory implements IRecipeCategory<GravelDiggin
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, GravelDiggingRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 8, 16)
+        builder.addSlot(RecipeIngredientRole.INPUT, 6, 16)
                 .addItemStack(recipe.getBlock())
                 .setBackground(this.slotBackground, -1, -1);
 
-        int[] xPositions = new int[]{56, 84, 112};
-        for (int i = 0; i < recipe.getDrops().size() && i < 3; i++) {
+        int[] xPositions = new int[]{50, 76, 102, 128};
+        for (int i = 0; i < recipe.getDrops().size() && i < 4; i++) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, xPositions[i], 16)
                     .addItemStack(recipe.getDrops().get(i).stack())
                     .setBackground(this.slotBackground, -1, -1);
@@ -77,11 +77,11 @@ public class GravelDiggingRecipeCategory implements IRecipeCategory<GravelDiggin
     public void draw(GravelDiggingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         Font font = Minecraft.getInstance().font;
         Component title = Component.translatable("jei.larperthanwolves.gravel_digging.title");
-        guiGraphics.drawString(font, title, 8, 2, 0x404040, false);
-        guiGraphics.drawString(font, "->", 36, 20, 0x808080, false);
+        guiGraphics.drawString(font, title, 6, 2, 0x404040, false);
+        guiGraphics.drawString(font, "->", 32, 20, 0x808080, false);
 
-        int[] xPositions = new int[]{56, 84, 112};
-        for (int i = 0; i < recipe.getDrops().size() && i < 3; i++) {
+        int[] xPositions = new int[]{50, 76, 102, 128};
+        for (int i = 0; i < recipe.getDrops().size() && i < 4; i++) {
             String chance = recipe.getDrops().get(i).chanceText();
             guiGraphics.drawString(font, chance, xPositions[i] + 1, 36, 0x808080, false);
         }
