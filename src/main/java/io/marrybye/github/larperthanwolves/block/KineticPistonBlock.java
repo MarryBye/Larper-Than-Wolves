@@ -73,9 +73,28 @@ public class KineticPistonBlock extends DirectionalBlock {
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(EXTENDED)) {
-            // Retract the piston head
+            // Retract the piston base and remove extended head
+            Direction facing = state.getValue(FACING);
+            BlockPos targetPos = pos.relative(facing);
+
             level.setBlock(pos, state.setValue(EXTENDED, false), 3);
+            if (level.getBlockState(targetPos).is(ModBlocks.KINETIC_PISTON_HEAD.get())) {
+                level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
+            }
             level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.8F, 1.1F);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            super.onRemove(state, level, pos, newState, isMoving);
+            if (state.getValue(EXTENDED)) {
+                BlockPos targetPos = pos.relative(state.getValue(FACING));
+                if (level.getBlockState(targetPos).is(ModBlocks.KINETIC_PISTON_HEAD.get())) {
+                    level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
         }
     }
 
@@ -84,9 +103,37 @@ public class KineticPistonBlock extends DirectionalBlock {
         BlockPos targetPos = pos.relative(facing);
         BlockState targetState = level.getBlockState(targetPos);
 
-        // 1. Physically extend the piston mechanism
-        level.setBlock(pos, state.setValue(EXTENDED, true), 3);
-        level.scheduleTick(pos, this, 4); // Retract after 4 ticks (0.2s)
+        // 1. Launch single block as physical falling block projectile
+        if (!targetState.isAir() && targetState.getDestroySpeed(level, targetPos) >= 0
+                && targetState.getPistonPushReaction() != PushReaction.BLOCK
+                && targetState.getPistonPushReaction() != PushReaction.DESTROY
+                && level.getBlockEntity(targetPos) == null) {
+
+            // Rule: If there is MORE than 1 block in front, it does NOT trigger
+            BlockPos beyondPos = targetPos.relative(facing);
+            BlockState beyondState = level.getBlockState(beyondPos);
+
+            if (beyondState.isAir() || beyondState.canBeReplaced()) {
+                level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
+
+                FallingBlockEntity falling = FallingBlockEntity.fall(level, targetPos, targetState);
+                falling.dropItem = true;
+
+                Vec3 blockVel;
+                if (facing == Direction.UP) {
+                    blockVel = new Vec3(0, 1.35D, 0);
+                } else if (facing == Direction.DOWN) {
+                    blockVel = new Vec3(0, -1.2D, 0);
+                } else {
+                    blockVel = new Vec3(facing.getStepX() * 1.55D, 0.28D, facing.getStepZ() * 1.55D);
+                }
+                falling.setDeltaMovement(blockVel);
+                falling.hurtMarked = true;
+            } else {
+                // Obstructed by 2+ blocks: do not trigger
+                return;
+            }
+        }
 
         // 2. Launch entities in front (~10 blocks velocity)
         AABB entityBox = new AABB(targetPos).inflate(0.3D);
@@ -107,35 +154,13 @@ public class KineticPistonBlock extends DirectionalBlock {
             }
         }
 
-        // 3. Launch single block as physical falling block projectile
-        if (!targetState.isAir() && targetState.getDestroySpeed(level, targetPos) >= 0
-                && targetState.getPistonPushReaction() != PushReaction.BLOCK
-                && targetState.getPistonPushReaction() != PushReaction.DESTROY
-                && level.getBlockEntity(targetPos) == null) {
-
-            // Rule: If there is MORE than 1 block in front, it does NOT trigger ("Если перед ним больше 1 блока - он не сработает")
-            BlockPos beyondPos = targetPos.relative(facing);
-            BlockState beyondState = level.getBlockState(beyondPos);
-
-            if (beyondState.isAir() || beyondState.canBeReplaced()) {
-                // Exactly 1 block in front! Launch it as physical FallingBlock projectile
-                level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
-
-                FallingBlockEntity falling = FallingBlockEntity.fall(level, targetPos, targetState);
-                falling.dropItem = true;
-
-                Vec3 blockVel;
-                if (facing == Direction.UP) {
-                    blockVel = new Vec3(0, 1.35D, 0);
-                } else if (facing == Direction.DOWN) {
-                    blockVel = new Vec3(0, -1.2D, 0);
-                } else {
-                    blockVel = new Vec3(facing.getStepX() * 1.55D, 0.28D, facing.getStepZ() * 1.55D);
-                }
-                falling.setDeltaMovement(blockVel);
-                falling.hurtMarked = true;
-            }
+        // 3. Physically extend the piston mechanism & spawn piston head block in front
+        level.setBlock(pos, state.setValue(EXTENDED, true), 3);
+        if (level.getBlockState(targetPos).isAir() || level.getBlockState(targetPos).canBeReplaced()) {
+            level.setBlock(targetPos, ModBlocks.KINETIC_PISTON_HEAD.get().defaultBlockState()
+                    .setValue(KineticPistonHeadBlock.FACING, facing), 3);
         }
+        level.scheduleTick(pos, this, 4); // Retract after 4 ticks (0.2s)
 
         // Extension sounds & air burst effects
         level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 1.0F, 1.2F);

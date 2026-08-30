@@ -56,11 +56,11 @@
     },
     {
       "name": "top_mesh",
-      "from": [0, 15.9, 0],
-      "to": [16, 16, 16],
+      "from": [2, 15.9, 2],
+      "to": [14, 15.9, 14],
       "faces": {
-        "up": { "uv": [0, 0, 16, 16], "texture": "#mesh", "cullface": "up" },
-        "down": { "uv": [0, 0, 16, 16], "texture": "#mesh" }
+        "up": { "uv": [2, 2, 14, 14], "texture": "#mesh" },
+        "down": { "uv": [2, 2, 14, 14], "texture": "#mesh" }
       }
     }
   ]

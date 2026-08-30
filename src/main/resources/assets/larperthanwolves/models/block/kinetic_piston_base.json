@@ -1,8 +1,8 @@
 {
-  "parent": "minecraft:block/template_piston",
+  "parent": "minecraft:block/template_piston_base",
   "textures": {
     "bottom": "larperthanwolves:block/kinetic_piston_bottom",
-    "platform": "larperthanwolves:block/kinetic_piston_top",
+    "inside": "larperthanwolves:block/kinetic_piston_inner",
     "side": "larperthanwolves:block/kinetic_piston_side"
   }
 }

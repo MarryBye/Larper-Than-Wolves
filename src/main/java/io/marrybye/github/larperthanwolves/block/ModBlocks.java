@@ -96,6 +96,13 @@ public class ModBlocks {
                     .strength(3.5F, 12.0F)
                     .sound(SoundType.STONE)));
 
+    public static final DeferredBlock<KineticPistonHeadBlock> KINETIC_PISTON_HEAD = BLOCKS.register("kinetic_piston_head",
+            () -> new KineticPistonHeadBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5F, 12.0F)
+                    .sound(SoundType.STONE)
+                    .noOcclusion()
+                    .noLootTable()));
+
     public static final DeferredBlock<FilterGrateBlock> FILTER_GRATE = BLOCKS.register("filter_grate",
             () -> new FilterGrateBlock(BlockBehaviour.Properties.of()
                     .strength(2.0F, 3.0F)

@@ -2,55 +2,49 @@
   "variants": {
     "extended=false,facing=down": {
       "model": "larperthanwolves:block/kinetic_piston",
-      "x": 180
-    },
-    "extended=false,facing=up": {
-      "model": "larperthanwolves:block/kinetic_piston"
-    },
-    "extended=false,facing=north": {
-      "model": "larperthanwolves:block/kinetic_piston",
       "x": 90
-    },
-    "extended=false,facing=south": {
-      "model": "larperthanwolves:block/kinetic_piston",
-      "x": 90,
-      "y": 180
-    },
-    "extended=false,facing=west": {
-      "model": "larperthanwolves:block/kinetic_piston",
-      "x": 90,
-      "y": 270
     },
     "extended=false,facing=east": {
       "model": "larperthanwolves:block/kinetic_piston",
-      "x": 90,
       "y": 90
     },
-    "extended=true,facing=down": {
-      "model": "larperthanwolves:block/kinetic_piston_extended",
-      "x": 180
+    "extended=false,facing=north": {
+      "model": "larperthanwolves:block/kinetic_piston"
     },
-    "extended=true,facing=up": {
-      "model": "larperthanwolves:block/kinetic_piston_extended"
-    },
-    "extended=true,facing=north": {
-      "model": "larperthanwolves:block/kinetic_piston_extended",
-      "x": 90
-    },
-    "extended=true,facing=south": {
-      "model": "larperthanwolves:block/kinetic_piston_extended",
-      "x": 90,
+    "extended=false,facing=south": {
+      "model": "larperthanwolves:block/kinetic_piston",
       "y": 180
     },
-    "extended=true,facing=west": {
-      "model": "larperthanwolves:block/kinetic_piston_extended",
-      "x": 90,
+    "extended=false,facing=up": {
+      "model": "larperthanwolves:block/kinetic_piston",
+      "x": 270
+    },
+    "extended=false,facing=west": {
+      "model": "larperthanwolves:block/kinetic_piston",
       "y": 270
     },
+    "extended=true,facing=down": {
+      "model": "larperthanwolves:block/kinetic_piston_base",
+      "x": 90
+    },
     "extended=true,facing=east": {
-      "model": "larperthanwolves:block/kinetic_piston_extended",
-      "x": 90,
+      "model": "larperthanwolves:block/kinetic_piston_base",
       "y": 90
+    },
+    "extended=true,facing=north": {
+      "model": "larperthanwolves:block/kinetic_piston_base"
+    },
+    "extended=true,facing=south": {
+      "model": "larperthanwolves:block/kinetic_piston_base",
+      "y": 180
+    },
+    "extended=true,facing=up": {
+      "model": "larperthanwolves:block/kinetic_piston_base",
+      "x": 270
+    },
+    "extended=true,facing=west": {
+      "model": "larperthanwolves:block/kinetic_piston_base",
+      "y": 270
     }
   }
 }

@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "larperthanwolves:block/kinetic_piston_head",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "larperthanwolves:block/kinetic_piston_head",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "larperthanwolves:block/kinetic_piston_head"
+    },
+    "facing=south": {
+      "model": "larperthanwolves:block/kinetic_piston_head",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "larperthanwolves:block/kinetic_piston_head",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "larperthanwolves:block/kinetic_piston_head",
+      "y": 270
+    }
+  }
+}
