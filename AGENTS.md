@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.25.0
+- **Current Version**: 1.26.0
 
 ## Project Architecture & Progression
 
@@ -104,6 +104,10 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Animal Digestion & Dung Production (`dung` / `AnimalDungHandler`)**:
   - Animals (Cows, Sheep, Pigs, Horses, Goats, Camels, Sniffers, Wolves, etc.) produce Dung **3 minutes (3600 ticks)** after eating.
   - Triggered by player feeding, sheep grazing on grass, and wild wolves hunting and killing prey.
+- **Wildlife & Animal Behavior Overhaul (`AnimalBehaviorHandler`)**:
+  - **Wild Wolf Predation**: Wild, untamed wolves hunt **ALL peaceful animals** (cows, pigs, sheep, chickens, rabbits, horses, llamas, goats, etc.), creating active ecosystem danger.
+  - **Enhanced Animal Fleeing**: When damaged, all peaceful animals gain a high panic sprint speed boost (**Speed II**) and actively calculate navigation trajectories away from their attacker.
+  - **Cow Defensive Kick**: If an attacker strikes a cow in close melee range ($\le 3.0$ blocks), the cow immediately delivers a powerful rear hoof kick (deals 5.0 damage / 2.5 hearts, applies heavy backwards knockback, plays impact sound and crit particles) before sprinting away with **Speed III**.
 - **2-Stage Tilling**:
   - **Stage 1 (Grass/Podzol/Mycelium/Rich Grass $\rightarrow$ Dirt/Rich Dirt)**: Right-click grassy ground with any hoe to till away the grass layer into plain dirt (or rich dirt) with a **35% chance** to harvest wild seeds (`Wheat Seeds` 50%, `Carrot` 15%, `Potato` 15%, `Beetroot Seeds` 10%, `Pumpkin Seeds` 5%, `Melon Seeds` 5%).
   - **Stage 2 (Dirt/Rich Dirt $\rightarrow$ Farmland)**: Right-click plain dirt or rich dirt with any hoe to prepare farmland for crop planting.
@@ -237,6 +241,7 @@ src/main/java/io/marrybye/github/larperthanwolves/
 ├── event/
 │   ├── BlockBreakHandler.java     — Mining tier enforcement (Zinc iron-only), axe wood breaking, shears drops, 2-stage hoe tilling, bone meal & dung fertilization
 │   ├── AnimalDungHandler.java     — Animal feeding, grazing & hunting 3-min digestion timer to drop Dung
+│   ├── AnimalBehaviorHandler.java — Wild wolf predation on all animals, animal panic speed boost, and cow defensive kick
 │   ├── DisabledItemsHandler.java  — Vanilla item removal (Blast furnace/smoker/furnace/chainmail/diamond gear, chunk replacement, mob drops: realistic bones from animals & zombies)
 │   └── VillagerTradeHandler.java  — Balanced villager professions (up to Bronze) and wandering trader trades
 ├── config/
