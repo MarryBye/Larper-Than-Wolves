@@ -53,21 +53,9 @@ public class UnboundMeshItem extends Item {
         int totalTicks = (MAX_PROGRESS_SECONDS - initialProgress) * 20;
         int ticksUsed = totalTicks - count;
 
-        if (ticksUsed > 0) {
-            // Play scratching sound frequently (every 4 ticks) so it sounds constant
-            if (ticksUsed % 4 == 0) {
-                level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
-                        SoundEvents.BRUSH_GENERIC, SoundSource.PLAYERS, 0.7F, 0.85F + level.random.nextFloat() * 0.3F);
-            }
-
-            // Update progress and durability bar every second (20 ticks)
-            if (ticksUsed % 20 == 0) {
-                int secondsElapsed = ticksUsed / 20;
-                int newProgress = Math.min(MAX_PROGRESS_SECONDS, initialProgress + secondsElapsed);
-                if (newProgress != stack.getDamageValue()) {
-                    stack.setDamageValue(newProgress);
-                }
-            }
+        if (ticksUsed > 0 && ticksUsed % 4 == 0) {
+            level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
+                    SoundEvents.BRUSH_GENERIC, SoundSource.PLAYERS, 0.7F, 0.85F + level.random.nextFloat() * 0.3F);
         }
     }
 
@@ -123,13 +111,17 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        int progress = Math.min(MAX_PROGRESS_SECONDS, stack.getDamageValue());
+        int progress = net.neoforged.fml.loading.FMLEnvironment.dist.isClient()
+                ? io.marrybye.github.larperthanwolves.client.ClientProgressHelper.getClientVisualProgress(stack)
+                : stack.getDamageValue();
         return Math.round(13.0F * progress / (float) MAX_PROGRESS_SECONDS);
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        int progress = Math.min(MAX_PROGRESS_SECONDS, stack.getDamageValue());
+        int progress = net.neoforged.fml.loading.FMLEnvironment.dist.isClient()
+                ? io.marrybye.github.larperthanwolves.client.ClientProgressHelper.getClientVisualProgress(stack)
+                : stack.getDamageValue();
         float fraction = (float) progress / (float) MAX_PROGRESS_SECONDS;
         return Mth.hsvToRgb(fraction / 3.0F, 1.0F, 1.0F);
     }
