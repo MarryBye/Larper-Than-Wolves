@@ -1,10 +1,25 @@
 <div align="center">
 
-# 🐺 Larper Than Wolves (v1.24.0)
+# 🐺 Larper Than Wolves
 
-<img src="logo.png" alt="Larper Than Wolves Logo" width="300"/>
+<p align="center">
+  <img src="logo.png" alt="Larper Than Wolves Logo" width="380" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);"/>
+</p>
 
-**Хардкорная модификация для Minecraft 1.21.1 (NeoForge), вдохновлённая Better Than Wolves**
+### *Хардкорное выживание для Minecraft 1.21.1 (NeoForge), вдохновлённое Better Than Wolves*
+
+[![CurseForge](https://img.shields.io/badge/CurseForge-Download-f16436?style=for-the-badge&logo=curseforge&logoColor=white)](https://www.curseforge.com/minecraft/mc-mods/larper-than-wolves)
+[![Modrinth](https://img.shields.io/badge/Modrinth-Download-00AF5C?style=for-the-badge&logo=modrinth&logoColor=white)](https://modrinth.com/mod/larper-than-wolves)
+[![GitHub Release](https://img.shields.io/github/v/release/MarryBye/Larper-Than-Wolves?style=for-the-badge&logo=github&logoColor=white&color=181717)](https://github.com/MarryBye/Larper-Than-Wolves/releases)
+
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-2C5E1A?style=flat-square&logo=minecraft&logoColor=white)](https://minecraft.net)
+[![NeoForge](https://img.shields.io/badge/NeoForge-21.1.248-e8661b?style=flat-square&logo=neoforge&logoColor=white)](https://neoforged.net)
+[![Java](https://img.shields.io/badge/Java-21-5382a1?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
+
+<br/>
+
+**Larper Than Wolves** (`larperthanwolves`) полностью переосмысливает раннюю и среднюю игру Minecraft: инструменты из кремния, меди и бронзы, древесные пни и ручная обтёска верстака, обязательное удобрение грядок костной мукой и навозом, ручная молотилка с рукоятью, плетение корзинок и сеток, сушилка и дублёная кожа, строгая специализация печей и хардкорная прогрессия без ванильных скипов.
 
 </div>
 
