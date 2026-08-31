@@ -208,6 +208,13 @@ public class ModItems {
     public static final DeferredItem<Item> MESH = ITEMS.register("mesh",
             () -> new Item(new Item.Properties()));
 
+    // Knitting Needles (Спицы)
+    public static final DeferredItem<KnittingNeedlesItem> BRONZE_KNITTING_NEEDLES = ITEMS.register("bronze_knitting_needles",
+            () -> new KnittingNeedlesItem(new Item.Properties().durability(64).stacksTo(1)));
+
+    public static final DeferredItem<KnittingNeedlesItem> IRON_KNITTING_NEEDLES = ITEMS.register("iron_knitting_needles",
+            () -> new KnittingNeedlesItem(new Item.Properties().durability(256).stacksTo(1)));
+
     // Tin Items
     public static final DeferredItem<Item> RAW_TIN = ITEMS.register("raw_tin",
             () -> new Item(new Item.Properties()));

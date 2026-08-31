@@ -106,6 +106,8 @@ public class ModCreativeTabs {
 
                         output.accept(ModItems.UNBOUND_MESH.get());
                         output.accept(ModItems.MESH.get());
+                        output.accept(ModItems.BRONZE_KNITTING_NEEDLES.get());
+                        output.accept(ModItems.IRON_KNITTING_NEEDLES.get());
                         output.accept(ModItems.CHISEL.get());
                         output.accept(ModItems.DIAMOND_INGOT.get());
 

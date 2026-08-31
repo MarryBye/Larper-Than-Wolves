@@ -43,6 +43,14 @@ public class ChestLootModifier extends LootModifier {
             return generatedLoot;
         }
 
+        // All chests across the world (villages, dungeons, temples, ancient cities, mineshafts, ruined portals, etc.)
+        // produce ZERO loot, EXCEPT Bastion Remnant chests (where netherite upgrade templates generate)
+        if (path.startsWith("chests/")) {
+            if (!path.contains("bastion")) {
+                return new ObjectArrayList<>();
+            }
+        }
+
         ObjectArrayList<ItemStack> modifiedLoot = new ObjectArrayList<>();
 
         for (ItemStack stack : generatedLoot) {

@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.28.0
+- **Current Version**: 1.29.0
 
 ## Project Architecture & Progression
 
@@ -70,11 +70,13 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Hand / Tool Penalty**: Breaking clay blocks by hand or using any tool other than a shovel will destroy the block completely with **0 drops**.
   - **Drop Yield**: Digging clay with a shovel drops **1 Clay Ball** (`minecraft:clay_ball`) per block (reduced from vanilla's 4).
   - **Mining Speed**: Clay block digging speed is adjusted to take slightly longer to dig (~1.5x - 1.8x longer).
-- **Hand-Woven Mesh (`unbound_mesh` $\rightarrow$ `mesh`)**:
+- **Hand-Woven Mesh & Knitting Needles (`unbound_mesh` $\rightarrow$ `mesh` / `knitting_needles`)**:
   - Crafting: 2 Sticks + 2 Ropes in crafting grid $\rightarrow$ **Unbound Mesh** (`unbound_mesh`).
-  - Hand Weaving: Hold Right-Click with Unbound Mesh in hand for **15 seconds** (eating animation + continuous scratching brush sound effects).
-  - Progress Bar: Durability bar dynamically fills from 0 to 15 (1 tick of durability = 1 second of weaving). Progress is saved if interrupted.
-  - Completion: At 15 seconds, transforms into the finished **Mesh** (`mesh`).
+  - **Method 1 - Hand Weaving**: Hold Right-Click with Unbound Mesh in hand for **15 seconds** (instant center snap, eating bobbing animation, and scratching brush sounds). Durability bar fills from 0 to 300 ticks. Progress is saved if interrupted.
+  - **Method 2 - Knitting Needles (Спицы)**: Combine Unbound Mesh + Knitting Needles in any 2x2 or 3x3 crafting grid to **instantly craft a finished Mesh** (`mesh`). Needles lose 1 durability and remain in the crafting grid.
+  - **Knitting Needles (`bronze_knitting_needles` / `iron_knitting_needles`)**:
+    - **Bronze Knitting Needles**: 64 durability. Crafted from 2 Bronze Ingots.
+    - **Iron Knitting Needles**: 256 durability. Crafted from 2 Iron Ingots.
 - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel/Sand)**:
   - Digging & Sifting drops maximum: **Silicon Shards** (most common, 20-30%), **Flint** (rarer, 8-15%), **Copper Dust** (rarest, 2-5%).
   - Suspicious gravel and sand additionally yield their built-in archaeology loot tables.
@@ -117,7 +119,13 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 
 ### 🏘️ World Exploration, Villages & Trading
 - **Village Rarity & Distance**: Villages generate rarely (`spacing: 200`, `separation: 80`) and are strictly prevented from generating within **3000 blocks** of world spawn / origin (`villageMinDistanceFromSpawn: 3000.0`). Pillager Outposts are also spaced out.
-- **Workstations & POIs**: Vanilla Smoker and Blast Furnace are disabled and removed. In villages and worldgen, Blast Furnaces automatically convert to **Brick Furnaces** (Armorer POI) and Smokers convert to **Ovens** (Butcher POI).
+- **Workstations & POIs Purging & Conversion**:
+  - Vanilla Crafting Tables are purged from worldgen structures (players must carve a stump with a chisel).
+  - Vanilla Furnaces and Blast Furnaces automatically convert to **Brick Furnaces** (Armorer POI).
+  - Vanilla Smokers convert to **Ovens** (Butcher POI).
+- **World Chest Removal (Except Bastion Remnants)**:
+  - All non-bastion worldgen chests (villages, dungeons, mineshafts, temples, ancient cities, trial chambers, ruined portals, shipwrecks, buried treasure, igloos) are purged from worldgen and yield 0 loot.
+  - **Bastion Remnant chests** are preserved, allowing access to Netherite Upgrade Smithing Templates and trims.
 - **Iron Golem Balance**: Iron Golems drop **no iron ingots or nuggets** upon death (only poppies).
 - **Villager & Wandering Trader Trades**:
   - Armorer, Weaponsmith, and Toolsmith villagers sell tools, weapons, and armor up to **Bronze tier** in exchange for emeralds.

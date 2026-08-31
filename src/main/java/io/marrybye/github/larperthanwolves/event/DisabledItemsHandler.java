@@ -277,15 +277,25 @@ public class DisabledItemsHandler {
                         .setValue(io.marrybye.github.larperthanwolves.block.OvenBlock.FACING, facing), 3);
                 event.setCanceled(true);
                 return;
+            } else if (state.is(net.minecraft.world.level.block.Blocks.FURNACE)) {
+                net.minecraft.core.Direction facing = state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
+                        state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
+                level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState()
+                        .setValue(io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock.FACING, facing), 3);
+                event.setCanceled(true);
+                return;
             }
         }
     }
 
-    // Replace blast furnaces and smokers when chunks load in the world
+    // Replace blast furnaces, smokers, furnaces, and purge worldgen crafting tables & non-bastion chests
     @SubscribeEvent
     public static void onChunkLoad(net.neoforged.neoforge.event.level.ChunkEvent.Load event) {
         if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel level) {
-            for (net.minecraft.core.BlockPos pos : event.getChunk().getBlockEntitiesPos()) {
+            net.minecraft.world.level.chunk.ChunkAccess chunk = event.getChunk();
+
+            // 1. Process block entities in chunk (Furnaces, Smokers, Blast Furnaces, Non-Bastion Chests)
+            for (net.minecraft.core.BlockPos pos : chunk.getBlockEntitiesPos()) {
                 net.minecraft.world.level.block.state.BlockState state = level.getBlockState(pos);
                 if (state.is(net.minecraft.world.level.block.Blocks.BLAST_FURNACE)) {
                     net.minecraft.core.Direction facing = state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
@@ -297,6 +307,58 @@ public class DisabledItemsHandler {
                             state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
                     level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.OVEN.get().defaultBlockState()
                             .setValue(io.marrybye.github.larperthanwolves.block.OvenBlock.FACING, facing), 3);
+                } else if (state.is(net.minecraft.world.level.block.Blocks.FURNACE)) {
+                    net.minecraft.core.Direction facing = state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
+                            state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
+                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState()
+                            .setValue(io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock.FACING, facing), 3);
+                } else if (state.getBlock() instanceof net.minecraft.world.level.block.ChestBlock
+                        || state.getBlock() instanceof net.minecraft.world.level.block.TrappedChestBlock
+                        || state.getBlock() instanceof net.minecraft.world.level.block.BarrelBlock) {
+                    net.minecraft.world.level.block.entity.BlockEntity be = level.getBlockEntity(pos);
+                    if (be instanceof net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity container) {
+                        net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> lootTable = container.getLootTable();
+                        if (lootTable != null) {
+                            String path = lootTable.location().getPath();
+                            if (!path.contains("bastion")) {
+                                level.setBlock(pos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 2. Scan chunk sections to remove worldgen Crafting Tables & Furnaces
+            net.minecraft.world.level.chunk.LevelChunkSection[] sections = chunk.getSections();
+            for (int secIdx = 0; secIdx < sections.length; secIdx++) {
+                net.minecraft.world.level.chunk.LevelChunkSection section = sections[secIdx];
+                if (section == null || section.hasOnlyAir()) continue;
+
+                if (section.maybeHas(s -> s.is(net.minecraft.world.level.block.Blocks.CRAFTING_TABLE)
+                        || s.is(net.minecraft.world.level.block.Blocks.FURNACE)
+                        || s.is(net.minecraft.world.level.block.Blocks.BLAST_FURNACE)
+                        || s.is(net.minecraft.world.level.block.Blocks.SMOKER))) {
+                    int secY = chunk.getSectionYFromSectionIndex(secIdx) << 4;
+                    int startX = chunk.getPos().getMinBlockX();
+                    int startZ = chunk.getPos().getMinBlockZ();
+
+                    for (int x = 0; x < 16; x++) {
+                        for (int y = 0; y < 16; y++) {
+                            for (int z = 0; z < 16; z++) {
+                                net.minecraft.core.BlockPos pos = new net.minecraft.core.BlockPos(startX + x, secY + y, startZ + z);
+                                net.minecraft.world.level.block.state.BlockState bs = level.getBlockState(pos);
+                                if (bs.is(net.minecraft.world.level.block.Blocks.CRAFTING_TABLE)) {
+                                    level.setBlock(pos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                                } else if (bs.is(net.minecraft.world.level.block.Blocks.BLAST_FURNACE)) {
+                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState(), 3);
+                                } else if (bs.is(net.minecraft.world.level.block.Blocks.SMOKER)) {
+                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.OVEN.get().defaultBlockState(), 3);
+                                } else if (bs.is(net.minecraft.world.level.block.Blocks.FURNACE)) {
+                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState(), 3);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

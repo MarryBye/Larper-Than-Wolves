@@ -15,4 +15,7 @@ public class ModRecipeSerializers {
 
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<WorkbenchPlankRecipe>> WORKBENCH_PLANKS =
             RECIPE_SERIALIZERS.register("workbench_planks", () -> new SimpleCraftingRecipeSerializer<>(WorkbenchPlankRecipe::new));
+
+    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<KnittingMeshRecipe>> KNITTING_MESH =
+            RECIPE_SERIALIZERS.register("knitting_mesh", () -> new SimpleCraftingRecipeSerializer<>(KnittingMeshRecipe::new));
 }
