@@ -24,9 +24,9 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - **Sifting Drops (Pure Natural Metal Dusts ONLY)**:
     - Artificial alloys (Bronze Dust), Silicon Shards, and Flint are **strictly excluded** from rich soils.
     - Uses independent rolls so rich soils provide multiple valuable native metal drops:
-      1. **Copper Dust** (`copper_dust`) — **85%** (Very common)
-      2. **Tin Dust** (`tin_dust`) — **55%** (Common)
-      3. **Iron Dust** (`iron_dust`) — **25%** (Rare)
+      1. **Copper Dust** (`copper_dust`) — **40%** (Common)
+      2. **Tin Dust** (`tin_dust`) — **40%** (Common on par with copper)
+      3. **Iron Dust** (`iron_dust`) — **20%** (Rare)
       4. **Gold Dust** (`gold_dust`) — **8%** (Very rare)
       5. **Diamond Dust** (`diamond_dust`) — **3%** (Super rare)
   - Worldgen: Generates in large veins (size 20, 10–12 attempts/chunk) inside soil biomes.
@@ -52,9 +52,9 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
       - Copper Dust: **8%** (Very rare)
     - **Rich Soils (Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand)**:
       - Independent roll per mineral, strictly metal dusts only (no flint/silicon):
-      - 1. **Copper Dust**: **85%** (Very common)
-      - 2. **Tin Dust**: **55%** (Common)
-      - 3. **Iron Dust**: **25%** (Rare)
+      - 1. **Copper Dust**: **40%** (Common)
+      - 2. **Tin Dust**: **40%** (Common on par with copper)
+      - 3. **Iron Dust**: **20%** (Rare)
       - 4. **Gold Dust**: **8%** (Very rare)
       - 5. **Diamond Dust**: **3%** (Super rare)
 

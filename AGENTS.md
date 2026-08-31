@@ -129,9 +129,9 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - Artificial alloys (Bronze Dust) and common stones (Silicon Shards, Flint) are **strictly excluded** (only drop from standard soils).
     - Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, and Rich Red Sand are all siftable.
     - Yields purely valuable native metals & minerals via independent multi-rolls:
-      1. Copper Dust (`copper_dust`) — **85%** (Very common)
-      2. Tin Dust (`tin_dust`) — **55%** (Common)
-      3. Iron Dust (`iron_dust`) — **25%** (Rare)
+      1. Copper Dust (`copper_dust`) — **40%** (Common)
+      2. Tin Dust (`tin_dust`) — **40%** (Common on par with copper)
+      3. Iron Dust (`iron_dust`) — **20%** (Rare)
       4. Gold Dust (`gold_dust`) — **8%** (Very rare)
       5. Diamond Dust (`diamond_dust`) — **3%** (Super rare)
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
