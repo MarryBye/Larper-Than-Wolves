@@ -408,11 +408,16 @@ public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyCo
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
-        if (slot == 6) {
-            return side != null && side == this.getBlockState().getValue(AdvancedSmelterBlock.FACING).getOpposite()
-                    && FuelRegistry.isValidFuel(stack);
+        if (side == null) return false;
+
+        Direction facing = this.getBlockState().hasProperty(AdvancedSmelterBlock.FACING) ?
+                this.getBlockState().getValue(AdvancedSmelterBlock.FACING) : Direction.NORTH;
+
+        if (canAcceptHopperFuel(side, facing, slot, stack)) {
+            return true;
         }
-        if (slot < 3) {
+
+        if (side == Direction.UP && slot < 3) {
             return !FoodCookingRegistry.isFood(stack);
         }
         return false;

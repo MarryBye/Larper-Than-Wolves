@@ -29,6 +29,28 @@ public interface IFueledMachine {
     }
 
     /**
+     * Checks if a hopper connected to this machine is permitted to insert fuel.
+     * Hoppers are only permitted to insert fuel when:
+     * 1) Connected to the machine's BACK face into the fuel slot.
+     * 2) The fuel is valid according to FuelRegistry.
+     * 3) The fuel slot is currently empty (strictly 1 item at a time, preventing excess buffering).
+     * 4) The machine has no burning fuel (burnTime <= 0) OR is within the final window (burnTime <= 20 ticks)
+     *    before the fire extinguishes.
+     */
+    default boolean canAcceptHopperFuel(net.minecraft.core.Direction side, net.minecraft.core.Direction machineFacing, int slot, ItemStack stack) {
+        if (side == null || side != machineFacing.getOpposite() || slot != getFuelSlot()) {
+            return false;
+        }
+        if (!FuelRegistry.isValidFuel(stack)) {
+            return false;
+        }
+        if (!getFuelItem().isEmpty()) {
+            return false;
+        }
+        return getBurnTime() <= 20;
+    }
+
+    /**
      * Ticks auto-refueling.
      * When machine is actively burning (burnTime > 0) and burnTime <= 5 ticks,
      * if valid fuel is present in the fuel slot, it automatically consumes 1 fuel item

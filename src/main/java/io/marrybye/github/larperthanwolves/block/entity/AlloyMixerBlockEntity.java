@@ -306,11 +306,9 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
 
         Direction facing = this.getBlockState().hasProperty(AlloyMixerBlock.FACING) ?
                 this.getBlockState().getValue(AlloyMixerBlock.FACING) : Direction.NORTH;
-        Direction back = facing.getOpposite();
 
-        // Fuel from back: allow continuous hopper loading
-        if (side == back && index == 4) {
-            return FuelRegistry.isValidFuel(itemStack);
+        if (canAcceptHopperFuel(side, facing, index, itemStack)) {
+            return true;
         }
 
         // Inputs from top: allow placing any valid alloy mixer ingredient

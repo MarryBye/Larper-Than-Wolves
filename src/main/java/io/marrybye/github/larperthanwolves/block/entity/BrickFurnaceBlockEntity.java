@@ -405,11 +405,10 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
 
         Direction facing = this.getBlockState().hasProperty(BrickFurnaceBlock.FACING) ?
                 this.getBlockState().getValue(BrickFurnaceBlock.FACING) : Direction.NORTH;
-        Direction back = facing.getOpposite();
 
-        // Fuel from back: continuously allow hoppers to keep fuel buffered in slot 6!
-        if (side == back && slot == 6) {
-            return FuelRegistry.isValidFuel(stack);
+        // Fuel from back: smart hopper loading (only when unlit or <= 20 ticks before fire extinguishes, exactly 1 piece)
+        if (canAcceptHopperFuel(side, facing, slot, stack)) {
+            return true;
         }
 
         // Inputs from top (No food allowed)

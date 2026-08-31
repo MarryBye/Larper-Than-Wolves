@@ -370,10 +370,9 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
 
         Direction facing = this.getBlockState().hasProperty(OvenBlock.FACING) ?
                 this.getBlockState().getValue(OvenBlock.FACING) : Direction.NORTH;
-        Direction back = facing.getOpposite();
 
-        if (side == back && slot == 6) {
-            return FuelRegistry.isValidFuel(stack);
+        if (canAcceptHopperFuel(side, facing, slot, stack)) {
+            return true;
         }
 
         if (side == Direction.UP && slot < 3) {
