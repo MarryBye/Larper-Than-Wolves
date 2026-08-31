@@ -24,7 +24,7 @@ public class SieveBlockEntityRenderer implements BlockEntityRenderer<SieveBlockE
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(LarperThanWolves.MODID, "sieve_mesh"), "main");
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(
-            LarperThanWolves.MODID, "textures/block/filter_grate_mesh.png");
+            LarperThanWolves.MODID, "textures/block/sieve_mesh.png");
 
     private final ModelPart meshTray;
 
@@ -37,13 +37,13 @@ public class SieveBlockEntityRenderer implements BlockEntityRenderer<SieveBlockE
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        // 11x0.5x11 vibrating mesh screen tray centered at (0, 0, 0)
+        // 11x1x11 vibrating mesh screen tray centered at (0, 0, 0)
         root.addOrReplaceChild("mesh_tray", CubeListBuilder.create()
                 .texOffs(0, 0)
-                .addBox(-5.5F, -0.25F, -5.5F, 11.0F, 0.5F, 11.0F),
+                .addBox(-5.5F, -0.5F, -5.5F, 11.0F, 1.0F, 11.0F),
                 PartPose.ZERO);
 
-        return LayerDefinition.create(mesh, 32, 32);
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override

@@ -69,6 +69,7 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
     // Client-side animation
     public int clientTicks = 0;
     public int clientShakeTimer = 0;
+    public int clientAnimationTicks = 0;
 
     private static final Random RANDOM = new Random();
 
@@ -154,10 +155,10 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         CompoundTag tag = pkt.getTag();
         if (tag != null) {
             this.shakeProgress = tag.getInt("ShakeProgress");
-            this.shakeCooldown = tag.getInt("ShakeCooldown");
             this.isKineticActive = tag.getBoolean("IsKineticActive");
-            if (this.shakeCooldown > 0 || this.isKineticActive) {
-                this.clientShakeTimer = 10;
+            int cooldown = tag.getInt("ShakeCooldown");
+            if (cooldown > 0) {
+                this.clientShakeTimer = cooldown;
             }
         }
     }
@@ -193,12 +194,19 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
     }
 
     public boolean isShaking() {
-        return this.shakeCooldown > 0 || this.isKineticActive || this.clientShakeTimer > 0;
+        return this.clientShakeTimer > 0 || this.isKineticActive;
     }
 
     public float getInterpolatedOffset(float partialTick) {
-        if (!isShaking()) return 0.0f;
-        return (float) Math.sin((this.clientTicks + partialTick) * 1.6f) * 0.06f;
+        if (this.isKineticActive) {
+            return (float) Math.sin((this.clientTicks + partialTick) * 1.6f) * 0.05f;
+        }
+        if (this.clientShakeTimer > 0) {
+            float elapsed = (10 - this.clientShakeTimer) + partialTick;
+            float damp = Math.max(0.0f, (this.clientShakeTimer - partialTick) / 10.0f);
+            return (float) Math.sin(elapsed * 1.6f) * 0.06f * damp;
+        }
+        return 0.0f;
     }
 
     /**
