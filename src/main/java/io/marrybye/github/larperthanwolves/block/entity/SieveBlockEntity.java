@@ -429,18 +429,24 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
                 insertOutput(new ItemStack(Items.FLINT, 1));
             }
         } else {
-            // Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious): Silicon Shard (frequent) -> Flint (rare) -> Copper Dust (very rare)
+            // Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious): Independent roll for each possible drop
             double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.45;
             double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.22;
             double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.08;
 
-            double roll = ThreadLocalRandom.current().nextDouble();
-            if (roll < copperChance) {
-                insertOutput(new ItemStack(ModItems.COPPER_DUST.get(), 1));
-            } else if (roll < copperChance + flintChance) {
-                insertOutput(new ItemStack(Items.FLINT, 1));
-            } else if (roll < copperChance + flintChance + siliconChance) {
+            // Silicon Shard (~45%)
+            if (ThreadLocalRandom.current().nextDouble() < siliconChance) {
                 insertOutput(new ItemStack(ModItems.SILICON_SHARD.get(), 1));
+            }
+
+            // Flint (~22%)
+            if (ThreadLocalRandom.current().nextDouble() < flintChance) {
+                insertOutput(new ItemStack(Items.FLINT, 1));
+            }
+
+            // Copper Dust (~8%)
+            if (ThreadLocalRandom.current().nextDouble() < copperChance) {
+                insertOutput(new ItemStack(ModItems.COPPER_DUST.get(), 1));
             }
         }
 

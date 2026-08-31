@@ -115,8 +115,8 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - Grinding speed scales directly with rotational RPM (e.g. 16 RPM = 1 shake per 10 ticks, 64 RPM = 4x speed).
   - **Active Only When Input Is Present**: Both manual shaking and Create rotation animate and function strictly when valid siftable soils are loaded in the input slots.
   - **Catch Basin & Side Axle Socket 3D Model**: Features a wooden collection basin underneath the mesh where sifted mineral dusts drop, and protruding bronze/iron bearing sockets on the side walls for kinetic shafts.
-  - **Balanced Sifting Drop Matrix**:
-    - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious)**:
+  - **Balanced Sifting Drop Matrix (Independent Dice Roll Per Item)**:
+    - Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious):
       - Silicon Shards: **45%** (Common)
       - Flint: **22%** (Rare)
       - Copper Dust: **8%** (Very rare)

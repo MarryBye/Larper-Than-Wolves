@@ -43,15 +43,16 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
     - Automatically vibrates the mesh and processes input continuously.
   - **Active Only When Input Is Present**: Both manual shaking and Create rotation animate and function strictly when valid siftable soils are loaded in the input slots.
   - **Catch Basin & Side Axle Socket 3D Model**: Features a wooden collection basin underneath the mesh where sifted mineral dusts drop, and protruding bronze/iron bearing sockets on the side walls for kinetic shafts.
-  - **Balanced Sifting Drop Matrix**:
+  - **Balanced Sifting Drop Matrix (Independent Dice Roll Per Item)**:
+    - Every possible output item has its own independent probability check. A single sifted block can drop multiple items at once (e.g. Copper + Tin + Flint), only one item, or nothing if all rolls fail.
     - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious)**:
       - Silicon Shards: **45%** (Common)
       - Flint: **22%** (Rare)
       - Copper Dust: **8%** (Very rare)
     - **Rich Soils (Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand)**:
-      - 1. **Copper Dust**: **45%**
-      - 2. **Tin Dust**: **45%**
-      - 3. **Flint**: **10%**
+      - Copper Dust: **45%**
+      - Tin Dust: **45%**
+      - Flint: **10%**
 
 ---
 
