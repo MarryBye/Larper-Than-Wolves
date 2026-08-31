@@ -92,11 +92,8 @@ public class ModJeiPlugin implements IModPlugin {
         );
 
         List<ItemStack> richSoilOutputs = List.of(
-                new ItemStack(ModItems.SILICON_SHARD.get()),
-                new ItemStack(Items.FLINT),
                 new ItemStack(ModItems.COPPER_DUST.get()),
                 new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.BRONZE_DUST.get()),
                 new ItemStack(ModItems.IRON_DUST.get()),
                 new ItemStack(ModItems.GOLD_DUST.get()),
                 new ItemStack(ModItems.DIAMOND_DUST.get())
@@ -300,11 +297,6 @@ public class ModJeiPlugin implements IModPlugin {
             fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.COAL_BLOCK)), blockInfo.burnDuration, blockInfo.cookSpeed, ignitionTools, machines));
         }
 
-        // Tier 10: Lava Bucket
-        FuelRegistry.FuelInfo lavaInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.LAVA_BUCKET));
-        if (lavaInfo != null) {
-            fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.LAVA_BUCKET)), lavaInfo.burnDuration, lavaInfo.cookSpeed, ignitionTools, machines));
-        }
 
         registration.addRecipes(MachineFuelRecipeCategory.TYPE, fuelRecipes);
 

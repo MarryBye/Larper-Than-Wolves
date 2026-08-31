@@ -177,26 +177,17 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         double cumulative = 0.0;
 
         if (isRich) {
-            // Rich Soils: Silicon Shard -> Flint -> Copper Dust -> Tin Dust -> Bronze Dust -> Iron Dust -> Gold Dust -> Diamond Dust
-            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichSiliconShardChance.get() : 0.30;
-            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichFlintChance.get() : 0.18;
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.12;
-            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.08;
-            double bronzeChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichBronzeDustChance.get() : 0.05;
-            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.03;
-            double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichGoldDustChance.get() : 0.015;
-            double diamondChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichDiamondDustChance.get() : 0.005;
+            // Rich Soils: Pure natural metal dusts ONLY (Copper Dust -> Tin Dust -> Iron Dust -> Gold Dust -> Diamond Dust)
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.50;
+            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.30;
+            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.12;
+            double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichGoldDustChance.get() : 0.06;
+            double diamondChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichDiamondDustChance.get() : 0.02;
 
-            if (roll < (cumulative += siliconChance)) {
-                regularResult = new ItemStack(ModItems.SILICON_SHARD.get(), 1);
-            } else if (roll < (cumulative += flintChance)) {
-                regularResult = new ItemStack(Items.FLINT, 1);
-            } else if (roll < (cumulative += copperChance)) {
+            if (roll < (cumulative += copperChance)) {
                 regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
             } else if (roll < (cumulative += tinChance)) {
                 regularResult = new ItemStack(ModItems.TIN_DUST.get(), 1);
-            } else if (roll < (cumulative += bronzeChance)) {
-                regularResult = new ItemStack(ModItems.BRONZE_DUST.get(), 1);
             } else if (roll < (cumulative += ironChance)) {
                 regularResult = new ItemStack(ModItems.IRON_DUST.get(), 1);
             } else if (roll < (cumulative += goldChance)) {

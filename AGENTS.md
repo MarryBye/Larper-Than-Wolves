@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.31.0
+- **Current Version**: 1.32.0
 
 ## Project Architecture & Progression
 
@@ -93,7 +93,8 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - **Bronze Knitting Needles**: 64 durability. Crafted from 2 Bronze Ingots.
     - **Iron Knitting Needles**: 256 durability. Crafted from 2 Iron Ingots.
 - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel/Sand)**:
-  - Digging & Sifting drops maximum: **Silicon Shards** (most common, 20-30%), **Flint** (rarer, 8-15%), **Copper Dust** (rarest, 2-5%).
+  - **Bare Hand Digging**: Drops only **Silicon Shards** (20%) or the soil block (80%). Whole Flint and Copper Dust **NEVER** drop from bare hand digging.
+  - **Shovel Digging & Sifting**: Drops **Silicon Shards** (20-30%), **Flint** (8-15%), **Copper Dust** (2-5%).
   - Suspicious gravel and sand additionally yield their built-in archaeology loot tables.
   - Plain Dirt can now be sifted in the Sieve just like gravel and sand.
 - **Rich Soils (Богатая почва)**:
@@ -101,15 +102,14 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Textures: Counterpart vanilla textures with distinct white/silver mineral flecks and top-left lighting.
   - Digging Hardness: 2x slower (`destroyTime: 1.0f - 1.2f`).
   - Mining Requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich block item (Rich Grass drops Rich Dirt unless Silk Touch is used). Breaking with hands or other tools drops standard soil (Dirt/Gravel/Sand/Red Sand).
-  - Sifting in Sieve: Yields metal dusts and materials in order of rarity:
-    1. Silicon Shards (`silicon_shard`)
-    2. Flint / Silicon (`flint`)
-    3. Copper Dust (`copper_dust`)
-    4. Tin Dust (`tin_dust`)
-    5. Bronze Dust (`bronze_dust`)
-    6. Iron Dust (`iron_dust`)
-    7. Gold Dust (`gold_dust`)
-    8. Diamond Dust (`diamond_dust`)
+  - **Sifting in Sieve (Pure Natural Metal Dusts ONLY)**:
+    - Artificial alloys (Bronze Dust) and common stones (Silicon Shards, Flint) are **strictly excluded**.
+    - Yields purely valuable native metals & minerals:
+      1. Copper Dust (`copper_dust`) — **50%**
+      2. Tin Dust (`tin_dust`) — **30%**
+      3. Iron Dust (`iron_dust`) — **12%**
+      4. Gold Dust (`gold_dust`) — **6%**
+      5. Diamond Dust (`diamond_dust`) — **2%**
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
 ### 🌾 Farming, Mandatory Fertilization (Bone Meal & Dung) & 2-Stage Hoe Tilling
@@ -132,21 +132,22 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Stage 2 (Dirt/Rich Dirt $\rightarrow$ Farmland)**: Right-click plain dirt or rich dirt with any hoe to prepare farmland for crop planting.
   - Breaking (left-clicking) grass blocks simply breaks the block normally into dirt without special seed harvesting.
 
-### 🏘️ World Exploration, Villages & Trading
+### 🏘️ World Exploration, Universal Structure Mixins & Trading
 - **Village Rarity & Distance**: Villages generate rarely (`spacing: 200`, `separation: 80`) and are strictly prevented from generating within **3000 blocks** of world spawn / origin (`villageMinDistanceFromSpawn: 3000.0`). Pillager Outposts are also spaced out.
-- **Workstations & POIs Purging & Conversion**:
-  - Vanilla Crafting Tables are purged from worldgen structures (players must carve a stump with a chisel).
-  - Vanilla Furnaces and Blast Furnaces automatically convert to **Brick Furnaces** (Armorer POI).
-  - Vanilla Smokers convert to **Ovens** (Butcher POI).
-- **World Chest Removal (Except Bastion Remnants)**:
-  - All non-bastion worldgen chests (villages, dungeons, mineshafts, temples, ancient cities, trial chambers, ruined portals, shipwrecks, buried treasure, igloos) are purged from worldgen and yield 0 loot.
+- **Universal Workstations & POIs Conversion Across All Mods (`StructureTemplateMixin`)**:
+  - In ALL structures (vanilla and modded like *The Broken Script*, YUNG's, Towns & Towers):
+    - Vanilla Crafting Tables are replaced with **Tree Stumps** (players must carve a stump with a chisel).
+    - Vanilla Furnaces and Blast Furnaces automatically convert to **Brick Furnaces** retaining exact orientation.
+    - Vanilla Smokers convert to **Ovens** retaining exact orientation.
+- **World Chest Removal & Loot Stripping (`StructureTemplateMixin` + `RandomizableContainerMixin`)**:
+  - All non-bastion chests, trapped chests, and barrels across all structures (vanilla and modded) have their loot tables and items stripped to yield 0 unearned loot.
   - **Bastion Remnant chests** are preserved, allowing access to Netherite Upgrade Smithing Templates and trims.
 - **Iron Golem Balance**: Iron Golems drop **no iron ingots or nuggets** upon death (only poppies).
 - **Villager & Wandering Trader Trades**:
   - Armorer, Weaponsmith, and Toolsmith villagers sell tools, weapons, and armor up to **Bronze tier** in exchange for emeralds.
   - Basic / flavor trades (sticks, pebbles, silicon shards, saplings, dyes, wild crops, dry grass) allow fair early-game bartering.
   - All iron/diamond/chainmail tool and armor offers, as well as disabled item purchases, are purged.
-- **Universal Loot Table Rebalancing (`ChestLootModifier` & `RemoveDisabledItemsModifier`)**:
+- **Universal Loot Table Rebalancing (`LootTableMixin` + `ChestLootModifier` & `RemoveDisabledItemsModifier`)**:
   - All generated loot tables (chests, ruined portals, archaeology, trial chambers, spawners, pots, fishing, bartering) are rebalanced:
     - Gold, Iron, Diamond, and Netherite tools/weapons $\rightarrow$ Copper (75%) or Bronze (25% on high luck) retaining enchantments.
     - Gold, Iron, Chainmail, Diamond armor $\rightarrow$ Copper (75%) or Bronze (25%).
@@ -172,13 +173,13 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and ropes).
   - **Rope Crafting**: Ropes can only be crafted from Tanned Leather + Shears (or Dry Grass / vines). Standard leather rope crafting is removed.
 
-### 🍞 Oven (Духовка), Brick Furnace & 10-Tier Fuel Matrix
+### 🍞 Oven (Духовка), Brick Furnace & 9-Tier Fuel Matrix
 - **Oven (Духовка)**: Crafted from 1 Brick Furnace + 1 Iron Nugget or 2 Brick Slabs + 2 Bricks (`oven`).
   - **Food Only**: Accepts exclusively food items (raw beef, porkchop, mutton, chicken, rabbit, fish, potato, kelp). Non-food materials and ores cannot be placed in the oven.
   - Requires manual fueling and ignition with a Lighter or Flint & Steel.
 - **Brick Furnace (Кирпичная печь)**: Replaces vanilla Furnace and Blast Furnace.
   - **Ores & Blocks Only**: Food items cannot be placed or smelted in the Brick Furnace.
-- **Unified 10-Tier Fuel Matrix (`FuelRegistry`)**:
+- **Unified 9-Tier Fuel Matrix (`FuelRegistry`)**:
   - Every fuel item in Minecraft provides a distinct **Burn Duration** (~2–2.5x longer than standard) and **Cooking Speed / Temperature**:
     1. **Tier 1 (Foliage & Twigs)**: 500 ticks (25s), 260t speed. (`ModItems.TWIG`, `DRY_GRASS`, `DEAD_BUSH`, saplings, leaves).
     2. **Tier 2 (Sticks & Small Wood)**: 700 ticks (35s), 240t speed. (`STICK`, `POINTED_STICK`, `BOWL`).
@@ -189,7 +190,6 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     7. **Tier 7 (Mineral Coal)**: 3800 ticks (190s), 100t speed.
     8. **Tier 8 (Blaze Rod)**: 5400 ticks (270s), 70t speed.
     9. **Tier 9 (Coal Block)**: 36000 ticks (1800s / 30 min), 80t speed.
-    10. **Tier 10 (Lava Bucket)**: 45000 ticks (2250s / 37.5 min), 60t speed (returns empty bucket).
 
 ### 🔄 Material Conversion & Create 6.0.10 Compatibility
 - **Natural Metals (Iron, Copper, Gold, Tin, Zinc)**:

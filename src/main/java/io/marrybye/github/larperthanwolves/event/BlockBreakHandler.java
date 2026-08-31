@@ -711,16 +711,17 @@ public class BlockBreakHandler {
                 block == Blocks.SUSPICIOUS_SAND || block == Blocks.DIRT) {
             drops.clear();
 
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.copperDustGravelDropChance.get() : 0.02;
-            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.flintGravelDropChance.get() : 0.08;
+            boolean hasShovel = isShovel(tool);
+            double copperChance = hasShovel ? (ModConfig.SERVER != null ? ModConfig.SERVER.copperDustGravelDropChance.get() : 0.02) : 0.0;
+            double flintChance = hasShovel ? (ModConfig.SERVER != null ? ModConfig.SERVER.flintGravelDropChance.get() : 0.08) : 0.0;
             double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.siliconShardGravelDropChance.get() : 0.20;
 
             float roll = ThreadLocalRandom.current().nextFloat();
-            if (roll < copperChance) {
+            if (copperChance > 0 && roll < copperChance) {
                 ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.COPPER_DUST.get(), 1));
                 dust.setDefaultPickUpDelay();
                 drops.add(dust);
-            } else if (roll < copperChance + flintChance) {
+            } else if (flintChance > 0 && roll < copperChance + flintChance) {
                 ItemEntity flint = new ItemEntity(level, x, y, z, new ItemStack(Items.FLINT, 1));
                 flint.setDefaultPickUpDelay();
                 drops.add(flint);

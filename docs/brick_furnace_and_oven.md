@@ -34,7 +34,6 @@ This system splits high-temperature thermal processing into two strictly special
 | **Tier 7** | **Каменный уголь (*Mineral Coal*)** | `Items.COAL` | **3800 ticks** (190s / 3m 10s) | **100 ticks** (5.0s) | 38.0 items |
 | **Tier 8** | **Стержень ифрита (*Blaze Rod*)** | `Items.BLAZE_ROD` | **5400 ticks** (270s / 4m 30s) | **70 ticks** (3.5s) | ~77.1 items |
 | **Tier 9** | **Угольный блок (*Coal Block*)** | `Items.COAL_BLOCK` | **36000 ticks** (1800s / 30 мин) | **80 ticks** (4.0s) | 450.0 items |
-| **Tier 10** | **Ведро лавы (*Lava Bucket*)** | `Items.LAVA_BUCKET` (returns empty bucket) | **45000 ticks** (2250s / 37.5 мин) | **60 ticks** (3.0s) | 750.0 items |
 
 ---
 

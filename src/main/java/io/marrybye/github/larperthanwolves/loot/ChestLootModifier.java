@@ -69,7 +69,7 @@ public class ChestLootModifier extends LootModifier {
         return modifiedLoot;
     }
 
-    private static ItemStack rebalanceLootItem(ItemStack stack) {
+    public static ItemStack rebalanceLootItem(ItemStack stack) {
         Item item = stack.getItem();
         int count = stack.getCount();
         var random = ThreadLocalRandom.current();

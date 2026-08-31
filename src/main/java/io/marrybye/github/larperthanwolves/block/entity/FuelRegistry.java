@@ -27,12 +27,6 @@ public class FuelRegistry {
     public static FuelInfo getFuelInfo(ItemStack stack) {
         if (stack.isEmpty()) return null;
 
-        // 10. Lava Bucket (Tier 10: Ultimate volcanic heat - 2250s / 37.5 min, 60t cook)
-        if (stack.is(Items.LAVA_BUCKET)) {
-            int burn = ModConfig.SERVER != null ? ModConfig.SERVER.lavaBucketBurnTicks.get() : 45000;
-            int speed = ModConfig.SERVER != null ? ModConfig.SERVER.lavaBucketCookSpeed.get() : 60;
-            return new FuelInfo(burn, speed);
-        }
 
         // 9. Coal Block (Tier 9: Compressed mineral fuel - 1800s / 30 min, 80t cook)
         if (stack.is(Items.COAL_BLOCK)) {

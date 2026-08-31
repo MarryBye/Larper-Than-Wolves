@@ -4,7 +4,10 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "TrunkPlacerMixin",
-    "StructureMixin"
+    "StructureMixin",
+    "StructureTemplateMixin",
+    "RandomizableContainerMixin",
+    "LootTableMixin"
   ],
   "injectors": {
     "defaultRequire": 1

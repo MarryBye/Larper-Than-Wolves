@@ -28,7 +28,6 @@ public class ModConfig {
         public final ModConfigSpec.IntValue coalBurnTicks;
         public final ModConfigSpec.IntValue blazeRodBurnTicks;
         public final ModConfigSpec.IntValue coalBlockBurnTicks;
-        public final ModConfigSpec.IntValue lavaBucketBurnTicks;
 
         public final ModConfigSpec.IntValue foliageCookSpeed;
         public final ModConfigSpec.IntValue stickCookSpeed;
@@ -39,7 +38,6 @@ public class ModConfig {
         public final ModConfigSpec.IntValue coalCookSpeed;
         public final ModConfigSpec.IntValue blazeRodCookSpeed;
         public final ModConfigSpec.IntValue coalBlockCookSpeed;
-        public final ModConfigSpec.IntValue lavaBucketCookSpeed;
 
         public final ModConfigSpec.DoubleValue copperDustGravelDropChance;
         public final ModConfigSpec.DoubleValue flintGravelDropChance;
@@ -50,11 +48,8 @@ public class ModConfig {
         public final ModConfigSpec.DoubleValue sieveFlintChance;
         public final ModConfigSpec.DoubleValue sieveCopperDustChance;
 
-        public final ModConfigSpec.DoubleValue sieveRichSiliconShardChance;
-        public final ModConfigSpec.DoubleValue sieveRichFlintChance;
         public final ModConfigSpec.DoubleValue sieveRichCopperDustChance;
         public final ModConfigSpec.DoubleValue sieveRichTinDustChance;
-        public final ModConfigSpec.DoubleValue sieveRichBronzeDustChance;
         public final ModConfigSpec.DoubleValue sieveRichIronDustChance;
         public final ModConfigSpec.DoubleValue sieveRichGoldDustChance;
         public final ModConfigSpec.DoubleValue sieveRichDiamondDustChance;
@@ -93,7 +88,6 @@ public class ModConfig {
             coalBurnTicks = builder.comment("Burn duration of mineral coal in ticks (default: 3800 ticks = 190s)").defineInRange("coalBurnTicks", 3800, 20, 72000);
             blazeRodBurnTicks = builder.comment("Burn duration of blaze rod in ticks (default: 5400 ticks = 270s)").defineInRange("blazeRodBurnTicks", 5400, 20, 72000);
             coalBlockBurnTicks = builder.comment("Burn duration of coal block in ticks (default: 36000 ticks = 1800s)").defineInRange("coalBlockBurnTicks", 36000, 20, 72000);
-            lavaBucketBurnTicks = builder.comment("Burn duration of lava bucket in ticks (default: 45000 ticks = 2250s)").defineInRange("lavaBucketBurnTicks", 45000, 20, 72000);
             builder.pop();
 
             builder.push("fuel_cook_speeds");
@@ -106,17 +100,16 @@ public class ModConfig {
             coalCookSpeed = builder.comment("Smelting cook time when fueled with coal (default: 100 ticks)").defineInRange("coalCookSpeed", 100, 20, 2400);
             blazeRodCookSpeed = builder.comment("Smelting cook time when fueled with blaze rod (default: 70 ticks)").defineInRange("blazeRodCookSpeed", 70, 20, 2400);
             coalBlockCookSpeed = builder.comment("Smelting cook time when fueled with coal block (default: 80 ticks)").defineInRange("coalBlockCookSpeed", 80, 20, 2400);
-            lavaBucketCookSpeed = builder.comment("Smelting cook time when fueled with lava bucket (default: 60 ticks)").defineInRange("lavaBucketCookSpeed", 60, 20, 2400);
             builder.pop();
 
             builder.pop();
 
             builder.push("gravel_drops");
             copperDustGravelDropChance = builder
-                    .comment("Chance of copper dust dropping when gravel/sand/dirt is broken (default: 0.02 = 2%)")
+                    .comment("Chance of copper dust dropping when gravel/sand/dirt is broken with shovel (default: 0.02 = 2%)")
                     .defineInRange("copperDustGravelDropChance", 0.02, 0.0, 1.0);
             flintGravelDropChance = builder
-                    .comment("Chance of flint dropping when gravel/sand/dirt is broken (default: 0.08 = 8%)")
+                    .comment("Chance of flint dropping when gravel/sand/dirt is broken with shovel (default: 0.08 = 8%)")
                     .defineInRange("flintGravelDropChance", 0.08, 0.0, 1.0);
             siliconShardGravelDropChance = builder
                     .comment("Chance of silicon shard dropping when gravel/sand/dirt is broken (default: 0.20 = 20%)")
@@ -139,31 +132,22 @@ public class ModConfig {
                     .comment("Chance of sifting Copper Dust from regular soil (gravel/sand/dirt) (default: 0.05 = 5%)")
                     .defineInRange("sieveCopperDustChance", 0.05, 0.0, 1.0);
 
-            // Sieve drop chances for rich soils (rich dirt, rich gravel, rich sand, rich red sand):
-            sieveRichSiliconShardChance = builder
-                    .comment("Chance of sifting Silicon Shard from Rich Soil (default: 0.30 = 30%)")
-                    .defineInRange("sieveRichSiliconShardChance", 0.30, 0.0, 1.0);
-            sieveRichFlintChance = builder
-                    .comment("Chance of sifting Flint from Rich Soil (default: 0.18 = 18%)")
-                    .defineInRange("sieveRichFlintChance", 0.18, 0.0, 1.0);
+            // Sieve drop chances for rich soils (pure natural metal dusts ONLY):
             sieveRichCopperDustChance = builder
-                    .comment("Chance of sifting Copper Dust from Rich Soil (default: 0.12 = 12%)")
-                    .defineInRange("sieveRichCopperDustChance", 0.12, 0.0, 1.0);
+                    .comment("Chance of sifting Copper Dust from Rich Soil (default: 0.50 = 50%)")
+                    .defineInRange("sieveRichCopperDustChance", 0.50, 0.0, 1.0);
             sieveRichTinDustChance = builder
-                    .comment("Chance of sifting Tin Dust from Rich Soil (default: 0.08 = 8%)")
-                    .defineInRange("sieveRichTinDustChance", 0.08, 0.0, 1.0);
-            sieveRichBronzeDustChance = builder
-                    .comment("Chance of sifting Bronze Dust from Rich Soil (default: 0.05 = 5%)")
-                    .defineInRange("sieveRichBronzeDustChance", 0.05, 0.0, 1.0);
+                    .comment("Chance of sifting Tin Dust from Rich Soil (default: 0.30 = 30%)")
+                    .defineInRange("sieveRichTinDustChance", 0.30, 0.0, 1.0);
             sieveRichIronDustChance = builder
-                    .comment("Chance of sifting Iron Dust from Rich Soil (default: 0.03 = 3%)")
-                    .defineInRange("sieveRichIronDustChance", 0.03, 0.0, 1.0);
+                    .comment("Chance of sifting Iron Dust from Rich Soil (default: 0.12 = 12%)")
+                    .defineInRange("sieveRichIronDustChance", 0.12, 0.0, 1.0);
             sieveRichGoldDustChance = builder
-                    .comment("Chance of sifting Gold Dust from Rich Soil (default: 0.015 = 1.5%)")
-                    .defineInRange("sieveRichGoldDustChance", 0.015, 0.0, 1.0);
+                    .comment("Chance of sifting Gold Dust from Rich Soil (default: 0.06 = 6%)")
+                    .defineInRange("sieveRichGoldDustChance", 0.06, 0.0, 1.0);
             sieveRichDiamondDustChance = builder
-                    .comment("Chance of sifting Diamond Dust from Rich Soil (default: 0.005 = 0.5%)")
-                    .defineInRange("sieveRichDiamondDustChance", 0.005, 0.0, 1.0);
+                    .comment("Chance of sifting Diamond Dust from Rich Soil (default: 0.02 = 2%)")
+                    .defineInRange("sieveRichDiamondDustChance", 0.02, 0.0, 1.0);
             builder.pop();
 
             builder.push("village_generation");

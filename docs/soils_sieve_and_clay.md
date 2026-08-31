@@ -11,7 +11,8 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - Shovel yield: **1 Clay Ball** per clay block.
   - Mining hardness: 1.5x–1.8x slower digging time.
 - **Standard Soils (Dirt, Gravel, Sand, Red Sand)**:
-  - Digging & Sifting drops:
+  - **Hand Digging Drops**: Bare hand digging drops only Silicon Shards (20%) or the soil block (80%). Flint and Copper Dust CANNOT be extracted by bare hands.
+  - **Shovel Digging & Sifting Drops**:
     - Silicon Shards (20–30%)
     - Flint / Silicon (8–15%)
     - Copper Dust (2–5%)
@@ -20,15 +21,13 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - 5 variants: Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand.
   - Visuals: Silver/white mineral flecks on counterpart vanilla textures.
   - Mining requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich soil block item. Digging with hands or silicon shovel drops standard soil.
-  - Sifting drops in order of rarity:
-    1. Silicon Shards
-    2. Flint
-    3. Copper Dust
-    4. Tin Dust
-    5. Bronze Dust
-    6. Iron Dust
-    7. Gold Dust
-    8. Diamond Dust
+  - **Sifting Drops (Pure Natural Metal Dusts ONLY)**:
+    - Bronze Dust (artificial alloy), Silicon Shards, and Flint are strictly excluded.
+    - 1. **Copper Dust** (50%)
+    - 2. **Tin Dust** (30%)
+    - 3. **Iron Dust** (12%)
+    - 4. **Gold Dust** (6%)
+    - 5. **Diamond Dust** (2%)
   - Worldgen: Generates in large veins (size 20, 10–12 attempts/chunk) inside soil biomes.
 - **Sieve Processing (`sieve` / `SieveBlock` / `SieveBlockEntity`)**:
   - 18-slot container for automated and passive sifting of soils.
@@ -38,7 +37,7 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
 ## 📦 Crafting & Progression
 - **Sieve Recipe**: 4 Sticks + 2 Planks + 1 Mesh.
 - **Tool Tier Requirement**:
-  - Silicon Shovel: Basic soils, Clay (1 Clay Ball).
+  - Silicon Shovel: Basic soils (yields Flint & Copper Dust), Clay (1 Clay Ball).
   - Copper Shovel+: Rich soils, Clay.
 
 ---
@@ -52,7 +51,9 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
 ## 🧪 Testing Guide & Edge Cases
 1. **Clay Hand Break**: Break clay block with an empty hand; verify 0 drops.
 2. **Clay Shovel Break**: Break clay block with a Silicon Shovel; verify exactly 1 Clay Ball drops.
-3. **Rich Grass Harvest**: Break Rich Grass with Silicon Shovel $\rightarrow$ drops plain Dirt. Break with Copper Shovel $\rightarrow$ drops Rich Dirt. Break with Silk Touch $\rightarrow$ drops Rich Grass Block.
+3. **Gravel Hand Break**: Break gravel with bare hands; verify it never drops Flint or Copper Dust.
+4. **Rich Soil Sifting**: Sift Rich Dirt in the Sieve; verify it only produces Copper, Tin, Iron, Gold, and Diamond dusts (no bronze, flint, or shards).
+5. **Rich Grass Harvest**: Break Rich Grass with Silicon Shovel $\rightarrow$ drops plain Dirt. Break with Copper Shovel $\rightarrow$ drops Rich Dirt. Break with Silk Touch $\rightarrow$ drops Rich Grass Block.
 
 ---
 
