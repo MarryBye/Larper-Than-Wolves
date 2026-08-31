@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.30.1
+- **Current Version**: 1.31.0
 
 ## Project Architecture & Progression
 
@@ -172,12 +172,24 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and ropes).
   - **Rope Crafting**: Ropes can only be crafted from Tanned Leather + Shears (or Dry Grass / vines). Standard leather rope crafting is removed.
 
-### 🍞 Oven (Духовка) & Brick Furnace Specialization
+### 🍞 Oven (Духовка), Brick Furnace & 10-Tier Fuel Matrix
 - **Oven (Духовка)**: Crafted from 1 Brick Furnace + 1 Iron Nugget or 2 Brick Slabs + 2 Bricks (`oven`).
   - **Food Only**: Accepts exclusively food items (raw beef, porkchop, mutton, chicken, rabbit, fish, potato, kelp). Non-food materials and ores cannot be placed in the oven.
   - Requires manual fueling and ignition with a Lighter or Flint & Steel.
 - **Brick Furnace (Кирпичная печь)**: Replaces vanilla Furnace and Blast Furnace.
   - **Ores & Blocks Only**: Food items cannot be placed or smelted in the Brick Furnace.
+- **Unified 10-Tier Fuel Matrix (`FuelRegistry`)**:
+  - Every fuel item in Minecraft provides a distinct **Burn Duration** (~2–2.5x longer than standard) and **Cooking Speed / Temperature**:
+    1. **Tier 1 (Foliage & Twigs)**: 500 ticks (25s), 260t speed. (`ModItems.TWIG`, `DRY_GRASS`, `DEAD_BUSH`, saplings, leaves).
+    2. **Tier 2 (Sticks & Small Wood)**: 700 ticks (35s), 240t speed. (`STICK`, `POINTED_STICK`, `BOWL`).
+    3. **Tier 3 (Wooden Slabs & Stairs)**: 1000 ticks (50s), 200t speed. (slabs, stairs, fences, gates, trapdoors).
+    4. **Tier 4 (Planks & Wooden Objects)**: 1400 ticks (70s), 180t speed. (planks, doors, boats, signs, buttons, pressure plates).
+    5. **Tier 5 (Logs, Wood & Tree Stumps)**: 2200 ticks (110s), 150t speed. (all logs, stripped logs, wood, all mod tree stumps).
+    6. **Tier 6 (Charcoal)**: 3200 ticks (160s), 120t speed.
+    7. **Tier 7 (Mineral Coal)**: 3800 ticks (190s), 100t speed.
+    8. **Tier 8 (Blaze Rod)**: 5400 ticks (270s), 70t speed.
+    9. **Tier 9 (Coal Block)**: 36000 ticks (1800s / 30 min), 80t speed.
+    10. **Tier 10 (Lava Bucket)**: 45000 ticks (2250s / 37.5 min), 60t speed (returns empty bucket).
 
 ### 🔄 Material Conversion & Create 6.0.10 Compatibility
 - **Natural Metals (Iron, Copper, Gold, Tin, Zinc)**:

@@ -97,7 +97,8 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
                 this.burnTime = info.burnDuration;
                 this.maxBurnTime = info.burnDuration;
                 this.wasLitOnce = true;
-                this.items.set(4, ItemStack.EMPTY);
+                ItemStack remainder = stored.getCraftingRemainingItem();
+                this.items.set(4, remainder.isEmpty() ? ItemStack.EMPTY : remainder);
                 setChanged();
                 return true;
             }

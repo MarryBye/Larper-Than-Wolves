@@ -246,7 +246,8 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
             fuelCookSpeed = info.cookSpeed;
             cookTimeTotal = fuelCookSpeed;
             wasLitOnce = true;
-            items.set(6, ItemStack.EMPTY);
+            ItemStack remainder = stored.getCraftingRemainingItem();
+            items.set(6, remainder.isEmpty() ? ItemStack.EMPTY : remainder);
             setChanged();
             return true;
         }

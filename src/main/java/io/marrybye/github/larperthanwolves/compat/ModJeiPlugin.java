@@ -180,7 +180,7 @@ public class ModJeiPlugin implements IModPlugin {
                 )
         ));
 
-        // 4. Machine Fuel & Ignition Recipes
+        // 4. Machine Fuel & Ignition Recipes (Ordered from Worst to Best)
         List<ItemStack> ignitionTools = List.of(
                 new ItemStack(ModItems.LIGHTER.get()),
                 new ItemStack(Items.FLINT_AND_STEEL)
@@ -191,18 +191,53 @@ public class ModJeiPlugin implements IModPlugin {
                 new ItemStack(ModBlocks.ALLOY_MIXER.get())
         );
 
-        List<ItemStack> allLogs = List.of(
-                new ItemStack(Items.OAK_LOG),
-                new ItemStack(Items.BIRCH_LOG),
-                new ItemStack(Items.SPRUCE_LOG),
-                new ItemStack(Items.JUNGLE_LOG),
-                new ItemStack(Items.ACACIA_LOG),
-                new ItemStack(Items.DARK_OAK_LOG),
-                new ItemStack(Items.MANGROVE_LOG),
-                new ItemStack(Items.CHERRY_LOG)
-        );
+        List<MachineFuelRecipe> fuelRecipes = new ArrayList<>();
 
-        List<ItemStack> allPlanks = List.of(
+        // Tier 1: Foliage & Twigs
+        List<ItemStack> foliageFuels = List.of(
+                new ItemStack(ModItems.TWIG.get()),
+                new ItemStack(ModItems.DRY_GRASS.get()),
+                new ItemStack(Items.DEAD_BUSH),
+                new ItemStack(Items.OAK_SAPLING),
+                new ItemStack(Items.BIRCH_SAPLING),
+                new ItemStack(Items.SPRUCE_SAPLING),
+                new ItemStack(Items.OAK_LEAVES),
+                new ItemStack(Items.BIRCH_LEAVES)
+        );
+        FuelRegistry.FuelInfo foliageInfo = FuelRegistry.getFuelInfo(new ItemStack(ModItems.TWIG.get()));
+        if (foliageInfo != null) {
+            fuelRecipes.add(new MachineFuelRecipe(foliageFuels, foliageInfo.burnDuration, foliageInfo.cookSpeed, ignitionTools, machines));
+        }
+
+        // Tier 2: Sticks & Small Wood
+        List<ItemStack> stickFuels = List.of(
+                new ItemStack(Items.STICK),
+                new ItemStack(ModItems.POINTED_STICK.get()),
+                new ItemStack(Items.BOWL)
+        );
+        FuelRegistry.FuelInfo stickInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.STICK));
+        if (stickInfo != null) {
+            fuelRecipes.add(new MachineFuelRecipe(stickFuels, stickInfo.burnDuration, stickInfo.cookSpeed, ignitionTools, machines));
+        }
+
+        // Tier 3: Wooden Slabs, Stairs & Fences
+        List<ItemStack> slabFuels = List.of(
+                new ItemStack(Items.OAK_SLAB),
+                new ItemStack(Items.BIRCH_SLAB),
+                new ItemStack(Items.SPRUCE_SLAB),
+                new ItemStack(Items.OAK_STAIRS),
+                new ItemStack(Items.BIRCH_STAIRS),
+                new ItemStack(Items.OAK_TRAPDOOR),
+                new ItemStack(Items.OAK_FENCE),
+                new ItemStack(Items.OAK_FENCE_GATE)
+        );
+        FuelRegistry.FuelInfo slabInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.OAK_SLAB));
+        if (slabInfo != null) {
+            fuelRecipes.add(new MachineFuelRecipe(slabFuels, slabInfo.burnDuration, slabInfo.cookSpeed, ignitionTools, machines));
+        }
+
+        // Tier 4: Planks & Wooden Blocks
+        List<ItemStack> plankFuels = List.of(
                 new ItemStack(Items.OAK_PLANKS),
                 new ItemStack(Items.BIRCH_PLANKS),
                 new ItemStack(Items.SPRUCE_PLANKS),
@@ -210,39 +245,65 @@ public class ModJeiPlugin implements IModPlugin {
                 new ItemStack(Items.ACACIA_PLANKS),
                 new ItemStack(Items.DARK_OAK_PLANKS),
                 new ItemStack(Items.MANGROVE_PLANKS),
-                new ItemStack(Items.CHERRY_PLANKS)
+                new ItemStack(Items.CHERRY_PLANKS),
+                new ItemStack(Items.BAMBOO_PLANKS),
+                new ItemStack(Items.OAK_DOOR),
+                new ItemStack(Items.OAK_BOAT),
+                new ItemStack(Items.OAK_SIGN)
         );
-
-        List<MachineFuelRecipe> fuelRecipes = new ArrayList<>();
-
-        FuelRegistry.FuelInfo logInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.OAK_LOG));
-        if (logInfo != null) {
-            fuelRecipes.add(new MachineFuelRecipe(allLogs, logInfo.burnDuration, logInfo.cookSpeed, ignitionTools, machines));
-        }
-
         FuelRegistry.FuelInfo plankInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.OAK_PLANKS));
         if (plankInfo != null) {
-            fuelRecipes.add(new MachineFuelRecipe(allPlanks, plankInfo.burnDuration, plankInfo.cookSpeed, ignitionTools, machines));
+            fuelRecipes.add(new MachineFuelRecipe(plankFuels, plankInfo.burnDuration, plankInfo.cookSpeed, ignitionTools, machines));
         }
 
+        // Tier 5: Logs, Wood & Tree Stumps
+        List<ItemStack> logFuels = List.of(
+                new ItemStack(Items.OAK_LOG),
+                new ItemStack(Items.BIRCH_LOG),
+                new ItemStack(Items.SPRUCE_LOG),
+                new ItemStack(Items.JUNGLE_LOG),
+                new ItemStack(Items.ACACIA_LOG),
+                new ItemStack(Items.DARK_OAK_LOG),
+                new ItemStack(Items.MANGROVE_LOG),
+                new ItemStack(Items.CHERRY_LOG),
+                new ItemStack(Items.STRIPPED_OAK_LOG),
+                new ItemStack(Items.OAK_WOOD),
+                new ItemStack(ModBlocks.OAK_STUMP.get()),
+                new ItemStack(ModBlocks.BIRCH_STUMP.get())
+        );
+        FuelRegistry.FuelInfo logInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.OAK_LOG));
+        if (logInfo != null) {
+            fuelRecipes.add(new MachineFuelRecipe(logFuels, logInfo.burnDuration, logInfo.cookSpeed, ignitionTools, machines));
+        }
+
+        // Tier 6: Charcoal
+        FuelRegistry.FuelInfo charcoalInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.CHARCOAL));
+        if (charcoalInfo != null) {
+            fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.CHARCOAL)), charcoalInfo.burnDuration, charcoalInfo.cookSpeed, ignitionTools, machines));
+        }
+
+        // Tier 7: Mineral Coal
         FuelRegistry.FuelInfo coalInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.COAL));
         if (coalInfo != null) {
-            fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.COAL), new ItemStack(Items.CHARCOAL)), coalInfo.burnDuration, coalInfo.cookSpeed, ignitionTools, machines));
+            fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.COAL)), coalInfo.burnDuration, coalInfo.cookSpeed, ignitionTools, machines));
         }
 
-        FuelRegistry.FuelInfo stickInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.STICK));
-        if (stickInfo != null) {
-            fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.STICK)), stickInfo.burnDuration, stickInfo.cookSpeed, ignitionTools, machines));
+        // Tier 8: Blaze Rod
+        FuelRegistry.FuelInfo blazeInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.BLAZE_ROD));
+        if (blazeInfo != null) {
+            fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.BLAZE_ROD)), blazeInfo.burnDuration, blazeInfo.cookSpeed, ignitionTools, machines));
         }
 
-        FuelRegistry.FuelInfo grassInfo = FuelRegistry.getFuelInfo(new ItemStack(ModItems.DRY_GRASS.get()));
-        if (grassInfo != null) {
-            fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(ModItems.DRY_GRASS.get())), grassInfo.burnDuration, grassInfo.cookSpeed, ignitionTools, machines));
-        }
-
+        // Tier 9: Coal Block
         FuelRegistry.FuelInfo blockInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.COAL_BLOCK));
         if (blockInfo != null) {
             fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.COAL_BLOCK)), blockInfo.burnDuration, blockInfo.cookSpeed, ignitionTools, machines));
+        }
+
+        // Tier 10: Lava Bucket
+        FuelRegistry.FuelInfo lavaInfo = FuelRegistry.getFuelInfo(new ItemStack(Items.LAVA_BUCKET));
+        if (lavaInfo != null) {
+            fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.LAVA_BUCKET)), lavaInfo.burnDuration, lavaInfo.cookSpeed, ignitionTools, machines));
         }
 
         registration.addRecipes(MachineFuelRecipeCategory.TYPE, fuelRecipes);

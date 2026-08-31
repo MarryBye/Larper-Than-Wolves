@@ -130,7 +130,7 @@
   "jei.larperthanwolves.info.chisel": "Used to carve tree stumps and logs into Work Stumps and Crafting Tables, as well as crafting wooden components.",
   "jei.larperthanwolves.info.unfired_brick": "Unfired Bricks can be smelted in a Brick Furnace or placed in the world exposed to direct sunlight to dry into Bricks naturally over time.",
   "jei.larperthanwolves.info.brick": "Obtained by smelting Unfired Bricks in a Brick Furnace or drying Unfired Brick blocks under direct sunlight.",
-  "jei.larperthanwolves.info.brick_furnace": "Replaces the regular furnace and blast furnace. Used for smelting ores, metals, and blocks (food cannot be placed into the furnace). Accepts logs, planks, coal, charcoal, sticks, dry grass, and rope. Must be manually ignited with a Lighter or Flint and Steel.",
+  "jei.larperthanwolves.info.brick_furnace": "Replaces the regular furnace and blast furnace. Used for smelting ores, metals, and blocks (food cannot be placed into the furnace). Accepts foliage/twigs, dry grass, sticks, wooden slabs/stairs, planks, logs, charcoal, mineral coal, blaze rods, coal blocks, and lava buckets. Must be manually ignited with a Lighter or Flint and Steel.",
   "jei.larperthanwolves.info.alloy_mixer": "Used to mix metal alloys (such as Bronze and Diamond Ingots). Place fuel in the bottom slot and ignite with a Lighter or Flint and Steel.",
   "jei.larperthanwolves.info.lighter": "Crafted early from sticks. Used to ignite Brick Furnaces, Alloy Mixers, and start fires.",
   "item.larperthanwolves.tanned_leather": "Tanned Leather",

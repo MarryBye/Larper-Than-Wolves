@@ -89,9 +89,17 @@ public class AlloyMixerBlock extends BaseEntityBlock {
             // 1. Loading fuel
             if (FuelRegistry.isValidFuel(stack)) {
                 if (!level.isClientSide) {
+                    ItemStack remainder = stack.getCraftingRemainingItem();
                     if (mixer.addFuel(stack)) {
                         if (!player.getAbilities().instabuild) {
                             stack.shrink(1);
+                            if (!remainder.isEmpty()) {
+                                if (stack.isEmpty()) {
+                                    player.setItemInHand(hand, remainder);
+                                } else if (!player.getInventory().add(remainder)) {
+                                    player.drop(remainder, false);
+                                }
+                            }
                         }
                         int targetStage = mixer.isLit() ? (mixer.getBurnTime() <= mixer.getMaxBurnTime() / 4 ? 3 : 2) : 1;
                         level.setBlock(pos, state.setValue(STAGE, targetStage), 3);

@@ -88,9 +88,17 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
             // 1. Check if holding valid fuel
             if (FuelRegistry.isValidFuel(stack)) {
                 if (!level.isClientSide) {
+                    ItemStack remainder = stack.getCraftingRemainingItem();
                     if (furnace.addFuel(stack)) {
                         if (!player.getAbilities().instabuild) {
                             stack.shrink(1);
+                            if (!remainder.isEmpty()) {
+                                if (stack.isEmpty()) {
+                                    player.setItemInHand(hand, remainder);
+                                } else if (!player.getInventory().add(remainder)) {
+                                    player.drop(remainder, false);
+                                }
+                            }
                         }
                         level.setBlock(pos, state.setValue(STAGE, furnace.isLit() ? (furnace.getBurnTime() <= furnace.getMaxBurnTime() / 4 ? 3 : 2) : 1), 3);
                         level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);

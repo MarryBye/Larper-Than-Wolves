@@ -19,15 +19,27 @@ public class ModConfig {
         public final ModConfigSpec.IntValue alloyMixerCookTimeTicks;
         public final ModConfigSpec.IntValue brickFurnaceDefaultCookTimeTicks;
 
-        public final ModConfigSpec.IntValue dryGrassBurnTicks;
+        public final ModConfigSpec.IntValue foliageBurnTicks;
         public final ModConfigSpec.IntValue stickBurnTicks;
+        public final ModConfigSpec.IntValue woodenSlabBurnTicks;
+        public final ModConfigSpec.IntValue plankBurnTicks;
         public final ModConfigSpec.IntValue logBurnTicks;
+        public final ModConfigSpec.IntValue charcoalBurnTicks;
         public final ModConfigSpec.IntValue coalBurnTicks;
+        public final ModConfigSpec.IntValue blazeRodBurnTicks;
+        public final ModConfigSpec.IntValue coalBlockBurnTicks;
+        public final ModConfigSpec.IntValue lavaBucketBurnTicks;
 
-        public final ModConfigSpec.IntValue dryGrassCookSpeed;
+        public final ModConfigSpec.IntValue foliageCookSpeed;
         public final ModConfigSpec.IntValue stickCookSpeed;
+        public final ModConfigSpec.IntValue woodenSlabCookSpeed;
+        public final ModConfigSpec.IntValue plankCookSpeed;
         public final ModConfigSpec.IntValue logCookSpeed;
+        public final ModConfigSpec.IntValue charcoalCookSpeed;
         public final ModConfigSpec.IntValue coalCookSpeed;
+        public final ModConfigSpec.IntValue blazeRodCookSpeed;
+        public final ModConfigSpec.IntValue coalBlockCookSpeed;
+        public final ModConfigSpec.IntValue lavaBucketCookSpeed;
 
         public final ModConfigSpec.DoubleValue copperDustGravelDropChance;
         public final ModConfigSpec.DoubleValue flintGravelDropChance;
@@ -72,17 +84,29 @@ public class ModConfig {
                     .defineInRange("brickFurnaceDefaultCookTimeTicks", 200, 20, 2400);
 
             builder.push("fuel_durations");
-            dryGrassBurnTicks = builder.comment("Burn duration of dry grass in ticks (default: 400 ticks = 20s)").defineInRange("dryGrassBurnTicks", 400, 20, 72000);
-            stickBurnTicks = builder.comment("Burn duration of sticks in ticks (default: 300 ticks = 15s)").defineInRange("stickBurnTicks", 300, 20, 72000);
-            logBurnTicks = builder.comment("Burn duration of logs/wood in ticks (default: 800 ticks = 40s)").defineInRange("logBurnTicks", 800, 20, 72000);
-            coalBurnTicks = builder.comment("Burn duration of coal/charcoal in ticks (default: 1600 ticks = 80s)").defineInRange("coalBurnTicks", 1600, 20, 72000);
+            foliageBurnTicks = builder.comment("Burn duration of foliage/twigs/dry grass in ticks (default: 500 ticks = 25s)").defineInRange("foliageBurnTicks", 500, 20, 72000);
+            stickBurnTicks = builder.comment("Burn duration of sticks/bowls in ticks (default: 700 ticks = 35s)").defineInRange("stickBurnTicks", 700, 20, 72000);
+            woodenSlabBurnTicks = builder.comment("Burn duration of wooden slabs/stairs/fences in ticks (default: 1000 ticks = 50s)").defineInRange("woodenSlabBurnTicks", 1000, 20, 72000);
+            plankBurnTicks = builder.comment("Burn duration of planks/doors/boats in ticks (default: 1400 ticks = 70s)").defineInRange("plankBurnTicks", 1400, 20, 72000);
+            logBurnTicks = builder.comment("Burn duration of logs/wood/stumps in ticks (default: 2200 ticks = 110s)").defineInRange("logBurnTicks", 2200, 20, 72000);
+            charcoalBurnTicks = builder.comment("Burn duration of charcoal in ticks (default: 3200 ticks = 160s)").defineInRange("charcoalBurnTicks", 3200, 20, 72000);
+            coalBurnTicks = builder.comment("Burn duration of mineral coal in ticks (default: 3800 ticks = 190s)").defineInRange("coalBurnTicks", 3800, 20, 72000);
+            blazeRodBurnTicks = builder.comment("Burn duration of blaze rod in ticks (default: 5400 ticks = 270s)").defineInRange("blazeRodBurnTicks", 5400, 20, 72000);
+            coalBlockBurnTicks = builder.comment("Burn duration of coal block in ticks (default: 36000 ticks = 1800s)").defineInRange("coalBlockBurnTicks", 36000, 20, 72000);
+            lavaBucketBurnTicks = builder.comment("Burn duration of lava bucket in ticks (default: 45000 ticks = 2250s)").defineInRange("lavaBucketBurnTicks", 45000, 20, 72000);
             builder.pop();
 
             builder.push("fuel_cook_speeds");
-            dryGrassCookSpeed = builder.comment("Smelting cook time when fueled with dry grass (default: 200 ticks)").defineInRange("dryGrassCookSpeed", 200, 20, 2400);
-            stickCookSpeed = builder.comment("Smelting cook time when fueled with sticks (default: 250 ticks)").defineInRange("stickCookSpeed", 250, 20, 2400);
-            logCookSpeed = builder.comment("Smelting cook time when fueled with logs (default: 160 ticks)").defineInRange("logCookSpeed", 160, 20, 2400);
+            foliageCookSpeed = builder.comment("Smelting cook time when fueled with foliage/twigs (default: 260 ticks)").defineInRange("foliageCookSpeed", 260, 20, 2400);
+            stickCookSpeed = builder.comment("Smelting cook time when fueled with sticks (default: 240 ticks)").defineInRange("stickCookSpeed", 240, 20, 2400);
+            woodenSlabCookSpeed = builder.comment("Smelting cook time when fueled with wooden slabs/stairs (default: 200 ticks)").defineInRange("woodenSlabCookSpeed", 200, 20, 2400);
+            plankCookSpeed = builder.comment("Smelting cook time when fueled with planks (default: 180 ticks)").defineInRange("plankCookSpeed", 180, 20, 2400);
+            logCookSpeed = builder.comment("Smelting cook time when fueled with logs/wood/stumps (default: 150 ticks)").defineInRange("logCookSpeed", 150, 20, 2400);
+            charcoalCookSpeed = builder.comment("Smelting cook time when fueled with charcoal (default: 120 ticks)").defineInRange("charcoalCookSpeed", 120, 20, 2400);
             coalCookSpeed = builder.comment("Smelting cook time when fueled with coal (default: 100 ticks)").defineInRange("coalCookSpeed", 100, 20, 2400);
+            blazeRodCookSpeed = builder.comment("Smelting cook time when fueled with blaze rod (default: 70 ticks)").defineInRange("blazeRodCookSpeed", 70, 20, 2400);
+            coalBlockCookSpeed = builder.comment("Smelting cook time when fueled with coal block (default: 80 ticks)").defineInRange("coalBlockCookSpeed", 80, 20, 2400);
+            lavaBucketCookSpeed = builder.comment("Smelting cook time when fueled with lava bucket (default: 60 ticks)").defineInRange("lavaBucketCookSpeed", 60, 20, 2400);
             builder.pop();
 
             builder.pop();
