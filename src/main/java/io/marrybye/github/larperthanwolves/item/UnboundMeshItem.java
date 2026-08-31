@@ -11,6 +11,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
+
+import java.util.function.Consumer;
 
 public class UnboundMeshItem extends Item {
     public static final int MAX_PROGRESS_TICKS = 300; // 15 seconds at 20 ticks/sec
@@ -22,12 +26,7 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.EAT;
-    }
-
-    @Override
-    public net.minecraft.sounds.SoundEvent getEatingSound() {
-        return SoundEvents.BRUSH_GENERIC;
+        return UseAnim.NONE;
     }
 
     @Override
@@ -111,18 +110,54 @@ public class UnboundMeshItem extends Item {
     }
 
     @Override
+    public void initializeClient(Consumer<net.neoforged.neoforge.client.extensions.common.IClientItemExtensions> consumer) {
+        consumer.accept(new net.neoforged.neoforge.client.extensions.common.IClientItemExtensions() {
+            @Override
+            public boolean applyForgeHandTransform(com.mojang.blaze3d.vertex.PoseStack poseStack, net.minecraft.client.player.LocalPlayer player, net.minecraft.world.entity.HumanoidArm arm, ItemStack itemInHand, float partialTick, float equipProcess, float swingProcess) {
+                if (player.isUsingItem() && (player.getUseItem() == itemInHand || ItemStack.isSameItem(player.getUseItem(), itemInHand))) {
+                    int side = (arm == net.minecraft.world.entity.HumanoidArm.RIGHT) ? 1 : -1;
+                    poseStack.translate(side * 0.56F, -0.52F + equipProcess * -0.6F, -0.72F);
+                    float useTicks = (float)(itemInHand.getUseDuration(player) - player.getUseItemRemainingTicks()) + partialTick;
+                    float bob = Mth.abs(Mth.cos(useTicks / 4.0F * (float)Math.PI) * 0.08F);
+                    poseStack.translate(side * -0.32F, 0.12F + bob, 0.22F);
+                    poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(side * 65.0F));
+                    poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(side * -20.0F));
+                    poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(-45.0F));
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private static int getCurrentProgress(ItemStack stack) {
+        int progress = stack.getDamageValue();
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            net.minecraft.client.player.LocalPlayer player = net.minecraft.client.Minecraft.getInstance().player;
+            if (player != null && player.isUsingItem()) {
+                ItemStack using = player.getUseItem();
+                if (using == stack || (ItemStack.isSameItem(using, stack) && (player.getMainHandItem() == stack || player.getOffhandItem() == stack))) {
+                    int elapsed = stack.getUseDuration(player) - player.getUseItemRemainingTicks();
+                    progress += Math.max(0, elapsed);
+                }
+            }
+        }
+        return Math.min(MAX_PROGRESS_TICKS, progress);
+    }
+
+    @Override
     public boolean isBarVisible(ItemStack stack) {
         return true;
     }
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return Math.round(13.0F * stack.getDamageValue() / (float) MAX_PROGRESS_TICKS);
+        return Math.round(13.0F * getCurrentProgress(stack) / (float) MAX_PROGRESS_TICKS);
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        float fraction = (float) stack.getDamageValue() / (float) MAX_PROGRESS_TICKS;
+        float fraction = (float) getCurrentProgress(stack) / (float) MAX_PROGRESS_TICKS;
         return Mth.hsvToRgb(fraction / 3.0F, 1.0F, 1.0F);
     }
 }

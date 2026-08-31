@@ -37,11 +37,11 @@ public class SieveBlockEntityRenderer implements BlockEntityRenderer<SieveBlockE
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        // 10.5 x 0.4 x 10.8 vibrating mesh screen tray centered at (0, 0, 0)
-        // Sits cleanly inside the table opening without intersecting side rims or rails
+        // 11.0 x 0.4 x 11.0 vibrating mesh screen tray centered at (0, 0, 0)
+        // Uses exact integer 11.0x11.0 dimension mapping to guarantee pixel-perfect texture UV sampling
         root.addOrReplaceChild("mesh_tray", CubeListBuilder.create()
                 .texOffs(0, 0)
-                .addBox(-5.25F, -0.2F, -5.4F, 10.5F, 0.4F, 10.8F),
+                .addBox(-5.5F, -0.2F, -5.5F, 11.0F, 0.4F, 11.0F),
                 PartPose.ZERO);
 
         return LayerDefinition.create(mesh, 64, 32);
