@@ -111,6 +111,7 @@
   "jei.larperthanwolves.info.mesh": "A woven wire mesh screen used to craft Sieve Tables, Baskets, and Filter Grates. Produced by hand-weaving Unbound Mesh (holding Right-Click for 15 seconds) or instantly crafted with Knitting Needles in any crafting grid.",
   "jei.larperthanwolves.info.sieve": "The Sieve Table sifts gravel, sand, red sand, dirt, grass blocks, and rich soils. Operated manually by holding Shift and Right-Clicking the table (5 shakes per block, 0.5s cooldown), or automated using Create rotational force connected to its side axle drive sockets.",
   "jei.larperthanwolves.info.basket": "An early-game storage container crafted from 4 Meshes in a 2x2 grid. Provides 9 slots (3x3) of item storage.",
+  "jei.larperthanwolves.category.brick_furnace": "Brick Smelting",
   "jei.larperthanwolves.category.chisel": "Chisel Carving",
   "jei.larperthanwolves.category.sun_drying": "Sun Drying",
   "jei.larperthanwolves.category.machine_fuel": "Machine Fuel & Ignition",

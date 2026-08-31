@@ -16,6 +16,7 @@ import io.marrybye.github.larperthanwolves.menu.OvenMenu;
 import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
 import io.marrybye.github.larperthanwolves.menu.SieveMenu;
 import io.marrybye.github.larperthanwolves.recipe.AlloyRegistry;
+import io.marrybye.github.larperthanwolves.recipe.SmeltingRegistry;
 import io.marrybye.github.larperthanwolves.client.MillScreen;
 import io.marrybye.github.larperthanwolves.menu.MillMenu;
 import io.marrybye.github.larperthanwolves.recipe.MillRecipe;
@@ -49,6 +50,7 @@ public class ModJeiPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         var guiHelper = registration.getJeiHelpers().getGuiHelper();
+        registration.addRecipeCategories(new BrickFurnaceRecipeCategory(guiHelper));
         registration.addRecipeCategories(new AlloyMixerRecipeCategory(guiHelper));
         registration.addRecipeCategories(new SieveRecipeCategory(guiHelper));
         registration.addRecipeCategories(new MillRecipeCategory(guiHelper));
@@ -378,6 +380,36 @@ public class ModJeiPlugin implements IModPlugin {
                 )
         ));
 
+        // 5b. Brick Furnace Smelting Recipes (Yields Nuggets & Refractory Items)
+        List<BrickFurnaceJeiRecipe> brickFurnaceRecipes = new ArrayList<>(List.of(
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_IRON), new ItemStack(Items.IRON_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_COPPER), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_GOLD), new ItemStack(Items.GOLD_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(ModItems.RAW_TIN.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.IRON_ORE), new ItemStack(Items.IRON_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_IRON_ORE), new ItemStack(Items.IRON_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.COPPER_ORE), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_COPPER_ORE), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.NETHER_GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.TIN_ORE.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.DEEPSLATE_TIN_ORE.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.COBBLESTONE), new ItemStack(Items.STONE), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.SAND), new ItemStack(Items.GLASS), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.UNFIRED_BRICK.asItem()), new ItemStack(Items.BRICK), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.CLAY), new ItemStack(Items.TERRACOTTA), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.WET_SPONGE), new ItemStack(Items.SPONGE), 200)
+        ));
+        ItemStack zincNugget = SmeltingRegistry.getZincNugget();
+        if (!zincNugget.isEmpty()) {
+            net.minecraft.world.item.Item rawZincItem = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("create", "raw_zinc"));
+            if (rawZincItem != Items.AIR) {
+                brickFurnaceRecipes.add(new BrickFurnaceJeiRecipe(new ItemStack(rawZincItem), zincNugget, 200));
+            }
+        }
+        registration.addRecipes(BrickFurnaceRecipeCategory.TYPE, brickFurnaceRecipes);
+
         // 6. In-Depth Ingredient Information (JEI Info Pages)
         registration.addIngredientInfo(new ItemStack(ModItems.TWIG.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.twig"));
@@ -507,7 +539,7 @@ public class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), RecipeTypes.SMELTING);
+        registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), BrickFurnaceRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), MachineFuelRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.ADVANCED_SMELTER.get(), RecipeTypes.SMELTING);
         registration.addRecipeCatalyst(ModBlocks.ADVANCED_SMELTER.get(), MachineFuelRecipeCategory.TYPE);
@@ -531,7 +563,7 @@ public class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(BrickFurnaceScreen.class, 79, 34, 24, 17, RecipeTypes.SMELTING, MachineFuelRecipeCategory.TYPE);
+        registration.addRecipeClickArea(BrickFurnaceScreen.class, 79, 34, 24, 17, BrickFurnaceRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
         registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.AdvancedSmelterScreen.class, 79, 34, 24, 17, RecipeTypes.SMELTING, MachineFuelRecipeCategory.TYPE);
         registration.addRecipeClickArea(OvenScreen.class, 79, 34, 24, 17, RecipeTypes.SMOKING, RecipeTypes.CAMPFIRE_COOKING, MachineFuelRecipeCategory.TYPE);
         registration.addRecipeClickArea(AlloyMixerScreen.class, 79, 24, 24, 17, AlloyMixerRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
@@ -541,7 +573,7 @@ public class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), RecipeTypes.SMELTING, 0, 3, 6, 36);
+        registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), BrickFurnaceRecipeCategory.TYPE, 0, 3, 6, 36);
         registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.AdvancedSmelterMenu.class, ModMenuTypes.ADVANCED_SMELTER.get(), RecipeTypes.SMELTING, 0, 3, 6, 36);
         registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.SMOKING, 0, 3, 6, 36);
         registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.CAMPFIRE_COOKING, 0, 3, 6, 36);

@@ -55,9 +55,10 @@ This system splits high-temperature thermal processing into two strictly special
 
 ---
 
-## 🔄 Cross-Mod Compatibility & Automation
-- **Create (6.0.10+)**: Bulk Blasting smelts raw ores into metal nuggets; Bulk Smoking cooks foods.
-- **JEI Integration**: `MachineFuelRecipeCategory`, `SunDryingRecipeCategory`, and specialized furnace/oven recipe registries.
+- **JEI Integration**:
+  - `BrickFurnaceRecipeCategory` (`larperthanwolves:brick_furnace_smelting`): displays precise Brick Furnace smelting (Raw Ores $\rightarrow$ Nuggets, Cobblestone $\rightarrow$ Stone, etc.).
+  - `RecipeTypes.SMELTING`: displays Advanced Smelter full ingot smelting (Raw Ores $\rightarrow$ Full Ingots).
+  - `MachineFuelRecipeCategory`: displays accepted fuels, burn times, and cook speeds for all machines.
 
 ---
 

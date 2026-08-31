@@ -203,10 +203,11 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Requires manual fueling and ignition with a Lighter or Flint & Steel.
 - **Brick Furnace (Кирпичная печь)**: Replaces vanilla Furnace and Blast Furnace.
   - **Ores & Blocks Only**: Food items cannot be placed or smelted in the Brick Furnace. Smelts raw chunks into **nuggets**.
+  - **Dedicated JEI Category (`BrickFurnaceRecipeCategory`)**: Displays exact nugget outputs (`Items.RAW_IRON` $\rightarrow$ `Items.IRON_NUGGET`, etc.) rather than full ingots to prevent player confusion.
 - **Advanced Smelter (Продвинутая плавильня / `advanced_smelter` / `AdvancedSmelterBlock`)**:
   - Crafted on a 3x3 Crafting Table from **5 Iron Ingots + 1 Brick Furnace + 3 Smooth Stone**.
-  - Reinforced iron-plated design with corner rivets and firebox grating.
-  - **Full Ingot Smelting**: Smelts raw ores and metal chunks (Iron, Copper, Gold, Tin, Zinc) directly into **Full Ingots** instead of single nuggets.
+  - Reinforced iron-plated design with corner rivets, dark steel trim, and industrial firebox grating.
+  - **Full Ingot Smelting (`RecipeTypes.SMELTING` in JEI)**: Smelts raw ores and metal chunks (Iron, Copper, Gold, Tin, Zinc) directly into **Full Ingots** instead of single nuggets.
   - Requires manual fuel loading and lighter/flint ignition.
 - **Wooden Hopper (Деревянная воронка / `wooden_hopper` / `WoodenHopperBlock`)**:
   - Crafted on a 3x3 Crafting Table from **5 Planks + 1 Woven Basket** in a V-shape.
