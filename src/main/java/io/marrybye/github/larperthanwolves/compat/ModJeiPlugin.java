@@ -412,6 +412,8 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.knitting_needles"));
         registration.addIngredientInfo(new ItemStack(ModItems.MESH.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.mesh"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.SIEVE.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.sieve"));
         registration.addIngredientInfo(new ItemStack(ModBlocks.BASKET.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.basket"));
         registration.addIngredientInfo(List.of(new ItemStack(Items.CLAY), new ItemStack(Items.CLAY_BALL)), VanillaTypes.ITEM_STACK,
