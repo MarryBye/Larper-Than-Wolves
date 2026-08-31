@@ -21,14 +21,12 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - 5 variants: Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand.
   - Visuals: Silver/white mineral flecks on counterpart vanilla textures.
   - Mining requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich soil block item. Digging with hands or silicon shovel drops standard soil.
-  - **Sifting Drops (Pure Natural Metal Dusts ONLY)**:
-    - Artificial alloys (Bronze Dust), Silicon Shards, and Flint are **strictly excluded** from rich soils.
-    - Uses independent rolls so rich soils provide multiple valuable native metal drops:
-      1. **Copper Dust** (`copper_dust`) — **40%** (Common)
-      2. **Tin Dust** (`tin_dust`) — **40%** (Common on par with copper)
-      3. **Iron Dust** (`iron_dust`) — **20%** (Rare)
-      4. **Gold Dust** (`gold_dust`) — **8%** (Very rare)
-      5. **Diamond Dust** (`diamond_dust`) — **3%** (Super rare)
+  - **Sifting Drops (Copper Dust, Tin Dust & Flint ONLY)**:
+    - High-tier minerals (Iron, Gold, Diamond) and artificial alloys (Bronze) are strictly removed from rich soils.
+    - Sifting rich soils yields base copper age metals and flint:
+      1. **Copper Dust** (`copper_dust`) — **45%**
+      2. **Tin Dust** (`tin_dust`) — **45%** (on par with copper)
+      3. **Flint** (`minecraft:flint`) — **10%**
   - Worldgen: Generates in large veins (size 20, 10–12 attempts/chunk) inside soil biomes.
 - **Sieve Processing & Mechanics (`sieve` / `SieveBlock` / `SieveBlockEntity`)**:
   - **No Passive Sifting**: The sieve does NOT passively sift resources over time. Input is on the left (9 slots, 3x3), output is on the right (9 slots, 3x3).
@@ -51,12 +49,9 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
       - Flint: **22%** (Rare)
       - Copper Dust: **8%** (Very rare)
     - **Rich Soils (Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand)**:
-      - Independent roll per mineral, strictly metal dusts only (no flint/silicon):
-      - 1. **Copper Dust**: **40%** (Common)
-      - 2. **Tin Dust**: **40%** (Common on par with copper)
-      - 3. **Iron Dust**: **20%** (Rare)
-      - 4. **Gold Dust**: **8%** (Very rare)
-      - 5. **Diamond Dust**: **3%** (Super rare)
+      - 1. **Copper Dust**: **45%**
+      - 2. **Tin Dust**: **45%**
+      - 3. **Flint**: **10%**
 
 ---
 

@@ -50,9 +50,7 @@ public class ModConfig {
 
         public final ModConfigSpec.DoubleValue sieveRichCopperDustChance;
         public final ModConfigSpec.DoubleValue sieveRichTinDustChance;
-        public final ModConfigSpec.DoubleValue sieveRichIronDustChance;
-        public final ModConfigSpec.DoubleValue sieveRichGoldDustChance;
-        public final ModConfigSpec.DoubleValue sieveRichDiamondDustChance;
+        public final ModConfigSpec.DoubleValue sieveRichFlintChance;
 
         public final ModConfigSpec.DoubleValue villageMinDistanceFromSpawn;
         public final ModConfigSpec.DoubleValue hoeGrassSeedDropChance;
@@ -132,22 +130,16 @@ public class ModConfig {
                     .comment("Chance of sifting Copper Dust from regular soil (gravel/sand/dirt) (default: 0.08 = 8%)")
                     .defineInRange("sieveCopperDustChance", 0.08, 0.0, 1.0);
 
-            // Sieve drop chances for rich soils (pure natural metal dusts ONLY):
+            // Sieve drop chances for rich soils:
             sieveRichCopperDustChance = builder
-                    .comment("Chance of sifting Copper Dust from Rich Soil (default: 0.40 = 40%)")
-                    .defineInRange("sieveRichCopperDustChance", 0.40, 0.0, 1.0);
+                    .comment("Chance of sifting Copper Dust from Rich Soil (default: 0.45 = 45%)")
+                    .defineInRange("sieveRichCopperDustChance", 0.45, 0.0, 1.0);
             sieveRichTinDustChance = builder
-                    .comment("Chance of sifting Tin Dust from Rich Soil (default: 0.40 = 40%)")
-                    .defineInRange("sieveRichTinDustChance", 0.40, 0.0, 1.0);
-            sieveRichIronDustChance = builder
-                    .comment("Chance of sifting Iron Dust from Rich Soil (default: 0.20 = 20%)")
-                    .defineInRange("sieveRichIronDustChance", 0.20, 0.0, 1.0);
-            sieveRichGoldDustChance = builder
-                    .comment("Chance of sifting Gold Dust from Rich Soil (default: 0.08 = 8%)")
-                    .defineInRange("sieveRichGoldDustChance", 0.08, 0.0, 1.0);
-            sieveRichDiamondDustChance = builder
-                    .comment("Chance of sifting Diamond Dust from Rich Soil (default: 0.03 = 3%)")
-                    .defineInRange("sieveRichDiamondDustChance", 0.03, 0.0, 1.0);
+                    .comment("Chance of sifting Tin Dust from Rich Soil (default: 0.45 = 45%)")
+                    .defineInRange("sieveRichTinDustChance", 0.45, 0.0, 1.0);
+            sieveRichFlintChance = builder
+                    .comment("Chance of sifting Flint from Rich Soil (default: 0.10 = 10%)")
+                    .defineInRange("sieveRichFlintChance", 0.10, 0.0, 1.0);
             builder.pop();
 
             builder.push("village_generation");

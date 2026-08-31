@@ -409,37 +409,24 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         input.shrink(1);
 
         if (isRich) {
-            // Rich Soils: Pure natural metal dusts ONLY (Copper Dust, Tin Dust, Iron Dust, Gold Dust, Diamond Dust)
-            // No silicon shards or flint ever drop from rich soils.
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.40;
-            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.40;
-            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.20;
-            double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichGoldDustChance.get() : 0.08;
-            double diamondChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichDiamondDustChance.get() : 0.03;
+            // Rich Soils: Copper Dust (45%), Tin Dust (45%), Flint (10%)
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.45;
+            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.45;
+            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichFlintChance.get() : 0.10;
 
-            // Copper Dust - Common (~40%)
+            // Copper Dust (~45%)
             if (ThreadLocalRandom.current().nextDouble() < copperChance) {
                 insertOutput(new ItemStack(ModItems.COPPER_DUST.get(), 1));
             }
 
-            // Tin Dust - Common on par with copper (~40%)
+            // Tin Dust (~45%)
             if (ThreadLocalRandom.current().nextDouble() < tinChance) {
                 insertOutput(new ItemStack(ModItems.TIN_DUST.get(), 1));
             }
 
-            // Iron Dust - Rare (~20%)
-            if (ThreadLocalRandom.current().nextDouble() < ironChance) {
-                insertOutput(new ItemStack(ModItems.IRON_DUST.get(), 1));
-            }
-
-            // Gold Dust - Very rare (8%)
-            if (ThreadLocalRandom.current().nextDouble() < goldChance) {
-                insertOutput(new ItemStack(ModItems.GOLD_DUST.get(), 1));
-            }
-
-            // Diamond Dust - Super rare (3%)
-            if (ThreadLocalRandom.current().nextDouble() < diamondChance) {
-                insertOutput(new ItemStack(ModItems.DIAMOND_DUST.get(), 1));
+            // Flint (~10%)
+            if (ThreadLocalRandom.current().nextDouble() < flintChance) {
+                insertOutput(new ItemStack(Items.FLINT, 1));
             }
         } else {
             // Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious): Silicon Shard (frequent) -> Flint (rare) -> Copper Dust (very rare)

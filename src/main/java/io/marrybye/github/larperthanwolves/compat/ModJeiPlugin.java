@@ -96,9 +96,7 @@ public class ModJeiPlugin implements IModPlugin {
         List<ItemStack> richSoilOutputs = List.of(
                 new ItemStack(ModItems.COPPER_DUST.get()),
                 new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(ModItems.GOLD_DUST.get()),
-                new ItemStack(ModItems.DIAMOND_DUST.get())
+                new ItemStack(Items.FLINT)
         );
 
         registration.addRecipes(SieveRecipeCategory.TYPE, List.of(

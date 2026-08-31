@@ -125,15 +125,13 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Textures: Counterpart vanilla textures with distinct white/silver mineral flecks and top-left lighting.
   - Digging Hardness: 2x slower (`destroyTime: 1.0f - 1.2f`).
   - Mining Requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich block item (Rich Grass drops Rich Dirt unless Silk Touch is used). Breaking with hands or other tools drops standard soil (Dirt/Gravel/Sand/Red Sand).
-  - **Sifting in Sieve (Pure Natural Metal Dusts ONLY with Independent Multi-Rolls)**:
-    - Artificial alloys (Bronze Dust) and common stones (Silicon Shards, Flint) are **strictly excluded** (only drop from standard soils).
+  - **Sifting in Sieve (Copper Dust, Tin Dust & Flint ONLY)**:
+    - High-tier minerals (Iron, Gold, Diamond) and artificial alloys (Bronze) are strictly removed from rich soils.
     - Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, and Rich Red Sand are all siftable.
-    - Yields purely valuable native metals & minerals via independent multi-rolls:
-      1. Copper Dust (`copper_dust`) — **40%** (Common)
-      2. Tin Dust (`tin_dust`) — **40%** (Common on par with copper)
-      3. Iron Dust (`iron_dust`) — **20%** (Rare)
-      4. Gold Dust (`gold_dust`) — **8%** (Very rare)
-      5. Diamond Dust (`diamond_dust`) — **3%** (Super rare)
+    - Yields copper-age resources:
+      1. Copper Dust (`copper_dust`) — **45%**
+      2. Tin Dust (`tin_dust`) — **45%** (on par with copper)
+      3. Flint (`minecraft:flint`) — **10%**
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
 ### 🌾 Farming, Mandatory Fertilization (Bone Meal & Dung) & 2-Stage Hoe Tilling
