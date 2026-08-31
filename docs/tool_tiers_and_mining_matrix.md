@@ -27,6 +27,15 @@ This document defines the complete tool tier progression, durability, harvest sp
 
 ## 🔍 Exhaustive Mining Matrix & Drop Rules
 
+### 0. Primitive Tools (Заострённая палка и Заострённый камешек)
+* **Pointed Stick (`pointed_stick`, 2 uses)**:
+  * **Stone (`minecraft:stone`)**: 1st hit fractures stone into **Cracked Stone** (`cracked_stone`); 2nd hit converts cracked stone into **Cobblestone** and drops **1 Stone Pebble** (`stone_nugget`).
+  * **Strictly Blocked**: Cannot mine any other block, ore, or rock (speed = 0.0, cancelled).
+* **Pointed Pebble (`pointed_pebble`, 4 uses)**:
+  * **Copper Ore (`minecraft:copper_ore` / `deepslate_copper_ore`)**: drops **1 Copper Dust** (`copper_dust`) and converts the ore block into **Cobblestone** (`minecraft:cobblestone`).
+  * **Stone (`minecraft:stone`)**: 1-hit fast mining (speed `2.0f`, no cracked stone stage) converts stone into **Cobblestone** and drops **1 Stone Pebble** (`stone_nugget`).
+  * **Strictly Blocked**: Cannot mine Tin Ore, Iron Ore, Coal Ore, Sandstone, Granite, Diorite, Andesite, Deepslate, or any other ores/rocks (speed = 0.0, cancelled).
+
 ### 1. Silicon Tier (Кремниевая кирка / лопата)
 * **Allowed Mining & Drops**:
   * **Coal Ore**: drops 1 `Items.COAL`.

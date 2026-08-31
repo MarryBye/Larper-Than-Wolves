@@ -19,7 +19,8 @@ This protocol ensures that deep technical and architectural context, invariants,
 * Files must be named in lowercase with underscores (`feature_name.md`).
 
 ### 2. Pre-Modification Consultation (Mandatory Reading)
-* **BEFORE** modifying, rebalancing, refactoring, or fixing any existing feature, the agent **MUST** read and inspect the corresponding feature documentation file in `docs/`.
+* **BEFORE** modifying, rebalancing, refactoring, or fixing any existing feature, the agent **MUST** read and inspect the corresponding feature documentation file in `docs/` and `AGENTS.md`.
+* **Single Source of Truth**: All factual game rules, block lists, drop rates, tick counts, tool matrices, and mechanic behaviors MUST be read directly from `docs/*.md` and `AGENTS.md`. Skills must remain procedural/workflow instructions and must NEVER be treated as static sources of game mechanic data.
 * Understand existing design intent, collision bounds, tick intervals, state transitions, client-server sync requirements, and edge cases before making code changes.
 
 ### 3. Post-Modification Documentation Sync (The 3-Pillar Rule)

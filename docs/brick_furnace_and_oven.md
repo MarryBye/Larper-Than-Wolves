@@ -19,7 +19,7 @@ This system splits high-temperature thermal processing into two strictly special
 - **Unified Fuel & Heat Matrix (`FuelRegistry`)**:
   - Every fuel in the game provides a distinct **Burn Duration** and **Cooking Speed (Heat Level)**.
   - Burn durations are extended ~2–2.5x compared to standard rates for realistic long-lasting burns.
-  - Fuels are logically tiered from kindling/twigs up to molten volcanic lava buckets.
+  - Fuels are logically tiered across 9 realistic solid combustible tiers (from twigs and dry grass up to coal blocks). Molten lava buckets are completely disabled and purged as unrealistic furnace fuel.
 
 ### 🔥 Fuel Hierarchy & Characteristics Table
 
@@ -55,8 +55,8 @@ This system splits high-temperature thermal processing into two strictly special
 1. **Food in Brick Furnace**: Attempt to insert Raw Beef into a Brick Furnace. Verify insertion is rejected.
 2. **Ore in Oven**: Attempt to insert Raw Copper into an Oven. Verify insertion is rejected.
 3. **Manual Ignition**: Insert coal and iron dust into Brick Furnace. Verify it remains idle until clicked with a Lighter or Flint & Steel.
-4. **Lava Bucket Refueling**: Right-click Brick Furnace with a Lava Bucket. Verify the furnace receives 45000 burn ticks and returns an empty bucket to the player.
-5. **Twigs/Planks/Logs Differentiation**: Compare burn durations in JEI and gameplay for Twigs (25s), Planks (70s), and Logs (110s).
+4. **Coal Block Refueling**: Insert a Coal Block into Brick Furnace. Verify it receives 36000 burn ticks (30 minutes) at 80 ticks/item cooking speed.
+5. **Twigs/Planks/Logs Differentiation**: Compare burn durations in JEI and gameplay for Twigs (45s), Planks (120s), and Logs (165s).
 
 ---
 

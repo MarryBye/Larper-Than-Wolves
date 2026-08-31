@@ -16,12 +16,12 @@ The **Hand Mill** (Quern / Молотилка) and **Mill Crank** (Рукоят�
   - Adds **5% progress** per full rotation (20 full rotations = 100% completion).
   - Interaction lock prevents spamming clicks faster than the 0.5s rotation animation.
 - **Automated Operation (Create Kinetic Energy)**:
-  - If Create is loaded, shafts, cogwheels, or rotational power sources connected to the Mill grind items continuously from any face.
+  - If Create is loaded, connecting rotating shafts, cogwheels, or kinetic power sources directly to the **top face** of the Mill automatically grinds items continuously (strictly accepts rotation from the top face).
   - Processing speed scales linearly with rotational RPM:
     - 16 RPM: standard baseline speed.
     - 64 RPM: 4x speed.
     - 256 RPM: 16x speed.
-  - Create Hand Crank can be mounted on the Mill, and the Mill Crank can be mounted on Create kinetic blocks and turned to provide manual kinetic rotation.
+  - Create Hand Crank can be mounted on the Mill, and the Mill Crank can be mounted on Create kinetic blocks and turned to provide manual kinetic rotational force to the connected network.
 - **Core Grinding Ratios**:
   - 1 Metal Ingot (Iron, Copper, Gold, Tin, Bronze) $\rightarrow$ 8 Dusts (2 Dust = 1 Nugget, 4 Nuggets = 1 Ingot).
   - 1 Diamond $\rightarrow$ 8 Diamond Dust.

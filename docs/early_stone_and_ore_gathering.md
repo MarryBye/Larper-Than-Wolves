@@ -27,16 +27,18 @@ This document describes the very early-game primitive resource acquisition mecha
 - **Crafting**: 1 Pebble of any type (`#larperthanwolves:pebbles`) in crafting grid $\rightarrow$ 1 Pointed Pebble.
 - **Supported Pebble Types**:
   - Stone Nugget (`stone_nugget`), Diorite Nugget, Granite Nugget, Andesite Nugget, Tuff Nugget, Calcite Nugget, Deepslate Nugget, Dripstone Nugget, Netherrack Nugget.
-- **Ore Chipping Mechanic**:
+- **Copper Ore Chipping & 1-Hit Fast Stone Harvesting**:
   - **Copper Ore Chipping**:
     - Breaking a Copper Ore block (`minecraft:copper_ore` or `minecraft:deepslate_copper_ore`) with a Pointed Pebble chips out pure metal flakes.
     - Spawns **1 Copper Dust** (`larperthanwolves:copper_dust`).
     - The ore block is **depleted and replaced with Cobblestone** (`minecraft:cobblestone`).
     - Consumes **1 durability** of the Pointed Pebble.
-  - **Tin Ore Chipping**:
-    - Breaking Tin Ore (`larperthanwolves:tin_ore` or `larperthanwolves:deepslate_tin_ore`) with a Pointed Pebble chips out **1 Tin Dust** (`larperthanwolves:tin_dust`).
-    - The ore block is replaced with Cobblestone.
+  - **1-Hit Fast Stone Harvesting**:
+    - Breaking a standard Stone block (`minecraft:stone`) with a Pointed Pebble chips off a piece in **1 single hit** (faster mining speed `2.0f`, no intermediate cracked stone stage).
+    - Converts the stone block into **Cobblestone** (`minecraft:cobblestone`) and drops **1 Stone Pebble** (`larperthanwolves:stone_nugget`).
     - Consumes **1 durability** of the Pointed Pebble.
+  - **Strict Mining Exclusion**:
+    - Pointed Pebble **CANNOT** mine Tin Ore, Iron Ore, Coal Ore, Sandstone, Granite, Diorite, Andesite, Deepslate, or any other ores or rocks (mining speed = 0.0, event cancelled).
   - The resulting Cobblestone blocks cannot be mined with pebbles or sticks (requiring pickaxes).
 
 ### 3. Cracked Stone (`cracked_stone` / `ModBlocks.CRACKED_STONE`)
@@ -53,8 +55,8 @@ flowchart TD
     Stone[Natural Stone] -->|Pointed Stick Hit 1| CrackedStone[Cracked Stone]
     CrackedStone -->|Pointed Stick Hit 2| CobbleAndPebble[Cobblestone + 1 Stone Pebble]
     CobbleAndPebble -->|Shapeless Crafting| PointedPebble[Pointed Pebble <br/> 4 Durability]
+    PointedPebble -->|1-Hit Fast Mining| FastStone[Natural Stone -> Cobblestone + 1 Stone Pebble]
     PointedPebble -->|Chip Copper Ore| CopperDust[1 Copper Dust + Cobblestone]
-    PointedPebble -->|Chip Tin Ore| TinDust[1 Tin Dust + Cobblestone]
     CopperDust -->|2x Copper Dust| RawCopper[1 Raw Copper]
     RawCopper -->|Brick Furnace| CopperNugget[1 Copper Nugget]
     CopperNugget -->|4x Nuggets| CopperIngot[1 Copper Ingot]
