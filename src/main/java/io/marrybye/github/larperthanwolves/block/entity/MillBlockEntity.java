@@ -48,9 +48,10 @@ public class MillBlockEntity extends BlockEntity implements WorldlyContainer, Me
             return;
         }
 
-        // Support kinetic rotational force automation if Create is installed
+        // Support kinetic rotational force automation if Create is installed (exclusively through top face)
         if (net.neoforged.fml.ModList.get().isLoaded("create")) {
-            float speed = io.marrybye.github.larperthanwolves.compat.CreateCompatHelper.getKineticSpeed(level, pos);
+            net.minecraft.core.Direction[] topFace = new net.minecraft.core.Direction[] { net.minecraft.core.Direction.UP };
+            float speed = io.marrybye.github.larperthanwolves.compat.CreateCompatHelper.getKineticSpeed(level, pos, topFace);
             if (speed > 0.0f) {
                 // 16 RPM (Hand Crank) = 0.5 progress/tick (10 ticks per 5%)
                 // 64 RPM = 2.0 progress/tick

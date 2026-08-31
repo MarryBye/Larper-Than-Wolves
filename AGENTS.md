@@ -51,9 +51,9 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Right-Click Cranking: Right-clicking the crank rotates the handle 360° over **0.5 seconds (10 ticks)** and advances progress by **5%** (20 rotations = 100% completion). Subsequent right-clicks are locked until the current 0.5s rotation finishes.
   - **Create Rotational Force Automation**:
     - Optional integration with Create 6.0.10+.
-    - Connecting Create rotating shafts, cogs, or engines directly to the Mill automatically grinds items continuously.
+    - Connecting Create rotating shafts, cogs, or engines directly to the **top face** of the Mill automatically grinds items continuously (strictly accepts rotation from the top face).
     - Grinding speed scales directly with rotational RPM (e.g. 16 RPM = normal speed, 64 RPM = 4x speed, 256 RPM = 16x speed).
-    - Supports Create Hand Cranks placed on the mill, and Mill Crank can be mounted on Create kinetic blocks and turned to provide manual kinetic rotational force.
+    - Supports Create Hand Cranks placed on the mill, and Mill Crank can be mounted on Create kinetic blocks and turned to provide manual kinetic rotational force to the connected network.
   - Base Grinding Ratios:
     - 1 Ingot (Iron, Copper, Gold, Tin, Bronze) $\rightarrow$ 8 Dusts (2 Dust = 1 Nugget, 4 Nuggets = 1 Ingot).
     - 1 Diamond $\rightarrow$ 8 Diamond Dust.

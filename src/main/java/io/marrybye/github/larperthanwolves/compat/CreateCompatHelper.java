@@ -9,7 +9,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * Safe optional integration helper for Create mod (6.0.10+).
@@ -21,8 +23,11 @@ public class CreateCompatHelper {
     private static Class<?> handCrankBeClass = null;
     private static Class<?> rotationPropagatorClass = null;
     private static Class<?> iRotateClass = null;
+    private static Class<?> kineticNetworkClass = null;
     private static Method getSpeedMethod = null;
     private static Method setSpeedMethod = null;
+    private static Method onSpeedChangedMethod = null;
+    private static Method getOrCreateNetworkMethod = null;
     private static Method setSourceMethod = null;
     private static Method removeSourceMethod = null;
     private static Method sendDataMethod = null;
@@ -30,6 +35,10 @@ public class CreateCompatHelper {
     private static Method handleAddedMethod = null;
     private static Method handleRemovedMethod = null;
     private static Method hasShaftTowardsMethod = null;
+    private static Method updateNetworkMethod = null;
+    private static Method syncMethod = null;
+    private static Field membersField = null;
+    private static Field sourcesField = null;
     private static boolean initialized = false;
 
     private static void init() {
@@ -39,10 +48,22 @@ public class CreateCompatHelper {
             kineticBeClass = Class.forName("com.simibubi.create.content.kinetics.base.KineticBlockEntity");
             getSpeedMethod = kineticBeClass.getMethod("getSpeed");
             setSpeedMethod = kineticBeClass.getMethod("setSpeed", float.class);
+            onSpeedChangedMethod = kineticBeClass.getMethod("onSpeedChanged", float.class);
+            getOrCreateNetworkMethod = kineticBeClass.getMethod("getOrCreateNetwork");
             setSourceMethod = kineticBeClass.getMethod("setSource", BlockPos.class);
             removeSourceMethod = kineticBeClass.getMethod("removeSource");
         } catch (Throwable ignored) {
             kineticBeClass = null;
+        }
+
+        try {
+            kineticNetworkClass = Class.forName("com.simibubi.create.content.kinetics.KineticNetwork");
+            updateNetworkMethod = kineticNetworkClass.getMethod("updateNetwork");
+            syncMethod = kineticNetworkClass.getMethod("sync");
+            membersField = kineticNetworkClass.getField("members");
+            sourcesField = kineticNetworkClass.getField("sources");
+        } catch (Throwable ignored) {
+            kineticNetworkClass = null;
         }
 
         try {
@@ -122,6 +143,7 @@ public class CreateCompatHelper {
 
     /**
      * Applies manual kinetic rotation to a connected Create block entity.
+     * Updates the full connected KineticNetwork and synchronizes all member blocks.
      */
     public static void applyKineticRotation(Level level, BlockPos crankPos, BlockPos attachedPos, BlockEntity attachedBe, float speed) {
         init();
@@ -136,32 +158,59 @@ public class CreateCompatHelper {
                 return;
             }
 
-            if (speed != 0.0f) {
-                if (setSpeedMethod != null) {
-                    setSpeedMethod.invoke(attachedBe, speed);
-                }
-                if (setSourceMethod != null) {
-                    setSourceMethod.invoke(attachedBe, crankPos);
-                }
-                if (handleAddedMethod != null) {
-                    handleAddedMethod.invoke(null, level, attachedPos, attachedBe);
-                }
-                if (sendDataMethod != null) {
-                    sendDataMethod.invoke(attachedBe);
+            Object network = null;
+            if (getOrCreateNetworkMethod != null) {
+                network = getOrCreateNetworkMethod.invoke(attachedBe);
+            }
+
+            if (network != null && membersField != null) {
+                @SuppressWarnings("unchecked")
+                Map<Object, Float> members = (Map<Object, Float>) membersField.get(network);
+                @SuppressWarnings("unchecked")
+                Map<Object, Float> sources = (sourcesField != null) ? (Map<Object, Float>) sourcesField.get(network) : null;
+
+                if (speed != 0.0f) {
+                    if (sources != null) {
+                        sources.put(attachedBe, speed);
+                    }
+                    if (members != null && !members.isEmpty()) {
+                        for (Map.Entry<Object, Float> entry : members.entrySet()) {
+                            Object memberBe = entry.getKey();
+                            float modifier = entry.getValue() != null ? entry.getValue() : 1.0f;
+                            float targetSpeed = speed * modifier;
+                            if (setSpeedMethod != null) setSpeedMethod.invoke(memberBe, targetSpeed);
+                            if (onSpeedChangedMethod != null) onSpeedChangedMethod.invoke(memberBe, 0.0f);
+                            if (sendDataMethod != null) sendDataMethod.invoke(memberBe);
+                        }
+                    } else {
+                        if (setSpeedMethod != null) setSpeedMethod.invoke(attachedBe, speed);
+                        if (onSpeedChangedMethod != null) onSpeedChangedMethod.invoke(attachedBe, 0.0f);
+                        if (sendDataMethod != null) sendDataMethod.invoke(attachedBe);
+                    }
+                    if (updateNetworkMethod != null) updateNetworkMethod.invoke(network);
+                    if (syncMethod != null) syncMethod.invoke(network);
+                } else {
+                    if (sources != null) {
+                        sources.remove(attachedBe);
+                    }
+                    if (members != null && !members.isEmpty()) {
+                        for (Object memberBe : members.keySet()) {
+                            if (setSpeedMethod != null) setSpeedMethod.invoke(memberBe, 0.0f);
+                            if (onSpeedChangedMethod != null) onSpeedChangedMethod.invoke(memberBe, speed);
+                            if (sendDataMethod != null) sendDataMethod.invoke(memberBe);
+                        }
+                    } else {
+                        if (setSpeedMethod != null) setSpeedMethod.invoke(attachedBe, 0.0f);
+                        if (onSpeedChangedMethod != null) onSpeedChangedMethod.invoke(attachedBe, speed);
+                        if (sendDataMethod != null) sendDataMethod.invoke(attachedBe);
+                    }
+                    if (updateNetworkMethod != null) updateNetworkMethod.invoke(network);
+                    if (syncMethod != null) syncMethod.invoke(network);
                 }
             } else {
-                if (handleRemovedMethod != null) {
-                    handleRemovedMethod.invoke(null, level, attachedPos, attachedBe);
-                }
-                if (setSpeedMethod != null) {
-                    setSpeedMethod.invoke(attachedBe, 0.0f);
-                }
-                if (removeSourceMethod != null) {
-                    removeSourceMethod.invoke(attachedBe);
-                }
-                if (sendDataMethod != null) {
-                    sendDataMethod.invoke(attachedBe);
-                }
+                if (setSpeedMethod != null) setSpeedMethod.invoke(attachedBe, speed);
+                if (onSpeedChangedMethod != null) onSpeedChangedMethod.invoke(attachedBe, 0.0f);
+                if (sendDataMethod != null) sendDataMethod.invoke(attachedBe);
             }
         } catch (Throwable ignored) {
         }

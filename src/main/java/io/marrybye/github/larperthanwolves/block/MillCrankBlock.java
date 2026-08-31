@@ -160,9 +160,9 @@ public class MillCrankBlock extends BaseEntityBlock {
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
         } else if (CreateCompatHelper.isKineticBlockEntity(attachedBe)) {
-            crankBe.startRotation();
+            float speed = player.isShiftKeyDown() ? -32.0f : 32.0f;
+            crankBe.startRotation(speed);
             if (!level.isClientSide) {
-                float speed = player.isShiftKeyDown() ? -32.0f : 32.0f;
                 CreateCompatHelper.applyKineticRotation(level, pos, attachedPos, attachedBe, speed);
             }
             level.playSound(null, pos, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.5f, 1.4f);
