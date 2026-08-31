@@ -114,7 +114,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Active Only When Input Is Present**: Both manual shaking and Create rotation animate and function strictly when valid siftable soils are loaded in the input slots.
   - **Catch Basin & Side Axle Socket 3D Model**: Features a wooden collection basin underneath the mesh where sifted mineral dusts drop, and protruding bronze/iron bearing sockets on the side walls for kinetic shafts.
   - **Increased Sifting Drop Rates**:
-    - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious)**:
+    - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious)**:
       - Silicon Shards: **40%** (was 30%)
       - Flint: **22%** (was 15%)
       - Copper Dust: **8%** (was 5%)
@@ -125,6 +125,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Mining Requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich block item (Rich Grass drops Rich Dirt unless Silk Touch is used). Breaking with hands or other tools drops standard soil (Dirt/Gravel/Sand/Red Sand).
   - **Sifting in Sieve (Pure Natural Metal Dusts ONLY)**:
     - Artificial alloys (Bronze Dust) and common stones (Silicon Shards, Flint) are **strictly excluded**.
+    - Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, and Rich Red Sand are all siftable.
     - Yields purely valuable native metals & minerals:
       1. Copper Dust (`copper_dust`) — **55%** (was 50%)
       2. Tin Dust (`tin_dust`) — **32%** (was 30%)

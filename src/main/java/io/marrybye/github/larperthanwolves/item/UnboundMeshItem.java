@@ -58,15 +58,16 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int count) {
-        int currentProgress = stack.getDamageValue() + 1;
-        stack.setDamageValue(Math.min(MAX_PROGRESS_TICKS, currentProgress));
+        int duration = getUseDuration(stack, livingEntity);
+        int elapsedInSession = duration - count;
+        int currentTotalProgress = stack.getDamageValue() + elapsedInSession;
 
-        if (currentProgress % 4 == 0) {
+        if (elapsedInSession % 4 == 0) {
             level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
                     SoundEvents.BRUSH_GENERIC, SoundSource.PLAYERS, 0.7F, 0.85F + level.random.nextFloat() * 0.3F);
         }
 
-        if (currentProgress >= MAX_PROGRESS_TICKS) {
+        if (currentTotalProgress >= MAX_PROGRESS_TICKS || count <= 1) {
             if (!level.isClientSide && livingEntity instanceof Player player) {
                 playCompleteSounds(level, player);
                 InteractionHand hand = player.getUsedItemHand();
@@ -80,18 +81,20 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        if (stack.getDamageValue() >= MAX_PROGRESS_TICKS) {
-            if (!level.isClientSide && livingEntity instanceof Player player) {
-                playCompleteSounds(level, player);
-            }
-            return new ItemStack(ModItems.MESH.get());
+        if (!level.isClientSide && livingEntity instanceof Player player) {
+            playCompleteSounds(level, player);
         }
-        return stack;
+        return new ItemStack(ModItems.MESH.get());
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeLeft) {
-        if (stack.getDamageValue() >= MAX_PROGRESS_TICKS) {
+        int duration = getUseDuration(stack, livingEntity);
+        int elapsedInSession = duration - timeLeft;
+        int newTotalProgress = Math.min(MAX_PROGRESS_TICKS, stack.getDamageValue() + elapsedInSession);
+        stack.setDamageValue(newTotalProgress);
+
+        if (newTotalProgress >= MAX_PROGRESS_TICKS) {
             if (!level.isClientSide && livingEntity instanceof Player player) {
                 playCompleteSounds(level, player);
                 InteractionHand hand = player.getUsedItemHand();

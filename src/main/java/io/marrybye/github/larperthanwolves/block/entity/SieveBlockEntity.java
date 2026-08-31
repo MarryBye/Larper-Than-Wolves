@@ -170,6 +170,8 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
                 stack.is(Blocks.RED_SAND.asItem()) ||
                 stack.is(Blocks.SUSPICIOUS_SAND.asItem()) ||
                 stack.is(Blocks.DIRT.asItem()) ||
+                stack.is(Blocks.GRASS_BLOCK.asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRASS_BLOCK.get().asItem()) ||
                 stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_DIRT.get().asItem()) ||
                 stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRAVEL.get().asItem()) ||
                 stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_SAND.get().asItem()) ||
@@ -177,7 +179,8 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
     }
 
     public static boolean isRichSoil(ItemStack stack) {
-        return stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_DIRT.get().asItem()) ||
+        return stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRASS_BLOCK.get().asItem()) ||
+                stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_DIRT.get().asItem()) ||
                 stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_GRAVEL.get().asItem()) ||
                 stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_SAND.get().asItem()) ||
                 stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_RED_SAND.get().asItem());
