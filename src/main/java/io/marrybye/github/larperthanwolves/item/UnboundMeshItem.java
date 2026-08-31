@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 public class UnboundMeshItem extends Item {
     public static final int MAX_PROGRESS_TICKS = 300; // 15 seconds at 20 ticks/sec
-    public static final int EATING_CYCLE_TICKS = 32;  // standard food eating animation cycle
+    public static final int USE_DURATION = 72000;
 
     public UnboundMeshItem(Properties properties) {
         super(properties);
@@ -37,64 +37,74 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return EATING_CYCLE_TICKS;
+        return USE_DURATION;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        if (stack.getDamageValue() >= MAX_PROGRESS_TICKS) {
+            if (!level.isClientSide) {
+                playCompleteSounds(level, player);
+                ItemStack finishedMesh = new ItemStack(ModItems.MESH.get());
+                player.setItemInHand(hand, finishedMesh);
+            }
+            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        }
+
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(stack);
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int count) {
-        int currentTicks = stack.getDamageValue() + 1;
-        stack.setDamageValue(Math.min(MAX_PROGRESS_TICKS, currentTicks));
+        int currentProgress = stack.getDamageValue() + 1;
+        stack.setDamageValue(Math.min(MAX_PROGRESS_TICKS, currentProgress));
 
-        if (currentTicks % 4 == 0) {
+        if (currentProgress % 4 == 0) {
             level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
                     SoundEvents.BRUSH_GENERIC, SoundSource.PLAYERS, 0.7F, 0.85F + level.random.nextFloat() * 0.3F);
         }
 
-        if (currentTicks >= MAX_PROGRESS_TICKS) {
-            finishBinding(stack, level, livingEntity);
-            livingEntity.stopUsingItem();
+        if (currentProgress >= MAX_PROGRESS_TICKS) {
+            if (!level.isClientSide && livingEntity instanceof Player player) {
+                playCompleteSounds(level, player);
+                InteractionHand hand = player.getUsedItemHand();
+                player.stopUsingItem();
+                player.setItemInHand(hand, new ItemStack(ModItems.MESH.get()));
+            } else if (level.isClientSide) {
+                livingEntity.stopUsingItem();
+            }
         }
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         if (stack.getDamageValue() >= MAX_PROGRESS_TICKS) {
-            return finishBinding(stack, level, livingEntity);
-        }
-        if (livingEntity instanceof Player player) {
-            player.startUsingItem(player.getUsedItemHand());
+            if (!level.isClientSide && livingEntity instanceof Player player) {
+                playCompleteSounds(level, player);
+            }
+            return new ItemStack(ModItems.MESH.get());
         }
         return stack;
     }
 
-    private ItemStack finishBinding(ItemStack stack, Level level, LivingEntity livingEntity) {
-        level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
-                SoundEvents.LEASH_KNOT_PLACE, SoundSource.PLAYERS, 1.0F, 1.2F);
-        level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
-                SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.3F, 1.8F);
-
-        ItemStack finishedMesh = new ItemStack(ModItems.MESH.get());
-        if (livingEntity instanceof Player player) {
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-                if (stack.isEmpty()) {
-                    return finishedMesh;
-                } else {
-                    if (!player.getInventory().add(finishedMesh)) {
-                        player.drop(finishedMesh, false);
-                    }
-                    return stack;
-                }
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeLeft) {
+        if (stack.getDamageValue() >= MAX_PROGRESS_TICKS) {
+            if (!level.isClientSide && livingEntity instanceof Player player) {
+                playCompleteSounds(level, player);
+                InteractionHand hand = player.getUsedItemHand();
+                player.setItemInHand(hand, new ItemStack(ModItems.MESH.get()));
             }
         }
-        return finishedMesh;
+    }
+
+    private static void playCompleteSounds(Level level, LivingEntity entity) {
+        level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                SoundEvents.LEASH_KNOT_PLACE, SoundSource.PLAYERS, 1.0F, 1.2F);
+        level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.4F, 1.8F);
     }
 
     @Override
