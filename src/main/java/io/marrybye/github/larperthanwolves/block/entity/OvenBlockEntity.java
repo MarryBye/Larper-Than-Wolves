@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
+public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider, IFueledMachine {
     // 0, 1, 2: Food Inputs; 3, 4, 5: Food Outputs; 6: Stored Fuel
     private final NonNullList<ItemStack> items = NonNullList.withSize(7, ItemStack.EMPTY);
 
@@ -34,6 +34,36 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
     private int cookTimeTotal = 200;
     private int fuelCookSpeed = 200;
     private boolean wasLitOnce = false;
+
+    @Override
+    public int getBurnTime() { return this.burnTime; }
+
+    @Override
+    public void setBurnTime(int burnTime) { this.burnTime = burnTime; }
+
+    @Override
+    public int getMaxBurnTime() { return this.maxBurnTime; }
+
+    @Override
+    public void setMaxBurnTime(int maxBurnTime) { this.maxBurnTime = maxBurnTime; }
+
+    @Override
+    public int getFuelCookSpeed() { return this.fuelCookSpeed; }
+
+    @Override
+    public void setFuelCookSpeed(int cookSpeed) {
+        this.fuelCookSpeed = cookSpeed;
+        this.cookTimeTotal = cookSpeed;
+    }
+
+    @Override
+    public int getFuelSlot() { return 6; }
+
+    @Override
+    public ItemStack getFuelItem() { return this.items.get(6); }
+
+    @Override
+    public void setFuelItem(ItemStack stack) { this.items.set(6, stack); }
 
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -114,6 +144,11 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
             changed = true;
         }
 
+        // Auto-refuel from fuel slot 5 ticks before fire goes out
+        if (entity.tickFuelAutoFeed()) {
+            changed = true;
+        }
+
         // Cooking logic
         if (entity.burnTime > 0) {
             // Find first slot in order (0, 1, 2) that has valid cookable food
@@ -168,14 +203,6 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
         if (changed) {
             setChanged(level, pos, state);
         }
-    }
-
-    public int getBurnTime() {
-        return this.burnTime;
-    }
-
-    public int getMaxBurnTime() {
-        return this.maxBurnTime;
     }
 
     private boolean canOutput(ItemStack result) {
@@ -236,18 +263,8 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
     }
 
     public boolean lightOven() {
-        if (burnTime > 0) return false;
-
-        ItemStack stored = items.get(6);
-        if (!stored.isEmpty() && FuelRegistry.isValidFuel(stored)) {
-            FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(stored);
-            burnTime = info.burnDuration;
-            maxBurnTime = info.burnDuration;
-            fuelCookSpeed = info.cookSpeed;
-            cookTimeTotal = fuelCookSpeed;
-            wasLitOnce = true;
-            ItemStack remainder = stored.getCraftingRemainingItem();
-            items.set(6, remainder.isEmpty() ? ItemStack.EMPTY : remainder);
+        if (lightFromStoredFuel()) {
+            this.wasLitOnce = true;
             setChanged();
             return true;
         }
@@ -317,7 +334,7 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
     public boolean canPlaceItem(int slot, ItemStack stack) {
         // Strictly FOOD ONLY in slots 0..2! No ores or metals allowed.
         if (slot < 3) return FoodCookingRegistry.isFood(stack);
-        if (slot == 6) return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+        if (slot == 6) return FuelRegistry.isValidFuel(stack);
         return false;
     }
 
@@ -356,7 +373,7 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
         Direction back = facing.getOpposite();
 
         if (side == back && slot == 6) {
-            return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+            return FuelRegistry.isValidFuel(stack);
         }
 
         if (side == Direction.UP && slot < 3) {

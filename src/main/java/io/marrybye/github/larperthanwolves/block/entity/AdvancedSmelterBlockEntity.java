@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
+public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider, IFueledMachine {
     // 0, 1, 2: Inputs; 3, 4, 5: Outputs; 6: Stored Fuel
     private final NonNullList<ItemStack> items = NonNullList.withSize(7, ItemStack.EMPTY);
 
@@ -48,6 +48,36 @@ public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyCo
     private int cookTimeTotal = 200;
     private int fuelCookSpeed = 200;
     private boolean wasLitOnce = false;
+
+    @Override
+    public int getBurnTime() { return this.burnTime; }
+
+    @Override
+    public void setBurnTime(int burnTime) { this.burnTime = burnTime; }
+
+    @Override
+    public int getMaxBurnTime() { return this.maxBurnTime; }
+
+    @Override
+    public void setMaxBurnTime(int maxBurnTime) { this.maxBurnTime = maxBurnTime; }
+
+    @Override
+    public int getFuelCookSpeed() { return this.fuelCookSpeed; }
+
+    @Override
+    public void setFuelCookSpeed(int cookSpeed) {
+        this.fuelCookSpeed = cookSpeed;
+        this.cookTimeTotal = cookSpeed;
+    }
+
+    @Override
+    public int getFuelSlot() { return 6; }
+
+    @Override
+    public ItemStack getFuelItem() { return this.items.get(6); }
+
+    @Override
+    public void setFuelItem(ItemStack stack) { this.items.set(6, stack); }
 
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -124,6 +154,11 @@ public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyCo
         // Burn time countdown
         if (entity.burnTime > 0) {
             entity.burnTime--;
+            changed = true;
+        }
+
+        // Auto-refuel from fuel slot 5 ticks before fire goes out to keep fire roaring
+        if (entity.tickFuelAutoFeed()) {
             changed = true;
         }
 
@@ -284,18 +319,8 @@ public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyCo
     }
 
     public boolean lightFurnace() {
-        if (burnTime > 0) return false;
-
-        ItemStack stored = items.get(6);
-        if (!stored.isEmpty() && FuelRegistry.isValidFuel(stored)) {
-            FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(stored);
-            burnTime = info.burnDuration;
-            maxBurnTime = info.burnDuration;
-            fuelCookSpeed = info.cookSpeed;
-            cookTimeTotal = fuelCookSpeed;
-            wasLitOnce = true;
-            ItemStack remainder = stored.getCraftingRemainingItem();
-            items.set(6, remainder.isEmpty() ? ItemStack.EMPTY : remainder);
+        if (lightFromStoredFuel()) {
+            this.wasLitOnce = true;
             setChanged();
             return true;
         }
@@ -304,14 +329,6 @@ public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyCo
 
     public boolean isLit() {
         return burnTime > 0;
-    }
-
-    public int getBurnTime() {
-        return this.burnTime;
-    }
-
-    public int getMaxBurnTime() {
-        return this.maxBurnTime;
     }
 
     @Override
@@ -367,7 +384,7 @@ public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyCo
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot < 3) return !FoodCookingRegistry.isFood(stack);
-        if (slot == 6) return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+        if (slot == 6) return FuelRegistry.isValidFuel(stack);
         return false;
     }
 

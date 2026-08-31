@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
+public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider, IFueledMachine {
     // 0: Diamond, 1: Iron, 2: Copper, 3: Result Diamond Ingot, 4: Stored Fuel
     private final NonNullList<ItemStack> items = NonNullList.withSize(5, ItemStack.EMPTY);
 
@@ -39,6 +39,33 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     private int cookTime = 0;
     private int cookTimeTotal = 600;
     private boolean wasLitOnce = false;
+
+    @Override
+    public int getBurnTime() { return this.burnTime; }
+
+    @Override
+    public void setBurnTime(int burnTime) { this.burnTime = burnTime; }
+
+    @Override
+    public int getMaxBurnTime() { return this.maxBurnTime; }
+
+    @Override
+    public void setMaxBurnTime(int maxBurnTime) { this.maxBurnTime = maxBurnTime; }
+
+    @Override
+    public int getFuelCookSpeed() { return this.cookTimeTotal; }
+
+    @Override
+    public void setFuelCookSpeed(int cookSpeed) { /* Alloy mixer uses configured cook time */ }
+
+    @Override
+    public int getFuelSlot() { return 4; }
+
+    @Override
+    public ItemStack getFuelItem() { return this.items.get(4); }
+
+    @Override
+    public void setFuelItem(ItemStack stack) { this.items.set(4, stack); }
 
     public AlloyMixerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.ALLOY_MIXER.get(), pos, state);
@@ -51,14 +78,6 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
 
     public boolean isLit() {
         return this.burnTime > 0;
-    }
-
-    public int getBurnTime() {
-        return this.burnTime;
-    }
-
-    public int getMaxBurnTime() {
-        return this.maxBurnTime;
     }
 
     public boolean addFuel(ItemStack fuelStack) {
@@ -88,20 +107,10 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     }
 
     public boolean lightMixer() {
-        if (this.burnTime > 0) return false;
-
-        ItemStack stored = this.items.get(4);
-        if (!stored.isEmpty() && FuelRegistry.isValidFuel(stored)) {
-            FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(stored);
-            if (info != null) {
-                this.burnTime = info.burnDuration;
-                this.maxBurnTime = info.burnDuration;
-                this.wasLitOnce = true;
-                ItemStack remainder = stored.getCraftingRemainingItem();
-                this.items.set(4, remainder.isEmpty() ? ItemStack.EMPTY : remainder);
-                setChanged();
-                return true;
-            }
+        if (lightFromStoredFuel()) {
+            this.wasLitOnce = true;
+            setChanged();
+            return true;
         }
         return false;
     }
@@ -170,6 +179,11 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
 
         if (entity.burnTime > 0) {
             entity.burnTime--;
+            changed = true;
+        }
+
+        // Auto-refuel 5 ticks before burning out
+        if (entity.tickFuelAutoFeed()) {
             changed = true;
         }
 
@@ -280,6 +294,13 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     }
 
     @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        if (slot < 3) return AlloyRegistry.isValidInput(stack);
+        if (slot == 4) return FuelRegistry.isValidFuel(stack);
+        return false;
+    }
+
+    @Override
     public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction side) {
         if (side == null) return false;
 
@@ -287,9 +308,9 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
                 this.getBlockState().getValue(AlloyMixerBlock.FACING) : Direction.NORTH;
         Direction back = facing.getOpposite();
 
-        // Fuel from back: only when old fuel finished burning (burnTime <= 0) and slot 4 is empty
+        // Fuel from back: allow continuous hopper loading
         if (side == back && index == 4) {
-            return FuelRegistry.isValidFuel(itemStack) && this.burnTime <= 0 && this.items.get(4).isEmpty();
+            return FuelRegistry.isValidFuel(itemStack);
         }
 
         // Inputs from top: allow placing any valid alloy mixer ingredient

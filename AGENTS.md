@@ -213,6 +213,10 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Crafted on a 3x3 Crafting Table from **5 Planks + 1 Woven Basket** in a V-shape.
   - Features 1 buffer slot, slightly slower transfer speed (**14 ticks per item**).
   - Can connect in 5 directions (down, north, south, west, east) to feed fuels into furnaces/ovens or collect machine outputs.
+- **Unified Heated Machine Interface (`IFueledMachine`) & Auto-Refueling**:
+  - Unified across **Brick Furnace**, **Advanced Smelter**, **Food Oven**, and **Alloy Mixer**.
+  - **Continuous Hopper Fuel Loading**: Hoppers connected to the **BACK** face can continuously insert and buffer fuel in slot 6 (slot 4 on alloy mixer) even while actively burning.
+  - **Seamless 5-Tick Auto-Refueling**: When burning (`burnTime > 0`) and remaining `burnTime <= 5` ticks, machines automatically consume 1 fuel from their fuel slot, extending the flame without extinguishing and eliminating the need for manual rekindling as long as fuel is provided.
 - **Unified 9-Tier Fuel Matrix (`FuelRegistry`)**:
   - Every fuel item in Minecraft provides a distinct **Burn Duration** (~2–2.5x longer than standard) and **Cooking Speed / Temperature**:
     1. **Tier 1 (Foliage & Twigs)**: 900 ticks (45s), 260t speed. (`ModItems.TWIG`, `DRY_GRASS`, `DEAD_BUSH`, saplings, leaves).

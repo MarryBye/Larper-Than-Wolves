@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
+public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider, IFueledMachine {
     // 0, 1, 2: Inputs; 3, 4, 5: Outputs; 6: Stored Fuel
     private final NonNullList<ItemStack> items = NonNullList.withSize(7, ItemStack.EMPTY);
 
@@ -48,7 +48,35 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     private int fuelCookSpeed = 200;
     private boolean wasLitOnce = false;
 
+    @Override
+    public int getBurnTime() { return this.burnTime; }
 
+    @Override
+    public void setBurnTime(int burnTime) { this.burnTime = burnTime; }
+
+    @Override
+    public int getMaxBurnTime() { return this.maxBurnTime; }
+
+    @Override
+    public void setMaxBurnTime(int maxBurnTime) { this.maxBurnTime = maxBurnTime; }
+
+    @Override
+    public int getFuelCookSpeed() { return this.fuelCookSpeed; }
+
+    @Override
+    public void setFuelCookSpeed(int cookSpeed) {
+        this.fuelCookSpeed = cookSpeed;
+        this.cookTimeTotal = cookSpeed;
+    }
+
+    @Override
+    public int getFuelSlot() { return 6; }
+
+    @Override
+    public ItemStack getFuelItem() { return this.items.get(6); }
+
+    @Override
+    public void setFuelItem(ItemStack stack) { this.items.set(6, stack); }
 
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -129,7 +157,10 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
             changed = true;
         }
 
-        // When burnTime reaches 0, furnace stops burning and requires manual ignition with lighter/flint&steel
+        // Auto-refuel from fuel slot 5 ticks before fire goes out to prevent flame dying
+        if (entity.tickFuelAutoFeed()) {
+            changed = true;
+        }
 
         // Cooking logic
         if (entity.burnTime > 0) {
@@ -200,14 +231,6 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
         return false;
     }
 
-    public int getBurnTime() {
-        return this.burnTime;
-    }
-
-    public int getMaxBurnTime() {
-        return this.maxBurnTime;
-    }
-
     private static ItemStack getSmeltingResult(Level level, ItemStack input) {
         return SmeltingRegistry.getSmeltingResult(level, input);
     }
@@ -274,18 +297,8 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
 
     // Light furnace with lighter
     public boolean lightFurnace() {
-        if (burnTime > 0) return false;
-
-        ItemStack stored = items.get(6);
-        if (!stored.isEmpty() && FuelRegistry.isValidFuel(stored)) {
-            FuelRegistry.FuelInfo info = FuelRegistry.getFuelInfo(stored);
-            burnTime = info.burnDuration;
-            maxBurnTime = info.burnDuration;
-            fuelCookSpeed = info.cookSpeed;
-            cookTimeTotal = fuelCookSpeed;
-            wasLitOnce = true;
-            ItemStack remainder = stored.getCraftingRemainingItem();
-            items.set(6, remainder.isEmpty() ? ItemStack.EMPTY : remainder);
+        if (lightFromStoredFuel()) {
+            this.wasLitOnce = true;
             setChanged();
             return true;
         }
@@ -355,7 +368,7 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
     public boolean canPlaceItem(int slot, ItemStack stack) {
         // Food CANNOT be placed in Brick Furnace input slots (0..2)!
         if (slot < 3) return !io.marrybye.github.larperthanwolves.recipe.FoodCookingRegistry.isFood(stack);
-        if (slot == 6) return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+        if (slot == 6) return FuelRegistry.isValidFuel(stack);
         return false;
     }
 
@@ -394,9 +407,9 @@ public class BrickFurnaceBlockEntity extends BlockEntity implements WorldlyConta
                 this.getBlockState().getValue(BrickFurnaceBlock.FACING) : Direction.NORTH;
         Direction back = facing.getOpposite();
 
-        // Fuel from back: only when old fuel finished burning (burnTime <= 0) and fuel slot is empty
+        // Fuel from back: continuously allow hoppers to keep fuel buffered in slot 6!
         if (side == back && slot == 6) {
-            return FuelRegistry.isValidFuel(stack) && this.burnTime <= 0 && this.items.get(6).isEmpty();
+            return FuelRegistry.isValidFuel(stack);
         }
 
         // Inputs from top (No food allowed)

@@ -26,6 +26,11 @@ This system splits high-temperature thermal processing into two strictly special
   - **Food ONLY**: Accepts raw beef, pork, mutton, chicken, rabbit, fish, potatoes, and kelp.
   - **Non-Food Strictly Blocked**: Ores, cobblestone, and raw minerals cannot be placed into the oven.
   - Requires manual fueling and ignition.
+- **Unified Heated Machine Interface (`IFueledMachine`) & Auto-Refueling**:
+  - Implemented across all four thermal appliances: **Brick Furnace**, **Advanced Smelter**, **Food Oven**, and **Alloy Mixer**.
+  - **Continuous Hopper Fueling**: Hoppers connected to the **BACK** face can continuously insert and buffer fuel items at any time (even while the machine is actively burning).
+  - **Seamless Auto-Refueling (5-Tick Window)**: While a machine is lit and burning, if its active `burnTime <= 5` ticks, it automatically consumes 1 fuel item from its fuel slot. This extends the burn time without ever letting the fire die, avoiding unnecessary manual re-ignition as long as fuel is supplied!
+  - **Cold Machine Rekindling**: If fuel runs out completely and the fire goes out (`burnTime == 0`), the machine goes cold and must be manually ignited with a Lighter or Flint & Steel when new fuel is supplied.
 - **Unified Fuel & Heat Matrix (`FuelRegistry`)**:
   - Every fuel in the game provides a distinct **Burn Duration** and **Cooking Speed (Heat Level)**.
   - Burn durations are extended ~2–2.5x compared to standard rates for realistic long-lasting burns.
