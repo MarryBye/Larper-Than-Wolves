@@ -181,6 +181,6 @@
   "block.larperthanwolves.cracked_stone": "Cracked Stone",
   "item.larperthanwolves.cracked_stone": "Cracked Stone",
   "jei.larperthanwolves.info.pointed_stick": "Pointed Stick has 2 durability and is crafted from a single stick. Used for early stone harvesting: the first hit cracks the stone, and the second hit turns it into cobblestone and drops 1 pebble.",
-  "jei.larperthanwolves.info.pointed_pebble": "Pointed Pebble is crafted from any stone pebble. Has 4 durability and is used to chip copper (or tin) dust from ore veins. Chipping the ore block converts it into hard cobblestone.",
+  "jei.larperthanwolves.info.pointed_pebble": "Pointed Pebble is crafted from any stone pebble. Has 4 durability and is used to chip copper dust from copper ore (converting it into cobblestone), or to quickly chip stone into cobblestone and a stone pebble in 1 hit. Cannot mine any other ores or rocks.",
   "jei.larperthanwolves.info.cracked_stone": "Stone fractured by a pointed stick. Breaking it again with a pointed stick yields 1 pebble and leaves cobblestone behind."
 }

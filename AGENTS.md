@@ -28,10 +28,11 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Pointed Pebble (`pointed_pebble`)**:
   - Crafted from any stone pebble / nugget (`#larperthanwolves:pebbles`) in crafting grid.
   - Durability: **4 uses**.
-  - **Ore Chipping Mechanic**:
+  - **Copper Ore Chipping & 1-Hit Fast Stone Harvesting**:
     - Breaking Copper Ore (`minecraft:copper_ore` / `deepslate_copper_ore`) with a Pointed Pebble drops **1 Copper Dust** (`copper_dust`) and converts the ore into **Cobblestone** (which cannot be mined with pebbles or sticks).
-    - Breaking Tin Ore (`tin_ore` / `deepslate_tin_ore`) drops **1 Tin Dust** (`tin_dust`) and converts into Cobblestone.
-    - Consumes 1 durability per ore chipped.
+    - Breaking Stone (`minecraft:stone`) with a Pointed Pebble converts it into **Cobblestone** (`minecraft:cobblestone`) in **1 single hit** (faster than pointed stick, no cracked stone stage) and drops **1 Stone Pebble** (`stone_nugget`).
+    - Consumes 1 durability per block harvested.
+    - Cannot mine tin ore, iron ore, or any other ores / rocks.
 
 ### ⛏️ Tool Tiers & Dig Tier Matrix
 - **Disabled Tools & Armor**: Wooden, Stone, Golden, and vanilla Diamond tools and armor are completely disabled and purged from recipes, creative tabs, mob equipment/spawns, and world loot tables.
