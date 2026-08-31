@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "B": {
+      "item": "larperthanwolves:basket"
+    }
+  },
+  "pattern": [
+    "P P",
+    "PBP",
+    " P "
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:wooden_hopper"
+  }
+}

@@ -50,11 +50,11 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
       - Flint: **22%** (was 15%)
       - Copper Dust: **8%** (was 5%)
     - **Rich Soils (Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand)**:
-      - 1. **Copper Dust**: **55%** (was 50%)
-      - 2. **Tin Dust**: **32%** (was 30%)
-      - 3. **Iron Dust**: **15%** (was 12%)
-      - 4. **Gold Dust**: **8%** (was 6%)
-      - 5. **Diamond Dust**: **3%** (was 2%)
+      - 1. **Copper Dust**: **85%** (was 55%)
+      - 2. **Tin Dust**: **55%** (was 32%)
+      - 3. **Iron Dust**: **25%** (was 15%)
+      - 4. **Gold Dust**: **8%**
+      - 5. **Diamond Dust**: **3%**
 
 ---
 

@@ -186,6 +186,7 @@ public class ModJeiPlugin implements IModPlugin {
         );
         List<ItemStack> machines = List.of(
                 new ItemStack(ModBlocks.BRICK_FURNACE.get()),
+                new ItemStack(ModBlocks.ADVANCED_SMELTER.get()),
                 new ItemStack(ModBlocks.OVEN.get()),
                 new ItemStack(ModBlocks.ALLOY_MIXER.get())
         );
@@ -489,6 +490,12 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(new ItemStack(ModItems.DUNG.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.dung"));
 
+        // Smelters & Hoppers
+        registration.addIngredientInfo(new ItemStack(ModBlocks.ADVANCED_SMELTER.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.advanced_smelter"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.WOODEN_HOPPER.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.wooden_hopper"));
+
         // New Mechanisms
         registration.addIngredientInfo(new ItemStack(ModBlocks.KINETIC_PISTON.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.kinetic_piston"));
@@ -502,6 +509,8 @@ public class ModJeiPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), RecipeTypes.SMELTING);
         registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), MachineFuelRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(ModBlocks.ADVANCED_SMELTER.get(), RecipeTypes.SMELTING);
+        registration.addRecipeCatalyst(ModBlocks.ADVANCED_SMELTER.get(), MachineFuelRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModBlocks.OVEN.get(), RecipeTypes.SMOKING);
         registration.addRecipeCatalyst(ModBlocks.OVEN.get(), RecipeTypes.CAMPFIRE_COOKING);
         registration.addRecipeCatalyst(ModBlocks.OVEN.get(), MachineFuelRecipeCategory.TYPE);
@@ -523,6 +532,7 @@ public class ModJeiPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(BrickFurnaceScreen.class, 79, 34, 24, 17, RecipeTypes.SMELTING, MachineFuelRecipeCategory.TYPE);
+        registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.AdvancedSmelterScreen.class, 79, 34, 24, 17, RecipeTypes.SMELTING, MachineFuelRecipeCategory.TYPE);
         registration.addRecipeClickArea(OvenScreen.class, 79, 34, 24, 17, RecipeTypes.SMOKING, RecipeTypes.CAMPFIRE_COOKING, MachineFuelRecipeCategory.TYPE);
         registration.addRecipeClickArea(AlloyMixerScreen.class, 79, 24, 24, 17, AlloyMixerRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
         registration.addRecipeClickArea(SieveScreen.class, 76, 34, 24, 17, SieveRecipeCategory.TYPE);
@@ -532,6 +542,7 @@ public class ModJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), RecipeTypes.SMELTING, 0, 3, 6, 36);
+        registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.AdvancedSmelterMenu.class, ModMenuTypes.ADVANCED_SMELTER.get(), RecipeTypes.SMELTING, 0, 3, 6, 36);
         registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.SMOKING, 0, 3, 6, 36);
         registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.CAMPFIRE_COOKING, 0, 3, 6, 36);
         registration.addRecipeTransferHandler(AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE, 0, 3, 4, 36);

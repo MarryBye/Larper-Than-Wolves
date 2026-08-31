@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "larperthanwolves:brick_furnace"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "pattern": [
+    "III",
+    "IBI",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:advanced_smelter"
+  }
+}

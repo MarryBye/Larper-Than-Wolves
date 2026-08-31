@@ -125,7 +125,7 @@
   "jei.larperthanwolves.info.flint": "Flint can be rarely found when digging soil/gravel (8%), or crafted from 4 Silicon Shards in a 2x2 grid.",
   "jei.larperthanwolves.info.gravel": "Breaking gravel drops Gravel blocks, Silicon Shards (20%), Flint (8%), or Copper Dust (2%). For higher-tier ore dusts, seek and harvest Rich Soils.",
   "jei.larperthanwolves.info.dirt": "Dirt can be sifted in a Sieve just like gravel and sand. Breaking dirt also has a chance to drop Silicon Shards (20%), Flint (8%), or Copper Dust (2%).",
-  "jei.larperthanwolves.info.rich_soil": "Rich soils (Rich Grass, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand) generate naturally in overworld biomes. They can strictly be harvested ONLY using a shovel of Copper tier or higher (otherwise regular soil drops). Sifting rich soils in a Sieve yields pure native metal dusts: Copper (55%), Tin (32%), Iron (15%), Gold (8%), and Diamond (3%).",
+  "jei.larperthanwolves.info.rich_soil": "Rich soils (Rich Grass, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand) generate naturally in overworld biomes. They can strictly be harvested ONLY using a shovel of Copper tier or higher (otherwise regular soil drops). Sifting rich soils in a Sieve yields pure native metal dusts: Copper (85%), Tin (55%), Iron (25%), Gold (8%), and Diamond (3%).",
   "jei.larperthanwolves.info.crafting_table": "Crafting Tables cannot be crafted in inventory. Right-click any tree stump or log in the world 4 times with a Chisel to carve a Crafting Table.",
   "jei.larperthanwolves.info.work_stump": "An intermediate stage of carving a tree stump into a Crafting Table using a Chisel.",
   "jei.larperthanwolves.info.chisel": "Used to carve tree stumps and logs into Work Stumps and Crafting Tables, as well as crafting wooden components.",
@@ -183,5 +183,15 @@
   "item.larperthanwolves.cracked_stone": "Cracked Stone",
   "jei.larperthanwolves.info.pointed_stick": "Pointed Stick has 2 durability and is crafted from a single stick. Used for early stone harvesting: the first hit cracks the stone, and the second hit turns it into cobblestone and drops 1 pebble.",
   "jei.larperthanwolves.info.pointed_pebble": "Pointed Pebble is crafted from any stone pebble. Has 4 durability and is used to chip copper dust from copper ore (converting it into cobblestone), or to quickly chip stone into cobblestone and a stone pebble in 1 hit. Cannot mine any other ores or rocks.",
-  "jei.larperthanwolves.info.cracked_stone": "Stone fractured by a pointed stick. Breaking it again with a pointed stick yields 1 pebble and leaves cobblestone behind."
+  "jei.larperthanwolves.info.cracked_stone": "Stone fractured by a pointed stick. Breaking it again with a pointed stick yields 1 pebble and leaves cobblestone behind.",
+  "block.larperthanwolves.advanced_smelter": "Advanced Smelter",
+  "item.larperthanwolves.advanced_smelter": "Advanced Smelter",
+  "container.larperthanwolves.advanced_smelter": "Advanced Smelter",
+  "container.advanced_smelter": "Advanced Smelter",
+  "jei.larperthanwolves.info.advanced_smelter": "The Advanced Smelter is reinforced with iron plating. Unlike the Brick Furnace which yields nuggets, the Advanced Smelter smelts raw ores and metal chunks directly into full ingots. Requires manual fuel loading and ignition with a Lighter or Flint and Steel.",
+  "block.larperthanwolves.wooden_hopper": "Wooden Hopper",
+  "item.larperthanwolves.wooden_hopper": "Wooden Hopper",
+  "container.larperthanwolves.wooden_hopper": "Wooden Hopper",
+  "container.wooden_hopper": "Wooden Hopper",
+  "jei.larperthanwolves.info.wooden_hopper": "The Wooden Hopper is a cheap early-game hopper crafted on a crafting table from planks and a woven basket. It has 1 buffer slot and transfers items slightly slower than an iron hopper (14 ticks). Ideal for feeding fuels into furnaces and ovens."
 }

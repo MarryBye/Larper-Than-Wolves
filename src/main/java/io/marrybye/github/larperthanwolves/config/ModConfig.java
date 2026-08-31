@@ -134,14 +134,14 @@ public class ModConfig {
 
             // Sieve drop chances for rich soils (pure natural metal dusts ONLY):
             sieveRichCopperDustChance = builder
-                    .comment("Chance of sifting Copper Dust from Rich Soil (default: 0.55 = 55%)")
-                    .defineInRange("sieveRichCopperDustChance", 0.55, 0.0, 1.0);
+                    .comment("Chance of sifting Copper Dust from Rich Soil (default: 0.85 = 85%)")
+                    .defineInRange("sieveRichCopperDustChance", 0.85, 0.0, 1.0);
             sieveRichTinDustChance = builder
-                    .comment("Chance of sifting Tin Dust from Rich Soil (default: 0.32 = 32%)")
-                    .defineInRange("sieveRichTinDustChance", 0.32, 0.0, 1.0);
+                    .comment("Chance of sifting Tin Dust from Rich Soil (default: 0.55 = 55%)")
+                    .defineInRange("sieveRichTinDustChance", 0.55, 0.0, 1.0);
             sieveRichIronDustChance = builder
-                    .comment("Chance of sifting Iron Dust from Rich Soil (default: 0.15 = 15%)")
-                    .defineInRange("sieveRichIronDustChance", 0.15, 0.0, 1.0);
+                    .comment("Chance of sifting Iron Dust from Rich Soil (default: 0.25 = 25%)")
+                    .defineInRange("sieveRichIronDustChance", 0.25, 0.0, 1.0);
             sieveRichGoldDustChance = builder
                     .comment("Chance of sifting Gold Dust from Rich Soil (default: 0.08 = 8%)")
                     .defineInRange("sieveRichGoldDustChance", 0.08, 0.0, 1.0);

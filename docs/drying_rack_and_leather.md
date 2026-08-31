@@ -21,7 +21,7 @@ This system provides passive outdoor solar dehydration for converting raw plant 
 - **Rope Crafting Rules**:
   - Ropes can only be crafted from:
     1. Tanned Leather + Shears (gives 4 ropes).
-    2. Dry Grass / Vines.
+    2. 2 Dry Grass / 2 Vines / 2 String / 2 Dried Kelp / 2 Hanging Roots (shapeless 2x2 crafting without requiring a crafting table).
   - Direct crafting of ropes from raw vanilla leather is removed.
 
 ---

@@ -7,9 +7,19 @@ This system splits high-temperature thermal processing into two strictly special
 ## ⚙️ Mechanics & Working Principles
 - **Brick Furnace (`brick_furnace` / `BrickFurnaceBlock` / `BrickFurnaceBlockEntity`)**:
   - Replaces the vanilla Furnace and Blast Furnace.
-  - **Ores & Blocks ONLY**: Accepts raw ores, mineral dusts, clay, stone, sand, and refractory materials.
+  - **Ores & Blocks ONLY**: Accepts raw ores, mineral dusts, clay, stone, sand, and refractory materials. Smelts raw chunks into **Nuggets** (Iron, Copper, Gold, Tin, Zinc).
   - **Food Strictly Blocked**: Food items cannot be inserted into the input slot or smelted.
   - Requires manual fueling and ignition with a Lighter or Flint & Steel.
+- **Advanced Smelter (`advanced_smelter` / `AdvancedSmelterBlock` / `AdvancedSmelterBlockEntity`)**:
+  - Crafted on a 3x3 Crafting Table from **5 Iron Ingots + 1 Brick Furnace + 3 Smooth Stone**.
+  - Reinforced with heavy iron plating, corner rivets, and an industrial firebox grate.
+  - **Full Ingot Smelting**: Smelts raw ores and metal chunks (Iron, Copper, Gold, Tin, Zinc) directly into **Full Ingots** rather than single nuggets.
+  - Food strictly blocked, accepts all 9 fuel tiers, requires manual fuel loading and ignition.
+- **Wooden Hopper (`wooden_hopper` / `WoodenHopperBlock` / `WoodenHopperBlockEntity`)**:
+  - Crafted on a 3x3 Crafting Table from **5 Planks + 1 Woven Basket** in a V-shape.
+  - Features 1 buffer item slot.
+  - Transfer speed: **14 ticks per item** (slightly slower than vanilla's 8 ticks).
+  - Can be attached in 5 directions (down, north, south, west, east) to feed fuel into the back/sides of furnaces and ovens, or extract output from the bottom.
 - **Food Oven (`oven` / `OvenBlock` / `OvenBlockEntity`)**:
   - Crafted from 1 Brick Furnace + 1 Iron Nugget or 2 Brick Slabs + 2 Bricks.
   - Replaces the vanilla Smoker.

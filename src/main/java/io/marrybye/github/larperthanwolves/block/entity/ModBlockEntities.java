@@ -15,6 +15,18 @@ public class ModBlockEntities {
                             io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get())
                             .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AdvancedSmelterBlockEntity>> ADVANCED_SMELTER =
+            BLOCK_ENTITIES.register("advanced_smelter", () ->
+                    BlockEntityType.Builder.of(AdvancedSmelterBlockEntity::new,
+                            io.marrybye.github.larperthanwolves.block.ModBlocks.ADVANCED_SMELTER.get())
+                            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WoodenHopperBlockEntity>> WOODEN_HOPPER =
+            BLOCK_ENTITIES.register("wooden_hopper", () ->
+                    BlockEntityType.Builder.of(WoodenHopperBlockEntity::new,
+                            io.marrybye.github.larperthanwolves.block.ModBlocks.WOODEN_HOPPER.get())
+                            .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OvenBlockEntity>> OVEN =
             BLOCK_ENTITIES.register("oven", () ->
                     BlockEntityType.Builder.of(OvenBlockEntity::new,

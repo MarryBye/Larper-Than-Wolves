@@ -14,6 +14,16 @@ public class ModMenuTypes {
             () -> IMenuTypeExtension.create(BrickFurnaceMenu::new)
     );
 
+    public static final DeferredHolder<MenuType<?>, MenuType<AdvancedSmelterMenu>> ADVANCED_SMELTER = MENUS.register(
+            "advanced_smelter",
+            () -> IMenuTypeExtension.create(AdvancedSmelterMenu::new)
+    );
+
+    public static final DeferredHolder<MenuType<?>, MenuType<WoodenHopperMenu>> WOODEN_HOPPER = MENUS.register(
+            "wooden_hopper",
+            () -> IMenuTypeExtension.create(WoodenHopperMenu::new)
+    );
+
     public static final DeferredHolder<MenuType<?>, MenuType<OvenMenu>> OVEN = MENUS.register(
             "oven",
             () -> IMenuTypeExtension.create(OvenMenu::new)

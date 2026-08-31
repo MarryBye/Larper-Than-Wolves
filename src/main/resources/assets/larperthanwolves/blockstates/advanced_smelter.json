@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=north,stage=0": {
+      "model": "larperthanwolves:block/advanced_smelter"
+    },
+    "facing=east,stage=0": {
+      "model": "larperthanwolves:block/advanced_smelter",
+      "y": 90
+    },
+    "facing=south,stage=0": {
+      "model": "larperthanwolves:block/advanced_smelter",
+      "y": 180
+    },
+    "facing=west,stage=0": {
+      "model": "larperthanwolves:block/advanced_smelter",
+      "y": 270
+    },
+    "facing=north,stage=1": {
+      "model": "larperthanwolves:block/advanced_smelter_fueled"
+    },
+    "facing=east,stage=1": {
+      "model": "larperthanwolves:block/advanced_smelter_fueled",
+      "y": 90
+    },
+    "facing=south,stage=1": {
+      "model": "larperthanwolves:block/advanced_smelter_fueled",
+      "y": 180
+    },
+    "facing=west,stage=1": {
+      "model": "larperthanwolves:block/advanced_smelter_fueled",
+      "y": 270
+    },
+    "facing=north,stage=2": {
+      "model": "larperthanwolves:block/advanced_smelter_lit"
+    },
+    "facing=east,stage=2": {
+      "model": "larperthanwolves:block/advanced_smelter_lit",
+      "y": 90
+    },
+    "facing=south,stage=2": {
+      "model": "larperthanwolves:block/advanced_smelter_lit",
+      "y": 180
+    },
+    "facing=west,stage=2": {
+      "model": "larperthanwolves:block/advanced_smelter_lit",
+      "y": 270
+    },
+    "facing=north,stage=3": {
+      "model": "larperthanwolves:block/advanced_smelter_lit_low"
+    },
+    "facing=east,stage=3": {
+      "model": "larperthanwolves:block/advanced_smelter_lit_low",
+      "y": 90
+    },
+    "facing=south,stage=3": {
+      "model": "larperthanwolves:block/advanced_smelter_lit_low",
+      "y": 180
+    },
+    "facing=west,stage=3": {
+      "model": "larperthanwolves:block/advanced_smelter_lit_low",
+      "y": 270
+    }
+  }
+}

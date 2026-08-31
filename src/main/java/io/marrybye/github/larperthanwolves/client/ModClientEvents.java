@@ -14,6 +14,8 @@ public class ModClientEvents {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.BRICK_FURNACE.get(), BrickFurnaceScreen::new);
+        event.register(ModMenuTypes.ADVANCED_SMELTER.get(), AdvancedSmelterScreen::new);
+        event.register(ModMenuTypes.WOODEN_HOPPER.get(), WoodenHopperScreen::new);
         event.register(ModMenuTypes.OVEN.get(), OvenScreen::new);
         event.register(ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerScreen::new);
         event.register(ModMenuTypes.SIEVE.get(), SieveScreen::new);

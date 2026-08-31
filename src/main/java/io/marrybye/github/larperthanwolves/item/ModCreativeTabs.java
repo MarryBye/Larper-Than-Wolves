@@ -95,6 +95,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.TWIG.get());
 
                         output.accept(ModItems.BRICK_FURNACE.get());
+                        output.accept(ModItems.ADVANCED_SMELTER.get());
+                        output.accept(ModItems.WOODEN_HOPPER.get());
                         output.accept(ModItems.OVEN.get());
                         output.accept(ModItems.UNFIRED_BRICK.get());
                         output.accept(ModItems.DRYING_RACK.get());

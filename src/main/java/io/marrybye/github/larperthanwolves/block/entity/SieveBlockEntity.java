@@ -414,9 +414,9 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
 
         if (isRich) {
             // Rich Soils: Pure natural metal dusts ONLY (Copper Dust -> Tin Dust -> Iron Dust -> Gold Dust -> Diamond Dust)
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.55;
-            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.32;
-            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.15;
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.85;
+            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.55;
+            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.25;
             double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichGoldDustChance.get() : 0.08;
             double diamondChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichDiamondDustChance.get() : 0.03;
 

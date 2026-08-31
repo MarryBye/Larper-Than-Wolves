@@ -129,11 +129,11 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - Artificial alloys (Bronze Dust) and common stones (Silicon Shards, Flint) are **strictly excluded**.
     - Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, and Rich Red Sand are all siftable.
     - Yields purely valuable native metals & minerals:
-      1. Copper Dust (`copper_dust`) — **55%** (was 50%)
-      2. Tin Dust (`tin_dust`) — **32%** (was 30%)
-      3. Iron Dust (`iron_dust`) — **15%** (was 12%)
-      4. Gold Dust (`gold_dust`) — **8%** (was 6%)
-      5. Diamond Dust (`diamond_dust`) — **3%** (was 2%)
+      1. Copper Dust (`copper_dust`) — **85%** (was 55%)
+      2. Tin Dust (`tin_dust`) — **55%** (was 32%)
+      3. Iron Dust (`iron_dust`) — **25%** (was 15%)
+      4. Gold Dust (`gold_dust`) — **8%**
+      5. Diamond Dust (`diamond_dust`) — **3%**
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
 ### 🌾 Farming, Mandatory Fertilization (Bone Meal & Dung) & 2-Stage Hoe Tilling
@@ -195,14 +195,23 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Drying Rack (Сушилка)**: Crafted in 2x2 grid from 4 sticks (`drying_rack`). Full 3D isometric inventory item model. Operates passively when placed outdoors under open sky during daytime (`isDay() && canSeeSky() && !isRaining()`).
   - **Grass** (Short Grass, Tall Grass, Fern, Large Fern, Seagrass) $\rightarrow$ **Dry Grass** (wilted straw, used for ropes & furnace fuel). Shears are required to harvest grass.
   - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and ropes).
-  - **Rope Crafting**: Ropes can only be crafted from Tanned Leather + Shears (or Dry Grass / vines). Standard leather rope crafting is removed.
+  - **Rope Crafting**: Ropes can only be crafted from Tanned Leather + Shears, or **2 plant fibers / vines** (2 Dry Grass, 2 Vines, 2 String, 2 Dried Kelp, 2 Hanging Roots) in 2x2 grid without requiring a crafting table. Standard raw leather rope crafting is removed.
 
-### 🍞 Oven (Духовка), Brick Furnace & 9-Tier Fuel Matrix
+### 🍞 Oven, Brick Furnace, Advanced Smelter & Wooden Hopper
 - **Oven (Духовка)**: Crafted from 1 Brick Furnace + 1 Iron Nugget or 2 Brick Slabs + 2 Bricks (`oven`).
   - **Food Only**: Accepts exclusively food items (raw beef, porkchop, mutton, chicken, rabbit, fish, potato, kelp). Non-food materials and ores cannot be placed in the oven.
   - Requires manual fueling and ignition with a Lighter or Flint & Steel.
 - **Brick Furnace (Кирпичная печь)**: Replaces vanilla Furnace and Blast Furnace.
-  - **Ores & Blocks Only**: Food items cannot be placed or smelted in the Brick Furnace.
+  - **Ores & Blocks Only**: Food items cannot be placed or smelted in the Brick Furnace. Smelts raw chunks into **nuggets**.
+- **Advanced Smelter (Продвинутая плавильня / `advanced_smelter` / `AdvancedSmelterBlock`)**:
+  - Crafted on a 3x3 Crafting Table from **5 Iron Ingots + 1 Brick Furnace + 3 Smooth Stone**.
+  - Reinforced iron-plated design with corner rivets and firebox grating.
+  - **Full Ingot Smelting**: Smelts raw ores and metal chunks (Iron, Copper, Gold, Tin, Zinc) directly into **Full Ingots** instead of single nuggets.
+  - Requires manual fuel loading and lighter/flint ignition.
+- **Wooden Hopper (Деревянная воронка / `wooden_hopper` / `WoodenHopperBlock`)**:
+  - Crafted on a 3x3 Crafting Table from **5 Planks + 1 Woven Basket** in a V-shape.
+  - Features 1 buffer slot, slightly slower transfer speed (**14 ticks per item**).
+  - Can connect in 5 directions (down, north, south, west, east) to feed fuels into furnaces/ovens or collect machine outputs.
 - **Unified 9-Tier Fuel Matrix (`FuelRegistry`)**:
   - Every fuel item in Minecraft provides a distinct **Burn Duration** (~2–2.5x longer than standard) and **Cooking Speed / Temperature**:
     1. **Tier 1 (Foliage & Twigs)**: 900 ticks (45s), 260t speed. (`ModItems.TWIG`, `DRY_GRASS`, `DEAD_BUSH`, saplings, leaves).

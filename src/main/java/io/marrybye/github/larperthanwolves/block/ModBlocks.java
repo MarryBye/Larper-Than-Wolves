@@ -21,6 +21,24 @@ public class ModBlocks {
                         return stage == 2 ? 14 : (stage == 3 ? 8 : 0);
                     })));
 
+    public static final DeferredBlock<AdvancedSmelterBlock> ADVANCED_SMELTER = BLOCKS.register("advanced_smelter",
+            () -> new AdvancedSmelterBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(3.5F, 12.0F)
+                    .sound(SoundType.STONE)
+                    .lightLevel(state -> {
+                        int stage = state.hasProperty(AdvancedSmelterBlock.STAGE) ? state.getValue(AdvancedSmelterBlock.STAGE) : 0;
+                        return stage == 2 ? 14 : (stage == 3 ? 8 : 0);
+                    })));
+
+    public static final DeferredBlock<WoodenHopperBlock> WOODEN_HOPPER = BLOCKS.register("wooden_hopper",
+            () -> new WoodenHopperBlock(BlockBehaviour.Properties.of()
+                    .mapColor(net.minecraft.world.level.material.MapColor.WOOD)
+                    .instrument(net.minecraft.world.level.block.state.properties.NoteBlockInstrument.BASS)
+                    .strength(2.0F, 3.0F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
+
     public static final DeferredBlock<FertilizedFarmlandBlock> FERTILIZED_FARMLAND = BLOCKS.register("fertilized_farmland",
             () -> new FertilizedFarmlandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FARMLAND)));
 
