@@ -13,6 +13,7 @@ jobs:
   build-and-release:
     name: Build & Publish Release
     runs-on: ubuntu-latest
+    environment: CURSEFORGE_API
 
     steps:
       - name: Checkout repository
@@ -51,3 +52,21 @@ jobs:
           draft: false
           prerelease: false
           generate_release_notes: true
+
+      - name: Publish to CurseForge & Modrinth
+        uses: Kir-Antipov/mc-publish@v3.3
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          curseforge-id: 1675627
+          curseforge-token: ${{ secrets.CURSEFORGE_API }}
+          modrinth-id: rnq9KWpr
+          modrinth-token: ${{ secrets.MODRINTH_API }}
+          files: build/libs/!(*-@(dev|sources|javadoc)).jar
+          name: "Larper Than Wolves ${{ github.ref_name }}"
+          version: ${{ github.ref_name }}
+          version-type: release
+          loaders: neoforge
+          game-versions: 1.21.1
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          retry-attempts: 3
+          retry-delay: 5000

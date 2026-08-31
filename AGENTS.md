@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.27.6
+- **Current Version**: 1.27.7
 
 ## Project Architecture & Progression
 
@@ -438,6 +438,15 @@ All commits must follow:
 **MANDATORY**: Every mechanic, machine, tool, and overhaul system must have a dedicated markdown file in `docs/<feature_name>.md`.
 - **Pre-Modification Reading**: Before modifying or refactoring any feature, the agent **MUST** read its corresponding documentation in `docs/` to maintain full context and design invariants.
 - **Post-Modification Sync (3-Pillar Rule)**: Every change must be documented across all three tiers: `docs/<feature>.md` (deep technical details & testing), `AGENTS.md` (codebase architecture & registries), and `README.md` (player gameplay guide).
+
+### 10. CI/CD & Automated Publishing (CurseForge + Modrinth)
+The project utilizes GitHub Actions for continuous integration and automated releases:
+- **Build Workflow** (`.github/workflows/build.yml`): Compiles the project and runs checks on every push and pull request.
+- **Release Workflow** (`.github/workflows/release.yml`): Triggers on tag pushes (`v*`) or manual `workflow_dispatch`.
+  - Builds the mod JAR (`build/libs/larperthanwolves-*.jar`).
+  - Creates a GitHub Release with automated changelog via `softprops/action-gh-release@v2`.
+  - Automatically publishes to **CurseForge** (Project ID: `1675627`) and **Modrinth** (Project ID: `rnq9KWpr`) via `Kir-Antipov/mc-publish@v3.3`.
+  - Uses GitHub Environment `CURSEFORGE_API` with secrets `CURSEFORGE_API` and `MODRINTH_API`.
 
 ## Best Practices & Guidelines
 - Use `ThreadLocalRandom.current()` instead of `new Random()` for thread safety in server event handlers.
