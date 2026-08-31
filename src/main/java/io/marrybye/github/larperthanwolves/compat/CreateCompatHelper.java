@@ -3,7 +3,11 @@ package io.marrybye.github.larperthanwolves.compat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 
@@ -16,6 +20,7 @@ public class CreateCompatHelper {
     private static Class<?> kineticBeClass = null;
     private static Class<?> handCrankBeClass = null;
     private static Class<?> rotationPropagatorClass = null;
+    private static Class<?> iRotateClass = null;
     private static Method getSpeedMethod = null;
     private static Method setSpeedMethod = null;
     private static Method setSourceMethod = null;
@@ -24,6 +29,7 @@ public class CreateCompatHelper {
     private static Method turnMethod = null;
     private static Method handleAddedMethod = null;
     private static Method handleRemovedMethod = null;
+    private static Method hasShaftTowardsMethod = null;
     private static boolean initialized = false;
 
     private static void init() {
@@ -37,6 +43,13 @@ public class CreateCompatHelper {
             removeSourceMethod = kineticBeClass.getMethod("removeSource");
         } catch (Throwable ignored) {
             kineticBeClass = null;
+        }
+
+        try {
+            iRotateClass = Class.forName("com.simibubi.create.content.kinetics.base.IRotate");
+            hasShaftTowardsMethod = iRotateClass.getMethod("hasShaftTowards", LevelReader.class, BlockPos.class, BlockState.class, Direction.class);
+        } catch (Throwable ignored) {
+            hasShaftTowardsMethod = null;
         }
 
         try {
@@ -68,6 +81,43 @@ public class CreateCompatHelper {
     public static boolean isKineticBlockEntity(BlockEntity be) {
         init();
         return be != null && kineticBeClass != null && kineticBeClass.isInstance(be);
+    }
+
+    /**
+     * Checks if an adjacent neighbor block has an active rotating shaft or component
+     * pointing directly towards target block in the given direction.
+     */
+    public static boolean hasShaftPointingTowards(Level level, BlockPos neighborPos, BlockState neighborState, Direction towardsTarget) {
+        init();
+        if (level == null || neighborPos == null || neighborState == null || towardsTarget == null) return false;
+
+        // 1. Create IRotate interface (Shafts, Cogwheels, Gearboxes, Motors, Drills, Water Wheels, etc.)
+        if (hasShaftTowardsMethod != null && iRotateClass != null && iRotateClass.isInstance(neighborState.getBlock())) {
+            try {
+                Object result = hasShaftTowardsMethod.invoke(neighborState.getBlock(), level, neighborPos, neighborState, towardsTarget);
+                if (result instanceof Boolean b) {
+                    return b;
+                }
+            } catch (Throwable ignored) {
+            }
+        }
+
+        // 2. Standard BlockState AXIS property (Shafts, Cogwheels, Kinetic Pillars)
+        if (neighborState.hasProperty(BlockStateProperties.AXIS)) {
+            return neighborState.getValue(BlockStateProperties.AXIS) == towardsTarget.getAxis();
+        }
+
+        // 3. Standard BlockState FACING property (Motors, Cranks, Gearboxes)
+        if (neighborState.hasProperty(BlockStateProperties.FACING)) {
+            return neighborState.getValue(BlockStateProperties.FACING) == towardsTarget;
+        }
+
+        // 4. Standard BlockState HORIZONTAL_FACING property
+        if (neighborState.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+            return neighborState.getValue(BlockStateProperties.HORIZONTAL_FACING) == towardsTarget;
+        }
+
+        return false;
     }
 
     /**
@@ -118,30 +168,36 @@ public class CreateCompatHelper {
     }
 
     /**
-     * Checks adjacent faces of the mill (top, sides, bottom)
-     * for any active Create kinetic block entity delivering rotational speed.
-     * Returns the maximum absolute RPM speed found, or 0.0f if none/stopped.
+     * Checks specified adjacent faces of the block for any active Create kinetic block entity
+     * whose output shaft is physically connected and pointing towards the target block.
+     * Returns the maximum absolute RPM speed found, or 0.0f if none/disconnected.
      */
-    public static float getKineticSpeed(Level level, BlockPos millPos) {
+    public static float getKineticSpeed(Level level, BlockPos targetPos, @Nullable Direction[] allowedFaces) {
         init();
-        if (kineticBeClass == null || getSpeedMethod == null) return 0.0f;
+        if (level == null || targetPos == null || kineticBeClass == null || getSpeedMethod == null) return 0.0f;
 
+        Direction[] facesToCheck = (allowedFaces != null && allowedFaces.length > 0) ? allowedFaces : Direction.values();
         float maxSpeed = 0.0f;
 
-        // 1. Check top face first (where shafts, gears, or cranks are placed)
-        BlockPos abovePos = millPos.above();
-        BlockEntity aboveBe = level.getBlockEntity(abovePos);
-        maxSpeed = Math.max(maxSpeed, extractSpeed(aboveBe));
+        for (Direction dir : facesToCheck) {
+            BlockPos neighborPos = targetPos.relative(dir);
+            BlockState neighborState = level.getBlockState(neighborPos);
+            Direction towardsTarget = dir.getOpposite();
 
-        // 2. Check all surrounding faces for kinetic connections
-        for (Direction dir : Direction.values()) {
-            if (dir == Direction.UP) continue;
-            BlockPos neighborPos = millPos.relative(dir);
+            // Strictly verify that the neighbor has a shaft or gear connected towards our target block
+            if (!hasShaftPointingTowards(level, neighborPos, neighborState, towardsTarget)) {
+                continue;
+            }
+
             BlockEntity neighborBe = level.getBlockEntity(neighborPos);
             maxSpeed = Math.max(maxSpeed, extractSpeed(neighborBe));
         }
 
         return maxSpeed;
+    }
+
+    public static float getKineticSpeed(Level level, BlockPos targetPos) {
+        return getKineticSpeed(level, targetPos, null);
     }
 
     private static float extractSpeed(BlockEntity be) {

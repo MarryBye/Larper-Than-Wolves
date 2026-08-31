@@ -263,9 +263,12 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
             return;
         }
 
-        // Automated Rotational Sifting via Create integration
+        // Automated Rotational Sifting via Create integration (strictly through side axle drive sockets)
         if (ModList.get().isLoaded("create")) {
-            float speed = CreateCompatHelper.getKineticSpeed(level, pos);
+            Direction facing = state.hasProperty(io.marrybye.github.larperthanwolves.block.SieveBlock.FACING)
+                    ? state.getValue(io.marrybye.github.larperthanwolves.block.SieveBlock.FACING) : Direction.NORTH;
+            Direction[] sideSockets = new Direction[] { facing.getClockWise(), facing.getCounterClockWise() };
+            float speed = CreateCompatHelper.getKineticSpeed(level, pos, sideSockets);
             if (speed > 0.0f) {
                 sieve.isKineticActive = true;
                 // 16 RPM = 0.5 progress per tick (1 shake every 10 ticks)
