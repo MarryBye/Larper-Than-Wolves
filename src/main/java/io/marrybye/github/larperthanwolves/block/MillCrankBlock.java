@@ -82,7 +82,7 @@ public class MillCrankBlock extends BaseEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
@@ -162,7 +162,8 @@ public class MillCrankBlock extends BaseEntityBlock {
         } else if (CreateCompatHelper.isKineticBlockEntity(attachedBe)) {
             crankBe.startRotation();
             if (!level.isClientSide) {
-                CreateCompatHelper.turnKinetic(level, attachedPos, attachedBe);
+                float speed = player.isShiftKeyDown() ? -32.0f : 32.0f;
+                CreateCompatHelper.applyKineticRotation(level, pos, attachedPos, attachedBe, speed);
             }
             level.playSound(null, pos, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.5f, 1.4f);
             level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 0.6f, 1.3f);

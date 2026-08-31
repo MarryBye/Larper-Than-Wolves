@@ -203,7 +203,7 @@ public class ModItems {
 
     // Mesh items
     public static final DeferredItem<UnboundMeshItem> UNBOUND_MESH = ITEMS.register("unbound_mesh",
-            () -> new UnboundMeshItem(new Item.Properties().durability(UnboundMeshItem.MAX_PROGRESS_SECONDS).stacksTo(1)));
+            () -> new UnboundMeshItem(new Item.Properties().durability(UnboundMeshItem.MAX_PROGRESS_TICKS).stacksTo(1)));
 
     public static final DeferredItem<Item> MESH = ITEMS.register("mesh",
             () -> new Item(new Item.Properties()));

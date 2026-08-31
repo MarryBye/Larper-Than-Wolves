@@ -13,7 +13,8 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 public class UnboundMeshItem extends Item {
-    public static final int MAX_PROGRESS_SECONDS = 15;
+    public static final int MAX_PROGRESS_TICKS = 300; // 15 seconds at 20 ticks/sec
+    public static final int EATING_CYCLE_TICKS = 32;  // standard food eating animation cycle
 
     public UnboundMeshItem(Properties properties) {
         super(properties);
@@ -36,8 +37,7 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        int progress = Math.min(MAX_PROGRESS_SECONDS, stack.getDamageValue());
-        return Math.max(20, (MAX_PROGRESS_SECONDS - progress) * 20);
+        return EATING_CYCLE_TICKS;
     }
 
     @Override
@@ -49,36 +49,29 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int count) {
-        int initialProgress = Math.min(MAX_PROGRESS_SECONDS, stack.getDamageValue());
-        int totalTicks = (MAX_PROGRESS_SECONDS - initialProgress) * 20;
-        int ticksUsed = totalTicks - count;
+        int currentTicks = stack.getDamageValue() + 1;
+        stack.setDamageValue(Math.min(MAX_PROGRESS_TICKS, currentTicks));
 
-        if (ticksUsed > 0 && ticksUsed % 4 == 0) {
+        if (currentTicks % 4 == 0) {
             level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
                     SoundEvents.BRUSH_GENERIC, SoundSource.PLAYERS, 0.7F, 0.85F + level.random.nextFloat() * 0.3F);
         }
-    }
 
-    @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeLeft) {
-        int initialProgress = Math.min(MAX_PROGRESS_SECONDS, stack.getDamageValue());
-        int totalTicks = (MAX_PROGRESS_SECONDS - initialProgress) * 20;
-        int ticksUsed = totalTicks - timeLeft;
-        int secondsAdded = ticksUsed / 20;
-
-        if (secondsAdded > 0) {
-            int newProgress = Math.min(MAX_PROGRESS_SECONDS, initialProgress + secondsAdded);
-            if (newProgress >= MAX_PROGRESS_SECONDS) {
-                finishBinding(stack, level, livingEntity);
-            } else {
-                stack.setDamageValue(newProgress);
-            }
+        if (currentTicks >= MAX_PROGRESS_TICKS) {
+            finishBinding(stack, level, livingEntity);
+            livingEntity.stopUsingItem();
         }
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        return finishBinding(stack, level, livingEntity);
+        if (stack.getDamageValue() >= MAX_PROGRESS_TICKS) {
+            return finishBinding(stack, level, livingEntity);
+        }
+        if (livingEntity instanceof Player player) {
+            player.startUsingItem(player.getUsedItemHand());
+        }
+        return stack;
     }
 
     private ItemStack finishBinding(ItemStack stack, Level level, LivingEntity livingEntity) {
@@ -111,18 +104,12 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        int progress = net.neoforged.fml.loading.FMLEnvironment.dist.isClient()
-                ? io.marrybye.github.larperthanwolves.client.ClientProgressHelper.getClientVisualProgress(stack)
-                : stack.getDamageValue();
-        return Math.round(13.0F * progress / (float) MAX_PROGRESS_SECONDS);
+        return Math.round(13.0F * stack.getDamageValue() / (float) MAX_PROGRESS_TICKS);
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        int progress = net.neoforged.fml.loading.FMLEnvironment.dist.isClient()
-                ? io.marrybye.github.larperthanwolves.client.ClientProgressHelper.getClientVisualProgress(stack)
-                : stack.getDamageValue();
-        float fraction = (float) progress / (float) MAX_PROGRESS_SECONDS;
+        float fraction = (float) stack.getDamageValue() / (float) MAX_PROGRESS_TICKS;
         return Mth.hsvToRgb(fraction / 3.0F, 1.0F, 1.0F);
     }
 }

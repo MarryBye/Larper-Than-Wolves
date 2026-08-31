@@ -15,8 +15,15 @@ import java.lang.reflect.Method;
 public class CreateCompatHelper {
     private static Class<?> kineticBeClass = null;
     private static Class<?> handCrankBeClass = null;
+    private static Class<?> rotationPropagatorClass = null;
     private static Method getSpeedMethod = null;
+    private static Method setSpeedMethod = null;
+    private static Method setSourceMethod = null;
+    private static Method removeSourceMethod = null;
+    private static Method sendDataMethod = null;
     private static Method turnMethod = null;
+    private static Method handleAddedMethod = null;
+    private static Method handleRemovedMethod = null;
     private static boolean initialized = false;
 
     private static void init() {
@@ -25,9 +32,26 @@ public class CreateCompatHelper {
         try {
             kineticBeClass = Class.forName("com.simibubi.create.content.kinetics.base.KineticBlockEntity");
             getSpeedMethod = kineticBeClass.getMethod("getSpeed");
+            setSpeedMethod = kineticBeClass.getMethod("setSpeed", float.class);
+            setSourceMethod = kineticBeClass.getMethod("setSource", BlockPos.class);
+            removeSourceMethod = kineticBeClass.getMethod("removeSource");
         } catch (Throwable ignored) {
             kineticBeClass = null;
-            getSpeedMethod = null;
+        }
+
+        try {
+            Class<?> syncedBeClass = Class.forName("com.simibubi.create.foundation.blockEntity.SyncedBlockEntity");
+            sendDataMethod = syncedBeClass.getMethod("sendData");
+        } catch (Throwable ignored) {
+            sendDataMethod = null;
+        }
+
+        try {
+            rotationPropagatorClass = Class.forName("com.simibubi.create.content.kinetics.RotationPropagator");
+            handleAddedMethod = rotationPropagatorClass.getMethod("handleAdded", Level.class, BlockPos.class, kineticBeClass);
+            handleRemovedMethod = rotationPropagatorClass.getMethod("handleRemoved", Level.class, BlockPos.class, kineticBeClass);
+        } catch (Throwable ignored) {
+            rotationPropagatorClass = null;
         }
 
         try {
@@ -35,7 +59,6 @@ public class CreateCompatHelper {
             turnMethod = handCrankBeClass.getMethod("turn", boolean.class);
         } catch (Throwable ignored) {
             handCrankBeClass = null;
-            turnMethod = null;
         }
     }
 
@@ -48,16 +71,49 @@ public class CreateCompatHelper {
     }
 
     /**
-     * Triggers manual kinetic rotation if the block entity is a Create kinetic crank or source.
+     * Applies manual kinetic rotation to a connected Create block entity.
      */
-    public static void turnKinetic(Level level, BlockPos pos, BlockEntity be) {
+    public static void applyKineticRotation(Level level, BlockPos crankPos, BlockPos attachedPos, BlockEntity attachedBe, float speed) {
         init();
-        if (be == null) return;
+        if (level == null || level.isClientSide() || attachedBe == null || kineticBeClass == null) return;
+        if (!kineticBeClass.isInstance(attachedBe)) return;
 
-        if (handCrankBeClass != null && handCrankBeClass.isInstance(be) && turnMethod != null) {
-            try {
-                turnMethod.invoke(be, false);
-            } catch (Throwable ignored) {}
+        try {
+            if (handCrankBeClass != null && handCrankBeClass.isInstance(attachedBe) && turnMethod != null) {
+                if (speed != 0.0f) {
+                    turnMethod.invoke(attachedBe, speed < 0);
+                }
+                return;
+            }
+
+            if (speed != 0.0f) {
+                if (setSpeedMethod != null) {
+                    setSpeedMethod.invoke(attachedBe, speed);
+                }
+                if (setSourceMethod != null) {
+                    setSourceMethod.invoke(attachedBe, crankPos);
+                }
+                if (handleAddedMethod != null) {
+                    handleAddedMethod.invoke(null, level, attachedPos, attachedBe);
+                }
+                if (sendDataMethod != null) {
+                    sendDataMethod.invoke(attachedBe);
+                }
+            } else {
+                if (handleRemovedMethod != null) {
+                    handleRemovedMethod.invoke(null, level, attachedPos, attachedBe);
+                }
+                if (setSpeedMethod != null) {
+                    setSpeedMethod.invoke(attachedBe, 0.0f);
+                }
+                if (removeSourceMethod != null) {
+                    removeSourceMethod.invoke(attachedBe);
+                }
+                if (sendDataMethod != null) {
+                    sendDataMethod.invoke(attachedBe);
+                }
+            }
+        } catch (Throwable ignored) {
         }
     }
 

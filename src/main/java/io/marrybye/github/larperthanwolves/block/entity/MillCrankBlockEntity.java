@@ -50,6 +50,16 @@ public class MillCrankBlockEntity extends BlockEntity {
     public static void serverTick(Level level, BlockPos pos, BlockState state, MillCrankBlockEntity be) {
         if (be.rotationTicksRemaining > 0) {
             be.rotationTicksRemaining--;
+            if (be.rotationTicksRemaining == 0) {
+                net.minecraft.core.Direction facing = state.hasProperty(io.marrybye.github.larperthanwolves.block.MillCrankBlock.FACING)
+                        ? state.getValue(io.marrybye.github.larperthanwolves.block.MillCrankBlock.FACING)
+                        : net.minecraft.core.Direction.UP;
+                BlockPos attachedPos = pos.relative(facing.getOpposite());
+                BlockEntity attachedBe = level.getBlockEntity(attachedPos);
+                if (io.marrybye.github.larperthanwolves.compat.CreateCompatHelper.isKineticBlockEntity(attachedBe)) {
+                    io.marrybye.github.larperthanwolves.compat.CreateCompatHelper.applyKineticRotation(level, pos, attachedPos, attachedBe, 0.0f);
+                }
+            }
         }
     }
 
