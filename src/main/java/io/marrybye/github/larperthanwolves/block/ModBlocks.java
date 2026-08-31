@@ -145,6 +145,11 @@ public class ModBlocks {
                     .strength(5.0F, 6.0F)
                     .sound(SoundType.METAL)));
 
+    public static final DeferredBlock<Block> CRACKED_STONE = BLOCKS.register("cracked_stone",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .requiresCorrectToolForDrops()));
+
+
     // --- Rich Soils (Hardness 1.0f: 2x slower break than regular, mined with copper+ shovel) ---
     public static final DeferredBlock<RichGrassBlock> RICH_GRASS_BLOCK = BLOCKS.register("rich_grass_block",
             () -> new RichGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)

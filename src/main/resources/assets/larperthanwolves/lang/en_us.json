@@ -175,5 +175,12 @@
   "jei.larperthanwolves.info.filter_grate": "A grate with configurable phantom filter slots (3x3). Click with an item in the GUI to set a ghost filter (original is not consumed) or click to remove. Only filtered items can fall through the grate. Applying a redstone signal inverts the filter.",
   "block.larperthanwolves.entity_observer": "Entity Observer",
   "item.larperthanwolves.entity_observer": "Entity Observer",
-  "jei.larperthanwolves.info.entity_observer": "Detects any entities (players, mobs, items) moving in front of its sensor eye and emits a 4-tick redstone pulse from its back face upon detection."
+  "jei.larperthanwolves.info.entity_observer": "Detects any entities (players, mobs, items) moving in front of its sensor eye and emits a 4-tick redstone pulse from its back face upon detection.",
+  "item.larperthanwolves.pointed_stick": "Pointed Stick",
+  "item.larperthanwolves.pointed_pebble": "Pointed Pebble",
+  "block.larperthanwolves.cracked_stone": "Cracked Stone",
+  "item.larperthanwolves.cracked_stone": "Cracked Stone",
+  "jei.larperthanwolves.info.pointed_stick": "Pointed Stick has 2 durability and is crafted from a single stick. Used for early stone harvesting: the first hit cracks the stone, and the second hit turns it into cobblestone and drops 1 pebble.",
+  "jei.larperthanwolves.info.pointed_pebble": "Pointed Pebble is crafted from any stone pebble. Has 4 durability and is used to chip copper (or tin) dust from ore veins. Chipping the ore block converts it into hard cobblestone.",
+  "jei.larperthanwolves.info.cracked_stone": "Stone fractured by a pointed stick. Breaking it again with a pointed stick yields 1 pebble and leaves cobblestone behind."
 }

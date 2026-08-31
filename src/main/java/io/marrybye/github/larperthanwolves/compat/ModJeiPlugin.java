@@ -346,6 +346,13 @@ public class ModJeiPlugin implements IModPlugin {
 
         registration.addIngredientInfo(new ItemStack(ModItems.UNBOUND_MESH.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.unbound_mesh"));
+        registration.addIngredientInfo(new ItemStack(ModItems.POINTED_STICK.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.pointed_stick"));
+        registration.addIngredientInfo(new ItemStack(ModItems.POINTED_PEBBLE.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.pointed_pebble"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.CRACKED_STONE.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.cracked_stone"));
+
         registration.addIngredientInfo(List.of(new ItemStack(ModItems.BRONZE_KNITTING_NEEDLES.get()), new ItemStack(ModItems.IRON_KNITTING_NEEDLES.get())), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.knitting_needles"));
         registration.addIngredientInfo(new ItemStack(ModItems.MESH.get()), VanillaTypes.ITEM_STACK,

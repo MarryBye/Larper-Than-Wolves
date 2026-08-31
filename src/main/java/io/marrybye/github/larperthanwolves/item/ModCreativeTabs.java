@@ -17,8 +17,11 @@ public class ModCreativeTabs {
                     .title(Component.translatable("itemGroup.larperthanwolves"))
                     .icon(() -> new ItemStack(ModItems.SILICON_PICKAXE.get()))
                     .displayItems((parameters, output) -> {
+                        output.accept(ModItems.POINTED_STICK.get());
+                        output.accept(ModItems.POINTED_PEBBLE.get());
                         output.accept(ModItems.SILICON_SHARD.get());
                         output.accept(ModItems.DRY_GRASS.get());
+
                         output.accept(ModItems.DUNG.get());
                         output.accept(ModItems.TANNED_LEATHER.get());
                         output.accept(ModItems.ROPE.get());
@@ -83,6 +86,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.RAW_TIN_BLOCK.get());
                         output.accept(ModItems.TIN_BLOCK.get());
                         output.accept(ModItems.BRONZE_BLOCK.get());
+                        output.accept(ModItems.CRACKED_STONE.get());
                         output.accept(ModItems.RICH_GRASS_BLOCK.get());
                         output.accept(ModItems.RICH_DIRT.get());
                         output.accept(ModItems.RICH_GRAVEL.get());

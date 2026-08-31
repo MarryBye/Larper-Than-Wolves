@@ -15,8 +15,15 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("larperthanwolves");
 
     // Basic items for early survival
+    public static final DeferredItem<Item> POINTED_STICK = ITEMS.register("pointed_stick",
+            () -> new Item(new Item.Properties().durability(2).stacksTo(1)));
+
+    public static final DeferredItem<Item> POINTED_PEBBLE = ITEMS.register("pointed_pebble",
+            () -> new Item(new Item.Properties().durability(4).stacksTo(1)));
+
     public static final DeferredItem<Item> SILICON_SHARD = ITEMS.register("silicon_shard",
             () -> new Item(new Item.Properties()));
+
 
     public static final DeferredItem<Item> DRY_GRASS = ITEMS.register("dry_grass",
             () -> new Item(new Item.Properties()));
@@ -335,6 +342,10 @@ public class ModItems {
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRONZE_BLOCK = ITEMS.register("bronze_block",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRONZE_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> CRACKED_STONE = ITEMS.register("cracked_stone",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.CRACKED_STONE.get(), new Item.Properties()));
+
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> TWIG = ITEMS.register("twig",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.TWIG.get(), new Item.Properties()));

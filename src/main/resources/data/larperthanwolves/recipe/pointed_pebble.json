@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "tag": "larperthanwolves:pebbles"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:pointed_pebble"
+  }
+}

@@ -12,11 +12,26 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.29.0
+- **Current Version**: 1.30.0
 
 ## Project Architecture & Progression
 
 Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the early and mid-game:
+
+### 🪨 Early Resource Gathering (Pointed Stick, Pointed Pebble & Cracked Stone)
+- **Pointed Stick (`pointed_stick`)**:
+  - Crafted from 1 Stick in any 2x2/3x3 crafting grid.
+  - Durability: **2 uses**.
+  - **Stone Harvesting & 2-Stage Cracking**:
+    - Breaking `minecraft:stone` with a Pointed Stick transforms it into **Cracked Stone** (`cracked_stone`) and consumes 1 durability.
+    - Breaking `cracked_stone` with a Pointed Stick converts it into **Cobblestone** (`minecraft:cobblestone`), drops **1 Stone Pebble** (`stone_nugget`), and consumes the 2nd durability (breaking the stick).
+- **Pointed Pebble (`pointed_pebble`)**:
+  - Crafted from any stone pebble / nugget (`#larperthanwolves:pebbles`) in crafting grid.
+  - Durability: **4 uses**.
+  - **Ore Chipping Mechanic**:
+    - Breaking Copper Ore (`minecraft:copper_ore` / `deepslate_copper_ore`) with a Pointed Pebble drops **1 Copper Dust** (`copper_dust`) and converts the ore into **Cobblestone** (which cannot be mined with pebbles or sticks).
+    - Breaking Tin Ore (`tin_ore` / `deepslate_tin_ore`) drops **1 Tin Dust** (`tin_dust`) and converts into Cobblestone.
+    - Consumes 1 durability per ore chipped.
 
 ### ⛏️ Tool Tiers & Dig Tier Matrix
 - **Disabled Tools & Armor**: Wooden, Stone, Golden, and vanilla Diamond tools and armor are completely disabled and purged from recipes, creative tabs, mob equipment/spawns, and world loot tables.

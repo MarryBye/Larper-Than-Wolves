@@ -66,7 +66,7 @@ public class BlockBreakHandler {
 
         int count = 2 + ThreadLocalRandom.current().nextInt(3);
 
-        if (block == Blocks.STONE || block == Blocks.COBBLESTONE) {
+        if (block == Blocks.STONE || block == Blocks.COBBLESTONE || block == ModBlocks.CRACKED_STONE.get()) {
             return new ItemStack(ModItems.STONE_NUGGET.get(), count);
         } else if (block == Blocks.GRANITE) {
             return new ItemStack(ModItems.GRANITE_NUGGET.get(), count);
@@ -237,6 +237,7 @@ public class BlockBreakHandler {
         return isZincOre(block) ||
                 block == Blocks.STONE ||
                 block == Blocks.COBBLESTONE ||
+                block == ModBlocks.CRACKED_STONE.get() ||
                 block == Blocks.GRANITE ||
                 block == Blocks.DIORITE ||
                 block == Blocks.ANDESITE ||
@@ -316,6 +317,7 @@ public class BlockBreakHandler {
                     block == ModBlocks.TIN_ORE.get() || block == ModBlocks.DEEPSLATE_TIN_ORE.get() ||
                     block == Blocks.STONE ||
                     block == Blocks.COBBLESTONE ||
+                    block == ModBlocks.CRACKED_STONE.get() ||
                     block == Blocks.GRANITE ||
                     block == Blocks.DIORITE ||
                     block == Blocks.ANDESITE ||
@@ -338,6 +340,7 @@ public class BlockBreakHandler {
                     block == ModBlocks.TIN_ORE.get() ||
                     block == Blocks.STONE ||
                     block == Blocks.COBBLESTONE ||
+                    block == ModBlocks.CRACKED_STONE.get() ||
                     block == Blocks.GRANITE ||
                     block == Blocks.DIORITE ||
                     block == Blocks.ANDESITE ||
@@ -353,6 +356,7 @@ public class BlockBreakHandler {
                     block == Blocks.COPPER_ORE ||
                     block == Blocks.STONE ||
                     block == Blocks.COBBLESTONE ||
+                    block == ModBlocks.CRACKED_STONE.get() ||
                     block == Blocks.GRANITE ||
                     block == Blocks.DIORITE ||
                     block == Blocks.ANDESITE ||
@@ -415,6 +419,23 @@ public class BlockBreakHandler {
             }
         }
 
+        // Pointed Stick on Stone / Cracked Stone
+        if (held.is(ModItems.POINTED_STICK.get())) {
+            if (state.is(Blocks.STONE) || state.is(ModBlocks.CRACKED_STONE.get())) {
+                event.setNewSpeed(1.2f);
+                return;
+            }
+        }
+
+        // Pointed Pebble on Copper Ore / Tin Ore
+        if (held.is(ModItems.POINTED_PEBBLE.get())) {
+            if (state.is(Blocks.COPPER_ORE) || state.is(Blocks.DEEPSLATE_COPPER_ORE) ||
+                    state.is(ModBlocks.TIN_ORE.get()) || state.is(ModBlocks.DEEPSLATE_TIN_ORE.get())) {
+                event.setNewSpeed(1.2f);
+                return;
+            }
+        }
+
         // Clay breaks slightly slower
         if (state.is(Blocks.CLAY)) {
             if (isShovel(held)) {
@@ -458,6 +479,65 @@ public class BlockBreakHandler {
         if (held.is(ModItems.CHISEL.get())) {
             if (state.is(BlockTags.LOGS) || state.is(ModBlocks.WORK_STUMP.get()) || ModBlocks.isStump(state)) {
                 event.setCanceled(true);
+                return;
+            }
+        }
+
+        // Pointed Stick interaction: Stone -> Cracked Stone -> Cobblestone + Pebble
+        if (held.is(ModItems.POINTED_STICK.get())) {
+            if (state.is(Blocks.STONE)) {
+                event.setCanceled(true);
+                level.setBlock(pos, ModBlocks.CRACKED_STONE.get().defaultBlockState(), 3);
+                level.playSound(null, pos, SoundEvents.STONE_HIT, SoundSource.BLOCKS, 1.0f, 0.9f);
+                if (level instanceof ServerLevel sl) {
+                    sl.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
+                            pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 12, 0.25, 0.25, 0.25, 0.05);
+                }
+                held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                return;
+            } else if (state.is(ModBlocks.CRACKED_STONE.get())) {
+                event.setCanceled(true);
+                level.setBlock(pos, Blocks.COBBLESTONE.defaultBlockState(), 3);
+                level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f);
+                if (level instanceof ServerLevel sl) {
+                    sl.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK, ModBlocks.CRACKED_STONE.get().defaultBlockState()),
+                            pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, 0.25, 0.25, 0.25, 0.05);
+                }
+                ItemEntity pebble = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.STONE_NUGGET.get(), 1));
+                pebble.setDefaultPickUpDelay();
+                level.addFreshEntity(pebble);
+                held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                return;
+            }
+        }
+
+        // Pointed Pebble interaction: Copper Ore / Tin Ore -> Cobblestone + Dust
+        if (held.is(ModItems.POINTED_PEBBLE.get())) {
+            if (state.is(Blocks.COPPER_ORE) || state.is(Blocks.DEEPSLATE_COPPER_ORE)) {
+                event.setCanceled(true);
+                level.setBlock(pos, Blocks.COBBLESTONE.defaultBlockState(), 3);
+                level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f);
+                if (level instanceof ServerLevel sl) {
+                    sl.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK, state),
+                            pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, 0.25, 0.25, 0.25, 0.05);
+                }
+                ItemEntity dust = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.COPPER_DUST.get(), 1));
+                dust.setDefaultPickUpDelay();
+                level.addFreshEntity(dust);
+                held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                return;
+            } else if (state.is(ModBlocks.TIN_ORE.get()) || state.is(ModBlocks.DEEPSLATE_TIN_ORE.get())) {
+                event.setCanceled(true);
+                level.setBlock(pos, Blocks.COBBLESTONE.defaultBlockState(), 3);
+                level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f);
+                if (level instanceof ServerLevel sl) {
+                    sl.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK, state),
+                            pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, 0.25, 0.25, 0.25, 0.05);
+                }
+                ItemEntity dust = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.TIN_DUST.get(), 1));
+                dust.setDefaultPickUpDelay();
+                level.addFreshEntity(dust);
+                held.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                 return;
             }
         }
