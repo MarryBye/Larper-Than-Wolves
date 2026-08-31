@@ -29,8 +29,31 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
     - 4. **Gold Dust** (6%)
     - 5. **Diamond Dust** (2%)
   - Worldgen: Generates in large veins (size 20, 10–12 attempts/chunk) inside soil biomes.
-- **Sieve Processing (`sieve` / `SieveBlock` / `SieveBlockEntity`)**:
-  - 18-slot container for automated and passive sifting of soils.
+- **Sieve Processing & Mechanics (`sieve` / `SieveBlock` / `SieveBlockEntity`)**:
+  - **No Passive Sifting**: The sieve does NOT passively sift resources over time. Input is on the left (9 slots, 3x3), output is on the right (9 slots, 3x3).
+  - **Active Manual Sifting (Shift + Right-Click)**:
+    - Hold Shift and Right-Click on the Sieve block to perform a manual shake cycle.
+    - Each block requires **5 shakes** to complete (1 click = 1 shake, 20% progress).
+    - **Cooldown**: 0.5 seconds (10 ticks) between shakes.
+    - **Visuals & Audio**: The wire mesh screen tray shakes and vibrates horizontally ($\pm 1$ pixel) with sand/gravel scraping sounds and flying block particles.
+    - Subsequent clicks during the 0.5s animation are locked.
+  - **Automated Rotational Sifting (Create 6.0.10+ Integration)**:
+    - Connect Create rotational shafts, cogs, or kinetic power to the side axle drive connector sockets on the Sieve table.
+    - Sifting speed scales directly with rotational RPM (e.g. 16 RPM = 1 shake per 10 ticks, 64 RPM = 4x speed).
+    - Automatically vibrates the mesh and processes input continuously.
+  - **Active Only When Input Is Present**: Both manual shaking and Create rotation animate and function strictly when valid siftable soils are loaded in the input slots.
+  - **Catch Basin & Side Axle Socket 3D Model**: Features a wooden collection basin underneath the mesh where sifted mineral dusts drop, and protruding bronze/iron bearing sockets on the side walls for kinetic shafts.
+  - **Increased Sifting Drop Rates**:
+    - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious)**:
+      - Silicon Shards: **40%** (was 30%)
+      - Flint: **22%** (was 15%)
+      - Copper Dust: **8%** (was 5%)
+    - **Rich Soils (Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand)**:
+      - 1. **Copper Dust**: **55%** (was 50%)
+      - 2. **Tin Dust**: **32%** (was 30%)
+      - 3. **Iron Dust**: **15%** (was 12%)
+      - 4. **Gold Dust**: **8%** (was 6%)
+      - 5. **Diamond Dust**: **3%** (was 2%)
 
 ---
 
@@ -43,8 +66,10 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
 ---
 
 ## 🔄 Cross-Mod Compatibility & Automation
-- **Create (6.0.10+)**: Crushing Wheels and Millstone process gravel and sand into dusts and pebbles.
-- **JEI Integration**: `SieveRecipeCategory` and `GravelDiggingRecipeCategory` showing drop odds and requirements.
+- **Create (6.0.10+)**: 
+  - Mechanical rotation directly automates the Sieve via side axle connections.
+  - Crushing Wheels and Millstone process gravel and sand into dusts and pebbles.
+- **JEI Integration**: `SieveRecipeCategory` (showing 5x Shift shakes / RPM requirement) and `GravelDiggingRecipeCategory`.
 
 ---
 
@@ -52,12 +77,15 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
 1. **Clay Hand Break**: Break clay block with an empty hand; verify 0 drops.
 2. **Clay Shovel Break**: Break clay block with a Silicon Shovel; verify exactly 1 Clay Ball drops.
 3. **Gravel Hand Break**: Break gravel with bare hands; verify it never drops Flint or Copper Dust.
-4. **Rich Soil Sifting**: Sift Rich Dirt in the Sieve; verify it only produces Copper, Tin, Iron, Gold, and Diamond dusts (no bronze, flint, or shards).
-5. **Rich Grass Harvest**: Break Rich Grass with Silicon Shovel $\rightarrow$ drops plain Dirt. Break with Copper Shovel $\rightarrow$ drops Rich Dirt. Break with Silk Touch $\rightarrow$ drops Rich Grass Block.
+4. **Sieve Empty Shift-Click**: Shift + Right-Click an empty Sieve; verify it does not trigger animations or sounds.
+5. **Sieve Manual Shaking**: Put gravel in Sieve, Shift + Right-Click 5 times with 0.5s interval; verify 1 gravel is consumed and sifted drops appear in output.
+6. **Sieve Create Automation**: Attach Create shaft at 16+ RPM to Sieve; verify it automatically shakes and sifts items.
+7. **Rich Soil Sifting**: Sift Rich Dirt in the Sieve; verify it produces only Copper, Tin, Iron, Gold, and Diamond dusts.
 
 ---
 
 ## 📂 Key Source Files
 - Blocks: `src/main/java/io/marrybye/github/larperthanwolves/block/RichGrassBlock.java`, `RichFallingBlock.java`, `SieveBlock.java`
 - Block Entity: `src/main/java/io/marrybye/github/larperthanwolves/block/entity/SieveBlockEntity.java`
+- Renderer: `src/main/java/io/marrybye/github/larperthanwolves/client/SieveBlockEntityRenderer.java`
 - Handlers: `src/main/java/io/marrybye/github/larperthanwolves/event/BlockBreakHandler.java`

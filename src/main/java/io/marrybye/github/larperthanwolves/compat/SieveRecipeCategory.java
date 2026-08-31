@@ -84,7 +84,7 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveJeiRecipe> {
         this.arrow.draw(guiGraphics, 66, 20);
 
         Font font = Minecraft.getInstance().font;
-        String timeStr = (recipe.getProcessTime() / 20) + "s";
-        guiGraphics.drawString(font, timeStr, 67, 8, 0x808080, false);
+        String timeStr = "5x (Shift)";
+        guiGraphics.drawString(font, timeStr, 60, 8, 0x808080, false);
     }
 }

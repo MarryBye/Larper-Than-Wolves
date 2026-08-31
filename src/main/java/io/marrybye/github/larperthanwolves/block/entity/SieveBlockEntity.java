@@ -1,5 +1,6 @@
 package io.marrybye.github.larperthanwolves.block.entity;
 
+import io.marrybye.github.larperthanwolves.compat.CreateCompatHelper;
 import io.marrybye.github.larperthanwolves.config.ModConfig;
 import io.marrybye.github.larperthanwolves.event.DisabledItemsHandler;
 import io.marrybye.github.larperthanwolves.item.ModItems;
@@ -10,15 +11,21 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,6 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,18 +46,30 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
     // 0..8: 9 Input slots for Gravel/Sand/Suspicious blocks, 9..17: 9 Output slots for sifted items
-    private final NonNullList<ItemStack> items = NonNullList.withSize(18, ItemStack.EMPTY);
+    public static final int TOTAL_SLOTS = 18;
+    public static final int SHAKES_PER_BLOCK = 5;
 
-    private int processTime = 0;
-    private int processTimeTotal = 100;
+    private final NonNullList<ItemStack> items = NonNullList.withSize(TOTAL_SLOTS, ItemStack.EMPTY);
+
+    private int shakeProgress = 0; // 0..5 shakes per block
+    private int shakeCooldown = 0; // 0..10 ticks (0.5s) lock between manual shakes
+    private float kineticBuffer = 0.0f;
+    private boolean isKineticActive = false;
+    private int kineticSoundTimer = 0;
+
+    // Client-side animation
+    public int clientTicks = 0;
+    public int clientShakeTimer = 0;
+
     private static final Random RANDOM = new Random();
 
     public SieveBlockEntity(BlockPos pos, BlockState state) {
@@ -65,17 +85,16 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0 -> SieveBlockEntity.this.processTime;
-                case 1 -> SieveBlockEntity.this.processTimeTotal;
+                case 0 -> SieveBlockEntity.this.shakeProgress * 20; // 0..100% progress
+                case 1 -> 100;
                 default -> 0;
             };
         }
 
         @Override
         public void set(int index, int value) {
-            switch (index) {
-                case 0 -> SieveBlockEntity.this.processTime = value;
-                case 1 -> SieveBlockEntity.this.processTimeTotal = value;
+            if (index == 0) {
+                SieveBlockEntity.this.shakeProgress = value / 20;
             }
         }
 
@@ -95,16 +114,52 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, this.items, registries);
-        tag.putInt("ProcessTime", this.processTime);
-        tag.putInt("ProcessTimeTotal", this.processTimeTotal);
+        tag.putInt("ShakeProgress", this.shakeProgress);
+        tag.putInt("ShakeCooldown", this.shakeCooldown);
+        tag.putBoolean("IsKineticActive", this.isKineticActive);
     }
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         ContainerHelper.loadAllItems(tag, this.items, registries);
-        this.processTime = tag.getInt("ProcessTime");
-        this.processTimeTotal = tag.getInt("ProcessTimeTotal");
+        this.shakeProgress = tag.getInt("ShakeProgress");
+        this.shakeCooldown = tag.getInt("ShakeCooldown");
+        this.isKineticActive = tag.getBoolean("IsKineticActive");
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        tag.putInt("ShakeProgress", this.shakeProgress);
+        tag.putInt("ShakeCooldown", this.shakeCooldown);
+        tag.putBoolean("IsKineticActive", this.isKineticActive);
+        int slot = findFirstSiftableSlot();
+        tag.putInt("InputSlot", slot);
+        if (slot != -1) {
+            tag.put("ActiveInput", this.items.get(slot).saveOptional(registries));
+        }
+        return tag;
+    }
+
+    @Nullable
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(net.minecraft.network.Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
+        super.onDataPacket(net, pkt, lookupProvider);
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            this.shakeProgress = tag.getInt("ShakeProgress");
+            this.shakeCooldown = tag.getInt("ShakeCooldown");
+            this.isKineticActive = tag.getBoolean("IsKineticActive");
+            if (this.shakeCooldown > 0 || this.isKineticActive) {
+                this.clientShakeTimer = 10;
+            }
+        }
     }
 
     public static boolean isSiftable(ItemStack stack) {
@@ -127,29 +182,7 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
                 stack.is(io.marrybye.github.larperthanwolves.block.ModBlocks.RICH_RED_SAND.get().asItem());
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, SieveBlockEntity entity) {
-        if (level.isClientSide) return;
-
-        int configuredTotal = ModConfig.SERVER != null ? ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;
-        entity.processTimeTotal = configuredTotal > 0 ? configuredTotal : 100;
-
-        int siftSlot = entity.findFirstSiftableSlot();
-        if (siftSlot != -1) {
-            entity.processTime++;
-            if (entity.processTime >= entity.processTimeTotal) {
-                entity.processSifting(siftSlot);
-                entity.processTime = 0;
-                setChanged(level, pos, state);
-            }
-        } else {
-            if (entity.processTime > 0) {
-                entity.processTime = 0;
-                setChanged(level, pos, state);
-            }
-        }
-    }
-
-    private int findFirstSiftableSlot() {
+    public int findFirstSiftableSlot() {
         for (int i = 0; i < 9; i++) {
             ItemStack stack = items.get(i);
             if (!stack.isEmpty() && isSiftable(stack)) {
@@ -157,6 +190,136 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
             }
         }
         return -1;
+    }
+
+    public boolean isShaking() {
+        return this.shakeCooldown > 0 || this.isKineticActive || this.clientShakeTimer > 0;
+    }
+
+    public float getInterpolatedOffset(float partialTick) {
+        if (!isShaking()) return 0.0f;
+        return (float) Math.sin((this.clientTicks + partialTick) * 1.6f) * 0.06f;
+    }
+
+    /**
+     * Manual Shift + Right-Click sifting action.
+     * Takes 5 manual shakes with a 0.5s (10-tick) cooldown between shakes to sift 1 block.
+     */
+    public InteractionResult performManualShake(Player player, Level level, BlockPos pos) {
+        int inputSlot = findFirstSiftableSlot();
+        if (inputSlot == -1) {
+            // No siftable items in sieve!
+            return InteractionResult.PASS;
+        }
+
+        if (this.shakeCooldown > 0) {
+            // Still on 0.5s cooldown from previous shake
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+
+        this.shakeCooldown = 10;
+        this.shakeProgress++;
+
+        if (!level.isClientSide) {
+            triggerShakeEffects(level, pos, inputSlot);
+            if (this.shakeProgress >= SHAKES_PER_BLOCK) {
+                this.shakeProgress = 0;
+                processSifting(inputSlot);
+                if (level instanceof ServerLevel sl) {
+                    sl.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.6f, 1.2f);
+                }
+            }
+            setChanged(level, pos, getBlockState());
+            level.sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
+        } else {
+            this.clientShakeTimer = 10;
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, SieveBlockEntity sieve) {
+        if (sieve.shakeCooldown > 0) {
+            sieve.shakeCooldown--;
+        }
+
+        int inputSlot = sieve.findFirstSiftableSlot();
+        if (inputSlot == -1) {
+            if (sieve.isKineticActive || sieve.shakeProgress != 0) {
+                sieve.isKineticActive = false;
+                sieve.shakeProgress = 0;
+                sieve.kineticBuffer = 0.0f;
+                sieve.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+            return;
+        }
+
+        // Automated Rotational Sifting via Create integration
+        if (ModList.get().isLoaded("create")) {
+            float speed = CreateCompatHelper.getKineticSpeed(level, pos);
+            if (speed > 0.0f) {
+                sieve.isKineticActive = true;
+                // 16 RPM = 0.5 progress per tick (1 shake every 10 ticks)
+                // 64 RPM = 2.0 progress per tick
+                // 256 RPM = 8.0 progress per tick
+                float progressPerTick = speed / 32.0f;
+                sieve.kineticBuffer += progressPerTick;
+
+                sieve.kineticSoundTimer++;
+                if (sieve.kineticSoundTimer >= 10) {
+                    sieve.kineticSoundTimer = 0;
+                    sieve.triggerShakeEffects(level, pos, inputSlot);
+                }
+
+                if (sieve.kineticBuffer >= 1.0f) {
+                    int shakes = (int) sieve.kineticBuffer;
+                    sieve.kineticBuffer -= shakes;
+                    sieve.shakeProgress += shakes;
+
+                    while (sieve.shakeProgress >= SHAKES_PER_BLOCK) {
+                        sieve.shakeProgress -= SHAKES_PER_BLOCK;
+                        inputSlot = sieve.findFirstSiftableSlot();
+                        if (inputSlot != -1) {
+                            sieve.processSifting(inputSlot);
+                        } else {
+                            sieve.shakeProgress = 0;
+                            break;
+                        }
+                    }
+                    sieve.setChanged();
+                    level.sendBlockUpdated(pos, state, state, 3);
+                }
+            } else {
+                if (sieve.isKineticActive) {
+                    sieve.isKineticActive = false;
+                    sieve.setChanged();
+                    level.sendBlockUpdated(pos, state, state, 3);
+                }
+                sieve.kineticBuffer = 0.0f;
+            }
+        }
+    }
+
+    public static void clientTick(Level level, BlockPos pos, BlockState state, SieveBlockEntity sieve) {
+        sieve.clientTicks++;
+        if (sieve.clientShakeTimer > 0) {
+            sieve.clientShakeTimer--;
+        }
+    }
+
+    private void triggerShakeEffects(Level level, BlockPos pos, int inputSlot) {
+        ItemStack inputStack = this.items.get(inputSlot);
+        Block inputBlock = Block.byItem(inputStack.getItem());
+        BlockState particleState = inputBlock != Blocks.AIR ? inputBlock.defaultBlockState() : Blocks.GRAVEL.defaultBlockState();
+
+        if (level instanceof ServerLevel sl) {
+            sl.playSound(null, pos, SoundEvents.SAND_HIT, SoundSource.BLOCKS, 0.7f, 0.9f + sl.random.nextFloat() * 0.2f);
+            sl.playSound(null, pos, SoundEvents.BRUSH_GENERIC, SoundSource.BLOCKS, 0.4f, 1.2f + sl.random.nextFloat() * 0.3f);
+            sl.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, particleState),
+                    pos.getX() + 0.5, pos.getY() + 0.85, pos.getZ() + 0.5,
+                    8, 0.25, 0.05, 0.25, 0.05);
+        }
     }
 
     private void processSifting(int inputSlot) {
@@ -178,11 +341,11 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
 
         if (isRich) {
             // Rich Soils: Pure natural metal dusts ONLY (Copper Dust -> Tin Dust -> Iron Dust -> Gold Dust -> Diamond Dust)
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.50;
-            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.30;
-            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.12;
-            double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichGoldDustChance.get() : 0.06;
-            double diamondChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichDiamondDustChance.get() : 0.02;
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.55;
+            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.32;
+            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.15;
+            double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichGoldDustChance.get() : 0.08;
+            double diamondChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichDiamondDustChance.get() : 0.03;
 
             if (roll < (cumulative += copperChance)) {
                 regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
@@ -197,9 +360,9 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
             }
         } else {
             // Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious): Silicon Shard -> Flint -> Copper Dust
-            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.30;
-            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.15;
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.05;
+            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.40;
+            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.22;
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.08;
 
             if (roll < (cumulative += siliconChance)) {
                 regularResult = new ItemStack(ModItems.SILICON_SHARD.get(), 1);

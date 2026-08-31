@@ -1,7 +1,8 @@
-{
+﻿{
   "variants": {
-    "": {
-      "model": "larperthanwolves:block/sieve"
-    }
+    "facing=north": { "model": "larperthanwolves:block/sieve" },
+    "facing=south": { "model": "larperthanwolves:block/sieve", "y": 180 },
+    "facing=west": { "model": "larperthanwolves:block/sieve", "y": 270 },
+    "facing=east": { "model": "larperthanwolves:block/sieve", "y": 90 }
   }
 }

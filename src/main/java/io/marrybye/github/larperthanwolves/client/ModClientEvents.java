@@ -25,11 +25,13 @@ public class ModClientEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.MILL_CRANK.get(), MillCrankRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.SIEVE.get(), SieveBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MillCrankRenderer.LAYER_LOCATION, MillCrankRenderer::createBodyLayer);
+        event.registerLayerDefinition(SieveBlockEntityRenderer.LAYER_LOCATION, SieveBlockEntityRenderer::createBodyLayer);
     }
 
     @SubscribeEvent

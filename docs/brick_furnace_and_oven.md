@@ -25,14 +25,14 @@ This system splits high-temperature thermal processing into two strictly special
 
 | Tier | Fuel Type | Included Items | Burn Duration (Ticks / Sec) | Smelting Speed (Cook Time per Item) | Smelt Yield per Piece |
 |---|---|---|---|---|---|
-| **Tier 1** | **Листва и ветки (*Kindling & Foliage*)** | `ModItems.TWIG`, `ModItems.DRY_GRASS`, `Items.DEAD_BUSH`, `#minecraft:saplings`, `#minecraft:leaves` | **500 ticks** (25s) | **260 ticks** (13.0s) | ~1.9 items |
-| **Tier 2** | **Палки и мелкое дерево (*Sticks & Bowls*)** | `Items.STICK`, `ModItems.POINTED_STICK`, `Items.BOWL` | **700 ticks** (35s) | **240 ticks** (12.0s) | ~2.9 items |
-| **Tier 3** | **Деревянные плиты и ступени (*Slabs & Stairs*)** | `#minecraft:wooden_slabs`, `#minecraft:wooden_stairs`, `#minecraft:wooden_trapdoors`, `#minecraft:wooden_fences`, `#minecraft:fence_gates` | **1000 ticks** (50s) | **200 ticks** (10.0s) | 5.0 items |
-| **Tier 4** | **Доски и изделия (*Planks & Wooden Objects*)** | `#minecraft:planks`, `#minecraft:wooden_doors`, `#minecraft:wooden_pressure_plates`, `#minecraft:wooden_buttons`, `#minecraft:boats`, `#minecraft:signs`, `#minecraft:hanging_signs` | **1400 ticks** (70s / 1m 10s) | **180 ticks** (9.0s) | ~7.7 items |
-| **Tier 5** | **Брёвна, пни и древесина (*Logs, Wood & Stumps*)** | `#minecraft:logs`, `ModBlocks.isStump()`, `#larperthanwolves:stumps`, stripped logs, wood | **2200 ticks** (110s / 1m 50s) | **150 ticks** (7.5s) | ~14.6 items |
-| **Tier 6** | **Древесный уголь (*Charcoal*)** | `Items.CHARCOAL` | **3200 ticks** (160s / 2m 40s) | **120 ticks** (6.0s) | ~26.6 items |
-| **Tier 7** | **Каменный уголь (*Mineral Coal*)** | `Items.COAL` | **3800 ticks** (190s / 3m 10s) | **100 ticks** (5.0s) | 38.0 items |
-| **Tier 8** | **Стержень ифрита (*Blaze Rod*)** | `Items.BLAZE_ROD` | **5400 ticks** (270s / 4m 30s) | **70 ticks** (3.5s) | ~77.1 items |
+| **Tier 1** | **Листва и ветки (*Kindling & Foliage*)** | `ModItems.TWIG`, `ModItems.DRY_GRASS`, `Items.DEAD_BUSH`, `#minecraft:saplings`, `#minecraft:leaves` | **900 ticks** (45s) | **260 ticks** (13.0s) | ~3.4 items |
+| **Tier 2** | **Палки и мелкое дерево (*Sticks & Bowls*)** | `Items.STICK`, `ModItems.POINTED_STICK`, `Items.BOWL` | **1300 ticks** (65s / 1m 5s) | **240 ticks** (12.0s) | ~5.4 items |
+| **Tier 3** | **Деревянные плиты и ступени (*Slabs & Stairs*)** | `#minecraft:wooden_slabs`, `#minecraft:wooden_stairs`, `#minecraft:wooden_trapdoors`, `#minecraft:wooden_fences`, `#minecraft:fence_gates` | **1800 ticks** (90s / 1m 30s) | **200 ticks** (10.0s) | 9.0 items |
+| **Tier 4** | **Доски и изделия (*Planks & Wooden Objects*)** | `#minecraft:planks`, `#minecraft:wooden_doors`, `#minecraft:wooden_pressure_plates`, `#minecraft:wooden_buttons`, `#minecraft:boats`, `#minecraft:signs`, `#minecraft:hanging_signs` | **2400 ticks** (120s / 2m) | **180 ticks** (9.0s) | ~13.3 items |
+| **Tier 5** | **Брёвна, пни и древесина (*Logs, Wood & Stumps*)** | `#minecraft:logs`, `ModBlocks.isStump()`, `#larperthanwolves:stumps`, stripped logs, wood | **3300 ticks** (165s / 2m 45s) | **150 ticks** (7.5s) | ~22.0 items |
+| **Tier 6** | **Древесный уголь (*Charcoal*)** | `Items.CHARCOAL` | **3600 ticks** (180s / 3m) | **120 ticks** (6.0s) | ~30.0 items |
+| **Tier 7** | **Каменный уголь (*Mineral Coal*)** | `Items.COAL` | **4500 ticks** (225s / 3m 45s) | **100 ticks** (5.0s) | 45.0 items |
+| **Tier 8** | **Стержень ифрита (*Blaze Rod*)** | `Items.BLAZE_ROD` | **6000 ticks** (300s / 5m) | **70 ticks** (3.5s) | ~85.7 items |
 | **Tier 9** | **Угольный блок (*Coal Block*)** | `Items.COAL_BLOCK` | **36000 ticks** (1800s / 30 мин) | **80 ticks** (4.0s) | 450.0 items |
 
 ---

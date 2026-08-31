@@ -94,9 +94,29 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - **Iron Knitting Needles**: 256 durability. Crafted from 2 Iron Ingots.
 - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel/Sand)**:
   - **Bare Hand Digging**: Drops only **Silicon Shards** (20%) or the soil block (80%). Whole Flint and Copper Dust **NEVER** drop from bare hand digging.
-  - **Shovel Digging & Sifting**: Drops **Silicon Shards** (20-30%), **Flint** (8-15%), **Copper Dust** (2-5%).
+  - **Shovel Digging**: Drops **Silicon Shards** (20%), **Flint** (8%), **Copper Dust** (2%), **Gravel/Soil** (70%).
   - Suspicious gravel and sand additionally yield their built-in archaeology loot tables.
   - Plain Dirt can now be sifted in the Sieve just like gravel and sand.
+- **Sieve Table (`sieve` / `SieveBlock` / `SieveBlockEntity` / `SieveBlockEntityRenderer`)**:
+  - Crafted from 4 Sticks + 2 Planks + 1 Mesh.
+  - **Container**: 9 input slots (left 3x3) and 9 output slots (right 3x3).
+  - **No Passive Sifting**: The sieve does NOT sift blocks on its own over time.
+  - **Active Manual Sifting (Shift + Right-Click)**:
+    - Hold Shift and Right-Click on the Sieve block to perform a manual shake cycle.
+    - Each block requires **5 shakes** to complete (1 click = 1 shake, 20% progress).
+    - **Cooldown**: 0.5 seconds (10 ticks) between shakes.
+    - **Visuals & Audio**: The wire mesh screen tray vibrates horizontally ($\pm 1$ pixel) with sand/gravel scraping sounds and flying block particles.
+    - Subsequent clicks during the 0.5s animation are locked.
+  - **Automated Rotational Sifting (Create 6.0.10+ Integration)**:
+    - Connecting Create rotating shafts, cogs, or kinetic engines directly to the side axle connector sockets automatically vibrates and sifts the sieve continuously.
+    - Grinding speed scales directly with rotational RPM (e.g. 16 RPM = 1 shake per 10 ticks, 64 RPM = 4x speed).
+  - **Active Only When Input Is Present**: Both manual shaking and Create rotation animate and function strictly when valid siftable soils are loaded in the input slots.
+  - **Catch Basin & Side Axle Socket 3D Model**: Features a wooden collection basin underneath the mesh where sifted mineral dusts drop, and protruding bronze/iron bearing sockets on the side walls for kinetic shafts.
+  - **Increased Sifting Drop Rates**:
+    - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious)**:
+      - Silicon Shards: **40%** (was 30%)
+      - Flint: **22%** (was 15%)
+      - Copper Dust: **8%** (was 5%)
 - **Rich Soils (Богатая почва)**:
   - 5 variants: **Rich Grass Block** (`rich_grass_block`), **Rich Dirt** (`rich_dirt`), **Rich Gravel** (`rich_gravel`), **Rich Sand** (`rich_sand`), **Rich Red Sand** (`rich_red_sand`).
   - Textures: Counterpart vanilla textures with distinct white/silver mineral flecks and top-left lighting.
@@ -105,11 +125,11 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Sifting in Sieve (Pure Natural Metal Dusts ONLY)**:
     - Artificial alloys (Bronze Dust) and common stones (Silicon Shards, Flint) are **strictly excluded**.
     - Yields purely valuable native metals & minerals:
-      1. Copper Dust (`copper_dust`) — **50%**
-      2. Tin Dust (`tin_dust`) — **30%**
-      3. Iron Dust (`iron_dust`) — **12%**
-      4. Gold Dust (`gold_dust`) — **6%**
-      5. Diamond Dust (`diamond_dust`) — **2%**
+      1. Copper Dust (`copper_dust`) — **55%** (was 50%)
+      2. Tin Dust (`tin_dust`) — **32%** (was 30%)
+      3. Iron Dust (`iron_dust`) — **15%** (was 12%)
+      4. Gold Dust (`gold_dust`) — **8%** (was 6%)
+      5. Diamond Dust (`diamond_dust`) — **3%** (was 2%)
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
 ### 🌾 Farming, Mandatory Fertilization (Bone Meal & Dung) & 2-Stage Hoe Tilling
@@ -181,14 +201,14 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Ores & Blocks Only**: Food items cannot be placed or smelted in the Brick Furnace.
 - **Unified 9-Tier Fuel Matrix (`FuelRegistry`)**:
   - Every fuel item in Minecraft provides a distinct **Burn Duration** (~2–2.5x longer than standard) and **Cooking Speed / Temperature**:
-    1. **Tier 1 (Foliage & Twigs)**: 500 ticks (25s), 260t speed. (`ModItems.TWIG`, `DRY_GRASS`, `DEAD_BUSH`, saplings, leaves).
-    2. **Tier 2 (Sticks & Small Wood)**: 700 ticks (35s), 240t speed. (`STICK`, `POINTED_STICK`, `BOWL`).
-    3. **Tier 3 (Wooden Slabs & Stairs)**: 1000 ticks (50s), 200t speed. (slabs, stairs, fences, gates, trapdoors).
-    4. **Tier 4 (Planks & Wooden Objects)**: 1400 ticks (70s), 180t speed. (planks, doors, boats, signs, buttons, pressure plates).
-    5. **Tier 5 (Logs, Wood & Tree Stumps)**: 2200 ticks (110s), 150t speed. (all logs, stripped logs, wood, all mod tree stumps).
-    6. **Tier 6 (Charcoal)**: 3200 ticks (160s), 120t speed.
-    7. **Tier 7 (Mineral Coal)**: 3800 ticks (190s), 100t speed.
-    8. **Tier 8 (Blaze Rod)**: 5400 ticks (270s), 70t speed.
+    1. **Tier 1 (Foliage & Twigs)**: 900 ticks (45s), 260t speed. (`ModItems.TWIG`, `DRY_GRASS`, `DEAD_BUSH`, saplings, leaves).
+    2. **Tier 2 (Sticks & Small Wood)**: 1300 ticks (65s / 1m 5s), 240t speed. (`STICK`, `POINTED_STICK`, `BOWL`).
+    3. **Tier 3 (Wooden Slabs & Stairs)**: 1800 ticks (90s / 1m 30s), 200t speed. (slabs, stairs, fences, gates, trapdoors).
+    4. **Tier 4 (Planks & Wooden Objects)**: 2400 ticks (120s / 2m), 180t speed. (planks, doors, boats, signs, buttons, pressure plates).
+    5. **Tier 5 (Logs, Wood & Tree Stumps)**: 3300 ticks (165s / 2m 45s), 150t speed. (all logs, stripped logs, wood, all mod tree stumps).
+    6. **Tier 6 (Charcoal)**: 3600 ticks (180s / 3m), 120t speed.
+    7. **Tier 7 (Mineral Coal)**: 4500 ticks (225s / 3m 45s), 100t speed.
+    8. **Tier 8 (Blaze Rod)**: 6000 ticks (300s / 5m), 70t speed.
     9. **Tier 9 (Coal Block)**: 36000 ticks (1800s / 30 min), 80t speed.
 
 ### 🔄 Material Conversion & Create 6.0.10 Compatibility
