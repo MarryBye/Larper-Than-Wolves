@@ -60,6 +60,13 @@ public class DisabledItemsHandler {
             Items.DIAMOND_BOOTS,
             Items.DIAMOND_HORSE_ARMOR,
 
+            // Golden tools
+            Items.GOLDEN_SWORD,
+            Items.GOLDEN_PICKAXE,
+            Items.GOLDEN_AXE,
+            Items.GOLDEN_SHOVEL,
+            Items.GOLDEN_HOE,
+
             // Vanilla Furnace, Blast Furnace, Smoker
             Items.FURNACE,
             Items.BLAST_FURNACE,
@@ -79,6 +86,9 @@ public class DisabledItemsHandler {
                     return true;
                 }
                 if (path.startsWith("stone_") && (path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe"))) {
+                    return true;
+                }
+                if (path.startsWith("golden_") && (path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe"))) {
                     return true;
                 }
                 if (path.startsWith("chainmail_")) {

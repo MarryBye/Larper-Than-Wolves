@@ -12,13 +12,14 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.27.7
+- **Current Version**: 1.28.0
 
 ## Project Architecture & Progression
 
 Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the early and mid-game:
 
 ### ⛏️ Tool Tiers & Dig Tier Matrix
+- **Disabled Tools & Armor**: Wooden, Stone, Golden, and vanilla Diamond tools and armor are completely disabled and purged from recipes, creative tabs, mob equipment/spawns, and world loot tables.
 - **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Shovel mines Clay (1 Clay Ball) and basic soils. Cannot mine deepslate, zinc, or any other ores.
 - **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`) and Clay. Cannot mine deepslate, zinc, or iron+.
 - **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils and Clay. Cannot mine zinc ore or high-tier ores.
@@ -30,13 +31,13 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Crafted from 4 Smooth Stone + 2 Bronze Ingots + 2 Planks + 1 Stone.
   - Grind Items into Dusts: 1 input slot, 3 output slots, 100% progress threshold.
   - GUI Progress Indicator: Animated filling arrow (24x17) smoothly indicates active grinding progress (0% $\rightarrow$ 100%).
-  - Mechanical Crank Operation: Operated via a **Mill Crank** placed directly on top of the mill.
+  - Mechanical Crank Operation: Operated via a **Mill Crank** placed on any face (top, sides, bottom).
   - Right-Click Cranking: Right-clicking the crank rotates the handle 360° over **0.5 seconds (10 ticks)** and advances progress by **5%** (20 rotations = 100% completion). Subsequent right-clicks are locked until the current 0.5s rotation finishes.
   - **Create Rotational Force Automation**:
     - Optional integration with Create 6.0.10+.
     - Connecting Create rotating shafts, cogs, or engines directly to the Mill automatically grinds items continuously.
     - Grinding speed scales directly with rotational RPM (e.g. 16 RPM = normal speed, 64 RPM = 4x speed, 256 RPM = 16x speed).
-    - Supports Create Hand Cranks placed on the mill.
+    - Supports Create Hand Cranks placed on the mill, and Mill Crank can be mounted on Create kinetic blocks and turned to provide manual kinetic rotational force.
   - Base Grinding Ratios:
     - 1 Ingot (Iron, Copper, Gold, Tin, Bronze) $\rightarrow$ 8 Dusts (2 Dust = 1 Nugget, 4 Nuggets = 1 Ingot).
     - 1 Diamond $\rightarrow$ 8 Diamond Dust.
@@ -47,8 +48,9 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Hopper & Automation: Inputs through top/sides, outputs extracted through bottom face (`WorldlyContainer`).
 - **Mill Crank (`mill_crank` / `MillCrankBlock`)**:
   - Crafted from 3 Sticks + 1 Rope.
+  - Directional in all 6 orientations (Up, Down, North, South, East, West). Can be placed on floors, ceilings, and horizontal walls.
   - Custom Create-style 3D block model and full 3D inventory item model (wide hub, extended horizontal lever arm, vertical grip handle with top knob).
-  - Animated 3D rotating handle rendered via client-side `MillCrankRenderer` with tick interpolation.
+  - Animated 3D rotating handle rendered via client-side `MillCrankRenderer` with tick interpolation across all 6 facings.
 - **Bone Meal & Mob Drops Overhaul**:
   - Vanilla bone meal crafting (bone $\rightarrow$ 3 bone meal, bone block $\rightarrow$ 9 bone meal) is disabled and purged.
   - Bones can only be turned into bone meal in the Hand Mill (2 Bones $\rightarrow$ 1 Bone Meal).
@@ -106,7 +108,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Triggered by player feeding, sheep grazing on grass, and wild wolves hunting and killing prey.
 - **Wildlife & Animal Behavior Overhaul (`AnimalBehaviorHandler`)**:
   - **Wild Wolf Predation**: Wild, untamed wolves hunt **ALL peaceful animals** (cows, pigs, sheep, chickens, rabbits, horses, llamas, goats, etc.), creating active ecosystem danger.
-  - **Enhanced Animal Fleeing**: When damaged, all peaceful animals gain a high panic sprint speed boost (**Speed II**) and actively calculate navigation trajectories away from their attacker.
+  - **Persistent Animal Fleeing (`PersistentFleeGoal`)**: When damaged by a player or predator, peaceful animals do NOT just run for 2 seconds. They enter persistent flight mode (**Speed II**, 1.8x speed) and dynamically pathfind away from the attacker until reaching at least **30 blocks away**. If pursued, they continue fleeing without stopping.
   - **Cow Defensive Kick**: If an attacker strikes a cow in close melee range ($\le 3.0$ blocks), the cow immediately delivers a powerful rear hoof kick (deals 5.0 damage / 2.5 hearts, applies heavy backwards knockback, plays impact sound and crit particles) before sprinting away with **Speed III**.
 - **2-Stage Tilling**:
   - **Stage 1 (Grass/Podzol/Mycelium/Rich Grass $\rightarrow$ Dirt/Rich Dirt)**: Right-click grassy ground with any hoe to till away the grass layer into plain dirt (or rich dirt) with a **35% chance** to harvest wild seeds (`Wheat Seeds` 50%, `Carrot` 15%, `Potato` 15%, `Beetroot Seeds` 10%, `Pumpkin Seeds` 5%, `Melon Seeds` 5%).
@@ -121,7 +123,18 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Armorer, Weaponsmith, and Toolsmith villagers sell tools, weapons, and armor up to **Bronze tier** in exchange for emeralds.
   - Basic / flavor trades (sticks, pebbles, silicon shards, saplings, dyes, wild crops, dry grass) allow fair early-game bartering.
   - All iron/diamond/chainmail tool and armor offers, as well as disabled item purchases, are purged.
-- **Chest Loot Rebalancing**: All generated chest loot tables (villages, pillager outposts, mineshafts, dungeons, temples) are rebalanced: iron gear is replaced with copper/bronze tiers, raw metals/ingots with dusts/nuggets, furnaces/smokers with brick furnaces/ovens, and supernatural endgame items with grounded survival alternatives.
+- **Universal Loot Table Rebalancing (`ChestLootModifier` & `RemoveDisabledItemsModifier`)**:
+  - All generated loot tables (chests, ruined portals, archaeology, trial chambers, spawners, pots, fishing, bartering) are rebalanced:
+    - Gold, Iron, Diamond, and Netherite tools/weapons $\rightarrow$ Copper (75%) or Bronze (25% on high luck) retaining enchantments.
+    - Gold, Iron, Chainmail, Diamond armor $\rightarrow$ Copper (75%) or Bronze (25%).
+    - Iron nuggets $\rightarrow$ Copper nuggets (65%), Tin nuggets (25%), Bronze nuggets (10%).
+    - Gold nuggets $\rightarrow$ Copper nuggets (65%), Tin nuggets (25%), Gold dust (10%).
+    - Iron/Gold ingots $\rightarrow$ Copper/Tin ingots (80%), Bronze/Gold dust/nuggets (20%).
+    - Raw Iron/Gold $\rightarrow$ Raw Copper/Tin (85%), Iron/Gold dust (15%).
+    - Diamonds $\rightarrow$ Diamond dust (75%), Diamond nugget (25%).
+    - Netherite scrap/ingots $\rightarrow$ Diamond dust / Bronze.
+    - Furnaces/Smokers $\rightarrow$ Brick Furnaces / Ovens.
+    - Bone Meal $\rightarrow$ Bones (must be ground in Hand Mill).
 
 ### 🪓 Woodcutting & Plank Crafting Rules
 - **Tree & Plank Harvesting**: Trees (logs, wood, stripped wood) and planks cannot be broken by hand. An axe is strictly required.
@@ -131,7 +144,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Full support for all wood types (Oak, Spruce, Birch, Jungle, Acacia, Dark Oak, Mangrove, Cherry, Bamboo, Crimson, Warped, and Mod Stumps).
 
 ### ☀️ Drying Rack & Material Processing
-- **Drying Rack (Сушилка)**: Crafted in 2x2 grid from 4 sticks (`drying_rack`). Operates passively when placed outdoors under open sky during daytime (`isDay() && canSeeSky() && !isRaining()`).
+- **Drying Rack (Сушилка)**: Crafted in 2x2 grid from 4 sticks (`drying_rack`). Full 3D isometric inventory item model. Operates passively when placed outdoors under open sky during daytime (`isDay() && canSeeSky() && !isRaining()`).
   - **Grass** (Short Grass, Tall Grass, Fern, Large Fern, Seagrass) $\rightarrow$ **Dry Grass** (wilted straw, used for ropes & furnace fuel). Shears are required to harvest grass.
   - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and ropes).
   - **Rope Crafting**: Ropes can only be crafted from Tanned Leather + Shears (or Dry Grass / vines). Standard leather rope crafting is removed.
@@ -170,7 +183,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 ### 🧺 Early Storage: Woven Basket (`basket` / `BasketBlock`)
 - **Crafting**: 4 Meshes in 2x2 grid $\rightarrow$ **Basket** (`basket`). Accessible very early before crafting tables or chests are available.
 - **Storage**: 9 slots (3x3 inventory container).
-- **Design & Model**: Custom 3D block model with woven wicker panels, reinforced rim, arched handle, and rope cross-bindings. Supports horizontal rotation and proper collision voxel bounds (`14x12x14`).
+- **Design & Model**: Custom 3D block model and 3D isometric inventory item model with woven wicker panels, reinforced rim, arched handle, and rope cross-bindings. Supports horizontal rotation and proper collision voxel bounds (`14x12x14`).
 - **Interactions & Automation**: Right-click opens custom 3x3 GUI. Supports hopper input/output through all faces (`WorldlyContainer`). Drops contents when broken with an axe.
 
 ### ⚙️ Redstone & Advanced Mechanisms (Kinetic Piston, Filter Grate, Entity Observer)

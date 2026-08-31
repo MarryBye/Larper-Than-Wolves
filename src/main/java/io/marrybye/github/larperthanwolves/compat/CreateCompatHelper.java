@@ -14,7 +14,9 @@ import java.lang.reflect.Method;
  */
 public class CreateCompatHelper {
     private static Class<?> kineticBeClass = null;
+    private static Class<?> handCrankBeClass = null;
     private static Method getSpeedMethod = null;
+    private static Method turnMethod = null;
     private static boolean initialized = false;
 
     private static void init() {
@@ -26,6 +28,36 @@ public class CreateCompatHelper {
         } catch (Throwable ignored) {
             kineticBeClass = null;
             getSpeedMethod = null;
+        }
+
+        try {
+            handCrankBeClass = Class.forName("com.simibubi.create.content.kinetics.crank.HandCrankBlockEntity");
+            turnMethod = handCrankBeClass.getMethod("turn", boolean.class);
+        } catch (Throwable ignored) {
+            handCrankBeClass = null;
+            turnMethod = null;
+        }
+    }
+
+    /**
+     * Checks if the given BlockEntity is a Create kinetic component.
+     */
+    public static boolean isKineticBlockEntity(BlockEntity be) {
+        init();
+        return be != null && kineticBeClass != null && kineticBeClass.isInstance(be);
+    }
+
+    /**
+     * Triggers manual kinetic rotation if the block entity is a Create kinetic crank or source.
+     */
+    public static void turnKinetic(Level level, BlockPos pos, BlockEntity be) {
+        init();
+        if (be == null) return;
+
+        if (handCrankBeClass != null && handCrankBeClass.isInstance(be) && turnMethod != null) {
+            try {
+                turnMethod.invoke(be, false);
+            } catch (Throwable ignored) {}
         }
     }
 

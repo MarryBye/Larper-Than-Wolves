@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
-      "model": "larperthanwolves:block/mill_crank"
-    }
+    "facing=up": { "model": "larperthanwolves:block/mill_crank" },
+    "facing=down": { "model": "larperthanwolves:block/mill_crank" },
+    "facing=north": { "model": "larperthanwolves:block/mill_crank" },
+    "facing=south": { "model": "larperthanwolves:block/mill_crank" },
+    "facing=west": { "model": "larperthanwolves:block/mill_crank" },
+    "facing=east": { "model": "larperthanwolves:block/mill_crank" }
   }
 }

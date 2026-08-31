@@ -1,6 +1,14 @@
 # Tool Tiers & Mining Matrix (`ModToolMaterials` / `BlockBreakHandler`)
 
-This document defines the complete tool tier progression, durability, harvest speeds, and the exhaustive block-by-block mining access and drop matrix.
+This document defines the complete tool tier progression, durability, harvest speeds, the exhaustive block-by-block mining access and drop matrix, and disabled tool tiers.
+
+---
+
+## 🚫 Disabled Vanilla Tools & Armor
+- **Wooden & Stone Tools**: Purged from recipes, creative tabs, and world drops. Replaced by Silicon tools.
+- **Golden Tools & Armor**: Purged from recipes, creative tabs, mob equipment/spawns, and all world loot tables.
+- **Chainmail Armor**: Purged and disabled.
+- **Diamond Tools & Armor**: Purged from crafting; replaced by Reinforced Iron (Diamond Ingot) upgrade progression.
 
 ---
 
@@ -101,4 +109,5 @@ This document defines the complete tool tier progression, durability, harvest sp
 ## 📂 Key Source Files
 - Materials: `src/main/java/io/marrybye/github/larperthanwolves/item/ModToolMaterials.java`
 - Mining Logic: `src/main/java/io/marrybye/github/larperthanwolves/event/BlockBreakHandler.java`
+- Disabled Items: `src/main/java/io/marrybye/github/larperthanwolves/event/DisabledItemsHandler.java`
 - Items: `src/main/java/io/marrybye/github/larperthanwolves/item/ModItems.java`

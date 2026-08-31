@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import io.marrybye.github.larperthanwolves.block.entity.MillBlockEntity;
 import io.marrybye.github.larperthanwolves.block.entity.MillCrankBlockEntity;
 import io.marrybye.github.larperthanwolves.block.entity.ModBlockEntities;
+import io.marrybye.github.larperthanwolves.compat.CreateCompatHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -14,6 +15,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -21,22 +23,33 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class MillCrankBlock extends BaseEntityBlock {
+    public static final DirectionProperty FACING = DirectionalBlock.FACING;
     public static final MapCodec<MillCrankBlock> CODEC = simpleCodec(MillCrankBlock::new);
-    private static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
+
+    private static final VoxelShape SHAPE_UP = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
+    private static final VoxelShape SHAPE_DOWN = Block.box(2.0D, 8.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+    private static final VoxelShape SHAPE_NORTH = Block.box(2.0D, 2.0D, 8.0D, 14.0D, 14.0D, 16.0D);
+    private static final VoxelShape SHAPE_SOUTH = Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 8.0D);
+    private static final VoxelShape SHAPE_WEST = Block.box(8.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D);
+    private static final VoxelShape SHAPE_EAST = Block.box(0.0D, 2.0D, 2.0D, 8.0D, 14.0D, 14.0D);
 
     public MillCrankBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP));
     }
 
     @Override
@@ -45,8 +58,26 @@ public class MillCrankBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getClickedFace());
+    }
+
+    @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        Direction facing = state.hasProperty(FACING) ? state.getValue(FACING) : Direction.UP;
+        return switch (facing) {
+            case DOWN -> SHAPE_DOWN;
+            case NORTH -> SHAPE_NORTH;
+            case SOUTH -> SHAPE_SOUTH;
+            case WEST -> SHAPE_WEST;
+            case EAST -> SHAPE_EAST;
+            default -> SHAPE_UP;
+        };
     }
 
     @Override
@@ -56,9 +87,12 @@ public class MillCrankBlock extends BaseEntityBlock {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockPos belowPos = pos.below();
-        BlockState belowState = level.getBlockState(belowPos);
-        return belowState.getBlock() instanceof MillBlock || belowState.isFaceSturdy(level, belowPos, Direction.UP);
+        Direction facing = state.hasProperty(FACING) ? state.getValue(FACING) : Direction.UP;
+        BlockPos attachedPos = pos.relative(facing.getOpposite());
+        BlockState attachedState = level.getBlockState(attachedPos);
+        return attachedState.getBlock() instanceof MillBlock
+                || attachedState.isFaceSturdy(level, attachedPos, facing)
+                || (level instanceof Level lvl && CreateCompatHelper.isKineticBlockEntity(lvl.getBlockEntity(attachedPos)));
     }
 
     @Override
@@ -94,10 +128,11 @@ public class MillCrankBlock extends BaseEntityBlock {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        BlockPos millPos = pos.below();
-        BlockEntity millBe = level.getBlockEntity(millPos);
+        Direction facing = state.hasProperty(FACING) ? state.getValue(FACING) : Direction.UP;
+        BlockPos attachedPos = pos.relative(facing.getOpposite());
+        BlockEntity attachedBe = level.getBlockEntity(attachedPos);
 
-        if (millBe instanceof MillBlockEntity mill) {
+        if (attachedBe instanceof MillBlockEntity mill) {
             if (mill.canGrind()) {
                 crankBe.startRotation();
                 level.playSound(null, pos, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.5f, 1.4f);
@@ -113,7 +148,7 @@ public class MillCrankBlock extends BaseEntityBlock {
                         level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0f, 0.85f);
                         if (level instanceof ServerLevel serverLevel) {
                             serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, inputBefore),
-                                    millPos.getX() + 0.5D, millPos.getY() + 0.9D, millPos.getZ() + 0.5D,
+                                    attachedPos.getX() + 0.5D, attachedPos.getY() + 0.9D, attachedPos.getZ() + 0.5D,
                                     12, 0.2D, 0.1D, 0.2D, 0.05D);
                         }
                     }
@@ -124,6 +159,14 @@ public class MillCrankBlock extends BaseEntityBlock {
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 0.5f, 1.8f);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
+        } else if (CreateCompatHelper.isKineticBlockEntity(attachedBe)) {
+            crankBe.startRotation();
+            if (!level.isClientSide) {
+                CreateCompatHelper.turnKinetic(level, attachedPos, attachedBe);
+            }
+            level.playSound(null, pos, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.5f, 1.4f);
+            level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 0.6f, 1.3f);
+            return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
             // Free rotation when placed on another surface
             crankBe.startRotation();

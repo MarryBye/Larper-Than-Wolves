@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import io.marrybye.github.larperthanwolves.LarperThanWolves;
+import io.marrybye.github.larperthanwolves.block.MillCrankBlock;
 import io.marrybye.github.larperthanwolves.block.entity.MillCrankBlockEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -16,6 +17,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 
 public class MillCrankRenderer implements BlockEntityRenderer<MillCrankBlockEntity> {
@@ -60,15 +62,31 @@ public class MillCrankRenderer implements BlockEntityRenderer<MillCrankBlockEnti
 
     @Override
     public void render(MillCrankBlockEntity be, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        Direction facing = be.getBlockState().hasProperty(MillCrankBlock.FACING)
+                ? be.getBlockState().getValue(MillCrankBlock.FACING) : Direction.UP;
+
         poseStack.pushPose();
-        poseStack.translate(0.5D, 0.0D, 0.5D);
+        poseStack.translate(0.5D, 0.5D, 0.5D);
+
+        // Rotate according to the 6 possible attached block facings
+        switch (facing) {
+            case DOWN -> poseStack.mulPose(Axis.XP.rotationDegrees(180));
+            case NORTH -> poseStack.mulPose(Axis.XP.rotationDegrees(-90));
+            case SOUTH -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+            case WEST -> poseStack.mulPose(Axis.ZP.rotationDegrees(90));
+            case EAST -> poseStack.mulPose(Axis.ZP.rotationDegrees(-90));
+            case UP -> {
+                // Default UP orientation
+            }
+        }
+        poseStack.translate(0.0D, -0.5D, 0.0D);
 
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(TEXTURE));
 
         // Render static base
         this.base.render(poseStack, vertexConsumer, packedLight, packedOverlay);
 
-        // Render rotating handle
+        // Render rotating handle around outward normal axis
         float angle = be.getInterpolatedAngle(partialTick);
         poseStack.mulPose(Axis.YP.rotationDegrees(angle));
         this.handle.render(poseStack, vertexConsumer, packedLight, packedOverlay);

@@ -14,7 +14,7 @@ This system provides very early-game item storage and filtering components befor
 - **Woven Basket (`basket` / `BasketBlock` / `BasketBlockEntity`)**:
   - **9-slot container** (3x3 inventory).
   - Crafting: 4 Meshes in 2x2 grid.
-  - Custom 3D block model: woven wicker pattern, reinforced wooden rim, arched handle, and cross rope bindings.
+  - **3D Inventory Item & In-World Model**: Rendered as a full 3D isometric woven wicker basket with handle in the GUI inventory, player hand, and in-world.
   - Supports horizontal placement rotation (`FACING`).
   - Supports hopper insertion and extraction through all faces (`WorldlyContainer`).
   - Tool requirement: Broken with an axe; drops inventory items on removal.
@@ -37,11 +37,13 @@ This system provides very early-game item storage and filtering components befor
 
 ## 🧪 Testing Guide & Edge Cases
 1. **Mesh Weaving**: Hold right-click with Unbound Mesh for 7 seconds and release. Verify durability bar is ~half full. Hold again for 8 seconds; verify it completes and transforms into `mesh`.
-2. **Basket Storage**: Place Basket. Open GUI and insert 9 different items. Break basket with an axe; verify all 9 items drop on the ground.
+2. **Basket 3D Model**: Open inventory or drop a basket item on the ground. Verify it renders as a complete 3D model instead of a flat 2D sprite.
+3. **Basket Storage**: Place Basket. Open GUI and insert 9 different items. Break basket with an axe; verify all 9 items drop on the ground.
 
 ---
 
 ## 📂 Key Source Files
 - Block: `src/main/java/io/marrybye/github/larperthanwolves/block/BasketBlock.java`
 - Block Entity: `src/main/java/io/marrybye/github/larperthanwolves/block/entity/BasketBlockEntity.java`
+- Models: `src/main/resources/assets/larperthanwolves/models/item/basket.json`, `models/block/basket.json`
 - Item: `src/main/java/io/marrybye/github/larperthanwolves/item/ModItems.java` (`UNBOUND_MESH`, `MESH`)
