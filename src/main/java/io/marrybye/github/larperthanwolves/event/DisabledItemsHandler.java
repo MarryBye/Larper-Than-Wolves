@@ -348,13 +348,17 @@ public class DisabledItemsHandler {
                                 net.minecraft.core.BlockPos pos = new net.minecraft.core.BlockPos(startX + x, secY + y, startZ + z);
                                 net.minecraft.world.level.block.state.BlockState bs = level.getBlockState(pos);
                                 if (bs.is(net.minecraft.world.level.block.Blocks.CRAFTING_TABLE)) {
-                                    level.setBlock(pos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
-                                } else if (bs.is(net.minecraft.world.level.block.Blocks.BLAST_FURNACE)) {
-                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState(), 3);
+                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.OAK_STUMP.get().defaultBlockState(), 3);
+                                } else if (bs.is(net.minecraft.world.level.block.Blocks.BLAST_FURNACE) || bs.is(net.minecraft.world.level.block.Blocks.FURNACE)) {
+                                    net.minecraft.core.Direction facing = bs.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
+                                            bs.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
+                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState()
+                                            .setValue(io.marrybye.github.larperthanwolves.block.BrickFurnaceBlock.FACING, facing), 3);
                                 } else if (bs.is(net.minecraft.world.level.block.Blocks.SMOKER)) {
-                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.OVEN.get().defaultBlockState(), 3);
-                                } else if (bs.is(net.minecraft.world.level.block.Blocks.FURNACE)) {
-                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.BRICK_FURNACE.get().defaultBlockState(), 3);
+                                    net.minecraft.core.Direction facing = bs.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) ?
+                                            bs.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING) : net.minecraft.core.Direction.NORTH;
+                                    level.setBlock(pos, io.marrybye.github.larperthanwolves.block.ModBlocks.OVEN.get().defaultBlockState()
+                                            .setValue(io.marrybye.github.larperthanwolves.block.OvenBlock.FACING, facing), 3);
                                 }
                             }
                         }

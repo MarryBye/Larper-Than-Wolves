@@ -54,4 +54,5 @@ This system provides early-game item storage, filtering components, hand weaving
 - Block: `src/main/java/io/marrybye/github/larperthanwolves/block/BasketBlock.java`
 - Block Entity: `src/main/java/io/marrybye/github/larperthanwolves/block/entity/BasketBlockEntity.java`
 - Items: `src/main/java/io/marrybye/github/larperthanwolves/item/UnboundMeshItem.java`, `KnittingNeedlesItem.java`, `ModItems.java`
+- Client: `src/main/java/io/marrybye/github/larperthanwolves/client/UnboundMeshClientExtension.java`, `ClientProgressHelper.java`
 - Recipe: `src/main/java/io/marrybye/github/larperthanwolves/recipe/KnittingMeshRecipe.java`

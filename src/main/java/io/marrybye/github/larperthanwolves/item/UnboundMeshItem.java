@@ -111,38 +111,14 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public void initializeClient(Consumer<net.neoforged.neoforge.client.extensions.common.IClientItemExtensions> consumer) {
-        consumer.accept(new net.neoforged.neoforge.client.extensions.common.IClientItemExtensions() {
-            @Override
-            public boolean applyForgeHandTransform(com.mojang.blaze3d.vertex.PoseStack poseStack, net.minecraft.client.player.LocalPlayer player, net.minecraft.world.entity.HumanoidArm arm, ItemStack itemInHand, float partialTick, float equipProcess, float swingProcess) {
-                if (player.isUsingItem() && (player.getUseItem() == itemInHand || ItemStack.isSameItem(player.getUseItem(), itemInHand))) {
-                    int side = (arm == net.minecraft.world.entity.HumanoidArm.RIGHT) ? 1 : -1;
-                    poseStack.translate(side * 0.56F, -0.52F + equipProcess * -0.6F, -0.72F);
-                    float useTicks = (float)(itemInHand.getUseDuration(player) - player.getUseItemRemainingTicks()) + partialTick;
-                    float bob = Mth.abs(Mth.cos(useTicks / 4.0F * (float)Math.PI) * 0.08F);
-                    poseStack.translate(side * -0.32F, 0.12F + bob, 0.22F);
-                    poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(side * 65.0F));
-                    poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(side * -20.0F));
-                    poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(-45.0F));
-                    return true;
-                }
-                return false;
-            }
-        });
+        io.marrybye.github.larperthanwolves.client.UnboundMeshClientExtension.register(consumer);
     }
 
     private static int getCurrentProgress(ItemStack stack) {
-        int progress = stack.getDamageValue();
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            net.minecraft.client.player.LocalPlayer player = net.minecraft.client.Minecraft.getInstance().player;
-            if (player != null && player.isUsingItem()) {
-                ItemStack using = player.getUseItem();
-                if (using == stack || (ItemStack.isSameItem(using, stack) && (player.getMainHandItem() == stack || player.getOffhandItem() == stack))) {
-                    int elapsed = stack.getUseDuration(player) - player.getUseItemRemainingTicks();
-                    progress += Math.max(0, elapsed);
-                }
-            }
+            return io.marrybye.github.larperthanwolves.client.ClientProgressHelper.getClientVisualProgress(stack);
         }
-        return Math.min(MAX_PROGRESS_TICKS, progress);
+        return Math.min(MAX_PROGRESS_TICKS, stack.getDamageValue());
     }
 
     @Override
