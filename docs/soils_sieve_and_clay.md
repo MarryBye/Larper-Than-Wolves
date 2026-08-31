@@ -22,12 +22,13 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - Visuals: Silver/white mineral flecks on counterpart vanilla textures.
   - Mining requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich soil block item. Digging with hands or silicon shovel drops standard soil.
   - **Sifting Drops (Pure Natural Metal Dusts ONLY)**:
-    - Bronze Dust (artificial alloy), Silicon Shards, and Flint are strictly excluded.
-    - 1. **Copper Dust** (50%)
-    - 2. **Tin Dust** (30%)
-    - 3. **Iron Dust** (12%)
-    - 4. **Gold Dust** (6%)
-    - 5. **Diamond Dust** (2%)
+    - Artificial alloys (Bronze Dust), Silicon Shards, and Flint are **strictly excluded** from rich soils.
+    - Uses independent rolls so rich soils provide multiple valuable native metal drops:
+      1. **Copper Dust** (`copper_dust`) — **85%** (Very common)
+      2. **Tin Dust** (`tin_dust`) — **55%** (Common)
+      3. **Iron Dust** (`iron_dust`) — **25%** (Rare)
+      4. **Gold Dust** (`gold_dust`) — **8%** (Very rare)
+      5. **Diamond Dust** (`diamond_dust`) — **3%** (Super rare)
   - Worldgen: Generates in large veins (size 20, 10–12 attempts/chunk) inside soil biomes.
 - **Sieve Processing & Mechanics (`sieve` / `SieveBlock` / `SieveBlockEntity`)**:
   - **No Passive Sifting**: The sieve does NOT passively sift resources over time. Input is on the left (9 slots, 3x3), output is on the right (9 slots, 3x3).
@@ -44,17 +45,18 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
     - Automatically vibrates the mesh and processes input continuously.
   - **Active Only When Input Is Present**: Both manual shaking and Create rotation animate and function strictly when valid siftable soils are loaded in the input slots.
   - **Catch Basin & Side Axle Socket 3D Model**: Features a wooden collection basin underneath the mesh where sifted mineral dusts drop, and protruding bronze/iron bearing sockets on the side walls for kinetic shafts.
-  - **Increased Sifting Drop Rates**:
+  - **Balanced Sifting Drop Matrix**:
     - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious)**:
-      - Silicon Shards: **40%** (was 30%)
-      - Flint: **22%** (was 15%)
-      - Copper Dust: **8%** (was 5%)
+      - Silicon Shards: **45%** (Common)
+      - Flint: **22%** (Rare)
+      - Copper Dust: **8%** (Very rare)
     - **Rich Soils (Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand)**:
-      - 1. **Copper Dust**: **85%** (was 55%)
-      - 2. **Tin Dust**: **55%** (was 32%)
-      - 3. **Iron Dust**: **25%** (was 15%)
-      - 4. **Gold Dust**: **8%**
-      - 5. **Diamond Dust**: **3%**
+      - Independent roll per mineral, strictly metal dusts only (no flint/silicon):
+      - 1. **Copper Dust**: **85%** (Very common)
+      - 2. **Tin Dust**: **55%** (Common)
+      - 3. **Iron Dust**: **25%** (Rare)
+      - 4. **Gold Dust**: **8%** (Very rare)
+      - 5. **Diamond Dust**: **3%** (Super rare)
 
 ---
 

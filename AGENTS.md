@@ -115,25 +115,25 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - Grinding speed scales directly with rotational RPM (e.g. 16 RPM = 1 shake per 10 ticks, 64 RPM = 4x speed).
   - **Active Only When Input Is Present**: Both manual shaking and Create rotation animate and function strictly when valid siftable soils are loaded in the input slots.
   - **Catch Basin & Side Axle Socket 3D Model**: Features a wooden collection basin underneath the mesh where sifted mineral dusts drop, and protruding bronze/iron bearing sockets on the side walls for kinetic shafts.
-  - **Increased Sifting Drop Rates**:
+  - **Balanced Sifting Drop Matrix**:
     - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious)**:
-      - Silicon Shards: **40%** (was 30%)
-      - Flint: **22%** (was 15%)
-      - Copper Dust: **8%** (was 5%)
+      - Silicon Shards: **45%** (Common)
+      - Flint: **22%** (Rare)
+      - Copper Dust: **8%** (Very rare)
 - **Rich Soils (Богатая почва)**:
   - 5 variants: **Rich Grass Block** (`rich_grass_block`), **Rich Dirt** (`rich_dirt`), **Rich Gravel** (`rich_gravel`), **Rich Sand** (`rich_sand`), **Rich Red Sand** (`rich_red_sand`).
   - Textures: Counterpart vanilla textures with distinct white/silver mineral flecks and top-left lighting.
   - Digging Hardness: 2x slower (`destroyTime: 1.0f - 1.2f`).
   - Mining Requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich block item (Rich Grass drops Rich Dirt unless Silk Touch is used). Breaking with hands or other tools drops standard soil (Dirt/Gravel/Sand/Red Sand).
-  - **Sifting in Sieve (Pure Natural Metal Dusts ONLY)**:
-    - Artificial alloys (Bronze Dust) and common stones (Silicon Shards, Flint) are **strictly excluded**.
+  - **Sifting in Sieve (Pure Natural Metal Dusts ONLY with Independent Multi-Rolls)**:
+    - Artificial alloys (Bronze Dust) and common stones (Silicon Shards, Flint) are **strictly excluded** (only drop from standard soils).
     - Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, and Rich Red Sand are all siftable.
-    - Yields purely valuable native metals & minerals:
-      1. Copper Dust (`copper_dust`) — **85%** (was 55%)
-      2. Tin Dust (`tin_dust`) — **55%** (was 32%)
-      3. Iron Dust (`iron_dust`) — **25%** (was 15%)
-      4. Gold Dust (`gold_dust`) — **8%**
-      5. Diamond Dust (`diamond_dust`) — **3%**
+    - Yields purely valuable native metals & minerals via independent multi-rolls:
+      1. Copper Dust (`copper_dust`) — **85%** (Very common)
+      2. Tin Dust (`tin_dust`) — **55%** (Common)
+      3. Iron Dust (`iron_dust`) — **25%** (Rare)
+      4. Gold Dust (`gold_dust`) — **8%** (Very rare)
+      5. Diamond Dust (`diamond_dust`) — **3%** (Super rare)
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
 ### 🌾 Farming, Mandatory Fertilization (Bone Meal & Dung) & 2-Stage Hoe Tilling

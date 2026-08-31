@@ -123,8 +123,8 @@ public class ModConfig {
 
             // Sieve drop chances for regular soils (gravel, sand, red sand, dirt):
             sieveSiliconShardChance = builder
-                    .comment("Chance of sifting Silicon Shard from regular soil (gravel/sand/dirt) (default: 0.40 = 40%)")
-                    .defineInRange("sieveSiliconShardChance", 0.40, 0.0, 1.0);
+                    .comment("Chance of sifting Silicon Shard from regular soil (gravel/sand/dirt) (default: 0.45 = 45%)")
+                    .defineInRange("sieveSiliconShardChance", 0.45, 0.0, 1.0);
             sieveFlintChance = builder
                     .comment("Chance of sifting Flint from regular soil (gravel/sand/dirt) (default: 0.22 = 22%)")
                     .defineInRange("sieveFlintChance", 0.22, 0.0, 1.0);

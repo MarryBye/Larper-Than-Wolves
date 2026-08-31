@@ -408,46 +408,65 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
 
         input.shrink(1);
 
-        ItemStack regularResult = ItemStack.EMPTY;
-        float roll = ThreadLocalRandom.current().nextFloat();
-        double cumulative = 0.0;
-
         if (isRich) {
-            // Rich Soils: Pure natural metal dusts ONLY (Copper Dust -> Tin Dust -> Iron Dust -> Gold Dust -> Diamond Dust)
+            // Rich Soils: Pure natural metal dusts ONLY (Copper Dust, Tin Dust, Iron Dust, Gold Dust, Diamond Dust)
+            // No silicon shards or flint ever drop from rich soils.
             double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.85;
             double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.55;
             double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.25;
             double goldChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichGoldDustChance.get() : 0.08;
             double diamondChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichDiamondDustChance.get() : 0.03;
 
-            if (roll < (cumulative += copperChance)) {
-                regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
-            } else if (roll < (cumulative += tinChance)) {
-                regularResult = new ItemStack(ModItems.TIN_DUST.get(), 1);
-            } else if (roll < (cumulative += ironChance)) {
-                regularResult = new ItemStack(ModItems.IRON_DUST.get(), 1);
-            } else if (roll < (cumulative += goldChance)) {
-                regularResult = new ItemStack(ModItems.GOLD_DUST.get(), 1);
-            } else if (roll < (cumulative += diamondChance)) {
-                regularResult = new ItemStack(ModItems.DIAMOND_DUST.get(), 1);
+            boolean droppedAny = false;
+
+            // Copper Dust - Very common (85%)
+            if (ThreadLocalRandom.current().nextDouble() < copperChance) {
+                insertOutput(new ItemStack(ModItems.COPPER_DUST.get(), 1));
+                droppedAny = true;
+            }
+
+            // Tin Dust - Slightly rarer (55%)
+            if (ThreadLocalRandom.current().nextDouble() < tinChance) {
+                insertOutput(new ItemStack(ModItems.TIN_DUST.get(), 1));
+                droppedAny = true;
+            }
+
+            // Iron Dust - Rare (25%)
+            if (ThreadLocalRandom.current().nextDouble() < ironChance) {
+                insertOutput(new ItemStack(ModItems.IRON_DUST.get(), 1));
+                droppedAny = true;
+            }
+
+            // Gold Dust - Even rarer (8%)
+            if (ThreadLocalRandom.current().nextDouble() < goldChance) {
+                insertOutput(new ItemStack(ModItems.GOLD_DUST.get(), 1));
+                droppedAny = true;
+            }
+
+            // Diamond Dust - Super rare (3%)
+            if (ThreadLocalRandom.current().nextDouble() < diamondChance) {
+                insertOutput(new ItemStack(ModItems.DIAMOND_DUST.get(), 1));
+                droppedAny = true;
+            }
+
+            // Fallback: guaranteed at least 1 Copper Dust from rich soils
+            if (!droppedAny) {
+                insertOutput(new ItemStack(ModItems.COPPER_DUST.get(), 1));
             }
         } else {
-            // Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious): Silicon Shard -> Flint -> Copper Dust
-            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.40;
+            // Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious): Silicon Shard (frequent) -> Flint (rare) -> Copper Dust (very rare)
+            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.45;
             double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.22;
             double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.08;
 
-            if (roll < (cumulative += siliconChance)) {
-                regularResult = new ItemStack(ModItems.SILICON_SHARD.get(), 1);
-            } else if (roll < (cumulative += flintChance)) {
-                regularResult = new ItemStack(Items.FLINT, 1);
-            } else if (roll < (cumulative += copperChance)) {
-                regularResult = new ItemStack(ModItems.COPPER_DUST.get(), 1);
+            double roll = ThreadLocalRandom.current().nextDouble();
+            if (roll < copperChance) {
+                insertOutput(new ItemStack(ModItems.COPPER_DUST.get(), 1));
+            } else if (roll < copperChance + flintChance) {
+                insertOutput(new ItemStack(Items.FLINT, 1));
+            } else if (roll < copperChance + flintChance + siliconChance) {
+                insertOutput(new ItemStack(ModItems.SILICON_SHARD.get(), 1));
             }
-        }
-
-        if (!regularResult.isEmpty()) {
-            insertOutput(regularResult);
         }
 
         // 2. Suspicious Block Archaeology drops
