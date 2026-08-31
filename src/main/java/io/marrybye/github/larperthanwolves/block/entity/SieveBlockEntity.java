@@ -53,7 +53,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
+import io.marrybye.github.larperthanwolves.api.IKineticReceiver;
+
+public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider, IKineticReceiver {
     // 0..8: 9 Input slots for Gravel/Sand/Suspicious blocks, 9..17: 9 Output slots for sifted items
     public static final int TOTAL_SLOTS = 18;
     public static final int SHAKES_PER_BLOCK = 5;
@@ -249,6 +251,96 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
+    @Override
+    public boolean acceptsKineticRotationFrom(Direction face) {
+        Direction facing = getBlockState().hasProperty(io.marrybye.github.larperthanwolves.block.SieveBlock.FACING)
+                ? getBlockState().getValue(io.marrybye.github.larperthanwolves.block.SieveBlock.FACING) : Direction.NORTH;
+        return face == Direction.UP || face == facing.getClockWise() || face == facing.getCounterClockWise();
+    }
+
+    @Override
+    public boolean hasWorkAvailable() {
+        return findFirstSiftableSlot() != -1;
+    }
+
+    @Override
+    public boolean onManualCrank(Direction fromFace, Player player) {
+        int inputSlot = findFirstSiftableSlot();
+        if (inputSlot == -1) return false;
+
+        this.shakeCooldown = 10;
+        this.shakeProgress++;
+
+        if (this.level != null && !this.level.isClientSide) {
+            triggerShakeEffects(this.level, this.worldPosition, inputSlot);
+            if (this.shakeProgress >= SHAKES_PER_BLOCK) {
+                this.shakeProgress = 0;
+                processSifting(inputSlot);
+                if (this.level instanceof ServerLevel sl) {
+                    sl.playSound(null, this.worldPosition, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.6f, 1.2f);
+                }
+            }
+            setChanged(this.level, this.worldPosition, getBlockState());
+            this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), 3);
+        } else {
+            this.clientShakeTimer = 10;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void tickKineticRotation(float speed, Direction fromFace) {
+        int inputSlot = findFirstSiftableSlot();
+        if (inputSlot == -1 || speed <= 0.0f) {
+            if (this.isKineticActive) {
+                this.isKineticActive = false;
+                if (this.level != null) {
+                    setChanged(this.level, this.worldPosition, getBlockState());
+                    this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), 3);
+                }
+            }
+            this.kineticBuffer = 0.0f;
+            return;
+        }
+
+        this.isKineticActive = true;
+        // 16 RPM = 0.5 progress per tick (1 shake every 10 ticks)
+        // 64 RPM = 2.0 progress per tick
+        // 256 RPM = 8.0 progress per tick
+        float progressPerTick = speed / 32.0f;
+        this.kineticBuffer += progressPerTick;
+
+        this.kineticSoundTimer++;
+        if (this.kineticSoundTimer >= 10) {
+            this.kineticSoundTimer = 0;
+            if (this.level != null) {
+                triggerShakeEffects(this.level, this.worldPosition, inputSlot);
+            }
+        }
+
+        if (this.kineticBuffer >= 1.0f) {
+            int shakes = (int) this.kineticBuffer;
+            this.kineticBuffer -= shakes;
+            this.shakeProgress += shakes;
+
+            while (this.shakeProgress >= SHAKES_PER_BLOCK) {
+                this.shakeProgress -= SHAKES_PER_BLOCK;
+                inputSlot = findFirstSiftableSlot();
+                if (inputSlot != -1) {
+                    processSifting(inputSlot);
+                } else {
+                    this.shakeProgress = 0;
+                    break;
+                }
+            }
+            if (this.level != null) {
+                setChanged(this.level, this.worldPosition, getBlockState());
+                this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), 3);
+            }
+        }
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, SieveBlockEntity sieve) {
         if (sieve.shakeCooldown > 0) {
             sieve.shakeCooldown--;
@@ -266,44 +358,11 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
             return;
         }
 
-        // Automated Rotational Sifting via Create integration (strictly through side axle drive sockets)
+        // Automated Rotational Sifting via Create integration
         if (ModList.get().isLoaded("create")) {
-            Direction facing = state.hasProperty(io.marrybye.github.larperthanwolves.block.SieveBlock.FACING)
-                    ? state.getValue(io.marrybye.github.larperthanwolves.block.SieveBlock.FACING) : Direction.NORTH;
-            Direction[] sideSockets = new Direction[] { facing.getClockWise(), facing.getCounterClockWise() };
-            float speed = CreateCompatHelper.getKineticSpeed(level, pos, sideSockets);
+            float speed = CreateCompatHelper.getKineticSpeedForReceiver(level, pos, sieve);
             if (speed > 0.0f) {
-                sieve.isKineticActive = true;
-                // 16 RPM = 0.5 progress per tick (1 shake every 10 ticks)
-                // 64 RPM = 2.0 progress per tick
-                // 256 RPM = 8.0 progress per tick
-                float progressPerTick = speed / 32.0f;
-                sieve.kineticBuffer += progressPerTick;
-
-                sieve.kineticSoundTimer++;
-                if (sieve.kineticSoundTimer >= 10) {
-                    sieve.kineticSoundTimer = 0;
-                    sieve.triggerShakeEffects(level, pos, inputSlot);
-                }
-
-                if (sieve.kineticBuffer >= 1.0f) {
-                    int shakes = (int) sieve.kineticBuffer;
-                    sieve.kineticBuffer -= shakes;
-                    sieve.shakeProgress += shakes;
-
-                    while (sieve.shakeProgress >= SHAKES_PER_BLOCK) {
-                        sieve.shakeProgress -= SHAKES_PER_BLOCK;
-                        inputSlot = sieve.findFirstSiftableSlot();
-                        if (inputSlot != -1) {
-                            sieve.processSifting(inputSlot);
-                        } else {
-                            sieve.shakeProgress = 0;
-                            break;
-                        }
-                    }
-                    sieve.setChanged();
-                    level.sendBlockUpdated(pos, state, state, 3);
-                }
+                sieve.tickKineticRotation(speed, Direction.UP);
             } else {
                 if (sieve.isKineticActive) {
                     sieve.isKineticActive = false;

@@ -22,10 +22,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import io.marrybye.github.larperthanwolves.api.IKineticReceiver;
 import java.util.List;
 import java.util.Optional;
 
-public class MillBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
+public class MillBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider, IKineticReceiver {
     public static final int SLOT_INPUT = 0;
     public static final int SLOT_OUTPUT_1 = 1;
     public static final int SLOT_OUTPUT_2 = 2;
@@ -50,28 +51,68 @@ public class MillBlockEntity extends BlockEntity implements WorldlyContainer, Me
 
         // Support kinetic rotational force automation if Create is installed (exclusively through top face)
         if (net.neoforged.fml.ModList.get().isLoaded("create")) {
-            net.minecraft.core.Direction[] topFace = new net.minecraft.core.Direction[] { net.minecraft.core.Direction.UP };
-            float speed = io.marrybye.github.larperthanwolves.compat.CreateCompatHelper.getKineticSpeed(level, pos, topFace);
+            float speed = io.marrybye.github.larperthanwolves.compat.CreateCompatHelper.getKineticSpeedForReceiver(level, pos, mill);
             if (speed > 0.0f) {
-                // 16 RPM (Hand Crank) = 0.5 progress/tick (10 ticks per 5%)
-                // 64 RPM = 2.0 progress/tick
-                // 256 RPM = 8.0 progress/tick
-                float progressPerTick = speed / 32.0f;
-                mill.kineticBuffer += progressPerTick;
-
-                if (mill.kineticBuffer >= 1.0f) {
-                    int toAdd = (int) mill.kineticBuffer;
-                    mill.kineticBuffer -= toAdd;
-                    mill.addGrindProgress(toAdd);
-                }
-
-                mill.particleTimer++;
-                if (mill.particleTimer >= 10) {
-                    mill.particleTimer = 0;
-                    level.playSound(null, pos, net.minecraft.sounds.SoundEvents.GRINDSTONE_USE, net.minecraft.sounds.SoundSource.BLOCKS, 0.4f, 1.1f + level.random.nextFloat() * 0.2f);
-                }
+                mill.tickKineticRotation(speed, Direction.UP);
             } else {
                 mill.kineticBuffer = 0.0f;
+            }
+        }
+    }
+
+    @Override
+    public boolean acceptsKineticRotationFrom(Direction face) {
+        return face == Direction.UP;
+    }
+
+    @Override
+    public boolean hasWorkAvailable() {
+        return canGrind();
+    }
+
+    @Override
+    public boolean onManualCrank(Direction fromFace, Player player) {
+        if (!canGrind()) return false;
+
+        ItemStack inputBefore = getItem(SLOT_INPUT).copy();
+        addGrindProgress(5);
+
+        if (this.progress == 0 && (getItem(SLOT_INPUT).getCount() < inputBefore.getCount() || getItem(SLOT_INPUT).isEmpty())) {
+            if (this.level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                serverLevel.playSound(null, this.worldPosition, net.minecraft.sounds.SoundEvents.ITEM_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 1.3f);
+                serverLevel.playSound(null, this.worldPosition, net.minecraft.sounds.SoundEvents.GRINDSTONE_USE, net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.85f);
+                serverLevel.sendParticles(new net.minecraft.core.particles.ItemParticleOption(net.minecraft.core.particles.ParticleTypes.ITEM, inputBefore),
+                        this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 0.9D, this.worldPosition.getZ() + 0.5D,
+                        12, 0.2D, 0.1D, 0.2D, 0.05D);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void tickKineticRotation(float speed, Direction fromFace) {
+        if (!canGrind() || speed <= 0.0f) {
+            this.kineticBuffer = 0.0f;
+            return;
+        }
+
+        // 16 RPM (Hand Crank) = 0.5 progress/tick (10 ticks per 5%)
+        // 64 RPM = 2.0 progress/tick
+        // 256 RPM = 8.0 progress/tick
+        float progressPerTick = speed / 32.0f;
+        this.kineticBuffer += progressPerTick;
+
+        if (this.kineticBuffer >= 1.0f) {
+            int toAdd = (int) this.kineticBuffer;
+            this.kineticBuffer -= toAdd;
+            addGrindProgress(toAdd);
+        }
+
+        this.particleTimer++;
+        if (this.particleTimer >= 10) {
+            this.particleTimer = 0;
+            if (this.level != null) {
+                this.level.playSound(null, this.worldPosition, net.minecraft.sounds.SoundEvents.GRINDSTONE_USE, net.minecraft.sounds.SoundSource.BLOCKS, 0.4f, 1.1f + this.level.random.nextFloat() * 0.2f);
             }
         }
     }

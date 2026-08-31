@@ -249,6 +249,34 @@ public class CreateCompatHelper {
         return getKineticSpeed(level, targetPos, null);
     }
 
+    /**
+     * Finds active kinetic rotation from any valid face accepted by an IKineticReceiver.
+     */
+    public static float getKineticSpeedForReceiver(Level level, BlockPos targetPos, io.marrybye.github.larperthanwolves.api.IKineticReceiver receiver) {
+        init();
+        if (level == null || targetPos == null || receiver == null || kineticBeClass == null || getSpeedMethod == null) return 0.0f;
+
+        float maxSpeed = 0.0f;
+        for (Direction dir : Direction.values()) {
+            if (!receiver.acceptsKineticRotationFrom(dir)) {
+                continue;
+            }
+
+            BlockPos neighborPos = targetPos.relative(dir);
+            BlockState neighborState = level.getBlockState(neighborPos);
+            Direction towardsTarget = dir.getOpposite();
+
+            if (!hasShaftPointingTowards(level, neighborPos, neighborState, towardsTarget)) {
+                continue;
+            }
+
+            BlockEntity neighborBe = level.getBlockEntity(neighborPos);
+            maxSpeed = Math.max(maxSpeed, extractSpeed(neighborBe));
+        }
+
+        return maxSpeed;
+    }
+
     private static float extractSpeed(BlockEntity be) {
         if (be != null && kineticBeClass != null && kineticBeClass.isInstance(be)) {
             try {

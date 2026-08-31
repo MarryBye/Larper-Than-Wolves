@@ -31,9 +31,10 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - Worldgen: Generates in large veins (size 20, 10–12 attempts/chunk) inside soil biomes.
 - **Sieve Processing & Mechanics (`sieve` / `SieveBlock` / `SieveBlockEntity`)**:
   - **No Passive Sifting**: The sieve does NOT passively sift resources over time. Input is on the left (9 slots, 3x3), output is on the right (9 slots, 3x3).
-  - **Active Manual Sifting (Shift + Right-Click)**:
-    - Hold Shift and Right-Click on the Sieve block to perform a manual shake cycle.
-    - Each block requires **5 shakes** to complete (1 click = 1 shake, 20% progress).
+  - **Active Manual Sifting (Shift + Right-Click OR Mill Crank)**:
+    - **Method 1 (Direct Table Interaction)**: Hold Shift and Right-Click on the Sieve block to perform a manual shake cycle.
+    - **Method 2 (Mill Crank Mounting)**: Mount a **Mill Crank** directly on top of the Sieve Table or on its side axle drive sockets (`facing.getClockWise()` / `facing.getCounterClockWise()`). Right-clicking the crank rotates the handle 360° over 10 ticks (0.5s) and performs 1 full shake.
+    - Each block requires **5 shakes** to complete (1 shake = 20% progress).
     - **Cooldown**: 0.5 seconds (10 ticks) between shakes.
     - **Visuals & Audio**: The wire mesh screen tray shakes and vibrates horizontally ($\pm 1$ pixel) with sand/gravel scraping sounds and flying block particles.
     - Subsequent clicks during the 0.5s animation are locked.

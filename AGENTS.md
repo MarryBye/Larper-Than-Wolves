@@ -62,9 +62,11 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - 2 Bones $\rightarrow$ 1 Bone Meal (`minecraft:bone_meal`).
     - Rocks / Stones $\rightarrow$ Gravel / Sand.
   - Hopper & Automation: Inputs through top/sides, outputs extracted through bottom face (`WorldlyContainer`).
-- **Mill Crank (`mill_crank` / `MillCrankBlock`)**:
+- **Mill Crank (`mill_crank` / `MillCrankBlock`) & Unified Kinetic Interface (`IKineticReceiver`)**:
   - Crafted from 3 Sticks + 1 Rope.
   - Directional in all 6 orientations (Up, Down, North, South, East, West). Can be placed on floors, ceilings, and horizontal walls.
+  - **Unified `IKineticReceiver` Interface**: Operates seamlessly across any machine implementing the unified kinetic interface (`MillBlock`, `SieveBlock`) and Create kinetic components.
+  - **Sieve Table Compatibility**: Can be mounted directly on top of the Sieve Table or on its side axle sockets to manually shake/sift resources (1 crank rotation = 1 shake, 5 rotations = 100% sifting).
   - Custom Create-style 3D block model and full 3D inventory item model (wide hub, extended horizontal lever arm, vertical grip handle with top knob).
   - Animated 3D rotating handle rendered via client-side `MillCrankRenderer` with tick interpolation across all 6 facings.
 - **Bone Meal & Mob Drops Overhaul**:

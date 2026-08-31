@@ -11,9 +11,11 @@ The **Hand Mill** (Quern / Молотилка) and **Mill Crank** (Рукоят�
 - **Grinding Cycle & Progress**:
   - Requires **100% grinding progress** to complete 1 recipe.
   - GUI features an animated 24x17 filling progress arrow indicating 0% to 100%.
-- **Manual Operation (Cranking)**:
-  - Right-clicking the crank rotates the handle 360° over **10 ticks (0.5 seconds)**.
-  - Adds **5% progress** per full rotation (20 full rotations = 100% completion).
+- **Unified Kinetic Architecture (`IKineticReceiver`)**:
+  - All machines that accept rotational force (`MillBlockEntity`, `SieveBlockEntity`) implement the unified `IKineticReceiver` interface.
+  - `MillCrankBlock` communicates directly with `IKineticReceiver` without hardcoded checks.
+  - The Mill Crank can be placed on Hand Mills (top), Sieve Tables (top or side axle sockets), and Create kinetic components.
+  - Right-clicking the crank rotates the handle 360° over **10 ticks (0.5 seconds)** and advances work.
   - Interaction lock prevents spamming clicks faster than the 0.5s rotation animation.
 - **Automated Operation (Create Kinetic Energy)**:
   - If Create is loaded, connecting rotating shafts, cogwheels, or kinetic power sources directly to the **top face** of the Mill automatically grinds items continuously (strictly accepts rotation from the top face).

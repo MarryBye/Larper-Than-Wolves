@@ -90,9 +90,11 @@ public class MillCrankBlock extends BaseEntityBlock {
         Direction facing = state.hasProperty(FACING) ? state.getValue(FACING) : Direction.UP;
         BlockPos attachedPos = pos.relative(facing.getOpposite());
         BlockState attachedState = level.getBlockState(attachedPos);
-        return attachedState.getBlock() instanceof MillBlock
+        BlockEntity attachedBe = level.getBlockEntity(attachedPos);
+
+        return (attachedBe instanceof io.marrybye.github.larperthanwolves.api.IKineticReceiver receiver && receiver.acceptsKineticRotationFrom(facing))
                 || attachedState.isFaceSturdy(level, attachedPos, facing)
-                || (level instanceof Level lvl && CreateCompatHelper.isKineticBlockEntity(lvl.getBlockEntity(attachedPos)));
+                || (level instanceof Level lvl && CreateCompatHelper.isKineticBlockEntity(attachedBe));
     }
 
     @Override
@@ -132,30 +134,16 @@ public class MillCrankBlock extends BaseEntityBlock {
         BlockPos attachedPos = pos.relative(facing.getOpposite());
         BlockEntity attachedBe = level.getBlockEntity(attachedPos);
 
-        if (attachedBe instanceof MillBlockEntity mill) {
-            if (mill.canGrind()) {
+        if (attachedBe instanceof io.marrybye.github.larperthanwolves.api.IKineticReceiver receiver && receiver.acceptsKineticRotationFrom(facing)) {
+            if (receiver.hasWorkAvailable()) {
                 crankBe.startRotation();
                 level.playSound(null, pos, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.5f, 1.4f);
                 level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 0.7f, 1.1f + level.random.nextFloat() * 0.2f);
 
-                if (!level.isClientSide) {
-                    ItemStack inputBefore = mill.getItem(MillBlockEntity.SLOT_INPUT).copy();
-                    mill.addGrindProgress(5);
-
-                    // If grinding finished (progress reset to 0 and input shrank)
-                    if (mill.getProgress() == 0 && (mill.getItem(MillBlockEntity.SLOT_INPUT).getCount() < inputBefore.getCount() || mill.getItem(MillBlockEntity.SLOT_INPUT).isEmpty())) {
-                        level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.8f, 1.3f);
-                        level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0f, 0.85f);
-                        if (level instanceof ServerLevel serverLevel) {
-                            serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, inputBefore),
-                                    attachedPos.getX() + 0.5D, attachedPos.getY() + 0.9D, attachedPos.getZ() + 0.5D,
-                                    12, 0.2D, 0.1D, 0.2D, 0.05D);
-                        }
-                    }
-                }
+                receiver.onManualCrank(facing, player);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             } else {
-                // Empty or cannot grind: play subtle stuck sound
+                // Empty or cannot process: play subtle stuck sound
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 0.5f, 1.8f);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
