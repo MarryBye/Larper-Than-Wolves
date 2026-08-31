@@ -37,7 +37,7 @@ public class UnboundMeshItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return USE_DURATION;
+        return Math.max(1, MAX_PROGRESS_TICKS - stack.getDamageValue());
     }
 
     @Override
