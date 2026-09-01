@@ -72,6 +72,9 @@ public class AdvancedSmelterRecipeCategory implements IRecipeCategory<AdvancedSm
     public void setRecipe(IRecipeLayoutBuilder builder, AdvancedSmelterJeiRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 8, 21).addItemStack(recipe.getInput());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 68, 21).addItemStack(recipe.getOutput());
+
+        builder.addInvisibleIngredients(RecipeIngredientRole.CATALYST)
+                .addItemStack(new ItemStack(ModBlocks.ADVANCED_SMELTER.get()));
     }
 
     @Override

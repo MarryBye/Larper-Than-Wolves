@@ -79,6 +79,9 @@ public class AlloyMixerRecipeCategory implements IRecipeCategory<AlloyMixerRecip
         }
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 21).addItemStack(recipe.getOutput());
+
+        builder.addInvisibleIngredients(RecipeIngredientRole.CATALYST)
+                .addItemStack(new ItemStack(ModBlocks.ALLOY_MIXER.get()));
     }
 
     @Override

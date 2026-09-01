@@ -71,6 +71,18 @@ public class GravelDiggingRecipeCategory implements IRecipeCategory<GravelDiggin
                     .addItemStack(recipe.getDrops().get(i).stack())
                     .setBackground(this.slotBackground, -1, -1);
         }
+
+        builder.addInvisibleIngredients(RecipeIngredientRole.CATALYST)
+                .addItemStacks(java.util.List.of(
+                        new ItemStack(ModItems.SILICON_SHOVEL.get()),
+                        new ItemStack(ModItems.COPPER_SHOVEL.get()),
+                        new ItemStack(ModItems.BRONZE_SHOVEL.get()),
+                        new ItemStack(ModItems.REINFORCED_IRON_SHOVEL.get()),
+                        new ItemStack(ModItems.MITHRIL_SHOVEL.get()),
+                        new ItemStack(net.minecraft.world.item.Items.IRON_SHOVEL),
+                        new ItemStack(net.minecraft.world.item.Items.DIAMOND_SHOVEL),
+                        new ItemStack(net.minecraft.world.item.Items.NETHERITE_SHOVEL)
+                ));
     }
 
     @Override

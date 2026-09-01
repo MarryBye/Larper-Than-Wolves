@@ -65,9 +65,16 @@ public class DryingRackRecipeCategory implements IRecipeCategory<DryingRackRecip
                 .addItemStacks(recipe.getInputs())
                 .setBackground(this.slotBackground, -1, -1);
 
+        builder.addSlot(RecipeIngredientRole.CATALYST, 58, 16)
+                .addItemStack(new ItemStack(ModBlocks.DRYING_RACK.get()))
+                .setBackground(this.slotBackground, -1, -1);
+
         builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 16)
                 .addItemStack(recipe.getOutput())
                 .setBackground(this.slotBackground, -1, -1);
+
+        builder.addInvisibleIngredients(RecipeIngredientRole.CATALYST)
+                .addItemStack(new ItemStack(ModBlocks.DRYING_RACK.get()));
     }
 
     @Override

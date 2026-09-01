@@ -76,6 +76,9 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveJeiRecipe> {
             int row = i / 3;
             builder.addSlot(RecipeIngredientRole.OUTPUT, 96 + col * 18, 3 + row * 18).addItemStack(outputs.get(i));
         }
+
+        builder.addInvisibleIngredients(RecipeIngredientRole.CATALYST)
+                .addItemStacks(java.util.List.of(new ItemStack(ModBlocks.SIEVE.get()), new ItemStack(ModBlocks.MILL_CRANK.get())));
     }
 
     @Override

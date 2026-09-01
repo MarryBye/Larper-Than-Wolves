@@ -68,6 +68,9 @@ public class SunDryingRecipeCategory implements IRecipeCategory<SunDryingRecipe>
         builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 16)
                 .addItemStack(recipe.getOutput())
                 .setBackground(this.slotBackground, -1, -1);
+
+        builder.addInvisibleIngredients(RecipeIngredientRole.CATALYST)
+                .addItemStack(new ItemStack(ModBlocks.UNFIRED_BRICK.asItem()));
     }
 
     @Override

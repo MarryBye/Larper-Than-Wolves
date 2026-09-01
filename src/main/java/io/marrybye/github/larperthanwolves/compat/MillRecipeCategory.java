@@ -78,6 +78,9 @@ public class MillRecipeCategory implements IRecipeCategory<MillJeiRecipe> {
                 slot.addItemStack(outputs.get(i));
             }
         }
+
+        builder.addInvisibleIngredients(RecipeIngredientRole.CATALYST)
+                .addItemStacks(List.of(new ItemStack(ModBlocks.MILL.get()), new ItemStack(ModBlocks.MILL_CRANK.get())));
     }
 
     @Override
