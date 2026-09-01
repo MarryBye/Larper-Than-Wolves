@@ -52,8 +52,8 @@ public class MillRegistry {
                         new ItemStack(ModItems.COPPER_DUST.get(), 8)
                 )));
 
-        // 4. Bones -> Bone Meal (2 Bones -> 1 Bone Meal)
-        register(new MillRecipe("bone", Ingredient.of(Items.BONE), 2,
+        // 4. Bones -> Bone Meal (1 Bone -> 1 Bone Meal)
+        register(new MillRecipe("bone", Ingredient.of(Items.BONE), 1,
                 () -> List.of(new ItemStack(Items.BONE_MEAL, 1))));
 
         // 5. Raw Ores -> 2 Dusts (2 Ore Dust = 1 Raw Chunk)

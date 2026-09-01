@@ -29,7 +29,7 @@ The **Hand Mill** (Quern / Молотилка) and **Mill Crank** (Рукоят�
   - 1 Diamond $\rightarrow$ 8 Diamond Dust.
   - 1 Diamond Ingot $\rightarrow$ 8 Diamond Dust + 8 Iron Dust + 8 Copper Dust (conserves alloy ingredients).
   - 1 Raw Ore chunk / Metal Nugget $\rightarrow$ 2 Dusts.
-  - 2 Bones $\rightarrow$ 1 Bone Meal (Vanilla bone meal crafting is removed).
+  - 1 Bone $\rightarrow$ 1 Bone Meal (Vanilla bone meal crafting is removed).
   - Cobblestone / Stone / Pebbles $\rightarrow$ Gravel / Sand.
 - **Hopper & Automation**:
   - Top & Side faces: Input extraction/insertion.

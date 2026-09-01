@@ -162,7 +162,7 @@
   "jei.larperthanwolves.category.milling": "Hand Milling",
   "jei.larperthanwolves.info.mill": "The Hand Mill grinds ingots into 8 dusts, ores/nuggets into 2 dusts, rocks into soils, and bones into bone meal. Operated by cranking a Mill Crank (20 turns = 100%), or fully automated with Create rotational force strictly from the TOP face, processing faster at higher RPM.",
   "jei.larperthanwolves.info.mill_crank": "Placed on top of a Hand Mill. Right-click to rotate the handle (20 turns = 100%). Also compatible with Create mechanisms.",
-  "jei.larperthanwolves.info.bone_meal": "Bone Meal is obtained by grinding 2 Bones in a Hand Mill. When applied to farmland or planted crops, it fertilizes the soil so crops can grow (crops will NOT grow on unfertilized farmland). It does not instantly advance growth stages.",
+  "jei.larperthanwolves.info.bone_meal": "Bone Meal is obtained by grinding 1 Bone in a Hand Mill. When applied to farmland or planted crops, it fertilizes the soil so crops can grow (crops will NOT grow on unfertilized farmland). It does not instantly advance growth stages.",
   "block.larperthanwolves.fertilized_farmland": "Fertilized Farmland",
   "item.larperthanwolves.fertilized_farmland": "Fertilized Farmland",
   "jei.larperthanwolves.info.fertilized_farmland": "Crops will only grow if planted on Fertilized Farmland. Apply Bone Meal (1 charge) or Dung (3 charges) to farmland or a planted crop to fertilize the soil. After harvesting the crop, charges decrement until depleted.",

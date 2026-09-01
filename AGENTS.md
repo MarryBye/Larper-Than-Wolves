@@ -61,7 +61,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - 1 Diamond $\rightarrow$ 8 Diamond Dust.
     - 1 Diamond Ingot $\rightarrow$ 8 Diamond Dust + 8 Iron Dust + 8 Copper Dust (conserves alloy ingredients).
     - 1 Raw Ore chunk / Metal Nugget $\rightarrow$ 2 Dusts.
-    - 2 Bones $\rightarrow$ 1 Bone Meal (`minecraft:bone_meal`).
+    - 1 Bone $\rightarrow$ 1 Bone Meal (`minecraft:bone_meal`).
     - Rocks / Stones $\rightarrow$ Gravel / Sand.
   - Hopper & Automation: Inputs through top/sides, outputs extracted through bottom face (`WorldlyContainer`).
 - **Mill Crank (`mill_crank` / `MillCrankBlock`) & Unified Kinetic Interface (`IKineticReceiver`)**:
@@ -73,7 +73,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Animated 3D rotating handle rendered via client-side `MillCrankRenderer` with tick interpolation across all 6 facings.
 - **Bone Meal & Mob Drops Overhaul**:
   - Vanilla bone meal crafting (bone $\rightarrow$ 3 bone meal, bone block $\rightarrow$ 9 bone meal) is disabled and purged.
-  - Bones can only be turned into bone meal in the Hand Mill (2 Bones $\rightarrow$ 1 Bone Meal).
+  - Bones can only be turned into bone meal in the Hand Mill (1 Bone $\rightarrow$ 1 Bone Meal).
   - Peaceful animals (cows, sheep, pigs, horses, goats, camels, sniffers, etc.) drop 1–2 bones (30% chance for large animals, 15% for small).
   - Zombies and subspecies (Zombie, Husk, Drowned, Zombie Villager, Zombified Piglin, Zoglin) drop 1 bone with a 25% chance.
 
