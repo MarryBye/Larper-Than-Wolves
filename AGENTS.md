@@ -237,6 +237,14 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Can connect in 5 directions (down, north, south, west, east) to feed fuels into furnaces/ovens or collect machine outputs.
 - **Unified Heated Machine Interface (`IFueledMachine`) & Smart Auto-Refueling**:
   - Unified across **Brick Furnace**, **Advanced Smelter**, **Mithril Furnace**, **Food Oven**, and **Alloy Mixer**.
+  - **Machine-Specific Fuel Efficiency & Speed Modifiers**:
+    - Each machine has its own **fuel efficiency speed modifier** ($M$) scaling item cook time ($T_{\text{item}} = \max(1, \text{round}(T_{\text{fuel}} / M))$) while **strictly preserving fuel burn duration**:
+      - **Brick Furnace (`brick_furnace`)**: `0.85x` (85% speed — clay brick heat dissipation makes early smelting slightly slower per item).
+      - **Food Oven (`oven`)**: `0.90x` (90% speed — gentle baking insulated chamber).
+      - **Advanced Smelter (`advanced_smelter`)**: `1.00x` (100% speed — baseline standard industrial smelting speed).
+      - **Alloy Mixer (`alloy_mixer`)**: `1.00x` (100% speed — standard alloy fusion speed scaled proportionally with fuel heat).
+      - **Mithril Furnace (`mithril_furnace`)**: `1.35x` (135% speed — hyper-conductive magical mithril lining speeds up smelting by 35%).
+    - **Interactive GUI Badge & Tooltips**: Screen header displays efficiency badge (`0.85x`, `1.00x`, `1.35x`) with rich tooltips on hover over the badge, flame, or arrow detailing efficiency %, per-item cook seconds/ticks, and remaining burn duration.
   - **Manual Feeding with Excess**: Hand right-clicking with fuel allows feeding fuel with excess directly into `burnTime`.
   - **Smart Just-In-Time Hopper Feeding**: Hoppers connected to the **BACK** face insert exactly 1 fuel item into the fuel slot ONLY when unlit (`burnTime <= 0`) or within **20 ticks** before burnout (`burnTime <= 20`).
   - **Seamless 5-Tick Auto-Refueling**: When burning (`burnTime > 0`) and remaining `burnTime <= 5` ticks, machines automatically consume the fuel piece from the slot, extending the flame without extinguishing and without overloading machines with excess fuel.

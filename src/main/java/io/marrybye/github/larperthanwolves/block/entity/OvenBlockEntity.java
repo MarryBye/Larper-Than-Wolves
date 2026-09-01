@@ -1,6 +1,7 @@
 package io.marrybye.github.larperthanwolves.block.entity;
 
 import io.marrybye.github.larperthanwolves.block.OvenBlock;
+import io.marrybye.github.larperthanwolves.config.ModConfig;
 import io.marrybye.github.larperthanwolves.menu.OvenMenu;
 import io.marrybye.github.larperthanwolves.recipe.FoodCookingRegistry;
 import net.minecraft.core.BlockPos;
@@ -51,9 +52,14 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
     public int getFuelCookSpeed() { return this.fuelCookSpeed; }
 
     @Override
+    public double getFuelEfficiencyModifier() {
+        return ModConfig.SERVER != null ? ModConfig.SERVER.ovenEfficiencyModifier.get() : 0.90;
+    }
+
+    @Override
     public void setFuelCookSpeed(int cookSpeed) {
         this.fuelCookSpeed = cookSpeed;
-        this.cookTimeTotal = cookSpeed;
+        this.cookTimeTotal = getEffectiveCookTime(cookSpeed);
     }
 
     @Override
@@ -73,6 +79,7 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
                 case 1 -> OvenBlockEntity.this.maxBurnTime;
                 case 2 -> OvenBlockEntity.this.cookTime;
                 case 3 -> OvenBlockEntity.this.cookTimeTotal;
+                case 4 -> (int) Math.round(OvenBlockEntity.this.getFuelEfficiencyModifier() * 100.0);
                 default -> 0;
             };
         }
@@ -89,7 +96,7 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
     };
 
@@ -169,7 +176,7 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
 
             if (activeSlot != -1) {
                 entity.cookTime++;
-                entity.cookTimeTotal = entity.fuelCookSpeed;
+                entity.cookTimeTotal = entity.getEffectiveCookTime(entity.fuelCookSpeed);
 
                 if (entity.cookTime >= entity.cookTimeTotal) {
                     entity.cookItem(activeSlot, resultStack);
@@ -244,7 +251,7 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
             burnTime = Math.min(burnTime + info.burnDuration, 72000);
             maxBurnTime = Math.max(maxBurnTime, burnTime);
             fuelCookSpeed = info.cookSpeed;
-            cookTimeTotal = fuelCookSpeed;
+            cookTimeTotal = getEffectiveCookTime(fuelCookSpeed);
             wasLitOnce = true;
             setChanged();
             return true;
@@ -254,7 +261,7 @@ public class OvenBlockEntity extends BlockEntity implements WorldlyContainer, Me
                 fuelCopy.setCount(1);
                 items.set(6, fuelCopy);
                 fuelCookSpeed = info.cookSpeed;
-                cookTimeTotal = fuelCookSpeed;
+                cookTimeTotal = getEffectiveCookTime(fuelCookSpeed);
                 setChanged();
                 return true;
             }

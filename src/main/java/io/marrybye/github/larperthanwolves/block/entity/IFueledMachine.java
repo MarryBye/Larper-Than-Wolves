@@ -16,6 +16,14 @@ public interface IFueledMachine {
     int getFuelCookSpeed();
     void setFuelCookSpeed(int cookSpeed);
 
+    double getFuelEfficiencyModifier();
+
+    default int getEffectiveCookTime(int baseFuelCookSpeed) {
+        double modifier = getFuelEfficiencyModifier();
+        if (modifier <= 0.0) modifier = 1.0;
+        return Math.max(1, (int) Math.round(baseFuelCookSpeed / modifier));
+    }
+
     int getFuelSlot();
     ItemStack getFuelItem();
     void setFuelItem(ItemStack stack);

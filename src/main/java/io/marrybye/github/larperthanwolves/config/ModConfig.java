@@ -19,6 +19,12 @@ public class ModConfig {
         public final ModConfigSpec.IntValue alloyMixerCookTimeTicks;
         public final ModConfigSpec.IntValue brickFurnaceDefaultCookTimeTicks;
 
+        public final ModConfigSpec.DoubleValue brickFurnaceEfficiencyModifier;
+        public final ModConfigSpec.DoubleValue ovenEfficiencyModifier;
+        public final ModConfigSpec.DoubleValue alloyMixerEfficiencyModifier;
+        public final ModConfigSpec.DoubleValue advancedSmelterEfficiencyModifier;
+        public final ModConfigSpec.DoubleValue mithrilFurnaceEfficiencyModifier;
+
         public final ModConfigSpec.IntValue foliageBurnTicks;
         public final ModConfigSpec.IntValue stickBurnTicks;
         public final ModConfigSpec.IntValue woodenSlabBurnTicks;
@@ -77,6 +83,25 @@ public class ModConfig {
             brickFurnaceDefaultCookTimeTicks = builder
                     .comment("Default cook time for brick furnace recipes in ticks (default: 200 ticks = 10 seconds)")
                     .defineInRange("brickFurnaceDefaultCookTimeTicks", 200, 20, 2400);
+            builder.pop();
+
+            builder.push("machine_efficiency");
+            brickFurnaceEfficiencyModifier = builder
+                    .comment("Fuel cooking speed multiplier for the Brick Furnace (default: 0.85 = 85% speed, lower = slower)")
+                    .defineInRange("brickFurnaceEfficiencyModifier", 0.85, 0.1, 10.0);
+            ovenEfficiencyModifier = builder
+                    .comment("Fuel cooking speed multiplier for the Food Oven (default: 0.90 = 90% speed)")
+                    .defineInRange("ovenEfficiencyModifier", 0.90, 0.1, 10.0);
+            alloyMixerEfficiencyModifier = builder
+                    .comment("Fuel cooking speed multiplier for the Alloy Mixer (default: 1.00 = 100% speed)")
+                    .defineInRange("alloyMixerEfficiencyModifier", 1.00, 0.1, 10.0);
+            advancedSmelterEfficiencyModifier = builder
+                    .comment("Fuel cooking speed multiplier for the Advanced Smelter (default: 1.00 = 100% speed)")
+                    .defineInRange("advancedSmelterEfficiencyModifier", 1.00, 0.1, 10.0);
+            mithrilFurnaceEfficiencyModifier = builder
+                    .comment("Fuel cooking speed multiplier for the Mithril Furnace (default: 1.35 = 135% speed, higher = faster)")
+                    .defineInRange("mithrilFurnaceEfficiencyModifier", 1.35, 0.1, 10.0);
+            builder.pop();
 
             builder.push("fuel_durations");
             foliageBurnTicks = builder.comment("Burn duration of foliage/twigs/dry grass in ticks (default: 900 ticks = 45s)").defineInRange("foliageBurnTicks", 900, 20, 72000);

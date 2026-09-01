@@ -38,6 +38,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     private int maxBurnTime = 0;
     private int cookTime = 0;
     private int cookTimeTotal = 600;
+    private int fuelCookSpeed = 200;
     private boolean wasLitOnce = false;
 
     @Override
@@ -53,10 +54,17 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
     public void setMaxBurnTime(int maxBurnTime) { this.maxBurnTime = maxBurnTime; }
 
     @Override
-    public int getFuelCookSpeed() { return this.cookTimeTotal; }
+    public int getFuelCookSpeed() { return this.fuelCookSpeed; }
 
     @Override
-    public void setFuelCookSpeed(int cookSpeed) { /* Alloy mixer uses configured cook time */ }
+    public double getFuelEfficiencyModifier() {
+        return ModConfig.SERVER != null ? ModConfig.SERVER.alloyMixerEfficiencyModifier.get() : 1.00;
+    }
+
+    @Override
+    public void setFuelCookSpeed(int cookSpeed) {
+        this.fuelCookSpeed = cookSpeed;
+    }
 
     @Override
     public int getFuelSlot() { return 4; }
@@ -90,6 +98,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
             if (this.burnTime + info.burnDuration <= 72000) {
                 this.burnTime += info.burnDuration;
                 this.maxBurnTime = Math.max(this.maxBurnTime, this.burnTime);
+                this.fuelCookSpeed = info.cookSpeed;
                 this.wasLitOnce = true;
                 setChanged();
                 return true;
@@ -99,6 +108,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
 
         if (this.items.get(4).isEmpty()) {
             this.items.set(4, fuelStack.copyWithCount(1));
+            this.fuelCookSpeed = info.cookSpeed;
             setChanged();
             return true;
         }
@@ -123,6 +133,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
                 case 1 -> AlloyMixerBlockEntity.this.maxBurnTime;
                 case 2 -> AlloyMixerBlockEntity.this.cookTime;
                 case 3 -> AlloyMixerBlockEntity.this.cookTimeTotal;
+                case 4 -> (int) Math.round(AlloyMixerBlockEntity.this.getFuelEfficiencyModifier() * 100.0);
                 default -> 0;
             };
         }
@@ -139,7 +150,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
     };
 
@@ -157,6 +168,7 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         tag.putInt("MaxBurnTime", this.maxBurnTime);
         tag.putInt("CookTime", this.cookTime);
         tag.putInt("CookTimeTotal", this.cookTimeTotal);
+        tag.putInt("FuelCookSpeed", this.fuelCookSpeed);
         tag.putBoolean("WasLitOnce", this.wasLitOnce);
     }
 
@@ -168,6 +180,8 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         this.maxBurnTime = tag.getInt("MaxBurnTime");
         this.cookTime = tag.getInt("CookTime");
         this.cookTimeTotal = tag.getInt("CookTimeTotal");
+        this.fuelCookSpeed = tag.getInt("FuelCookSpeed");
+        if (this.fuelCookSpeed == 0) this.fuelCookSpeed = 200;
         this.wasLitOnce = tag.getBoolean("WasLitOnce");
         if (this.burnTime > 0) this.wasLitOnce = true;
     }
@@ -188,7 +202,11 @@ public class AlloyMixerBlockEntity extends BlockEntity implements WorldlyContain
         }
 
         int configuredCook = ModConfig.SERVER != null ? ModConfig.SERVER.alloyMixerCookTimeTicks.get() : 600;
-        entity.cookTimeTotal = configuredCook > 0 ? configuredCook : 600;
+        int baseCook = configuredCook > 0 ? configuredCook : 600;
+        float heatRatio = entity.fuelCookSpeed > 0 ? (entity.fuelCookSpeed / 200.0f) : 1.0f;
+        double modifier = entity.getFuelEfficiencyModifier();
+        if (modifier <= 0.0) modifier = 1.0;
+        entity.cookTimeTotal = Math.max(1, (int) Math.round((baseCook * heatRatio) / modifier));
 
         boolean hasIngredients = entity.hasValidIngredients();
         boolean canOutput = entity.canOutputResult();

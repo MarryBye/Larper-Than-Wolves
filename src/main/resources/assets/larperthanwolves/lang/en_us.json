@@ -235,5 +235,10 @@
   "jei.larperthanwolves.info.copper_gear": "Copper tools and armor unlock the Copper Age. Capable of harvesting stone workstations and machines, tin ore, rich soils, and clay. Durability: 180.",
   "jei.larperthanwolves.info.bronze_gear": "Bronze tools and armor offer high durability (280 uses). Capable of mining iron ore into iron dust, deepslate, and tuff.",
   "jei.larperthanwolves.info.reinforced_iron_gear": "Reinforced Iron gear (Diamond Ingot tier) features 900 durability. Capable of mining obsidian, ancient debris, and Nether Mithril Ore into Mithril Dust.",
-  "jei.larperthanwolves.info.mithril_gear": "Mithril gear is the premier endgame tier (1500 durability, 10.0 mining speed, +4 attack bonus). Upgraded from Reinforced Iron in the Smithing Table using Mithril Ingots. The Mithril Pickaxe mines Nether Mithril Ore directly into Raw Mithril."
+  "jei.larperthanwolves.info.mithril_gear": "Mithril gear is the premier endgame tier (1500 durability, 10.0 mining speed, +4 attack bonus). Upgraded from Reinforced Iron in the Smithing Table using Mithril Ingots. The Mithril Pickaxe mines Nether Mithril Ore directly into Raw Mithril.",
+  "gui.larperthanwolves.efficiency.title": "Machine Efficiency: %s",
+  "gui.larperthanwolves.efficiency.speed_desc": "Smelting Speed: %d%% of base fuel speed",
+  "gui.larperthanwolves.efficiency.cook_time": "Item Processing Time: %s (%d ticks)",
+  "gui.larperthanwolves.efficiency.burn_unaffected": "Fuel burn duration remains unaffected",
+  "gui.larperthanwolves.efficiency.remaining_burn": "Remaining Burn Time: %s"
 }

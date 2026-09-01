@@ -19,14 +19,14 @@ public class BrickFurnaceMenu extends AbstractContainerMenu {
 
     // Client constructor
     public BrickFurnaceMenu(int containerId, Inventory playerInventory, RegistryFriendlyByteBuf extraData) {
-        this(containerId, playerInventory, new SimpleContainer(6), new SimpleContainerData(4), ContainerLevelAccess.NULL);
+        this(containerId, playerInventory, new SimpleContainer(6), new SimpleContainerData(5), ContainerLevelAccess.NULL);
     }
 
     // Server constructor
     public BrickFurnaceMenu(int containerId, Inventory playerInventory, Container container, ContainerData data, ContainerLevelAccess levelAccess) {
         super(ModMenuTypes.BRICK_FURNACE.get(), containerId);
         checkContainerSize(container, 6);
-        checkContainerDataCount(data, 4);
+        checkContainerDataCount(data, 5);
 
         this.container = container;
         this.data = data;
@@ -61,6 +61,30 @@ public class BrickFurnaceMenu extends AbstractContainerMenu {
 
     public boolean isLit() {
         return this.data.get(0) > 0;
+    }
+
+    public int getBurnTime() {
+        return this.data.get(0);
+    }
+
+    public int getMaxBurnTime() {
+        return this.data.get(1);
+    }
+
+    public int getCookTime() {
+        return this.data.get(2);
+    }
+
+    public int getCookTimeTotal() {
+        return this.data.get(3);
+    }
+
+    public int getEfficiencyPercent() {
+        return this.data.get(4);
+    }
+
+    public double getEfficiencyModifier() {
+        return (double) this.data.get(4) / 100.0;
     }
 
     public int getLitProgress() {

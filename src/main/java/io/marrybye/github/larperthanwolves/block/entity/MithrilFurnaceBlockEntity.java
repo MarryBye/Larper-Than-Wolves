@@ -2,6 +2,7 @@ package io.marrybye.github.larperthanwolves.block.entity;
 
 import io.marrybye.github.larperthanwolves.block.MithrilFurnaceBlock;
 import io.marrybye.github.larperthanwolves.block.ModBlocks;
+import io.marrybye.github.larperthanwolves.config.ModConfig;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import io.marrybye.github.larperthanwolves.menu.MithrilFurnaceMenu;
 import io.marrybye.github.larperthanwolves.recipe.FoodCookingRegistry;
@@ -65,9 +66,14 @@ public class MithrilFurnaceBlockEntity extends BlockEntity implements WorldlyCon
     public int getFuelCookSpeed() { return this.fuelCookSpeed; }
 
     @Override
+    public double getFuelEfficiencyModifier() {
+        return ModConfig.SERVER != null ? ModConfig.SERVER.mithrilFurnaceEfficiencyModifier.get() : 1.35;
+    }
+
+    @Override
     public void setFuelCookSpeed(int cookSpeed) {
         this.fuelCookSpeed = cookSpeed;
-        this.cookTimeTotal = cookSpeed;
+        this.cookTimeTotal = getEffectiveCookTime(cookSpeed);
     }
 
     @Override
@@ -87,6 +93,7 @@ public class MithrilFurnaceBlockEntity extends BlockEntity implements WorldlyCon
                 case 1 -> MithrilFurnaceBlockEntity.this.maxBurnTime;
                 case 2 -> MithrilFurnaceBlockEntity.this.cookTime;
                 case 3 -> MithrilFurnaceBlockEntity.this.cookTimeTotal;
+                case 4 -> (int) Math.round(MithrilFurnaceBlockEntity.this.getFuelEfficiencyModifier() * 100.0);
                 default -> 0;
             };
         }
@@ -103,7 +110,7 @@ public class MithrilFurnaceBlockEntity extends BlockEntity implements WorldlyCon
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
     };
 
@@ -181,7 +188,7 @@ public class MithrilFurnaceBlockEntity extends BlockEntity implements WorldlyCon
 
             if (activeSlot != -1) {
                 entity.cookTime++;
-                entity.cookTimeTotal = entity.fuelCookSpeed;
+                entity.cookTimeTotal = entity.getEffectiveCookTime(entity.fuelCookSpeed);
 
                 if (entity.cookTime >= entity.cookTimeTotal) {
                     entity.smeltItem(activeSlot, resultStack);
@@ -305,7 +312,7 @@ public class MithrilFurnaceBlockEntity extends BlockEntity implements WorldlyCon
             burnTime = Math.min(burnTime + info.burnDuration, 72000);
             maxBurnTime = Math.max(maxBurnTime, burnTime);
             fuelCookSpeed = info.cookSpeed;
-            cookTimeTotal = fuelCookSpeed;
+            cookTimeTotal = getEffectiveCookTime(fuelCookSpeed);
             wasLitOnce = true;
             setChanged();
             return true;
@@ -315,7 +322,7 @@ public class MithrilFurnaceBlockEntity extends BlockEntity implements WorldlyCon
                 fuelCopy.setCount(1);
                 items.set(6, fuelCopy);
                 fuelCookSpeed = info.cookSpeed;
-                cookTimeTotal = fuelCookSpeed;
+                cookTimeTotal = getEffectiveCookTime(fuelCookSpeed);
                 setChanged();
                 return true;
             }

@@ -27,7 +27,17 @@ This system splits high-temperature thermal processing into two strictly special
   - **Non-Food Strictly Blocked**: Ores, cobblestone, and raw minerals cannot be placed into the oven.
   - Requires manual fueling and ignition.
 - **Unified Heated Machine Interface (`IFueledMachine`) & Smart Auto-Refueling**:
-  - Implemented across all four thermal appliances: **Brick Furnace**, **Advanced Smelter**, **Food Oven**, and **Alloy Mixer**.
+  - Implemented across all five thermal appliances: **Brick Furnace**, **Advanced Smelter**, **Mithril Furnace**, **Food Oven**, and **Alloy Mixer**.
+  - **Machine-Specific Fuel Efficiency & Speed Modifiers**:
+    - Each machine features a unique **efficiency multiplier** modifying smelting/cooking speed per item while strictly **leaving fuel burn duration untouched**:
+      - **Brick Furnace (`brick_furnace`)**: `0.85x` (85% speed — clay brick heat absorption makes early smelting slightly slower per item).
+      - **Food Oven (`oven`)**: `0.90x` (90% speed — gentle baking insulated chamber).
+      - **Advanced Smelter (`advanced_smelter`)**: `1.00x` (100% speed — baseline standard industrial smelting speed).
+      - **Alloy Mixer (`alloy_mixer`)**: `1.00x` (100% speed — standard alloy fusion speed scaled proportionally with fuel heat).
+      - **Mithril Furnace (`mithril_furnace`)**: `1.35x` (135% speed — hyper-conductive magical mithril lining speeds up smelting by 35%).
+    - **Speed Formula**: $\text{Cook Time per Item} = \max\left(1, \text{round}\left(\frac{\text{Base Fuel Cook Speed}}{\text{Machine Efficiency Modifier}}\right)\right)$.
+    - **Burn Duration Invariant**: Fuel burn duration is never shortened or modified; higher efficiency stations simply produce more output per fuel unit.
+    - **Interactive GUI Badge & Tooltip**: Each fueled machine displays an efficiency badge in the header (`0.85x`, `1.00x`, `1.35x`) and renders a rich hover tooltip over the badge, flame, or arrow with speed details, per-item cook seconds, and remaining burn time.
   - **Manual Fueling (Excess Allowed)**: Players can right-click an active machine with fuel in hand to add burn duration in excess (`burnTime += duration`), or place stacks of fuel directly in the GUI.
   - **Smart Hopper Fueling (Strict Just-in-Time Delivery)**: Hoppers connected to the **BACK** face insert fuel strictly when:
     1. The machine is unlit and has no fuel in its slot (`burnTime <= 0`, loads 1 piece ready for ignition).
