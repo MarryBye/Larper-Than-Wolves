@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:advanced_smelter"
+    },
+    {
+      "item": "larperthanwolves:mithril_nugget"
+    },
+    {
+      "item": "larperthanwolves:mithril_nugget"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:mithril_furnace"
+  }
+}

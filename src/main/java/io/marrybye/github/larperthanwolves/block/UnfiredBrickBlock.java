@@ -29,9 +29,20 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import io.marrybye.github.larperthanwolves.compat.IJeiMachineStation;
+import io.marrybye.github.larperthanwolves.compat.SunDryingRecipe;
+import io.marrybye.github.larperthanwolves.compat.SunDryingRecipeCategory;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import org.jetbrains.annotations.Nullable;
 
-public class UnfiredBrickBlock extends BaseEntityBlock {
+import java.util.List;
+
+public class UnfiredBrickBlock extends BaseEntityBlock implements IJeiMachineStation {
     public static final MapCodec<UnfiredBrickBlock> CODEC = simpleCodec(UnfiredBrickBlock::new);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
@@ -114,4 +125,31 @@ public class UnfiredBrickBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, ModBlockEntities.UNFIRED_BRICK.get(), UnfiredBrickBlockEntity::tick);
     }
+
+    @Override
+    public void registerJeiCategories(IRecipeCategoryRegistration registration, IGuiHelper guiHelper) {
+        registration.addRecipeCategories(new SunDryingRecipeCategory(guiHelper));
+    }
+
+    @Override
+    public void registerJeiRecipes(IRecipeRegistration registration) {
+        registration.addRecipes(SunDryingRecipeCategory.TYPE, List.of(
+                new SunDryingRecipe(
+                        new ItemStack(this.asItem()),
+                        new ItemStack(Items.BRICK),
+                        2000
+                )
+        ));
+    }
+
+    @Override
+    public void registerJeiCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(this), SunDryingRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiGuiHandlers(IGuiHandlerRegistration registration) {}
+
+    @Override
+    public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {}
 }

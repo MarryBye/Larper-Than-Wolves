@@ -63,5 +63,15 @@ public class ModToolMaterials {
             10,
             () -> Ingredient.of(ModItems.DIAMOND_INGOT.get())
     );
+
+    // Mithril tools (Endgame tier): durability 1500, speed 10.0f, bonus 4.0f
+    public static final Tier MITHRIL = new SimpleTier(
+            net.minecraft.tags.BlockTags.INCORRECT_FOR_DIAMOND_TOOL,
+            1500,
+            10.0f,
+            4.0f,
+            15,
+            () -> Ingredient.of(ModItems.MITHRIL_INGOT.get())
+    );
 }
 

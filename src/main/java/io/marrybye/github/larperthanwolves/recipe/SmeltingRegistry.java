@@ -74,6 +74,11 @@ public class SmeltingRegistry {
             return ItemStack.EMPTY;
         }
 
+        // Mithril CANNOT be smelted in Brick Furnace!
+        if (input.is(ModItems.RAW_MITHRIL.get()) || input.is(ModItems.MITHRIL_DUST.get()) || input.is(ModBlocks.MITHRIL_ORE.asItem())) {
+            return ItemStack.EMPTY;
+        }
+
         // Zinc ore / raw zinc -> 1 Zinc Nugget (Create compatibility)
         if (isRawZinc(input)) {
             ItemStack nugget = getZincNugget();

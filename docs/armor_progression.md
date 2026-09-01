@@ -13,6 +13,7 @@ This document defines armor materials, defense values, durability multipliers, t
 | **Bronze (Бронза)** | 12 | 2 | 5 | 4 | 2 | **13 (6.5 🛡️)** | 0.0 | 0.0 | `larperthanwolves:bronze_ingot` |
 | **Iron (Железо)** | 15 | 2 | 6 | 5 | 2 | **15 (7.5 🛡️)** | 0.0 | 0.0 | `minecraft:iron_ingot` |
 | **Reinforced Iron (Алмазный)** | 25 | 3 | 8 | 6 | 3 | **20 (10 🛡️)** | 1.5 | 0.0 | `larperthanwolves:diamond_ingot` |
+| **Mithril (Мифрил - Эндгейм)** | 35 | 3 | 8 | 6 | 3 | **20 (10 🛡️)** | 2.5 | 0.1 | `larperthanwolves:mithril_ingot` |
 
 ---
 
@@ -22,8 +23,11 @@ This document defines armor materials, defense values, durability multipliers, t
   - Standard raw leather cannot be crafted into armor.
 - **Disabled Armor Tiers**:
   - **Chainmail Armor**: Fully disabled, unobtainable from loot or trading.
-  - **Vanilla Diamond Armor**: Direct crafting in crafting tables is disabled and removed. Diamond armor is only obtainable by upgrading Iron Armor in a Smithing Table with **Diamond Ingots** (`diamond_ingot`) $\rightarrow$ **Reinforced Iron Armor** (Endgame Final Tier).
-  - **Netherite Armor & Tools**: Fully disabled and purged from the game. Reinforced Iron is the absolute pinnacle tier.
+  - **Vanilla Diamond Armor**: Direct crafting in crafting tables is disabled and removed. Diamond armor is only obtainable by upgrading Iron Armor in a Smithing Table with **Diamond Ingots** (`diamond_ingot`) $\rightarrow$ **Reinforced Iron Armor**.
+  - **Netherite Armor & Tools**: Fully disabled and purged from the game.
+- **Mithril Endgame Armor**:
+  - Premier endgame armor created by combining Reinforced Iron Armor pieces with **Mithril Ingots** (`mithril_ingot`) in a Smithing Table.
+  - Features 35x durability multiplier, 2.5 toughness, and 10% knockback resistance per piece.
 - **Equipping & Mob Purge**:
   - Mobs cannot spawn with or equip disabled armor.
   - Players attempting to wear disabled armor have it safely removed and cleared.
@@ -34,7 +38,8 @@ This document defines armor materials, defense values, durability multipliers, t
 1. **Copper Armor**: 24 Copper Ingots in 3x3 table (Helmet: 5, Chest: 8, Legs: 7, Boots: 4).
 2. **Bronze Armor**: 24 Bronze Ingots in 3x3 table.
 3. **Iron Armor**: 24 Iron Ingots in 3x3 table.
-4. **Reinforced Iron Armor**: Iron Armor Piece + Diamond Ingot + Netherite Upgrade Template in Smithing Table.
+4. **Reinforced Iron Armor**: Iron Armor Piece + Diamond Ingot in Smithing Table.
+5. **Mithril Armor**: Reinforced Iron Armor Piece + Mithril Ingot in Smithing Table.
 
 ---
 

@@ -10,13 +10,25 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public class FertilizedFarmlandBlock extends FarmBlock {
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+
+public class FertilizedFarmlandBlock extends FarmBlock implements IJeiDocumentationProvider {
     public static final MapCodec<FertilizedFarmlandBlock> CODEC = simpleCodec(FertilizedFarmlandBlock::new);
     public static final IntegerProperty CHARGES = IntegerProperty.create("charges", 1, 3);
 
     public FertilizedFarmlandBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(MOISTURE, 0).setValue(CHARGES, 1));
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.fertilized_farmland"));
     }
 
     @Override

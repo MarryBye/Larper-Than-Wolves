@@ -120,6 +120,10 @@ public class BlockBreakHandler {
         return stack.is(ModItems.REINFORCED_IRON_PICKAXE.get());
     }
 
+    public static boolean isMithrilPickaxe(ItemStack stack) {
+        return stack.is(ModItems.MITHRIL_PICKAXE.get());
+    }
+
     public static boolean isNetheritePickaxe(ItemStack stack) {
         return stack.is(Items.NETHERITE_PICKAXE);
     }
@@ -144,13 +148,17 @@ public class BlockBreakHandler {
         return stack.is(ModItems.REINFORCED_IRON_SHOVEL.get());
     }
 
+    public static boolean isMithrilShovel(ItemStack stack) {
+        return stack.is(ModItems.MITHRIL_SHOVEL.get());
+    }
+
     public static boolean isNetheriteShovel(ItemStack stack) {
         return stack.is(Items.NETHERITE_SHOVEL);
     }
 
     public static boolean isCopperPlusShovel(ItemStack stack) {
         if (stack == null || stack.isEmpty()) return false;
-        return isCopperShovel(stack) || isBronzeShovel(stack) || isIronShovel(stack) || isReinforcedIronShovel(stack) || isNetheriteShovel(stack);
+        return isCopperShovel(stack) || isBronzeShovel(stack) || isIronShovel(stack) || isReinforcedIronShovel(stack) || isMithrilShovel(stack) || isNetheriteShovel(stack);
     }
 
     public static boolean isDeepslateLayerOrBlock(Level level, BlockPos pos, Block block) {
@@ -261,6 +269,8 @@ public class BlockBreakHandler {
                 block == ModBlocks.RAW_TIN_BLOCK.get() ||
                 block == ModBlocks.TIN_BLOCK.get() ||
                 block == ModBlocks.BRONZE_BLOCK.get() ||
+                block == ModBlocks.MITHRIL_ORE.get() ||
+                block == ModBlocks.MITHRIL_BLOCK.get() ||
                 isNetherOrEndRockOrOre(block);
     }
 
@@ -288,6 +298,7 @@ public class BlockBreakHandler {
     public static boolean isStationBlock(Block block) {
         return block == ModBlocks.BRICK_FURNACE.get() ||
                 block == ModBlocks.ADVANCED_SMELTER.get() ||
+                block == ModBlocks.MITHRIL_FURNACE.get() ||
                 block == ModBlocks.OVEN.get() ||
                 block == ModBlocks.ALLOY_MIXER.get() ||
                 block == ModBlocks.MILL.get() ||
@@ -303,16 +314,21 @@ public class BlockBreakHandler {
             if (tool == null || tool.isEmpty()) return false;
             if (isSiliconPickaxe(tool)) return false;
             return isCopperPickaxe(tool) || isBronzePickaxe(tool) || isIronPickaxe(tool) ||
-                    isReinforcedIronPickaxe(tool) || isNetheritePickaxe(tool) ||
+                    isReinforcedIronPickaxe(tool) || isMithrilPickaxe(tool) || isNetheritePickaxe(tool) ||
                     tool.is(net.minecraft.tags.ItemTags.PICKAXES) ||
                     tool.getItem() instanceof net.minecraft.world.item.PickaxeItem;
+        }
+
+        // Mithril Ore strictly requires Reinforced Iron or Mithril pickaxe!
+        if (block == ModBlocks.MITHRIL_ORE.get()) {
+            return isMithrilPickaxe(tool) || isReinforcedIronPickaxe(tool);
         }
 
         if (!isStoneOrOre(block) && !isObsidianOrNetheriteTier(block) && !isDeepslateLayerOrBlock(level, pos, block)) {
             return true;
         }
 
-        if (isNetheritePickaxe(tool) || isReinforcedIronPickaxe(tool)) {
+        if (isMithrilPickaxe(tool) || isNetheritePickaxe(tool) || isReinforcedIronPickaxe(tool)) {
             return true;
         }
 
@@ -802,7 +818,22 @@ public class BlockBreakHandler {
             return;
         }
 
-        // --- 4. IRON, REINFORCED IRON, NETHERITE PICKAXES ---
+        // --- Mithril Ore Drops ---
+        if (block == ModBlocks.MITHRIL_ORE.get()) {
+            drops.clear();
+            if (isMithrilPickaxe(tool)) {
+                ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(ModItems.RAW_MITHRIL.get(), 1));
+                raw.setDefaultPickUpDelay();
+                drops.add(raw);
+            } else if (isReinforcedIronPickaxe(tool)) {
+                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.MITHRIL_DUST.get(), 1));
+                dust.setDefaultPickUpDelay();
+                drops.add(dust);
+            }
+            return;
+        }
+
+        // --- 4. IRON, REINFORCED IRON, MITHRIL, NETHERITE PICKAXES ---
         // Default vanilla loot tables
     }
 

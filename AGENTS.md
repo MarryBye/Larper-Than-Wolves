@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.32.3
+- **Current Version**: 1.33.0
 
 ## Project Architecture & Progression
 
@@ -42,7 +42,8 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Copper (Медь)**: Durability 180. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Workstations (Brick Furnace, Smelter, Oven, Mixer, Mill, Piston, Observer), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`) and Clay. Cannot mine deepslate, zinc, or iron+.
 - **Bronze (Бронза)**: Durability 280. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Workstations, Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils and Clay. Cannot mine zinc ore or high-tier ores.
 - **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`) and all Workstations. Shovel mines Rich Soils and Clay. Cannot mine Ancient Debris or Obsidian.
-- **Reinforced Iron (Diamond Ingot - Final Tier)**: Durability 900. Final pinnacle endgame tier. Full access to all blocks including Ancient Debris and Obsidian.
+- **Reinforced Iron (Diamond Ingot Tier)**: Durability 900. Full access to all blocks including Ancient Debris and Obsidian. Mines Nether Mithril Ore into **Mithril Dust** (`mithril_dust`).
+- **Mithril (Мифрил - Premier Endgame Tier)**: Durability 1500, mining speed 10.0f, attack damage bonus +4.0f. Mines Nether Mithril Ore directly into **Raw Mithril** (`raw_mithril`). Full supreme access across all dimensions. Upgrade via Smithing Table from Reinforced Iron using **Mithril Ingots** (`mithril_ingot`).
 
 ### ⚙️ Hand Mill & Mill Crank (Молотилка и Рукоять)
 - **Hand Mill (`mill` / `MillBlock`)**:
@@ -220,13 +221,19 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - Crafted on a 3x3 Crafting Table from **5 Iron Ingots + 1 Brick Furnace + 3 Smooth Stone**.
   - Reinforced iron-plated design with corner rivets, dark steel trim, and industrial firebox grating.
   - **Full Ingot Smelting (`RecipeTypes.SMELTING` in JEI)**: Smelts raw ores and metal chunks (Iron, Copper, Gold, Tin, Zinc) directly into **Full Ingots** instead of single nuggets.
+  - **Endgame Nugget Smelting**: Smelts Raw Mithril (`raw_mithril`) into **1 Mithril Nugget** (`mithril_nugget`).
   - Requires manual fuel loading and lighter/flint ignition.
+- **Mithril Furnace (Мифриловая печь / `mithril_furnace` / `MithrilFurnaceBlock`)**:
+  - Crafted shapelessly from **1 Advanced Smelter + 2 Mithril Nuggets**.
+  - Reinforced with mithril runic plates, glowing furnace grates, and superior thermal insulation.
+  - **Endgame Ingot Smelting**: Smelts Raw Mithril (`raw_mithril`) directly into **Full Mithril Ingots** (`mithril_ingot`), unlocking endgame smithing upgrades.
+  - Smelts all standard raw ores directly into full ingots.
 - **Wooden Hopper (Деревянная воронка / `wooden_hopper` / `WoodenHopperBlock`)**:
   - Crafted on a 3x3 Crafting Table from **5 Planks + 1 Woven Basket** in a V-shape.
   - Features 1 buffer slot, slightly slower transfer speed (**14 ticks per item**).
   - Can connect in 5 directions (down, north, south, west, east) to feed fuels into furnaces/ovens or collect machine outputs.
 - **Unified Heated Machine Interface (`IFueledMachine`) & Smart Auto-Refueling**:
-  - Unified across **Brick Furnace**, **Advanced Smelter**, **Food Oven**, and **Alloy Mixer**.
+  - Unified across **Brick Furnace**, **Advanced Smelter**, **Mithril Furnace**, **Food Oven**, and **Alloy Mixer**.
   - **Manual Feeding with Excess**: Hand right-clicking with fuel allows feeding fuel with excess directly into `burnTime`.
   - **Smart Just-In-Time Hopper Feeding**: Hoppers connected to the **BACK** face insert exactly 1 fuel item into the fuel slot ONLY when unlit (`burnTime <= 0`) or within **20 ticks** before burnout (`burnTime <= 20`).
   - **Seamless 5-Tick Auto-Refueling**: When burning (`burnTime > 0`) and remaining `burnTime <= 5` ticks, machines automatically consume the fuel piece from the slot, extending the flame without extinguishing and without overloading machines with excess fuel.
@@ -523,6 +530,9 @@ All commits must follow:
 
 ### 6. Full JEI Mechanics Integration (`jei-mechanics-documenter`)
 **MANDATORY**: Whenever adding any unique, custom, or non-standard mechanic (in-world crafting, chisel carving, sun drying, custom fuels/speeds, manual ignition, altered block drops), automatically create corresponding JEI categories, recipes, and `addIngredientInfo` tabs to guarantee total in-game discoverability.
+- **Unified Station Architecture (`IJeiMachineStation`)**: All processing workstations and machine blocks must implement `IJeiMachineStation` (`registerJeiCategories`, `registerJeiRecipes`, `registerJeiCatalysts`, `registerJeiGuiHandlers`, `registerJeiRecipeTransferHandlers`).
+- **Declarative Item/Block Documentation (`IJeiDocumentationProvider`)**: Mod items (`ModItem`) and blocks (`ModBlock`) implement `IJeiDocumentationProvider` (`registerJeiInfo`) providing in-game explanatory info tabs directly in JEI for total player clarity.
+- **Plugin Auto-Discovery (`ModJeiPlugin`)**: `ModJeiPlugin` automatically iterates through `ModBlocks.BLOCKS` and `ModItems.ITEMS`, dispatching registration calls dynamically.
 
 ### 7. Mojang Asset Adaptation & JAPPA Artistry (`mojang-asset-artist`)
 **MANDATORY**: When creating or modifying any pixel art textures (items, blocks, UI, armor layers), always follow JAPPA standards and MUST base the artwork upon official Mojang vanilla assets (from `minecraft_1.21.1_client.jar`), adapting, combining, and justifiable re-coloring them to guarantee seamless aesthetic harmony with modern Minecraft.

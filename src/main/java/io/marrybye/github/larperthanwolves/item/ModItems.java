@@ -16,23 +16,23 @@ public class ModItems {
 
     // Basic items for early survival
     public static final DeferredItem<Item> POINTED_STICK = ITEMS.register("pointed_stick",
-            () -> new Item(new Item.Properties().durability(2).stacksTo(1)));
+            () -> new ModItem(new Item.Properties().durability(2).stacksTo(1), "jei.larperthanwolves.info.pointed_stick"));
 
     public static final DeferredItem<Item> POINTED_PEBBLE = ITEMS.register("pointed_pebble",
-            () -> new Item(new Item.Properties().durability(4).stacksTo(1)));
+            () -> new ModItem(new Item.Properties().durability(4).stacksTo(1), "jei.larperthanwolves.info.pointed_pebble"));
 
     public static final DeferredItem<Item> SILICON_SHARD = ITEMS.register("silicon_shard",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.silicon_shard"));
 
 
     public static final DeferredItem<Item> DRY_GRASS = ITEMS.register("dry_grass",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.dry_grass"));
 
     public static final DeferredItem<Item> DUNG = ITEMS.register("dung",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.dung"));
 
     public static final DeferredItem<Item> TANNED_LEATHER = ITEMS.register("tanned_leather",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.tanned_leather"));
 
     public static final DeferredItem<Item> IRON_DUST = ITEMS.register("iron_dust",
             () -> new Item(new Item.Properties()));
@@ -83,7 +83,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().stacksTo(64)));
 
     public static final DeferredItem<Item> LIGHTER = ITEMS.register("lighter",
-            () -> new Item(new Item.Properties().durability(64)));
+            () -> new ModItem(new Item.Properties().durability(64), "jei.larperthanwolves.info.lighter"));
 
     // Copper tools and armor
     public static final DeferredItem<SwordItem> COPPER_SWORD = ITEMS.register("copper_sword",
@@ -208,12 +208,68 @@ public class ModItems {
             () -> new ArmorItem(ModArmorMaterials.REINFORCED_IRON, ArmorItem.Type.BOOTS, new Item.Properties()
                     .durability(ArmorItem.Type.BOOTS.getDurability(25))));
 
+    // Mithril Items
+    public static final DeferredItem<Item> RAW_MITHRIL = ITEMS.register("raw_mithril",
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.raw_mithril"));
+
+    public static final DeferredItem<Item> MITHRIL_DUST = ITEMS.register("mithril_dust",
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.mithril_dust"));
+
+    public static final DeferredItem<Item> MITHRIL_NUGGET = ITEMS.register("mithril_nugget",
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.mithril_nugget"));
+
+    public static final DeferredItem<Item> MITHRIL_INGOT = ITEMS.register("mithril_ingot",
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.mithril_ingot"));
+
+    // Mithril Tools
+    public static final DeferredItem<SwordItem> MITHRIL_SWORD = ITEMS.register("mithril_sword",
+            () -> new SwordItem(ModToolMaterials.MITHRIL, new Item.Properties()
+                    .durability(ModToolMaterials.MITHRIL.getUses())
+                    .attributes(SwordItem.createAttributes(ModToolMaterials.MITHRIL, 3, -2.4f))));
+
+    public static final DeferredItem<PickaxeItem> MITHRIL_PICKAXE = ITEMS.register("mithril_pickaxe",
+            () -> new PickaxeItem(ModToolMaterials.MITHRIL, new Item.Properties()
+                    .durability(ModToolMaterials.MITHRIL.getUses())
+                    .attributes(PickaxeItem.createAttributes(ModToolMaterials.MITHRIL, 1, -2.8f))));
+
+    public static final DeferredItem<AxeItem> MITHRIL_AXE = ITEMS.register("mithril_axe",
+            () -> new AxeItem(ModToolMaterials.MITHRIL, new Item.Properties()
+                    .durability(ModToolMaterials.MITHRIL.getUses())
+                    .attributes(AxeItem.createAttributes(ModToolMaterials.MITHRIL, 5, -3.0f))));
+
+    public static final DeferredItem<ShovelItem> MITHRIL_SHOVEL = ITEMS.register("mithril_shovel",
+            () -> new ShovelItem(ModToolMaterials.MITHRIL, new Item.Properties()
+                    .durability(ModToolMaterials.MITHRIL.getUses())
+                    .attributes(ShovelItem.createAttributes(ModToolMaterials.MITHRIL, 1.5f, -3.0f))));
+
+    public static final DeferredItem<HoeItem> MITHRIL_HOE = ITEMS.register("mithril_hoe",
+            () -> new HoeItem(ModToolMaterials.MITHRIL, new Item.Properties()
+                    .durability(ModToolMaterials.MITHRIL.getUses())
+                    .attributes(HoeItem.createAttributes(ModToolMaterials.MITHRIL, -3, 0.0f))));
+
+    // Mithril Armor
+    public static final DeferredItem<ArmorItem> MITHRIL_HELMET = ITEMS.register("mithril_helmet",
+            () -> new ArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.HELMET, new Item.Properties()
+                    .durability(ArmorItem.Type.HELMET.getDurability(35))));
+
+    public static final DeferredItem<ArmorItem> MITHRIL_CHESTPLATE = ITEMS.register("mithril_chestplate",
+            () -> new ArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.CHESTPLATE, new Item.Properties()
+                    .durability(ArmorItem.Type.CHESTPLATE.getDurability(35))));
+
+    public static final DeferredItem<ArmorItem> MITHRIL_LEGGINGS = ITEMS.register("mithril_leggings",
+            () -> new ArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.LEGGINGS, new Item.Properties()
+                    .durability(ArmorItem.Type.LEGGINGS.getDurability(35))));
+
+    public static final DeferredItem<ArmorItem> MITHRIL_BOOTS = ITEMS.register("mithril_boots",
+            () -> new ArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.BOOTS, new Item.Properties()
+                    .durability(ArmorItem.Type.BOOTS.getDurability(35))));
+
     // Mesh items
     public static final DeferredItem<UnboundMeshItem> UNBOUND_MESH = ITEMS.register("unbound_mesh",
             () -> new UnboundMeshItem(new Item.Properties().durability(UnboundMeshItem.MAX_PROGRESS_TICKS).stacksTo(1)));
 
     public static final DeferredItem<Item> MESH = ITEMS.register("mesh",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.mesh"));
 
     // Knitting Needles (Спицы)
     public static final DeferredItem<KnittingNeedlesItem> BRONZE_KNITTING_NEEDLES = ITEMS.register("bronze_knitting_needles",
@@ -348,6 +404,15 @@ public class ModItems {
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BRONZE_BLOCK = ITEMS.register("bronze_block",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.BRONZE_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MITHRIL_FURNACE = ITEMS.register("mithril_furnace",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.MITHRIL_FURNACE.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MITHRIL_ORE = ITEMS.register("mithril_ore",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.MITHRIL_ORE.get(), new Item.Properties()));
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MITHRIL_BLOCK = ITEMS.register("mithril_block",
+            () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.MITHRIL_BLOCK.get(), new Item.Properties()));
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> CRACKED_STONE = ITEMS.register("cracked_stone",
             () -> new net.minecraft.world.item.BlockItem(io.marrybye.github.larperthanwolves.block.ModBlocks.CRACKED_STONE.get(), new Item.Properties()));

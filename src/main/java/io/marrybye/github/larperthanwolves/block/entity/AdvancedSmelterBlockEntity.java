@@ -234,6 +234,9 @@ public class AdvancedSmelterBlockEntity extends BlockEntity implements WorldlyCo
         if (input.is(ModItems.RAW_TIN.get())) {
             return new ItemStack(ModItems.TIN_INGOT.get(), 1);
         }
+        if (input.is(ModItems.RAW_MITHRIL.get())) {
+            return new ItemStack(ModItems.MITHRIL_NUGGET.get(), 1);
+        }
         if (SmeltingRegistry.isRawZinc(input)) {
             Item zincIngot = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("create", "zinc_ingot"));
             if (zincIngot != Items.AIR) {

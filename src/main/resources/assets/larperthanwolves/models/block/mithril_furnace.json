@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "larperthanwolves:block/mithril_furnace_top",
+    "bottom": "larperthanwolves:block/mithril_furnace_bottom",
+    "side": "larperthanwolves:block/mithril_furnace_side",
+    "front": "larperthanwolves:block/mithril_furnace_front",
+    "particle": "larperthanwolves:block/mithril_furnace_side"
+  }
+}

@@ -33,9 +33,21 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import io.marrybye.github.larperthanwolves.compat.IJeiMachineStation;
+import io.marrybye.github.larperthanwolves.compat.MachineFuelRecipeCategory;
+import io.marrybye.github.larperthanwolves.client.OvenScreen;
+import io.marrybye.github.larperthanwolves.menu.OvenMenu;
+import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
+import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import org.jetbrains.annotations.Nullable;
 
-public class OvenBlock extends BaseEntityBlock {
+public class OvenBlock extends BaseEntityBlock implements IJeiMachineStation {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     // 0: Empty, 1: Fueled, 2: Lit (Strong), 3: Lit Low (Dying embers)
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
@@ -173,5 +185,29 @@ public class OvenBlock extends BaseEntityBlock {
                 level.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset + 0.2, z + zOffset, 0.0, 0.0, 0.0);
             }
         }
+    }
+
+    @Override
+    public void registerJeiCategories(IRecipeCategoryRegistration registration, IGuiHelper guiHelper) {}
+
+    @Override
+    public void registerJeiRecipes(IRecipeRegistration registration) {}
+
+    @Override
+    public void registerJeiCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(this), RecipeTypes.SMOKING);
+        registration.addRecipeCatalyst(new ItemStack(this), RecipeTypes.CAMPFIRE_COOKING);
+        registration.addRecipeCatalyst(new ItemStack(this), MachineFuelRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(OvenScreen.class, 79, 34, 24, 17, RecipeTypes.SMOKING, RecipeTypes.CAMPFIRE_COOKING, MachineFuelRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.SMOKING, 0, 3, 6, 36);
+        registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.CAMPFIRE_COOKING, 0, 3, 6, 36);
     }
 }

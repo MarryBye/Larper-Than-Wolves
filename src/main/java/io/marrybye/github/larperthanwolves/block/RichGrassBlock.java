@@ -17,13 +17,25 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.lighting.LightEngine;
 
-public class RichGrassBlock extends Block {
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+
+public class RichGrassBlock extends Block implements IJeiDocumentationProvider {
     public static final MapCodec<RichGrassBlock> CODEC = simpleCodec(RichGrassBlock::new);
     public static final BooleanProperty SNOWY = BlockStateProperties.SNOWY;
 
     public RichGrassBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(SNOWY, false));
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.rich_soil"));
     }
 
     @Override

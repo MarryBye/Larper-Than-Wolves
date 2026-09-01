@@ -80,5 +80,11 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(FilterGrateBlockEntity::new,
                             io.marrybye.github.larperthanwolves.block.ModBlocks.FILTER_GRATE.get())
                             .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MithrilFurnaceBlockEntity>> MITHRIL_FURNACE =
+            BLOCK_ENTITIES.register("mithril_furnace", () ->
+                    BlockEntityType.Builder.of(MithrilFurnaceBlockEntity::new,
+                            io.marrybye.github.larperthanwolves.block.ModBlocks.MITHRIL_FURNACE.get())
+                            .build(null));
 }
 

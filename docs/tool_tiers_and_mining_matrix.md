@@ -21,6 +21,7 @@ This document defines the complete tool tier progression, durability, harvest sp
 | **Bronze (Бронза)** | 280 | 5.5 | +2.0 | `larperthanwolves:bronze_ingot` | `incorrect_for_bronze_tool` |
 | **Iron (Железо)** | 250 | 6.0 | +2.0 | `minecraft:iron_ingot` | Vanilla `incorrect_for_iron_tool` |
 | **Reinforced Iron (Алмазный слиток)** | 900 | 8.0 | +3.0 | `larperthanwolves:diamond_ingot` | Vanilla `incorrect_for_diamond_tool` |
+| **Mithril (Мифрил - Эндгейм)** | 1500 | 10.0 | +4.0 | `larperthanwolves:mithril_ingot` | Vanilla `incorrect_for_netherite_tool` |
 
 ---
 
@@ -90,21 +91,29 @@ This document defines the complete tool tier progression, durability, harvest sp
 
 ---
 
-### 5. Reinforced Iron (Diamond Ingot) Tier — Final Endgame Tier
-* **Full Unrestricted Access**:
+### 5. Reinforced Iron (Diamond Ingot) Tier
+* **Full Access**:
   * Obsidian, Crying Obsidian, Respawn Anchor, Ancient Debris.
-  * Full speed and full block drops for all materials across all dimensions.
+  * **Mithril Ore (`mithril_ore`)**: Mines Mithril Ore into **Mithril Dust** (`mithril_dust`).
+
+---
+
+### 6. Mithril Tier — Premier Endgame Tier
+* **Supreme Speed & Access**:
+  * 1500 Durability, 10.0f Mining Speed, +4.0 Attack Bonus.
+  * **Direct Raw Mithril Harvesting**: Mining Nether Mithril Ore directly yields **Raw Mithril** (`raw_mithril`), bypassing the dust requirement.
+  * Full access to Obsidian, Ancient Debris, workstations, and all blocks across all dimensions.
 
 ---
 
 ## 🪓 Woodcutting, Workstation & Shovel Rules
 
 * **Workstations & Thermal Machines (Copper Pickaxe or Higher Mandatory)**:
-  * Stone and metal workstations (**Brick Furnace**, **Advanced Smelter**, **Food Oven**, **Alloy Mixer**, **Hand Mill**, **Kinetic Piston**, **Entity Observer**, vanilla Furnaces/Smokers) strictly require a **Pickaxe of Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron) to be mined and harvested.
+  * Stone and metal workstations (**Brick Furnace**, **Advanced Smelter**, **Mithril Furnace**, **Food Oven**, **Alloy Mixer**, **Hand Mill**, **Kinetic Piston**, **Entity Observer**, vanilla Furnaces/Smokers) strictly require a **Pickaxe of Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Mithril) to be mined and harvested.
   * Breaking workstations by hand, with tools other than pickaxes, or with a Silicon Pickaxe is blocked (mining speed = 0.0, drops = 0).
 * **Axe Mandatory for Wood & Wooden Objects**:
   * Hand punching logs, wood, stripped wood, stumps, work stumps, planks, slabs, stairs, fences, gates, doors, trapdoors, as well as wooden machines and containers (**Woven Basket**, **Drying Rack**, **Wooden Hopper**, **Sieve Table**, **Filter Grate**, **Mill Crank**) is completely blocked (mining speed = 0.0, drops = 0).
-  * Any axe (Silicon, Copper, Bronze, Iron, Reinforced Iron) can mine and harvest all wooden blocks, dropping the block item and any stored container contents.
+  * Any axe (Silicon, Copper, Bronze, Iron, Reinforced Iron, Mithril) can mine and harvest all wooden blocks, dropping the block item and any stored container contents.
 * **Shovel Mandatory for Clay**:
   * Hand breaking or non-shovel breaking of clay blocks drops 0 items.
   * Shovel harvest yields **1 Clay Ball** (down from vanilla 4) with ~1.6x longer digging time.

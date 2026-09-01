@@ -17,9 +17,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ChiselItem extends Item {
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
+
+public class ChiselItem extends Item implements IJeiDocumentationProvider {
     public ChiselItem(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.chisel"));
     }
 
     @Override

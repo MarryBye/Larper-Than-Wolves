@@ -13,6 +13,7 @@ public class ModArmorMaterials {
     public static Holder<ArmorMaterial> COPPER;
     public static Holder<ArmorMaterial> BRONZE;
     public static Holder<ArmorMaterial> REINFORCED_IRON;
+    public static Holder<ArmorMaterial> MITHRIL;
 
     static {
         COPPER = Holder.direct(new ArmorMaterial(
@@ -58,6 +59,21 @@ public class ModArmorMaterials {
                 List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("larperthanwolves", "reinforced_iron"))),
                 1.5f,
                 0.0f
+        ));
+
+        MITHRIL = Holder.direct(new ArmorMaterial(
+                Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                    map.put(ArmorItem.Type.BOOTS, 3);
+                    map.put(ArmorItem.Type.LEGGINGS, 6);
+                    map.put(ArmorItem.Type.CHESTPLATE, 8);
+                    map.put(ArmorItem.Type.HELMET, 3);
+                }),
+                15,
+                SoundEvents.ARMOR_EQUIP_NETHERITE,
+                () -> Ingredient.of(ModItems.MITHRIL_INGOT.get()),
+                List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("larperthanwolves", "mithril"))),
+                2.5f,
+                0.1f
         ));
     }
 }

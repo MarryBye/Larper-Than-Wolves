@@ -53,4 +53,9 @@ public class ModMenuTypes {
             "filter_grate",
             () -> IMenuTypeExtension.create(FilterGrateMenu::new)
     );
+
+    public static final DeferredHolder<MenuType<?>, MenuType<MithrilFurnaceMenu>> MITHRIL_FURNACE = MENUS.register(
+            "mithril_furnace",
+            () -> IMenuTypeExtension.create(MithrilFurnaceMenu::new)
+    );
 }

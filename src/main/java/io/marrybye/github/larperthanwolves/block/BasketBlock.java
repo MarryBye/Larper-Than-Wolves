@@ -26,7 +26,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class BasketBlock extends BaseEntityBlock {
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+
+public class BasketBlock extends BaseEntityBlock implements IJeiDocumentationProvider {
     public static final MapCodec<BasketBlock> CODEC = simpleCodec(BasketBlock::new);
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 12.0D, 15.0D);
@@ -34,6 +40,12 @@ public class BasketBlock extends BaseEntityBlock {
     public BasketBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.basket"));
     }
 
     @Override

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": [],
+  "base": {
+    "item": "larperthanwolves:reinforced_iron_pickaxe"
+  },
+  "addition": {
+    "item": "larperthanwolves:mithril_ingot"
+  },
+  "result": {
+    "id": "larperthanwolves:mithril_pickaxe"
+  }
+}

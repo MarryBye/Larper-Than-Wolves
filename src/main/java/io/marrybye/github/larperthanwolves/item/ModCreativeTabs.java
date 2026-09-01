@@ -51,6 +51,10 @@ public class ModCreativeTabs {
                         output.accept(ModItems.BRONZE_NUGGET.get());
                         output.accept(ModItems.BRONZE_INGOT.get());
                         output.accept(ModItems.DIAMOND_NUGGET.get());
+                        output.accept(ModItems.MITHRIL_DUST.get());
+                        output.accept(ModItems.RAW_MITHRIL.get());
+                        output.accept(ModItems.MITHRIL_NUGGET.get());
+                        output.accept(ModItems.MITHRIL_INGOT.get());
 
                         output.accept(ModItems.SILICON_SHEARS.get());
                         output.accept(ModItems.SILICON_SPEAR.get());
@@ -86,6 +90,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.RAW_TIN_BLOCK.get());
                         output.accept(ModItems.TIN_BLOCK.get());
                         output.accept(ModItems.BRONZE_BLOCK.get());
+                        output.accept(ModItems.MITHRIL_ORE.get());
+                        output.accept(ModItems.MITHRIL_BLOCK.get());
                         output.accept(ModItems.CRACKED_STONE.get());
                         output.accept(ModItems.RICH_GRASS_BLOCK.get());
                         output.accept(ModItems.RICH_DIRT.get());
@@ -96,6 +102,7 @@ public class ModCreativeTabs {
 
                         output.accept(ModItems.BRICK_FURNACE.get());
                         output.accept(ModItems.ADVANCED_SMELTER.get());
+                        output.accept(ModItems.MITHRIL_FURNACE.get());
                         output.accept(ModItems.WOODEN_HOPPER.get());
                         output.accept(ModItems.OVEN.get());
                         output.accept(ModItems.UNFIRED_BRICK.get());
@@ -127,6 +134,17 @@ public class ModCreativeTabs {
                         output.accept(ModItems.REINFORCED_IRON_CHESTPLATE.get());
                         output.accept(ModItems.REINFORCED_IRON_LEGGINGS.get());
                         output.accept(ModItems.REINFORCED_IRON_BOOTS.get());
+
+                        output.accept(ModItems.MITHRIL_SWORD.get());
+                        output.accept(ModItems.MITHRIL_PICKAXE.get());
+                        output.accept(ModItems.MITHRIL_AXE.get());
+                        output.accept(ModItems.MITHRIL_SHOVEL.get());
+                        output.accept(ModItems.MITHRIL_HOE.get());
+
+                        output.accept(ModItems.MITHRIL_HELMET.get());
+                        output.accept(ModItems.MITHRIL_CHESTPLATE.get());
+                        output.accept(ModItems.MITHRIL_LEGGINGS.get());
+                        output.accept(ModItems.MITHRIL_BOOTS.get());
 
                         output.accept(ModItems.OAK_STUMP.get());
                         output.accept(ModItems.BIRCH_STUMP.get());

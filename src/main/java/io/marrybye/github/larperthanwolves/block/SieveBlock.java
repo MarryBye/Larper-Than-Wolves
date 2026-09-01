@@ -28,7 +28,29 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class SieveBlock extends BaseEntityBlock {
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import io.marrybye.github.larperthanwolves.compat.IJeiMachineStation;
+import io.marrybye.github.larperthanwolves.compat.SieveJeiRecipe;
+import io.marrybye.github.larperthanwolves.compat.SieveRecipeCategory;
+import io.marrybye.github.larperthanwolves.client.SieveScreen;
+import io.marrybye.github.larperthanwolves.config.ModConfig;
+import io.marrybye.github.larperthanwolves.item.ModItems;
+import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
+import io.marrybye.github.larperthanwolves.menu.SieveMenu;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+
+import java.util.List;
+
+public class SieveBlock extends BaseEntityBlock implements IJeiMachineStation, IJeiDocumentationProvider {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final MapCodec<SieveBlock> CODEC = simpleCodec(SieveBlock::new);
 
@@ -116,5 +138,88 @@ public class SieveBlock extends BaseEntityBlock {
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }
+    }
+
+    @Override
+    public void registerJeiCategories(IRecipeCategoryRegistration registration, IGuiHelper guiHelper) {
+        registration.addRecipeCategories(new SieveRecipeCategory(guiHelper));
+    }
+
+    @Override
+    public void registerJeiRecipes(IRecipeRegistration registration) {
+        int sieveTime = ModConfig.SERVER != null ? ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;
+        List<ItemStack> regularSoilOutputs = List.of(
+                new ItemStack(ModItems.SILICON_SHARD.get()),
+                new ItemStack(Items.FLINT),
+                new ItemStack(ModItems.COPPER_DUST.get()),
+                new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.IRON_DUST.get())
+        );
+
+        List<ItemStack> suspGravelOutputs = List.of(
+                new ItemStack(ModItems.SILICON_SHARD.get()),
+                new ItemStack(Items.FLINT),
+                new ItemStack(ModItems.COPPER_DUST.get()),
+                new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.IRON_DUST.get()),
+                new ItemStack(Items.EMERALD),
+                new ItemStack(Items.WHEAT),
+                new ItemStack(Items.BURN_POTTERY_SHERD)
+        );
+
+        List<ItemStack> suspSandOutputs = List.of(
+                new ItemStack(ModItems.SILICON_SHARD.get()),
+                new ItemStack(Items.FLINT),
+                new ItemStack(ModItems.COPPER_DUST.get()),
+                new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.IRON_DUST.get()),
+                new ItemStack(Items.DIAMOND),
+                new ItemStack(Items.EMERALD),
+                new ItemStack(Items.SNIFFER_EGG),
+                new ItemStack(Items.ARCHER_POTTERY_SHERD)
+        );
+
+        List<ItemStack> richSoilOutputs = List.of(
+                new ItemStack(ModItems.COPPER_DUST.get()),
+                new ItemStack(ModItems.TIN_DUST.get()),
+                new ItemStack(ModItems.IRON_DUST.get()),
+                new ItemStack(Items.FLINT)
+        );
+
+        registration.addRecipes(SieveRecipeCategory.TYPE, List.of(
+                new SieveJeiRecipe(new ItemStack(Blocks.GRAVEL), regularSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.SAND), regularSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.RED_SAND), regularSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.DIRT), regularSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.GRASS_BLOCK), regularSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.SUSPICIOUS_GRAVEL), suspGravelOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(Blocks.SUSPICIOUS_SAND), suspSandOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_GRASS_BLOCK.get()), richSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_DIRT.get()), richSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_GRAVEL.get()), richSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_SAND.get()), richSoilOutputs, sieveTime),
+                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_RED_SAND.get()), richSoilOutputs, sieveTime)
+        ));
+    }
+
+    @Override
+    public void registerJeiCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(this), SieveRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(SieveScreen.class, 76, 34, 24, 17, SieveRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        registration.addRecipeTransferHandler(SieveMenu.class, ModMenuTypes.SIEVE.get(), SieveRecipeCategory.TYPE, 0, 9, 18, 36);
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.sieve"));
     }
 }

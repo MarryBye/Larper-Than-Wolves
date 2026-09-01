@@ -35,9 +35,23 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import io.marrybye.github.larperthanwolves.compat.DryingRackRecipe;
+import io.marrybye.github.larperthanwolves.compat.DryingRackRecipeCategory;
+import io.marrybye.github.larperthanwolves.compat.IJeiMachineStation;
+import io.marrybye.github.larperthanwolves.config.ModConfig;
+import io.marrybye.github.larperthanwolves.item.ModItems;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
+
 import org.jetbrains.annotations.Nullable;
 
-public class DryingRackBlock extends BaseEntityBlock {
+import java.util.List;
+
+public class DryingRackBlock extends BaseEntityBlock implements IJeiMachineStation {
     public static final MapCodec<DryingRackBlock> CODEC = simpleCodec(DryingRackBlock::new);
 
     public enum Content implements StringRepresentable {
@@ -205,4 +219,36 @@ public class DryingRackBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.DRYING_RACK.get(), DryingRackBlockEntity::tick);
     }
+
+    @Override
+    public void registerJeiCategories(IRecipeCategoryRegistration registration, IGuiHelper guiHelper) {
+        registration.addRecipeCategories(new DryingRackRecipeCategory(guiHelper));
+    }
+
+    @Override
+    public void registerJeiRecipes(IRecipeRegistration registration) {
+        int dryingRackTime = ModConfig.SERVER != null ? ModConfig.SERVER.dryingRackTimeTicks.get() : 1200;
+        List<ItemStack> grassInputs = List.of(
+                new ItemStack(Items.SHORT_GRASS),
+                new ItemStack(Items.TALL_GRASS),
+                new ItemStack(Items.FERN),
+                new ItemStack(Items.LARGE_FERN),
+                new ItemStack(Items.SEAGRASS)
+        );
+        registration.addRecipes(DryingRackRecipeCategory.TYPE, List.of(
+                new DryingRackRecipe(grassInputs, new ItemStack(ModItems.DRY_GRASS.get()), dryingRackTime),
+                new DryingRackRecipe(List.of(new ItemStack(Items.LEATHER)), new ItemStack(ModItems.TANNED_LEATHER.get()), dryingRackTime)
+        ));
+    }
+
+    @Override
+    public void registerJeiCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(this), DryingRackRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiGuiHandlers(IGuiHandlerRegistration registration) {}
+
+    @Override
+    public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {}
 }

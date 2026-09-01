@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_nether",
+  "features": [
+    "larperthanwolves:ore_mithril"
+  ],
+  "step": "underground_ores"
+}

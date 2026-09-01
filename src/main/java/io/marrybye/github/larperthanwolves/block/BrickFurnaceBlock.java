@@ -31,9 +31,27 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.Level;
 import net.minecraft.network.chat.Component;
 import com.mojang.serialization.MapCodec;
+import io.marrybye.github.larperthanwolves.compat.BrickFurnaceJeiRecipe;
+import io.marrybye.github.larperthanwolves.compat.BrickFurnaceRecipeCategory;
+import io.marrybye.github.larperthanwolves.compat.IJeiMachineStation;
+import io.marrybye.github.larperthanwolves.compat.MachineFuelRecipeCategory;
+import io.marrybye.github.larperthanwolves.client.BrickFurnaceScreen;
+import io.marrybye.github.larperthanwolves.menu.BrickFurnaceMenu;
+import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
+import io.marrybye.github.larperthanwolves.recipe.SmeltingRegistry;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
-public class BrickFurnaceBlock extends BaseEntityBlock {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BrickFurnaceBlock extends BaseEntityBlock implements IJeiMachineStation {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     // 0: Empty, 1: Fueled, 2: Lit (Strong), 3: Lit Low (Dying embers)
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
@@ -145,6 +163,59 @@ public class BrickFurnaceBlock extends BaseEntityBlock {
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }
+    }
+
+    @Override
+    public void registerJeiCategories(IRecipeCategoryRegistration registration, IGuiHelper guiHelper) {
+        registration.addRecipeCategories(new BrickFurnaceRecipeCategory(guiHelper));
+    }
+
+    @Override
+    public void registerJeiRecipes(IRecipeRegistration registration) {
+        List<BrickFurnaceJeiRecipe> brickFurnaceRecipes = new ArrayList<>(List.of(
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_IRON), new ItemStack(Items.IRON_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_COPPER), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_GOLD), new ItemStack(Items.GOLD_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(ModItems.RAW_TIN.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.IRON_ORE), new ItemStack(Items.IRON_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_IRON_ORE), new ItemStack(Items.IRON_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.COPPER_ORE), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_COPPER_ORE), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.NETHER_GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.TIN_ORE.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.DEEPSLATE_TIN_ORE.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.COBBLESTONE), new ItemStack(Items.STONE), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.SAND), new ItemStack(Items.GLASS), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.UNFIRED_BRICK.asItem()), new ItemStack(Items.BRICK), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.CLAY), new ItemStack(Items.TERRACOTTA), 200),
+                new BrickFurnaceJeiRecipe(new ItemStack(Items.WET_SPONGE), new ItemStack(Items.SPONGE), 200)
+        ));
+        ItemStack zincNugget = SmeltingRegistry.getZincNugget();
+        if (!zincNugget.isEmpty()) {
+            net.minecraft.world.item.Item rawZincItem = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("create", "raw_zinc"));
+            if (rawZincItem != Items.AIR) {
+                brickFurnaceRecipes.add(new BrickFurnaceJeiRecipe(new ItemStack(rawZincItem), zincNugget, 200));
+            }
+        }
+        registration.addRecipes(BrickFurnaceRecipeCategory.TYPE, brickFurnaceRecipes);
+    }
+
+    @Override
+    public void registerJeiCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(this), BrickFurnaceRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(this), MachineFuelRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(BrickFurnaceScreen.class, 79, 34, 24, 17, BrickFurnaceRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), BrickFurnaceRecipeCategory.TYPE, 0, 3, 6, 36);
     }
 }
 

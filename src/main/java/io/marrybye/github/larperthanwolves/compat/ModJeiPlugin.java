@@ -3,27 +3,10 @@ package io.marrybye.github.larperthanwolves.compat;
 import io.marrybye.github.larperthanwolves.LarperThanWolves;
 import io.marrybye.github.larperthanwolves.block.ModBlocks;
 import io.marrybye.github.larperthanwolves.block.entity.FuelRegistry;
-import io.marrybye.github.larperthanwolves.client.AlloyMixerScreen;
-import io.marrybye.github.larperthanwolves.client.BrickFurnaceScreen;
-import io.marrybye.github.larperthanwolves.client.OvenScreen;
-import io.marrybye.github.larperthanwolves.client.SieveScreen;
-import io.marrybye.github.larperthanwolves.config.ModConfig;
 import io.marrybye.github.larperthanwolves.event.DisabledItemsHandler;
 import io.marrybye.github.larperthanwolves.item.ModItems;
-import io.marrybye.github.larperthanwolves.menu.AlloyMixerMenu;
-import io.marrybye.github.larperthanwolves.menu.BrickFurnaceMenu;
-import io.marrybye.github.larperthanwolves.menu.OvenMenu;
-import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
-import io.marrybye.github.larperthanwolves.menu.SieveMenu;
-import io.marrybye.github.larperthanwolves.recipe.AlloyRegistry;
-import io.marrybye.github.larperthanwolves.recipe.SmeltingRegistry;
-import io.marrybye.github.larperthanwolves.client.MillScreen;
-import io.marrybye.github.larperthanwolves.menu.MillMenu;
-import io.marrybye.github.larperthanwolves.recipe.MillRecipe;
-import io.marrybye.github.larperthanwolves.recipe.MillRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -50,143 +33,51 @@ public class ModJeiPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         var guiHelper = registration.getJeiHelpers().getGuiHelper();
-        registration.addRecipeCategories(new BrickFurnaceRecipeCategory(guiHelper));
-        registration.addRecipeCategories(new AlloyMixerRecipeCategory(guiHelper));
-        registration.addRecipeCategories(new SieveRecipeCategory(guiHelper));
-        registration.addRecipeCategories(new MillRecipeCategory(guiHelper));
-        registration.addRecipeCategories(new ChiselRecipeCategory(guiHelper));
-        registration.addRecipeCategories(new SunDryingRecipeCategory(guiHelper));
-        registration.addRecipeCategories(new DryingRackRecipeCategory(guiHelper));
+
+        // 1. Automatically register categories for all workstations and machine blocks
+        for (var blockEntry : ModBlocks.BLOCKS.getEntries()) {
+            if (blockEntry.get() instanceof IJeiMachineStation station) {
+                station.registerJeiCategories(registration, guiHelper);
+            }
+        }
+
+        // 2. Global category systems
         registration.addRecipeCategories(new MachineFuelRecipeCategory(guiHelper));
         registration.addRecipeCategories(new GravelDiggingRecipeCategory(guiHelper));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        int cookTime = ModConfig.SERVER != null ? ModConfig.SERVER.alloyMixerCookTimeTicks.get() : 600;
-        registration.addRecipes(AlloyMixerRecipeCategory.TYPE, AlloyRegistry.getJeiRecipes(cookTime));
-
-        // 1. Sieve recipes
-        int sieveTime = ModConfig.SERVER != null ? ModConfig.SERVER.sieveProcessTimeTicks.get() : 100;
-        List<ItemStack> regularSoilOutputs = List.of(
-                new ItemStack(ModItems.SILICON_SHARD.get()),
-                new ItemStack(Items.FLINT),
-                new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get())
-        );
-
-        List<ItemStack> suspGravelOutputs = List.of(
-                new ItemStack(ModItems.SILICON_SHARD.get()),
-                new ItemStack(Items.FLINT),
-                new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(Items.EMERALD),
-                new ItemStack(Items.WHEAT),
-                new ItemStack(Items.BURN_POTTERY_SHERD)
-        );
-
-        List<ItemStack> suspSandOutputs = List.of(
-                new ItemStack(ModItems.SILICON_SHARD.get()),
-                new ItemStack(Items.FLINT),
-                new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(Items.DIAMOND),
-                new ItemStack(Items.EMERALD),
-                new ItemStack(Items.SNIFFER_EGG),
-                new ItemStack(Items.ARCHER_POTTERY_SHERD)
-        );
-
-        List<ItemStack> richSoilOutputs = List.of(
-                new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
-                new ItemStack(Items.FLINT)
-        );
-
-        registration.addRecipes(SieveRecipeCategory.TYPE, List.of(
-                new SieveJeiRecipe(new ItemStack(Blocks.GRAVEL), regularSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.SAND), regularSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.RED_SAND), regularSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.DIRT), regularSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.GRASS_BLOCK), regularSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.SUSPICIOUS_GRAVEL), suspGravelOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(Blocks.SUSPICIOUS_SAND), suspSandOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_GRASS_BLOCK.get()), richSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_DIRT.get()), richSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_GRAVEL.get()), richSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_SAND.get()), richSoilOutputs, sieveTime),
-                new SieveJeiRecipe(new ItemStack(ModBlocks.RICH_RED_SAND.get()), richSoilOutputs, sieveTime)
-        ));
-
-        // 1b. Hand Mill Recipes
-        List<MillJeiRecipe> jeiMillRecipes = new ArrayList<>();
-        for (MillRecipe recipe : MillRegistry.getRecipes()) {
-            ItemStack[] matching = recipe.getIngredient().getItems();
-            if (matching.length > 0) {
-                ItemStack display = matching[0].copy();
-                display.setCount(recipe.getInputCount());
-                jeiMillRecipes.add(new MillJeiRecipe(display, recipe.getResults(), 20));
+        // 1. Dispatch recipe and documentation registration to all mod blocks
+        for (var blockEntry : ModBlocks.BLOCKS.getEntries()) {
+            var block = blockEntry.get();
+            if (block instanceof IJeiMachineStation station) {
+                station.registerJeiRecipes(registration);
+            }
+            if (block instanceof IJeiDocumentationProvider doc) {
+                doc.registerJeiInfo(registration);
             }
         }
-        registration.addRecipes(MillRecipeCategory.TYPE, jeiMillRecipes);
 
-        // 2. Chisel In-World Carving (Overworld tree stumps only)
-        List<ItemStack> carvableStumps = List.of(
-                new ItemStack(ModBlocks.OAK_STUMP.get()),
-                new ItemStack(ModBlocks.BIRCH_STUMP.get()),
-                new ItemStack(ModBlocks.SPRUCE_STUMP.get()),
-                new ItemStack(ModBlocks.JUNGLE_STUMP.get()),
-                new ItemStack(ModBlocks.ACACIA_STUMP.get()),
-                new ItemStack(ModBlocks.DARK_OAK_STUMP.get()),
-                new ItemStack(ModBlocks.MANGROVE_STUMP.get()),
-                new ItemStack(ModBlocks.CHERRY_STUMP.get())
-        );
+        // 2. Dispatch recipe and documentation registration to all mod items
+        for (var itemEntry : ModItems.ITEMS.getEntries()) {
+            var item = itemEntry.get();
+            if (item instanceof IJeiMachineStation station) {
+                station.registerJeiRecipes(registration);
+            }
+            if (item instanceof IJeiDocumentationProvider doc) {
+                doc.registerJeiInfo(registration);
+            }
+        }
 
-        registration.addRecipes(ChiselRecipeCategory.TYPE, List.of(
-                new ChiselRecipe(
-                        carvableStumps,
-                        new ItemStack(ModItems.CHISEL.get()),
-                        new ItemStack(ModBlocks.WORK_STUMP.get()),
-                        new ItemStack(Items.CRAFTING_TABLE),
-                        4
-                )
-        ));
+        // 3. Register global categories (machine fuels and digging drops)
+        registerGlobalFuelAndDiggingRecipes(registration);
 
-        // 3. Sun Drying
-        registration.addRecipes(SunDryingRecipeCategory.TYPE, List.of(
-                new SunDryingRecipe(
-                        new ItemStack(ModBlocks.UNFIRED_BRICK.asItem()),
-                        new ItemStack(Items.BRICK),
-                        2000
-                )
-        ));
+        // 4. Register overhauled vanilla item documentation
+        registerOverhauledVanillaDocumentation(registration);
+    }
 
-        // 3b. Drying Rack Recipes
-        int dryingRackTime = ModConfig.SERVER != null ? ModConfig.SERVER.dryingRackTimeTicks.get() : 1200;
-        List<ItemStack> grassInputs = List.of(
-                new ItemStack(Items.SHORT_GRASS),
-                new ItemStack(Items.TALL_GRASS),
-                new ItemStack(Items.FERN),
-                new ItemStack(Items.LARGE_FERN),
-                new ItemStack(Items.SEAGRASS)
-        );
-        registration.addRecipes(DryingRackRecipeCategory.TYPE, List.of(
-                new DryingRackRecipe(
-                        grassInputs,
-                        new ItemStack(ModItems.DRY_GRASS.get()),
-                        dryingRackTime
-                ),
-                new DryingRackRecipe(
-                        List.of(new ItemStack(Items.LEATHER)),
-                        new ItemStack(ModItems.TANNED_LEATHER.get()),
-                        dryingRackTime
-                )
-        ));
-
-        // 4. Machine Fuel & Ignition Recipes (Ordered from Worst to Best)
+    private void registerGlobalFuelAndDiggingRecipes(IRecipeRegistration registration) {
         List<ItemStack> ignitionTools = List.of(
                 new ItemStack(ModItems.LIGHTER.get()),
                 new ItemStack(Items.FLINT_AND_STEEL)
@@ -194,6 +85,7 @@ public class ModJeiPlugin implements IModPlugin {
         List<ItemStack> machines = List.of(
                 new ItemStack(ModBlocks.BRICK_FURNACE.get()),
                 new ItemStack(ModBlocks.ADVANCED_SMELTER.get()),
+                new ItemStack(ModBlocks.MITHRIL_FURNACE.get()),
                 new ItemStack(ModBlocks.OVEN.get()),
                 new ItemStack(ModBlocks.ALLOY_MIXER.get())
         );
@@ -307,7 +199,6 @@ public class ModJeiPlugin implements IModPlugin {
             fuelRecipes.add(new MachineFuelRecipe(List.of(new ItemStack(Items.COAL_BLOCK)), blockInfo.burnDuration, blockInfo.cookSpeed, ignitionTools, machines));
         }
 
-
         registration.addRecipes(MachineFuelRecipeCategory.TYPE, fuelRecipes);
 
         // 5. Gravel & Soil Digging
@@ -384,206 +275,63 @@ public class ModJeiPlugin implements IModPlugin {
                         )
                 )
         ));
+    }
 
-        // 5b. Brick Furnace Smelting Recipes (Yields Nuggets & Refractory Items)
-        List<BrickFurnaceJeiRecipe> brickFurnaceRecipes = new ArrayList<>(List.of(
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_IRON), new ItemStack(Items.IRON_NUGGET), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_COPPER), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.RAW_GOLD), new ItemStack(Items.GOLD_NUGGET), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(ModItems.RAW_TIN.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.IRON_ORE), new ItemStack(Items.IRON_NUGGET), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_IRON_ORE), new ItemStack(Items.IRON_NUGGET), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.COPPER_ORE), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_COPPER_ORE), new ItemStack(ModItems.COPPER_NUGGET.get()), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.DEEPSLATE_GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.NETHER_GOLD_ORE), new ItemStack(Items.GOLD_NUGGET), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.TIN_ORE.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.DEEPSLATE_TIN_ORE.get()), new ItemStack(ModItems.TIN_NUGGET.get()), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.COBBLESTONE), new ItemStack(Items.STONE), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.SAND), new ItemStack(Items.GLASS), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(ModBlocks.UNFIRED_BRICK.asItem()), new ItemStack(Items.BRICK), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.CLAY), new ItemStack(Items.TERRACOTTA), 200),
-                new BrickFurnaceJeiRecipe(new ItemStack(Items.WET_SPONGE), new ItemStack(Items.SPONGE), 200)
-        ));
-        ItemStack zincNugget = SmeltingRegistry.getZincNugget();
-        if (!zincNugget.isEmpty()) {
-            net.minecraft.world.item.Item rawZincItem = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("create", "raw_zinc"));
-            if (rawZincItem != Items.AIR) {
-                brickFurnaceRecipes.add(new BrickFurnaceJeiRecipe(new ItemStack(rawZincItem), zincNugget, 200));
-            }
-        }
-        registration.addRecipes(BrickFurnaceRecipeCategory.TYPE, brickFurnaceRecipes);
-
-        // 6. In-Depth Ingredient Information (JEI Info Pages)
-        registration.addIngredientInfo(new ItemStack(ModItems.TWIG.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.twig"));
-        registration.addIngredientInfo(new ItemStack(ModItems.SILICON_SHARD.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.silicon_shard"));
+    private void registerOverhauledVanillaDocumentation(IRecipeRegistration registration) {
         registration.addIngredientInfo(new ItemStack(Items.FLINT), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.flint"));
         registration.addIngredientInfo(new ItemStack(Blocks.GRAVEL), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.gravel"));
         registration.addIngredientInfo(new ItemStack(Blocks.DIRT), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.dirt"));
-
-        List<ItemStack> richSoils = List.of(
-                new ItemStack(ModBlocks.RICH_GRASS_BLOCK.get()),
-                new ItemStack(ModBlocks.RICH_DIRT.get()),
-                new ItemStack(ModBlocks.RICH_GRAVEL.get()),
-                new ItemStack(ModBlocks.RICH_SAND.get()),
-                new ItemStack(ModBlocks.RICH_RED_SAND.get())
-        );
-        registration.addIngredientInfo(richSoils, VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.rich_soil"));
-
-        registration.addIngredientInfo(new ItemStack(ModItems.UNBOUND_MESH.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.unbound_mesh"));
-        registration.addIngredientInfo(new ItemStack(ModItems.POINTED_STICK.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.pointed_stick"));
-        registration.addIngredientInfo(new ItemStack(ModItems.POINTED_PEBBLE.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.pointed_pebble"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.CRACKED_STONE.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.cracked_stone"));
-
-        registration.addIngredientInfo(List.of(new ItemStack(ModItems.BRONZE_KNITTING_NEEDLES.get()), new ItemStack(ModItems.IRON_KNITTING_NEEDLES.get())), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.knitting_needles"));
-        registration.addIngredientInfo(new ItemStack(ModItems.MESH.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.mesh"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.SIEVE.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.sieve"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.BASKET.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.basket"));
-        registration.addIngredientInfo(List.of(new ItemStack(Items.CLAY), new ItemStack(Items.CLAY_BALL)), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.clay"));
-
-        registration.addIngredientInfo(new ItemStack(Items.CRAFTING_TABLE), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.crafting_table"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.WORK_STUMP.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.work_stump"));
-        registration.addIngredientInfo(new ItemStack(ModItems.CHISEL.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.chisel"));
-
-        registration.addIngredientInfo(new ItemStack(ModBlocks.UNFIRED_BRICK.asItem()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.unfired_brick"));
-        registration.addIngredientInfo(new ItemStack(ModItems.UNFIRED_BRICK.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.unfired_brick"));
-        registration.addIngredientInfo(new ItemStack(Items.BRICK), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.brick"));
-
-        registration.addIngredientInfo(new ItemStack(ModBlocks.BRICK_FURNACE.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.brick_furnace"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.OVEN.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.oven"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.ALLOY_MIXER.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.alloy_mixer"));
-        registration.addIngredientInfo(new ItemStack(ModItems.LIGHTER.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.lighter"));
-
-        registration.addIngredientInfo(new ItemStack(ModBlocks.DRYING_RACK.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.drying_rack"));
-        registration.addIngredientInfo(new ItemStack(ModItems.DRY_GRASS.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.dry_grass"));
-        registration.addIngredientInfo(new ItemStack(ModItems.TANNED_LEATHER.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.tanned_leather"));
-        registration.addIngredientInfo(new ItemStack(ModItems.SILICON_AXE.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.axe_planks"));
-
-        // Hoe 2-stage tilling & seed harvesting
-        List<ItemStack> allHoes = List.of(
-                new ItemStack(ModItems.SILICON_HOE.get()),
-                new ItemStack(ModItems.COPPER_HOE.get()),
-                new ItemStack(ModItems.BRONZE_HOE.get()),
-                new ItemStack(ModItems.REINFORCED_IRON_HOE.get()),
-                new ItemStack(Items.IRON_HOE)
-        );
-        registration.addIngredientInfo(allHoes, VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.hoe_tilling"));
-
-        // Villager Trading
-        List<ItemStack> tradeSamples = List.of(
-                new ItemStack(ModItems.BRONZE_SWORD.get()),
-                new ItemStack(ModItems.BRONZE_PICKAXE.get()),
-                new ItemStack(ModItems.BRONZE_CHESTPLATE.get()),
-                new ItemStack(Items.EMERALD)
-        );
-        registration.addIngredientInfo(tradeSamples, VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.villager_trades"));
-
-        // Iron Golem drops
-        registration.addIngredientInfo(new ItemStack(Items.POPPY), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.iron_golem"));
-
-        // Mill & Crank & Bone Meal
-        registration.addIngredientInfo(new ItemStack(ModBlocks.MILL.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.mill"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.MILL_CRANK.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.mill_crank"));
-        registration.addIngredientInfo(new ItemStack(Items.BONE_MEAL), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.bone_meal"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.FERTILIZED_FARMLAND.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.fertilized_farmland"));
-        registration.addIngredientInfo(new ItemStack(ModItems.DUNG.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.dung"));
-
-        // Smelters & Hoppers
-        registration.addIngredientInfo(new ItemStack(ModBlocks.ADVANCED_SMELTER.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.advanced_smelter"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.WOODEN_HOPPER.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.wooden_hopper"));
-
-        // New Mechanisms
-        registration.addIngredientInfo(new ItemStack(ModBlocks.KINETIC_PISTON.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.kinetic_piston"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.FILTER_GRATE.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.filter_grate"));
-        registration.addIngredientInfo(new ItemStack(ModBlocks.ENTITY_OBSERVER.get()), VanillaTypes.ITEM_STACK,
-                Component.translatable("jei.larperthanwolves.info.entity_observer"));
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), BrickFurnaceRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.BRICK_FURNACE.get(), MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.ADVANCED_SMELTER.get(), RecipeTypes.SMELTING);
-        registration.addRecipeCatalyst(ModBlocks.ADVANCED_SMELTER.get(), MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.OVEN.get(), RecipeTypes.SMOKING);
-        registration.addRecipeCatalyst(ModBlocks.OVEN.get(), RecipeTypes.CAMPFIRE_COOKING);
-        registration.addRecipeCatalyst(ModBlocks.OVEN.get(), MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.ALLOY_MIXER.get(), MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.SIEVE.get(), SieveRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.MILL.get(), MillRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.MILL_CRANK.get(), MillRecipeCategory.TYPE);
+        // Automatically register catalysts for all workstations
+        for (var blockEntry : ModBlocks.BLOCKS.getEntries()) {
+            if (blockEntry.get() instanceof IJeiMachineStation station) {
+                station.registerJeiCatalysts(registration);
+            }
+        }
+        for (var itemEntry : ModItems.ITEMS.getEntries()) {
+            if (itemEntry.get() instanceof IJeiMachineStation station) {
+                station.registerJeiCatalysts(registration);
+            }
+        }
 
-        registration.addRecipeCatalyst(ModItems.CHISEL.get(), ChiselRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.WORK_STUMP.get(), ChiselRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.UNFIRED_BRICK.get(), SunDryingRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModBlocks.DRYING_RACK.get(), DryingRackRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModItems.LIGHTER.get(), MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(Blocks.GRAVEL, GravelDiggingRecipeCategory.TYPE);
-        registration.addRecipeCatalyst(ModItems.SILICON_SHARD.get(), GravelDiggingRecipeCategory.TYPE);
+        // Global catalysts
+        registration.addRecipeCatalyst(new ItemStack(ModItems.LIGHTER.get()), MachineFuelRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Blocks.GRAVEL), GravelDiggingRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.SILICON_SHARD.get()), GravelDiggingRecipeCategory.TYPE);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(BrickFurnaceScreen.class, 79, 34, 24, 17, BrickFurnaceRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeClickArea(io.marrybye.github.larperthanwolves.client.AdvancedSmelterScreen.class, 79, 34, 24, 17, RecipeTypes.SMELTING, MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeClickArea(OvenScreen.class, 79, 34, 24, 17, RecipeTypes.SMOKING, RecipeTypes.CAMPFIRE_COOKING, MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeClickArea(AlloyMixerScreen.class, 79, 24, 24, 17, AlloyMixerRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
-        registration.addRecipeClickArea(SieveScreen.class, 76, 34, 24, 17, SieveRecipeCategory.TYPE);
-        registration.addRecipeClickArea(MillScreen.class, 74, 34, 24, 17, MillRecipeCategory.TYPE);
+        for (var blockEntry : ModBlocks.BLOCKS.getEntries()) {
+            if (blockEntry.get() instanceof IJeiMachineStation station) {
+                station.registerJeiGuiHandlers(registration);
+            }
+        }
+        for (var itemEntry : ModItems.ITEMS.getEntries()) {
+            if (itemEntry.get() instanceof IJeiMachineStation station) {
+                station.registerJeiGuiHandlers(registration);
+            }
+        }
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), BrickFurnaceRecipeCategory.TYPE, 0, 3, 6, 36);
-        registration.addRecipeTransferHandler(io.marrybye.github.larperthanwolves.menu.AdvancedSmelterMenu.class, ModMenuTypes.ADVANCED_SMELTER.get(), RecipeTypes.SMELTING, 0, 3, 6, 36);
-        registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.SMOKING, 0, 3, 6, 36);
-        registration.addRecipeTransferHandler(OvenMenu.class, ModMenuTypes.OVEN.get(), RecipeTypes.CAMPFIRE_COOKING, 0, 3, 6, 36);
-        registration.addRecipeTransferHandler(AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE, 0, 3, 4, 36);
-        registration.addRecipeTransferHandler(SieveMenu.class, ModMenuTypes.SIEVE.get(), SieveRecipeCategory.TYPE, 0, 9, 18, 36);
-        registration.addRecipeTransferHandler(MillMenu.class, ModMenuTypes.MILL.get(), MillRecipeCategory.TYPE, 0, 1, 4, 36);
+        for (var blockEntry : ModBlocks.BLOCKS.getEntries()) {
+            if (blockEntry.get() instanceof IJeiMachineStation station) {
+                station.registerJeiRecipeTransferHandlers(registration);
+            }
+        }
+        for (var itemEntry : ModItems.ITEMS.getEntries()) {
+            if (itemEntry.get() instanceof IJeiMachineStation station) {
+                station.registerJeiRecipeTransferHandlers(registration);
+            }
+        }
     }
 
     @Override

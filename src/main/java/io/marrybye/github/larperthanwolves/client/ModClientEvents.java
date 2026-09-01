@@ -22,6 +22,7 @@ public class ModClientEvents {
         event.register(ModMenuTypes.MILL.get(), MillScreen::new);
         event.register(ModMenuTypes.BASKET.get(), BasketScreen::new);
         event.register(ModMenuTypes.FILTER_GRATE.get(), FilterGrateScreen::new);
+        event.register(ModMenuTypes.MITHRIL_FURNACE.get(), MithrilFurnaceScreen::new);
     }
 
     @SubscribeEvent

@@ -33,7 +33,25 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class AdvancedSmelterBlock extends BaseEntityBlock {
+import io.marrybye.github.larperthanwolves.compat.AdvancedSmelterJeiRecipe;
+import io.marrybye.github.larperthanwolves.compat.AdvancedSmelterRecipeCategory;
+import io.marrybye.github.larperthanwolves.compat.IJeiMachineStation;
+import io.marrybye.github.larperthanwolves.compat.MachineFuelRecipeCategory;
+import io.marrybye.github.larperthanwolves.client.AdvancedSmelterScreen;
+import io.marrybye.github.larperthanwolves.menu.AdvancedSmelterMenu;
+import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AdvancedSmelterBlock extends BaseEntityBlock implements IJeiMachineStation {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     // 0: Empty, 1: Fueled, 2: Lit (Strong), 3: Lit Low (Dying embers)
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
@@ -145,5 +163,59 @@ public class AdvancedSmelterBlock extends BaseEntityBlock {
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }
+    }
+
+    @Override
+    public void registerJeiCategories(IRecipeCategoryRegistration registration, IGuiHelper guiHelper) {
+        registration.addRecipeCategories(new AdvancedSmelterRecipeCategory(guiHelper));
+    }
+
+    @Override
+    public void registerJeiRecipes(IRecipeRegistration registration) {
+        List<AdvancedSmelterJeiRecipe> advancedSmelterRecipes = new ArrayList<>(List.of(
+                new AdvancedSmelterJeiRecipe(new ItemStack(ModItems.RAW_MITHRIL.get()), new ItemStack(ModItems.MITHRIL_NUGGET.get()), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.RAW_IRON), new ItemStack(Items.IRON_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.RAW_COPPER), new ItemStack(Items.COPPER_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.RAW_GOLD), new ItemStack(Items.GOLD_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(ModItems.RAW_TIN.get()), new ItemStack(ModItems.TIN_INGOT.get()), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.IRON_ORE), new ItemStack(Items.IRON_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.DEEPSLATE_IRON_ORE), new ItemStack(Items.IRON_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.COPPER_ORE), new ItemStack(Items.COPPER_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.DEEPSLATE_COPPER_ORE), new ItemStack(Items.COPPER_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.GOLD_ORE), new ItemStack(Items.GOLD_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.DEEPSLATE_GOLD_ORE), new ItemStack(Items.GOLD_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.NETHER_GOLD_ORE), new ItemStack(Items.GOLD_INGOT), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(ModBlocks.TIN_ORE.get()), new ItemStack(ModItems.TIN_INGOT.get()), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(ModBlocks.DEEPSLATE_TIN_ORE.get()), new ItemStack(ModItems.TIN_INGOT.get()), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.COBBLESTONE), new ItemStack(Items.STONE), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.SAND), new ItemStack(Items.GLASS), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(ModBlocks.UNFIRED_BRICK.asItem()), new ItemStack(Items.BRICK), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.CLAY), new ItemStack(Items.TERRACOTTA), 200),
+                new AdvancedSmelterJeiRecipe(new ItemStack(Items.WET_SPONGE), new ItemStack(Items.SPONGE), 200)
+        ));
+        net.minecraft.world.item.Item zincIngotItem = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("create", "zinc_ingot"));
+        if (zincIngotItem != Items.AIR) {
+            net.minecraft.world.item.Item rawZincItem = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("create", "raw_zinc"));
+            if (rawZincItem != Items.AIR) {
+                advancedSmelterRecipes.add(new AdvancedSmelterJeiRecipe(new ItemStack(rawZincItem), new ItemStack(zincIngotItem), 200));
+            }
+        }
+        registration.addRecipes(AdvancedSmelterRecipeCategory.TYPE, advancedSmelterRecipes);
+    }
+
+    @Override
+    public void registerJeiCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(this), AdvancedSmelterRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(this), MachineFuelRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(AdvancedSmelterScreen.class, 79, 34, 24, 17, AdvancedSmelterRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        registration.addRecipeTransferHandler(AdvancedSmelterMenu.class, ModMenuTypes.ADVANCED_SMELTER.get(), AdvancedSmelterRecipeCategory.TYPE, 0, 3, 6, 36);
     }
 }

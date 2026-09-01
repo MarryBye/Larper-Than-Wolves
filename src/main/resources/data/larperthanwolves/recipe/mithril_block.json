@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "larperthanwolves:mithril_ingot"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:mithril_block"
+  }
+}

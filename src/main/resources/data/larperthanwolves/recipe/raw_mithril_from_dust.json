@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "larperthanwolves:mithril_dust"
+    },
+    {
+      "item": "larperthanwolves:mithril_dust"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "larperthanwolves:raw_mithril"
+  }
+}

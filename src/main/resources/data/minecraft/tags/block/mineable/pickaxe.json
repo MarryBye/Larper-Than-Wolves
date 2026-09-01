@@ -13,6 +13,9 @@
     "larperthanwolves:raw_tin_block",
     "larperthanwolves:tin_block",
     "larperthanwolves:bronze_block",
-    "larperthanwolves:cracked_stone"
+    "larperthanwolves:cracked_stone",
+    "larperthanwolves:mithril_furnace",
+    "larperthanwolves:mithril_ore",
+    "larperthanwolves:mithril_block"
   ]
 }

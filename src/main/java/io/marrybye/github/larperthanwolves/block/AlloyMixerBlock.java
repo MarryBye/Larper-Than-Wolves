@@ -32,9 +32,23 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import io.marrybye.github.larperthanwolves.compat.AlloyMixerRecipeCategory;
+import io.marrybye.github.larperthanwolves.compat.IJeiMachineStation;
+import io.marrybye.github.larperthanwolves.compat.MachineFuelRecipeCategory;
+import io.marrybye.github.larperthanwolves.client.AlloyMixerScreen;
+import io.marrybye.github.larperthanwolves.config.ModConfig;
+import io.marrybye.github.larperthanwolves.menu.AlloyMixerMenu;
+import io.marrybye.github.larperthanwolves.menu.ModMenuTypes;
+import io.marrybye.github.larperthanwolves.recipe.AlloyRegistry;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import org.jetbrains.annotations.Nullable;
 
-public class AlloyMixerBlock extends BaseEntityBlock {
+public class AlloyMixerBlock extends BaseEntityBlock implements IJeiMachineStation {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     // 0: Empty, 1: Fueled, 2: Lit Strong, 3: Lit Low (Embers)
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
@@ -147,5 +161,32 @@ public class AlloyMixerBlock extends BaseEntityBlock {
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }
+    }
+
+    @Override
+    public void registerJeiCategories(IRecipeCategoryRegistration registration, IGuiHelper guiHelper) {
+        registration.addRecipeCategories(new AlloyMixerRecipeCategory(guiHelper));
+    }
+
+    @Override
+    public void registerJeiRecipes(IRecipeRegistration registration) {
+        int cookTime = ModConfig.SERVER != null ? ModConfig.SERVER.alloyMixerCookTimeTicks.get() : 600;
+        registration.addRecipes(AlloyMixerRecipeCategory.TYPE, AlloyRegistry.getJeiRecipes(cookTime));
+    }
+
+    @Override
+    public void registerJeiCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(this), AlloyMixerRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(this), MachineFuelRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(AlloyMixerScreen.class, 79, 24, 24, 17, AlloyMixerRecipeCategory.TYPE, MachineFuelRecipeCategory.TYPE);
+    }
+
+    @Override
+    public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        registration.addRecipeTransferHandler(AlloyMixerMenu.class, ModMenuTypes.ALLOY_MIXER.get(), AlloyMixerRecipeCategory.TYPE, 0, 3, 4, 36);
     }
 }

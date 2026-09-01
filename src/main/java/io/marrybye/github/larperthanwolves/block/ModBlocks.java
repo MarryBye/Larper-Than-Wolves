@@ -163,9 +163,32 @@ public class ModBlocks {
                     .strength(5.0F, 6.0F)
                     .sound(SoundType.METAL)));
 
+    public static final DeferredBlock<MithrilFurnaceBlock> MITHRIL_FURNACE = BLOCKS.register("mithril_furnace",
+            () -> new MithrilFurnaceBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(4.0F, 15.0F)
+                    .sound(SoundType.STONE)
+                    .lightLevel(state -> {
+                        int stage = state.hasProperty(MithrilFurnaceBlock.STAGE) ? state.getValue(MithrilFurnaceBlock.STAGE) : 0;
+                        return stage == 2 ? 14 : (stage == 3 ? 8 : 0);
+                    })));
+
+    public static final DeferredBlock<Block> MITHRIL_ORE = BLOCKS.register("mithril_ore",
+            () -> new ModBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(15.0F, 1200.0F)
+                    .sound(SoundType.NETHERRACK)
+                    .lightLevel(state -> 3), "jei.larperthanwolves.info.mithril_ore"));
+
+    public static final DeferredBlock<Block> MITHRIL_BLOCK = BLOCKS.register("mithril_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(6.0F, 8.0F)
+                    .sound(SoundType.METAL)));
+
     public static final DeferredBlock<Block> CRACKED_STONE = BLOCKS.register("cracked_stone",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
-                    .requiresCorrectToolForDrops()));
+            () -> new ModBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .requiresCorrectToolForDrops(), "jei.larperthanwolves.info.cracked_stone"));
 
 
     // --- Rich Soils (Hardness 1.0f: 2x slower break than regular, mined with copper+ shovel) ---
@@ -176,9 +199,9 @@ public class ModBlocks {
                     .sound(SoundType.GRASS)));
 
     public static final DeferredBlock<Block> RICH_DIRT = BLOCKS.register("rich_dirt",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
+            () -> new ModBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
                     .strength(1.0F, 1.0F)
-                    .sound(SoundType.GRAVEL)));
+                    .sound(SoundType.GRAVEL), "jei.larperthanwolves.info.rich_soil"));
 
     public static final DeferredBlock<Block> RICH_GRAVEL = BLOCKS.register("rich_gravel",
             () -> new RichFallingBlock(-8356741, BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL)

@@ -16,12 +16,23 @@ import net.neoforged.fml.loading.FMLEnvironment;
 
 import java.util.function.Consumer;
 
-public class UnboundMeshItem extends Item {
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
+
+public class UnboundMeshItem extends Item implements IJeiDocumentationProvider {
     public static final int MAX_PROGRESS_TICKS = 300; // 15 seconds at 20 ticks/sec
     public static final int USE_DURATION = 72000;
 
     public UnboundMeshItem(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.unbound_mesh"));
     }
 
     @Override
