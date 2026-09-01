@@ -20,6 +20,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -45,23 +47,87 @@ public class BlockBreakHandler {
         return PickaxeTier.IRON_PLUS;
     }
 
-    private static ItemStack getDropForBlock(Block block, PickaxeTier tier) {
+    public static int getFortuneLevel(ItemStack tool, Level level) {
+        if (tool == null || tool.isEmpty() || level == null) return 0;
+        try {
+            var lookup = level.registryAccess().lookup(Registries.ENCHANTMENT);
+            if (lookup.isPresent()) {
+                var holder = lookup.get().get(Enchantments.FORTUNE);
+                if (holder.isPresent()) {
+                    return tool.getEnchantmentLevel(holder.get());
+                }
+            }
+        } catch (Exception ignored) {}
+        return 0;
+    }
+
+    public static boolean hasSilkTouch(ItemStack tool, Level level) {
+        if (tool == null || tool.isEmpty() || level == null) return false;
+        try {
+            var lookup = level.registryAccess().lookup(Registries.ENCHANTMENT);
+            if (lookup.isPresent()) {
+                var holder = lookup.get().get(Enchantments.SILK_TOUCH);
+                if (holder.isPresent()) {
+                    return tool.getEnchantmentLevel(holder.get()) > 0;
+                }
+            }
+        } catch (Exception ignored) {}
+        return false;
+    }
+
+    public static int applyOreBonusCount(int baseCount, int fortuneLevel) {
+        if (fortuneLevel > 0) {
+            int roll = ThreadLocalRandom.current().nextInt(fortuneLevel + 2) - 1;
+            if (roll < 0) roll = 0;
+            return baseCount * (roll + 1);
+        }
+        return baseCount;
+    }
+
+    private static ItemStack getDropForBlock(Block block, PickaxeTier tier, ItemStack tool, Level level) {
         if (tier == PickaxeTier.IRON_PLUS) return null;
 
+        boolean silk = hasSilkTouch(tool, level);
+        int fortune = getFortuneLevel(tool, level);
+
         if (block == Blocks.COAL_ORE || block == Blocks.DEEPSLATE_COAL_ORE) {
-            return new ItemStack(Items.COAL, 1);
+            if (silk) return new ItemStack(block.asItem(), 1);
+            int count = applyOreBonusCount(1, fortune);
+            return new ItemStack(Items.COAL, count);
         } else if (block == Blocks.COPPER_ORE || block == Blocks.DEEPSLATE_COPPER_ORE) {
             if (tier == PickaxeTier.SILICON) {
-                return new ItemStack(ModItems.COPPER_DUST.get(), 1);
+                int count = applyOreBonusCount(1, fortune);
+                return new ItemStack(ModItems.COPPER_DUST.get(), count);
             }
-            return new ItemStack(Items.RAW_COPPER, 1);
+            if (silk) return new ItemStack(block.asItem(), 1);
+            int count = applyOreBonusCount(1, fortune);
+            return new ItemStack(Items.RAW_COPPER, count);
         } else if (block == ModBlocks.TIN_ORE.get() || block == ModBlocks.DEEPSLATE_TIN_ORE.get()) {
             if (tier == PickaxeTier.SILICON) return null;
-            if (tier == PickaxeTier.COPPER) return new ItemStack(ModItems.TIN_DUST.get(), 1);
-            return new ItemStack(ModItems.RAW_TIN.get(), 1);
+            if (tier == PickaxeTier.COPPER) {
+                int count = applyOreBonusCount(1, fortune);
+                return new ItemStack(ModItems.TIN_DUST.get(), count);
+            }
+            if (silk) return new ItemStack(block.asItem(), 1);
+            int count = applyOreBonusCount(1, fortune);
+            return new ItemStack(ModItems.RAW_TIN.get(), count);
         } else if (block == Blocks.IRON_ORE || block == Blocks.DEEPSLATE_IRON_ORE) {
             if (tier == PickaxeTier.SILICON || tier == PickaxeTier.COPPER) return null;
-            return new ItemStack(ModItems.IRON_DUST.get(), 1);
+            int count = applyOreBonusCount(1, fortune);
+            return new ItemStack(ModItems.IRON_DUST.get(), count);
+        }
+
+        if (silk && (tier == PickaxeTier.COPPER || tier == PickaxeTier.BRONZE)) {
+            if (block == Blocks.STONE || block == Blocks.GRANITE || block == Blocks.DIORITE ||
+                    block == Blocks.ANDESITE || block == Blocks.CALCITE || isSandstone(block)) {
+                return new ItemStack(block.asItem(), 1);
+            }
+            if (tier == PickaxeTier.BRONZE) {
+                if (block == Blocks.DEEPSLATE || block == Blocks.TUFF || block == Blocks.DRIPSTONE_BLOCK ||
+                        block == Blocks.POINTED_DRIPSTONE || block == Blocks.NETHERRACK) {
+                    return new ItemStack(block.asItem(), 1);
+                }
+            }
         }
 
         int count = 2 + ThreadLocalRandom.current().nextInt(3);
@@ -809,7 +875,7 @@ public class BlockBreakHandler {
         PickaxeTier tier = getPickaxeTier(tool);
         if (tier != PickaxeTier.IRON_PLUS && isStoneOrOre(block)) {
             drops.clear();
-            ItemStack customDrop = getDropForBlock(block, tier);
+            ItemStack customDrop = getDropForBlock(block, tier, tool, level);
             if (customDrop != null && !customDrop.isEmpty()) {
                 ItemEntity dropEntity = new ItemEntity(level, x, y, z, customDrop);
                 dropEntity.setDefaultPickUpDelay();
@@ -821,12 +887,20 @@ public class BlockBreakHandler {
         // --- Mithril Ore Drops ---
         if (block == ModBlocks.MITHRIL_ORE.get()) {
             drops.clear();
-            if (isMithrilPickaxe(tool)) {
-                ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(ModItems.RAW_MITHRIL.get(), 1));
+            boolean silk = hasSilkTouch(tool, level);
+            int fortune = getFortuneLevel(tool, level);
+            if (silk && isMithrilPickaxe(tool)) {
+                ItemEntity ore = new ItemEntity(level, x, y, z, new ItemStack(ModBlocks.MITHRIL_ORE.get().asItem(), 1));
+                ore.setDefaultPickUpDelay();
+                drops.add(ore);
+            } else if (isMithrilPickaxe(tool)) {
+                int count = applyOreBonusCount(1, fortune);
+                ItemEntity raw = new ItemEntity(level, x, y, z, new ItemStack(ModItems.RAW_MITHRIL.get(), count));
                 raw.setDefaultPickUpDelay();
                 drops.add(raw);
             } else if (isReinforcedIronPickaxe(tool)) {
-                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.MITHRIL_DUST.get(), 1));
+                int count = applyOreBonusCount(1, fortune);
+                ItemEntity dust = new ItemEntity(level, x, y, z, new ItemStack(ModItems.MITHRIL_DUST.get(), count));
                 dust.setDefaultPickUpDelay();
                 drops.add(dust);
             }

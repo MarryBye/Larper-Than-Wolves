@@ -83,7 +83,8 @@ This document defines the complete tool tier progression, durability, harvest sp
 ### 4. Iron Tier (Железная кирка / лопата)
 * **Allowed Mining & Drops**:
   * Full access to all standard Overworld rocks, deepslate, and ores.
-  * **Whole Blocks & Raw Chunks**: drops vanilla `RAW_IRON`, `RAW_COPPER`, `RAW_GOLD`, `COBBLESTONE`, `COBBLED_DEEPSLATE`, etc.
+  * **Whole Blocks & Raw Chunks**: drops vanilla `RAW_IRON`, `RAW_COPPER` (1 piece base, scaled strictly via Fortune), `RAW_GOLD`, `COBBLESTONE`, `COBBLED_DEEPSLATE`, etc.
+  * **Raw Copper Drop Rate Balance**: Copper Ore (`minecraft:copper_ore` / `deepslate_copper_ore`) drops strictly **1 Raw Copper** by default (vanilla 2-5 multi-drop is removed); additional yield scales exclusively through the Fortune enchantment.
   * **Zinc Ore (`create:zinc_ore` / `create:raw_zinc`)**: fully harvestable.
   * **Nether & End Blocks**: Nether Quartz, Gold Ore, Blackstone, Basalt, End Stone, Amethyst.
 * **Strictly Blocked**:

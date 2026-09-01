@@ -12,7 +12,7 @@ This file is a comprehensive guide for AI agents working on this NeoForge Minecr
 - **NeoForge**: 21.1.248
 - **Java**: 21
 - **Build Tool**: Gradle with NeoForge ModDev plugin 2.0.144
-- **Current Version**: 1.33.0
+- **Current Version**: 1.33.1
 
 ## Project Architecture & Progression
 
@@ -39,9 +39,9 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Workstations & Machines Harvesting Rule**: Stone/metal processing workstations (**Brick Furnace**, **Advanced Smelter**, **Food Oven**, **Alloy Mixer**, **Hand Mill**, **Kinetic Piston**, **Entity Observer**, vanilla Furnaces/Smokers) strictly require a **Pickaxe of Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron) to be mined and harvested. Breaking by hand or with a Silicon Pickaxe is blocked (mining speed = 0.0, drops = 0). When mined with Copper+ pickaxes, the workstation drops itself and spills its inventory contents.
 - **Wooden Objects & Containers Harvesting Rule**: Wooden workstations, machines, and storage (**Woven Basket**, **Drying Rack**, **Wooden Hopper**, **Sieve Table**, **Filter Grate**, **Mill Crank**, stumps, logs, planks) strictly require an **Axe** (any tier: Silicon, Copper, Bronze, Iron, Reinforced Iron) to be mined and harvested. Breaking by hand is blocked (mining speed = 0.0, drops = 0).
 - **Silicon (Кремень)**: Durability 55. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Shovel mines Clay (1 Clay Ball) and basic soils. Cannot mine workstations, deepslate, zinc, or any other ores.
-- **Copper (Медь)**: Durability 180. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Workstations (Brick Furnace, Smelter, Oven, Mixer, Mill, Piston, Observer), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`) and Clay. Cannot mine deepslate, zinc, or iron+.
-- **Bronze (Бронза)**: Durability 280. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Workstations, Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils and Clay. Cannot mine zinc ore or high-tier ores.
-- **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`) and all Workstations. Shovel mines Rich Soils and Clay. Cannot mine Ancient Debris or Obsidian.
+- **Copper (Медь)**: Durability 180. Mines Coal (item), Copper (Raw Copper, 1 pc base, scaled via Fortune), Tin (Tin Dust), Workstations (Brick Furnace, Smelter, Oven, Mixer, Mill, Piston, Observer), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`) and Clay. Cannot mine deepslate, zinc, or iron+.
+- **Bronze (Бронза)**: Durability 280. Mines Coal (item), Copper (Raw Copper, 1 pc base, scaled via Fortune), Tin (Raw Tin), Iron (Iron Dust), Workstations, Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils and Clay. Cannot mine zinc ore or high-tier ores.
+- **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks (Copper Ore drops strictly 1 Raw Copper base, scaled via Fortune), including Zinc Ore (`create:raw_zinc`) and all Workstations. Shovel mines Rich Soils and Clay. Cannot mine Ancient Debris or Obsidian.
 - **Reinforced Iron (Diamond Ingot Tier)**: Durability 900. Full access to all blocks including Ancient Debris and Obsidian. Mines Nether Mithril Ore into **Mithril Dust** (`mithril_dust`).
 - **Mithril (Мифрил - Premier Endgame Tier)**: Durability 1500, mining speed 10.0f, attack damage bonus +4.0f. Mines Nether Mithril Ore directly into **Raw Mithril** (`raw_mithril`). Full supreme access across all dimensions. Upgrade via Smithing Table from Reinforced Iron using **Mithril Ingots** (`mithril_ingot`).
 
