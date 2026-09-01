@@ -184,6 +184,11 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - Furnaces/Smokers $\rightarrow$ Brick Furnaces / Ovens.
     - Bone Meal $\rightarrow$ Bones (must be ground in Hand Mill).
 
+### 🌲 Stumps, Chisel Carving & Crafting Table Construction
+- **Tree Stumps (`StumpBlock` / `WorkStumpBlock`)**: Naturally generated trees have their lowest trunk block replaced with a stump of very high hardness (25.0).
+- **Copper Chisel (`chisel` / `ChiselItem`)**: Crafted from **1 Copper Ingot + 1 Stick** in 2x2/3x3 crafting grid (64 durability).
+- **Crafting Table Carving**: Right-clicking a stump 4 times with a Chisel carves it through 3 visual stages into a vanilla Crafting Table. Direct crafting of crafting tables in 2x2 inventory is disabled.
+
 ### 🪓 Woodcutting & Plank Crafting Rules
 - **Tree & Plank Harvesting**: Trees (logs, wood, stripped wood) and planks cannot be broken by hand. An axe is strictly required.
 - **Plank Crafting**:
