@@ -40,6 +40,10 @@ public class MillRegistry {
         register(new MillRecipe("bronze_ingot", Ingredient.of(ModItems.BRONZE_INGOT.get()), 1,
                 () -> List.of(new ItemStack(ModItems.BRONZE_DUST.get(), 8))));
 
+        // Mithril Ingot -> 2 Mithril Dust (1 Ingot = 1 Raw Mithril = 2 Dusts)
+        register(new MillRecipe("mithril_ingot", Ingredient.of(ModItems.MITHRIL_INGOT.get()), 1,
+                () -> List.of(new ItemStack(ModItems.MITHRIL_DUST.get(), 2))));
+
         // 2. Diamond (1 Diamond = 4 Nuggets = 8 Dusts)
         register(new MillRecipe("diamond", Ingredient.of(Items.DIAMOND), 1,
                 () -> List.of(new ItemStack(ModItems.DIAMOND_DUST.get(), 8))));
@@ -56,7 +60,7 @@ public class MillRegistry {
         register(new MillRecipe("bone", Ingredient.of(Items.BONE), 1,
                 () -> List.of(new ItemStack(Items.BONE_MEAL, 1))));
 
-        // 5. Raw Ores -> 2 Dusts (2 Ore Dust = 1 Raw Chunk)
+        // 5. Raw Ores -> Dusts
         register(new MillRecipe("raw_iron", Ingredient.of(Items.RAW_IRON), 1,
                 () -> List.of(new ItemStack(ModItems.IRON_DUST.get(), 2))));
 
@@ -69,7 +73,10 @@ public class MillRegistry {
         register(new MillRecipe("raw_tin", Ingredient.of(ModItems.RAW_TIN.get()), 1,
                 () -> List.of(new ItemStack(ModItems.TIN_DUST.get(), 2))));
 
-        // 6. Metal Nuggets -> 2 Dusts (1 Nugget = 2 Dusts)
+        register(new MillRecipe("raw_mithril", Ingredient.of(ModItems.RAW_MITHRIL.get()), 1,
+                () -> List.of(new ItemStack(ModItems.MITHRIL_DUST.get(), 2))));
+
+        // 6. Metal Nuggets -> Dusts
         register(new MillRecipe("iron_nugget", Ingredient.of(Items.IRON_NUGGET), 1,
                 () -> List.of(new ItemStack(ModItems.IRON_DUST.get(), 2))));
 
@@ -87,6 +94,12 @@ public class MillRegistry {
 
         register(new MillRecipe("diamond_nugget", Ingredient.of(ModItems.DIAMOND_NUGGET.get()), 1,
                 () -> List.of(new ItemStack(ModItems.DIAMOND_DUST.get(), 2))));
+
+        register(new MillRecipe("mithril_nugget", Ingredient.of(ModItems.MITHRIL_NUGGET.get()), 1,
+                () -> List.of(new ItemStack(ModItems.MITHRIL_DUST.get(), 1))));
+
+        register(new MillRecipe("mithril_ore", Ingredient.of(io.marrybye.github.larperthanwolves.block.ModBlocks.MITHRIL_ORE.get().asItem()), 1,
+                () -> List.of(new ItemStack(ModItems.MITHRIL_DUST.get(), 2))));
 
         // 7. Rocks and Minerals Grinding
         register(new MillRecipe("cobblestone", Ingredient.of(Items.COBBLESTONE), 1,

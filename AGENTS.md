@@ -62,6 +62,8 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
     - 1 Diamond $\rightarrow$ 8 Diamond Dust.
     - 1 Diamond Ingot $\rightarrow$ 8 Diamond Dust + 8 Iron Dust + 8 Copper Dust (conserves alloy ingredients).
     - 1 Raw Ore chunk / Metal Nugget $\rightarrow$ 2 Dusts.
+    - 1 Mithril Ingot / Raw Mithril / Nether Mithril Ore $\rightarrow$ **2 Mithril Dust** (`mithril_dust`).
+    - 1 Mithril Nugget $\rightarrow$ **1 Mithril Dust** (`mithril_dust`).
     - 1 Bone $\rightarrow$ 1 Bone Meal (`minecraft:bone_meal`).
     - Rocks / Stones $\rightarrow$ Gravel / Sand.
   - Hopper & Automation: Inputs through top/sides, outputs extracted through bottom face (`WorldlyContainer`).
@@ -225,7 +227,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Endgame Nugget Smelting**: Smelts Raw Mithril (`raw_mithril`) into **1 Mithril Nugget** (`mithril_nugget`).
   - Requires manual fuel loading and lighter/flint ignition.
 - **Mithril Furnace (Мифриловая печь / `mithril_furnace` / `MithrilFurnaceBlock`)**:
-  - Crafted shapelessly from **1 Advanced Smelter + 2 Mithril Nuggets**.
+  - Crafted on a 3x3 Crafting Table from **1 Advanced Smelter surrounded by 8 Mithril Nuggets** (`NNN / NSN / NNN`).
   - Reinforced with mithril runic plates, glowing furnace grates, and superior thermal insulation.
   - **Endgame Ingot Smelting**: Smelts Raw Mithril (`raw_mithril`) directly into **Full Mithril Ingots** (`mithril_ingot`), unlocking endgame smithing upgrades.
   - Smelts all standard raw ores directly into full ingots.
