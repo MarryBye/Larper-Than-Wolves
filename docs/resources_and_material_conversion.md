@@ -31,10 +31,12 @@ Obtained by mining stone and geological blocks with Silicon and Bronze pickaxes:
 
 ## ⚖️ The 4-to-1 Nugget / 8-to-1 Dust Mathematical Economy
 
-Unlike vanilla's 9-to-1 ratio, the mod standardizes all metal and diamond conversions to a clean binary **4-to-1 / 8-to-1 scale**:
-* **1 Ingot / Diamond** $=$ **4 Nuggets**
+Unlike vanilla's 9-to-1 ratio, the mod standardizes all metal, gem, and alloy conversions to a clean binary **4-to-1 / 8-to-1 scale**:
+* **1 Ingot / Diamond** $=$ **4 Nuggets** (1 Ingot $\rightarrow$ 4 Nuggets shapeless; 4 Nuggets $\rightarrow$ 1 Ingot 2x2 shaped)
 * **1 Nugget / Raw Chunk** $=$ **2 Dusts**
 * **1 Ingot** $=$ **8 Dusts** (when ground in Hand Mill)
+* **9-Nugget Recipe Elimination (`RecipeManagerMixin`)**:
+  * All 9-to-1 compacting (3x3 grid) and 1-to-9 decompacting recipes across Vanilla and Create (Iron, Gold, Copper, Zinc, Brass) are dynamically purged and replaced with 4-to-1 standard recipes.
 
 ### Alloy Formulations in Alloy Mixer
 * **Bronze Ingot (`bronze_ingot`)**: 2 Copper Ingots + 1 Tin Ingot $\rightarrow$ **3 Bronze Ingots** (100% metal mass conservation).
@@ -45,7 +47,10 @@ Unlike vanilla's 9-to-1 ratio, the mod standardizes all metal and diamond conver
 ---
 
 ## 🔄 Cross-Mod Compatibility & Automation
-- **Create (6.0.10+)**: Mechanical Mixer, Crushing Wheels, and Bulk Blasting follow exact 4:1 and 8:1 ratios.
+- **Create (6.0.10+)**:
+  - Mechanical Mixer, Crushing Wheels, and Bulk Blasting follow exact 4:1 and 8:1 ratios.
+  - 4 Zinc Nuggets $\leftrightarrow$ 1 Zinc Ingot; 4 Brass Nuggets $\leftrightarrow$ 1 Brass Ingot.
+  - All external recipes requiring vanilla `Furnace` or `Blast Furnace` (e.g. Steam Engines, Boilers, machines) automatically accept `Brick Furnace` (`larperthanwolves:brick_furnace`), and recipes requiring `Smoker` accept `Food Oven` (`larperthanwolves:oven`).
 - **JEI Integration**: All conversion recipes registered with accurate input/output counts.
 
 ---

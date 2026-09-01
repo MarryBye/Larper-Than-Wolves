@@ -264,19 +264,28 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Natural Metals (Iron, Copper, Gold, Tin, Zinc)**:
   - 2 Ore Dust $\rightarrow$ 1 Raw Ore (chunk)
   - 1 Raw Ore in Brick Furnace $\rightarrow$ 1 Metal Nugget (Iron, Copper, Gold, Tin, Zinc)
-  - 4 Metal Nuggets $\rightarrow$ 1 Ingot
+  - 4 Metal Nuggets $\rightarrow$ 1 Ingot (and 1 Ingot $\rightarrow$ 4 Nuggets)
 - **Bronze**:
   - 2 Bronze Dust $\rightarrow$ 1 Bronze Nugget
   - 4 Bronze Nuggets $\rightarrow$ 1 Bronze Ingot
   - 2 Copper Ingot + 1 Tin Ingot in Alloy Mixer $\rightarrow$ 3 Bronze Ingots
 - **Brass (Латунь)**:
   - 1 Copper Ingot + 1 Zinc Ingot in Alloy Mixer $\rightarrow$ 1 Brass Ingot (`create:brass_ingot`)
+  - 4 Brass Nuggets $\rightarrow$ 1 Brass Ingot; 1 Brass Ingot $\rightarrow$ 4 Brass Nuggets
 - **Diamond**:
   - 2 Diamond Dust $\rightarrow$ 1 Diamond Nugget
   - 4 Diamond Nuggets $\rightarrow$ 1 Diamond (and 1 Diamond $\rightarrow$ 4 Diamond Nuggets)
 - **Reinforced Iron (Diamond Ingot)**:
   - 1 Diamond + 1 Iron Ingot + 1 Copper Ingot in Alloy Mixer $\rightarrow$ 1 Diamond Ingot
   - Used in Smithing Table to upgrade Iron tools & armor to Reinforced Iron.
+- **9-Nugget Recipe Purge (`RecipeManagerMixin`)**:
+  - All vanilla and Create 9-to-1 compacting (3x3 grid `nugget $\rightarrow$ ingot`) and 1-to-9 decompacting (`ingot $\rightarrow$ 9 nuggets`) recipes are dynamically removed at recipe load time.
+  - Replaced by mod-provided 4-to-1 compacting (2x2 grid) and 1-to-4 decompacting (shapeless) recipes for all metals: Iron, Gold, Copper, Tin, Bronze, Diamond, Zinc (`create`), Brass (`create`).
+  - Recipes producing disabled items (vanilla Furnace, Blast Furnace, Smoker, disabled tools/armor) are also removed.
+- **Workstation Ingredient Substitution (`RecipeManagerMixin`)**:
+  - All non-`larperthanwolves` recipes that reference `minecraft:furnace` or `minecraft:blast_furnace` as a crafting ingredient are dynamically rewritten to use `larperthanwolves:brick_furnace`.
+  - Recipes referencing `minecraft:smoker` are rewritten to use `larperthanwolves:oven`.
+  - This ensures Create and any other mod's machine recipes (e.g. Steam Engines, Boilers) work with our workstations without manual recipe overrides.
 - **Create Machine Parity**:
   - Mechanical Mixer (Heated): Bronze Ingot, Brass Ingot, Diamond Ingot.
   - Millstone / Crushing Wheels: Gravel, Sand, and Ore chunk processing into dusts and pebbles.
