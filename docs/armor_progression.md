@@ -13,7 +13,6 @@ This document defines armor materials, defense values, durability multipliers, t
 | **Bronze (Бронза)** | 12 | 2 | 5 | 4 | 2 | **13 (6.5 🛡️)** | 0.0 | 0.0 | `larperthanwolves:bronze_ingot` |
 | **Iron (Железо)** | 15 | 2 | 6 | 5 | 2 | **15 (7.5 🛡️)** | 0.0 | 0.0 | `minecraft:iron_ingot` |
 | **Reinforced Iron (Алмазный)** | 25 | 3 | 8 | 6 | 3 | **20 (10 🛡️)** | 1.5 | 0.0 | `larperthanwolves:diamond_ingot` |
-| **Netherite** | 37 | 3 | 8 | 6 | 3 | **20 (10 🛡️)** | 3.0 | 0.1 | `minecraft:netherite_ingot` |
 
 ---
 
@@ -23,7 +22,8 @@ This document defines armor materials, defense values, durability multipliers, t
   - Standard raw leather cannot be crafted into armor.
 - **Disabled Armor Tiers**:
   - **Chainmail Armor**: Fully disabled, unobtainable from loot or trading.
-  - **Vanilla Diamond Armor**: Direct crafting in crafting tables is disabled and removed. Diamond armor is only obtainable by upgrading Iron Armor in a Smithing Table with **Diamond Ingots** (`diamond_ingot`) $\rightarrow$ **Reinforced Iron Armor**.
+  - **Vanilla Diamond Armor**: Direct crafting in crafting tables is disabled and removed. Diamond armor is only obtainable by upgrading Iron Armor in a Smithing Table with **Diamond Ingots** (`diamond_ingot`) $\rightarrow$ **Reinforced Iron Armor** (Endgame Final Tier).
+  - **Netherite Armor & Tools**: Fully disabled and purged from the game. Reinforced Iron is the absolute pinnacle tier.
 - **Equipping & Mob Purge**:
   - Mobs cannot spawn with or equip disabled armor.
   - Players attempting to wear disabled armor have it safely removed and cleared.

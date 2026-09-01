@@ -495,8 +495,7 @@ public class ModJeiPlugin implements IModPlugin {
                 new ItemStack(ModItems.COPPER_HOE.get()),
                 new ItemStack(ModItems.BRONZE_HOE.get()),
                 new ItemStack(ModItems.REINFORCED_IRON_HOE.get()),
-                new ItemStack(Items.IRON_HOE),
-                new ItemStack(Items.NETHERITE_HOE)
+                new ItemStack(Items.IRON_HOE)
         );
         registration.addIngredientInfo(allHoes, VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.hoe_tilling"));

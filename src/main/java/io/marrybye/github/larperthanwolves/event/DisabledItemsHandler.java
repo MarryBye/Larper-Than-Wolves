@@ -67,6 +67,21 @@ public class DisabledItemsHandler {
             Items.GOLDEN_SHOVEL,
             Items.GOLDEN_HOE,
 
+            // Netherite tools
+            Items.NETHERITE_SWORD,
+            Items.NETHERITE_PICKAXE,
+            Items.NETHERITE_AXE,
+            Items.NETHERITE_SHOVEL,
+            Items.NETHERITE_HOE,
+
+            // Netherite armor, ingot & block
+            Items.NETHERITE_HELMET,
+            Items.NETHERITE_CHESTPLATE,
+            Items.NETHERITE_LEGGINGS,
+            Items.NETHERITE_BOOTS,
+            Items.NETHERITE_INGOT,
+            Items.NETHERITE_BLOCK,
+
             // Vanilla Furnace, Blast Furnace, Smoker
             Items.FURNACE,
             Items.BLAST_FURNACE,
@@ -96,6 +111,10 @@ public class DisabledItemsHandler {
                 }
                 if (path.startsWith("diamond_") && (path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe")
                         || path.endsWith("_helmet") || path.endsWith("_chestplate") || path.endsWith("_leggings") || path.endsWith("_boots") || path.endsWith("_horse_armor"))) {
+                    return true;
+                }
+                if (path.startsWith("netherite_") && (path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe")
+                        || path.endsWith("_helmet") || path.endsWith("_chestplate") || path.endsWith("_leggings") || path.endsWith("_boots") || path.endsWith("_ingot") || path.endsWith("_block"))) {
                     return true;
                 }
                 if ("furnace".equals(path) || "blast_furnace".equals(path) || "smoker".equals(path)) {
