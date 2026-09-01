@@ -29,9 +29,15 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+
 import java.util.List;
 
-public class KineticPistonBlock extends DirectionalBlock {
+public class KineticPistonBlock extends DirectionalBlock implements IJeiDocumentationProvider {
     public static final MapCodec<KineticPistonBlock> CODEC = simpleCodec(KineticPistonBlock::new);
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
     public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
@@ -198,5 +204,11 @@ public class KineticPistonBlock extends DirectionalBlock {
                 }
             }
         }
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.kinetic_piston"));
     }
 }

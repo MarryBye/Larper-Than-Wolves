@@ -205,6 +205,7 @@ public class SieveBlock extends BaseEntityBlock implements IJeiMachineStation, I
     @Override
     public void registerJeiCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(this), SieveRecipeCategory.TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.MILL_CRANK.get()), SieveRecipeCategory.TYPE);
     }
 
     @Override

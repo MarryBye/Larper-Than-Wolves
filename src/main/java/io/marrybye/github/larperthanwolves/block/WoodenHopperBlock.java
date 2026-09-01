@@ -27,9 +27,14 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class WoodenHopperBlock extends BaseEntityBlock {
+public class WoodenHopperBlock extends BaseEntityBlock implements IJeiDocumentationProvider {
     public static final DirectionProperty FACING = BlockStateProperties.FACING_HOPPER;
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
     public static final MapCodec<WoodenHopperBlock> CODEC = simpleCodec(WoodenHopperBlock::new);
@@ -150,5 +155,11 @@ public class WoodenHopperBlock extends BaseEntityBlock {
             return hopper.isEmpty() ? 0 : 15;
         }
         return 0;
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.wooden_hopper"));
     }
 }

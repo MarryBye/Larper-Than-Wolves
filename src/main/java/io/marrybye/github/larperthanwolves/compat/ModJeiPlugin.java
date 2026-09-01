@@ -284,6 +284,120 @@ public class ModJeiPlugin implements IModPlugin {
                 Component.translatable("jei.larperthanwolves.info.gravel"));
         registration.addIngredientInfo(new ItemStack(Blocks.DIRT), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.larperthanwolves.info.dirt"));
+
+        // Clay block & clay ball
+        registration.addIngredientInfo(List.of(
+                new ItemStack(Blocks.CLAY),
+                new ItemStack(Items.CLAY_BALL)
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.clay"));
+
+        // Bone & bone meal
+        registration.addIngredientInfo(List.of(
+                new ItemStack(Items.BONE),
+                new ItemStack(Items.BONE_MEAL)
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.bone_meal"));
+
+        // Crafting table chisel carving
+        registration.addIngredientInfo(new ItemStack(Blocks.CRAFTING_TABLE), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.crafting_table"));
+
+        // Brick
+        registration.addIngredientInfo(new ItemStack(Items.BRICK), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.brick"));
+
+        // Silicon gear
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.SILICON_PICKAXE.get()),
+                new ItemStack(ModItems.SILICON_AXE.get()),
+                new ItemStack(ModItems.SILICON_SHOVEL.get()),
+                new ItemStack(ModItems.SILICON_HOE.get()),
+                new ItemStack(ModItems.SILICON_SHEARS.get()),
+                new ItemStack(ModItems.SILICON_SPEAR.get())
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.silicon_gear"));
+
+        // Copper gear
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.COPPER_PICKAXE.get()),
+                new ItemStack(ModItems.COPPER_AXE.get()),
+                new ItemStack(ModItems.COPPER_SHOVEL.get()),
+                new ItemStack(ModItems.COPPER_HOE.get()),
+                new ItemStack(ModItems.COPPER_SWORD.get()),
+                new ItemStack(ModItems.COPPER_HELMET.get()),
+                new ItemStack(ModItems.COPPER_CHESTPLATE.get()),
+                new ItemStack(ModItems.COPPER_LEGGINGS.get()),
+                new ItemStack(ModItems.COPPER_BOOTS.get())
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.copper_gear"));
+
+        // Bronze gear
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.BRONZE_PICKAXE.get()),
+                new ItemStack(ModItems.BRONZE_AXE.get()),
+                new ItemStack(ModItems.BRONZE_SHOVEL.get()),
+                new ItemStack(ModItems.BRONZE_HOE.get()),
+                new ItemStack(ModItems.BRONZE_SWORD.get()),
+                new ItemStack(ModItems.BRONZE_HELMET.get()),
+                new ItemStack(ModItems.BRONZE_CHESTPLATE.get()),
+                new ItemStack(ModItems.BRONZE_LEGGINGS.get()),
+                new ItemStack(ModItems.BRONZE_BOOTS.get()),
+                new ItemStack(ModItems.BRONZE_KNITTING_NEEDLES.get())
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.bronze_gear"));
+
+        // Reinforced iron gear
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.REINFORCED_IRON_PICKAXE.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_AXE.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_SHOVEL.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_HOE.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_SWORD.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_HELMET.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_CHESTPLATE.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_LEGGINGS.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_BOOTS.get()),
+                new ItemStack(ModItems.IRON_KNITTING_NEEDLES.get())
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.reinforced_iron_gear"));
+
+        // Mithril gear
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.MITHRIL_PICKAXE.get()),
+                new ItemStack(ModItems.MITHRIL_AXE.get()),
+                new ItemStack(ModItems.MITHRIL_SHOVEL.get()),
+                new ItemStack(ModItems.MITHRIL_HOE.get()),
+                new ItemStack(ModItems.MITHRIL_SWORD.get()),
+                new ItemStack(ModItems.MITHRIL_HELMET.get()),
+                new ItemStack(ModItems.MITHRIL_CHESTPLATE.get()),
+                new ItemStack(ModItems.MITHRIL_LEGGINGS.get()),
+                new ItemStack(ModItems.MITHRIL_BOOTS.get())
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.mithril_gear"));
+
+        // Hoe 2-stage tilling
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.SILICON_HOE.get()),
+                new ItemStack(ModItems.COPPER_HOE.get()),
+                new ItemStack(ModItems.BRONZE_HOE.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_HOE.get()),
+                new ItemStack(ModItems.MITHRIL_HOE.get()),
+                new ItemStack(Items.IRON_HOE),
+                new ItemStack(Items.DIAMOND_HOE),
+                new ItemStack(Items.NETHERITE_HOE)
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.hoe_tilling"));
+
+        // Axe plank crafting rule
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.SILICON_AXE.get()),
+                new ItemStack(ModItems.COPPER_AXE.get()),
+                new ItemStack(ModItems.BRONZE_AXE.get()),
+                new ItemStack(ModItems.REINFORCED_IRON_AXE.get()),
+                new ItemStack(ModItems.MITHRIL_AXE.get()),
+                new ItemStack(Items.IRON_AXE),
+                new ItemStack(Items.DIAMOND_AXE),
+                new ItemStack(Items.NETHERITE_AXE)
+        ), VanillaTypes.ITEM_STACK, Component.translatable("jei.larperthanwolves.info.axe_planks"));
+
+        // Villager trades & Iron golem balance
+        registration.addIngredientInfo(new ItemStack(Items.EMERALD), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.villager_trades"));
+        registration.addIngredientInfo(new ItemStack(Items.POPPY), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.iron_golem"));
     }
 
     @Override

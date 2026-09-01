@@ -9,14 +9,15 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 
 /**
  * Interface implemented by workstations, furnaces, and processing machines
- * to guarantee complete JEI integration across all 5 lifecycle steps:
+ * to guarantee complete JEI integration across all 6 lifecycle steps:
  * 1. Category registration
  * 2. Recipe registration
  * 3. Catalyst registration
  * 4. Screen GUI click areas
  * 5. Menu container recipe transfer handlers
+ * 6. In-game player documentation and info tabs
  */
-public interface IJeiMachineStation {
+public interface IJeiMachineStation extends IJeiDocumentationProvider {
     /**
      * Registers custom JEI recipe categories for this workstation.
      */

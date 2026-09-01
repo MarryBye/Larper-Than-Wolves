@@ -6,6 +6,7 @@ import io.marrybye.github.larperthanwolves.block.entity.MithrilFurnaceBlockEntit
 import io.marrybye.github.larperthanwolves.block.entity.ModBlockEntities;
 import io.marrybye.github.larperthanwolves.item.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -217,5 +218,11 @@ public class MithrilFurnaceBlock extends BaseEntityBlock implements IJeiMachineS
     @Override
     public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(MithrilFurnaceMenu.class, ModMenuTypes.MITHRIL_FURNACE.get(), MithrilFurnaceRecipeCategory.TYPE, 0, 3, 6, 36);
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), mezz.jei.api.constants.VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.mithril_furnace"));
     }
 }

@@ -16,13 +16,24 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class FilterGrateBlock extends BaseEntityBlock {
+public class FilterGrateBlock extends BaseEntityBlock implements IJeiDocumentationProvider {
     public static final MapCodec<FilterGrateBlock> CODEC = simpleCodec(FilterGrateBlock::new);
 
     public FilterGrateBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.filter_grate"));
     }
 
     @Override

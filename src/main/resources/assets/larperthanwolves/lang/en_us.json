@@ -223,5 +223,17 @@
   "jei.larperthanwolves.info.raw_mithril": "Raw Mithril smelts into 1 Mithril Nugget in an Advanced Smelter, or into a full Mithril Ingot in a Mithril Furnace. The Brick Furnace cannot smelt it.",
   "jei.larperthanwolves.info.mithril_nugget": "Mithril Nuggets are obtained by smelting Raw Mithril in an Advanced Smelter. Unlike standard metals, 4 nuggets cannot be crafted into an ingot. They are used to construct the Mithril Furnace (1 Advanced Smelter + 2 Mithril Nuggets).",
   "jei.larperthanwolves.info.mithril_furnace": "The Mithril Furnace is the pinnacle of metallurgy. It unlocks smelting Raw Mithril directly into full Mithril Ingots for forging Mithril tools and armor.",
-  "jei.larperthanwolves.info.mithril_ingot": "Used to upgrade Reinforced Iron equipment to Mithril on a Smithing Table, and to craft decorative Mithril Blocks."
+  "jei.larperthanwolves.info.mithril_ingot": "Used to upgrade Reinforced Iron equipment to Mithril on a Smithing Table, and to craft decorative Mithril Blocks.",
+  "jei.larperthanwolves.info.stump": "A tree stump forms at the base of chopped trees with high hardness (25.0). Right-click 4 times with a Chisel to carve it into a Crafting Table.",
+  "jei.larperthanwolves.info.metal_dust": "Metal dust is produced by grinding ingots (1 ingot -> 8 dust), nuggets or raw ore (1 item -> 2 dust) in the Hand Mill, or sifting soils in the Sieve. Used as ingredients for alloys in the Alloy Mixer.",
+  "jei.larperthanwolves.info.nugget": "Mineral and rock pebbles/nuggets. Stone pebbles are chipped from stone using pointed sticks or pebbles. 4 nuggets craft into 1 ingot/rock in the crafting grid.",
+  "jei.larperthanwolves.info.rope": "Rope is crafted in a 2x2 grid without a crafting table from 2 dry grass, 2 vines, 2 strings, dried kelp, or tanned leather with shears. Required for mill cranks, meshes, and bows.",
+  "jei.larperthanwolves.info.tin": "Tin is mined as ore or sifted as tin dust from soils. Required to produce Bronze (2 Copper Ingots + 1 Tin Ingot -> 3 Bronze Ingots in the Alloy Mixer).",
+  "jei.larperthanwolves.info.bronze": "Bronze is a durable metal alloy crafted in the Alloy Mixer from 2 Copper and 1 Tin ingots (yields 3 ingots). Bronze tools can mine iron ore into iron dust and deepslate rocks.",
+  "jei.larperthanwolves.info.diamond_ingot": "Diamond Ingot (Reinforced Iron) is an elite metal alloy made by combining 1 Diamond, 1 Iron Ingot, and 1 Copper Ingot in the Alloy Mixer. Used for Reinforced Iron gear and mining Mithril Dust in the Nether.",
+  "jei.larperthanwolves.info.silicon_gear": "Silicon tools are the earliest tools crafted from flint and sticks. Can mine basic stones, coal, and copper dust. Cannot harvest workstations or deep ores.",
+  "jei.larperthanwolves.info.copper_gear": "Copper tools and armor unlock the Copper Age. Capable of harvesting stone workstations and machines, tin ore, rich soils, and clay. Durability: 180.",
+  "jei.larperthanwolves.info.bronze_gear": "Bronze tools and armor offer high durability (280 uses). Capable of mining iron ore into iron dust, deepslate, and tuff.",
+  "jei.larperthanwolves.info.reinforced_iron_gear": "Reinforced Iron gear (Diamond Ingot tier) features 900 durability. Capable of mining obsidian, ancient debris, and Nether Mithril Ore into Mithril Dust.",
+  "jei.larperthanwolves.info.mithril_gear": "Mithril gear is the premier endgame tier (1500 durability, 10.0 mining speed, +4 attack bonus). Upgraded from Reinforced Iron in the Smithing Table using Mithril Ingots. The Mithril Pickaxe mines Nether Mithril Ore directly into Raw Mithril."
 }

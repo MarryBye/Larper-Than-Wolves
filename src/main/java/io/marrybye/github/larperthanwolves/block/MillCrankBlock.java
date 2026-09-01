@@ -34,11 +34,21 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import io.marrybye.github.larperthanwolves.compat.IJeiDocumentationProvider;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
-public class MillCrankBlock extends BaseEntityBlock {
+public class MillCrankBlock extends BaseEntityBlock implements IJeiDocumentationProvider {
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
     public static final MapCodec<MillCrankBlock> CODEC = simpleCodec(MillCrankBlock::new);
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.mill_crank"));
+    }
 
     private static final VoxelShape SHAPE_UP = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
     private static final VoxelShape SHAPE_DOWN = Block.box(2.0D, 8.0D, 2.0D, 14.0D, 16.0D, 14.0D);

@@ -35,52 +35,52 @@ public class ModItems {
             () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.tanned_leather"));
 
     public static final DeferredItem<Item> IRON_DUST = ITEMS.register("iron_dust",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.metal_dust"));
 
     public static final DeferredItem<Item> COPPER_DUST = ITEMS.register("copper_dust",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.metal_dust"));
 
     public static final DeferredItem<Item> GOLD_DUST = ITEMS.register("gold_dust",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.metal_dust"));
 
     public static final DeferredItem<Item> DIAMOND_DUST = ITEMS.register("diamond_dust",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.metal_dust"));
 
     public static final DeferredItem<Item> STONE_NUGGET = ITEMS.register("stone_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> DIORITE_NUGGET = ITEMS.register("diorite_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> GRANITE_NUGGET = ITEMS.register("granite_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> ANDESITE_NUGGET = ITEMS.register("andesite_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> TUFF_NUGGET = ITEMS.register("tuff_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> CALCITE_NUGGET = ITEMS.register("calcite_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> DEEPSLATE_NUGGET = ITEMS.register("deepslate_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> DRIPSTONE_NUGGET = ITEMS.register("dripstone_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> NETHERRACK_NUGGET = ITEMS.register("netherrack_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> DIAMOND_NUGGET = ITEMS.register("diamond_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> ROPE = ITEMS.register("rope",
-            () -> new Item(new Item.Properties().stacksTo(64)));
+            () -> new ModItem(new Item.Properties().stacksTo(64), "jei.larperthanwolves.info.rope"));
 
     public static final DeferredItem<Item> LIGHTER = ITEMS.register("lighter",
             () -> new ModItem(new Item.Properties().durability(64), "jei.larperthanwolves.info.lighter"));
@@ -163,7 +163,7 @@ public class ModItems {
 
     // Diamond Ingot
     public static final DeferredItem<Item> DIAMOND_INGOT = ITEMS.register("diamond_ingot",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.diamond_ingot"));
 
     // Reinforced Iron Tools
     public static final DeferredItem<SwordItem> REINFORCED_IRON_SWORD = ITEMS.register("reinforced_iron_sword",
@@ -280,26 +280,26 @@ public class ModItems {
 
     // Tin Items
     public static final DeferredItem<Item> RAW_TIN = ITEMS.register("raw_tin",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.tin"));
 
     public static final DeferredItem<Item> TIN_DUST = ITEMS.register("tin_dust",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.metal_dust"));
 
     public static final DeferredItem<Item> TIN_NUGGET = ITEMS.register("tin_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> TIN_INGOT = ITEMS.register("tin_ingot",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.tin"));
 
     // Bronze Items
     public static final DeferredItem<Item> BRONZE_DUST = ITEMS.register("bronze_dust",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.metal_dust"));
 
     public static final DeferredItem<Item> BRONZE_NUGGET = ITEMS.register("bronze_nugget",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.nugget"));
 
     public static final DeferredItem<Item> BRONZE_INGOT = ITEMS.register("bronze_ingot",
-            () -> new Item(new Item.Properties()));
+            () -> new ModItem(new Item.Properties(), "jei.larperthanwolves.info.bronze"));
 
     // Bronze Tools
     public static final DeferredItem<SwordItem> BRONZE_SWORD = ITEMS.register("bronze_sword",

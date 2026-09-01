@@ -75,4 +75,10 @@ public class WorkStumpBlock extends Block implements IJeiMachineStation {
 
     @Override
     public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {}
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), mezz.jei.api.constants.VanillaTypes.ITEM_STACK,
+                net.minecraft.network.chat.Component.translatable("jei.larperthanwolves.info.work_stump"));
+    }
 }

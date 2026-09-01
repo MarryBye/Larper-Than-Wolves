@@ -217,5 +217,11 @@ public class BrickFurnaceBlock extends BaseEntityBlock implements IJeiMachineSta
     public void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(BrickFurnaceMenu.class, ModMenuTypes.BRICK_FURNACE.get(), BrickFurnaceRecipeCategory.TYPE, 0, 3, 6, 36);
     }
+
+    @Override
+    public void registerJeiInfo(IRecipeRegistration registration) {
+        registration.addIngredientInfo(new ItemStack(this), mezz.jei.api.constants.VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.larperthanwolves.info.brick_furnace"));
+    }
 }
 

@@ -8,12 +8,13 @@ Larper Than Wolves features complete and exhaustive integration with Just Enough
 ### 1. `IJeiMachineStation` Interface
 Applied to all functional processing machines and workstation blocks (`BrickFurnaceBlock`, `AdvancedSmelterBlock`, `MithrilFurnaceBlock`, `OvenBlock`, `AlloyMixerBlock`, `SieveBlock`, `MillBlock`, `DryingRackBlock`, `WorkStumpBlock`, `UnfiredBrickBlock`):
 ```java
-public interface IJeiMachineStation {
+public interface IJeiMachineStation extends IJeiDocumentationProvider {
     void registerJeiCategories(IRecipeCategoryRegistration registration, IGuiHelper guiHelper);
     void registerJeiRecipes(IRecipeRegistration registration);
     void registerJeiCatalysts(IRecipeCatalystRegistration registration);
     void registerJeiGuiHandlers(IGuiHandlerRegistration registration);
     void registerJeiRecipeTransferHandlers(IRecipeTransferRegistration registration);
+    void registerJeiInfo(IRecipeRegistration registration);
 }
 ```
 

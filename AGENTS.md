@@ -257,7 +257,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Bronze**:
   - 2 Bronze Dust $\rightarrow$ 1 Bronze Nugget
   - 4 Bronze Nuggets $\rightarrow$ 1 Bronze Ingot
-  - 2 Copper Ingot + 1 Tin Ingot in Alloy Mixer $\rightarrow$ 1 Bronze Ingot
+  - 2 Copper Ingot + 1 Tin Ingot in Alloy Mixer $\rightarrow$ 3 Bronze Ingots
 - **Brass (Латунь)**:
   - 1 Copper Ingot + 1 Zinc Ingot in Alloy Mixer $\rightarrow$ 1 Brass Ingot (`create:brass_ingot`)
 - **Diamond**:
