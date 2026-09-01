@@ -82,7 +82,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 
 ### 🌲 Flora, Twigs & Forest Foraging
 - **Twigs (Веточки)**: Small fallen wood branches on the ground (`twig` / `TwigBlock`).
-  - **Ground Gathering**: Spawns naturally in patches under tree canopies in overworld forests and biomes (0–2 twigs per spot, frequently 0–1). Instantly harvested by clicking or breaking by hand.
+  - **Ground Gathering**: Generated directly under tree canopies during world generation via `TreeFeatureMixin` (`@Inject` on `TreeFeature.doPlace`). When any tree generates in any biome, 1–3 twig blocks are placed on valid ground surfaces (dirt, grass, podzol, moss, mud, sand, gravel, rich soils) within a 7-block radius of the trunk. Works universally across all tree types (Oak, Birch, Spruce, Acacia, Dark Oak, Jungle, Cherry, Mangrove, Crimson, Warped) and all biomes. Instantly harvested by clicking or breaking by hand.
   - **Tree Leaves Drop**: Breaking or decaying leaves drops 1–2 Twigs with a **35% chance** (unless harvested with shears).
   - **Crafting**: 2 Twigs $\rightarrow$ 1 Stick (`Items.STICK`).
 - **Silicon Shears (Кремниевые ножницы)**: Rebuilt with authentic wooden stick handle loops bound with cord and chipped flint/silicon blades.
@@ -411,7 +411,11 @@ src/main/java/io/marrybye/github/larperthanwolves/
 │   └── ModItemModelProvider.java  — Item model data generation
 └── mixin/
     ├── TrunkPlacerMixin.java      — Places stump blocks at tree bases during worldgen
-    └── StructureMixin.java        — Enforces minimum distance from spawn for village generation
+    ├── TreeFeatureMixin.java      — Places twig blocks under tree canopies during worldgen
+    ├── StructureMixin.java        — Enforces minimum distance from spawn for village generation
+    ├── StructureTemplateMixin.java — Converts workstations & strips chests in all structures
+    ├── RandomizableContainerMixin.java — Strips loot tables from non-bastion chests
+    └── LootTableMixin.java        — Universal loot table rebalancing
 ```
 
 ## Resources

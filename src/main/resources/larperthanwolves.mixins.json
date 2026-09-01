@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "TrunkPlacerMixin",
+    "TreeFeatureMixin",
     "StructureMixin",
     "StructureTemplateMixin",
     "RandomizableContainerMixin",
