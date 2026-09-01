@@ -44,11 +44,12 @@ When Create is present in `libs/`:
 
 ### 2. Just Enough Items (`jei-*.jar`)
 When JEI is present in `libs/`:
-- Follow the `jei-mechanics-documenter` skill protocol.
-- Register custom recipe categories for all custom processing stations (Hand Mill, Alloy Mixer, Sieve, Drying Rack, Brick Furnace, Oven, Chisel progression, Solar drying).
-- Register detailed ingredient info tabs (`addIngredientInfo`) for all modified vanilla items, core tools, and progression blocks.
-- Implement ghost/phantom ingredient handling for filter slots (e.g., Filter Grate phantom GUI).
-- Localize all JEI category titles, labels, and tooltips in both `en_us.json` and `ru_ru.json`.
+- **Follow `jei-mechanics-documenter` Protocol**: Strictly adhere to all rules in `jei-mechanics-documenter`.
+- **Mandatory In-Game Documentation (`addIngredientInfo`)**: Every single mod item, block, and overhauled vanilla mechanic MUST have a localized "Information" page in JEI.
+- **Bidirectional Recipe Synchronization (Station-Recipe Symmetry)**: When viewing a station's uses (U key), all recipes that can be processed at that station MUST be displayed together (via `RecipeIngredientRole.CATALYST` indexing in `setRecipe`).
+- **Register Custom Recipe Categories**: For all custom processing stations (Hand Mill, Alloy Mixer, Sieve Table, Drying Rack, Brick Furnace, Advanced Smelter, Mithril Furnace, Oven, Chisel progression, Solar drying, Soil digging, Machine fuels).
+- **Ghost / Phantom Slots**: Implement phantom slot interactions for filter devices (e.g., Filter Grate GUI).
+- **Full Localization**: Localize all JEI category titles, labels, conditions, and info tabs in both `en_us.json` and `ru_ru.json`.
 
 ### 3. Future / Newly Added Mods in `libs/`
 When any new mod JAR is added to `libs/`:
