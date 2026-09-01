@@ -37,7 +37,7 @@ Unlike vanilla's 9-to-1 ratio, the mod standardizes all metal and diamond conver
 * **1 Ingot** $=$ **8 Dusts** (when ground in Hand Mill)
 
 ### Alloy Formulations in Alloy Mixer
-* **Bronze Ingot (`bronze_ingot`)**: 2 Copper Ingots + 1 Tin Ingot $\rightarrow$ 1 Bronze Ingot.
+* **Bronze Ingot (`bronze_ingot`)**: 2 Copper Ingots + 1 Tin Ingot $\rightarrow$ **3 Bronze Ingots** (100% metal mass conservation).
 * **Brass Ingot (`create:brass_ingot`)**: 1 Copper Ingot + 1 Zinc Ingot $\rightarrow$ 1 Brass Ingot.
 * **Diamond Ingot (`diamond_ingot`)**: 1 Diamond + 1 Iron Ingot + 1 Copper Ingot $\rightarrow$ 1 Diamond Ingot.
   * *Recycling in Hand Mill*: 1 Diamond Ingot $\rightarrow$ 8 Diamond Dust + 8 Iron Dust + 8 Copper Dust (100% component preservation).

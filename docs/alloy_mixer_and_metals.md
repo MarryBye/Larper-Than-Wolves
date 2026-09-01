@@ -18,7 +18,7 @@ This system manages metallurgical alloying, ratio conversions, and tool/armor ti
   - **Bronze**:
     - 2 Bronze Dust $\rightarrow$ 1 Bronze Nugget
     - 4 Bronze Nuggets $\rightarrow$ 1 Bronze Ingot
-    - 2 Copper Ingot + 1 Tin Ingot in Alloy Mixer $\rightarrow$ 1 Bronze Ingot
+    - 2 Copper Ingot + 1 Tin Ingot in Alloy Mixer $\rightarrow$ **3 Bronze Ingots**
   - **Brass (`create:brass_ingot`)**:
     - 1 Copper Ingot + 1 Zinc Ingot in Alloy Mixer $\rightarrow$ 1 Brass Ingot
   - **Diamond**:
@@ -40,13 +40,13 @@ This system manages metallurgical alloying, ratio conversions, and tool/armor ti
 ---
 
 ## 🔄 Cross-Mod Compatibility & Automation
-- **Create (6.0.10+)**: Heated Mechanical Mixer recipes registered for Bronze Ingot, Brass Ingot, and Diamond Ingot.
+- **Create (6.0.10+)**: Heated Mechanical Mixer recipes registered for Bronze Ingot (3x), Brass Ingot, and Diamond Ingot.
 - **JEI Integration**: `AlloyMixerRecipeCategory` displaying all alloy recipes and required components.
 
 ---
 
 ## 🧪 Testing Guide & Edge Cases
-1. **Bronze Alloy Mixing**: Place 2 Copper Ingots + 1 Tin Ingot + Fuel into Alloy Mixer. Ignite mixer; verify 1 Bronze Ingot is produced.
+1. **Bronze Alloy Mixing**: Place 2 Copper Ingots + 1 Tin Ingot + Fuel into Alloy Mixer. Ignite mixer; verify 3 Bronze Ingots are produced.
 2. **Reinforced Iron Smithing**: Place Iron Pickaxe + Diamond Ingot + Netherite Upgrade Template into Smithing Table; verify Reinforced Iron Pickaxe.
 
 ---

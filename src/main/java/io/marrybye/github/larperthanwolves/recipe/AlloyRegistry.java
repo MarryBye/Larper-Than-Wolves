@@ -26,14 +26,14 @@ public class AlloyRegistry {
     public static void registerDefaults() {
         RECIPES.clear();
 
-        // 1. Bronze: 2 Copper Ingot + 1 Tin Ingot -> 1 Bronze Ingot
+        // 1. Bronze: 2 Copper Ingot + 1 Tin Ingot -> 3 Bronze Ingots
         register(new AlloyRecipe(
                 "bronze_ingot",
                 List.of(
                         new AlloyRecipe.IngredientEntry(Ingredient.of(Items.COPPER_INGOT), 2),
                         new AlloyRecipe.IngredientEntry(Ingredient.of(ModItems.TIN_INGOT.get()), 1)
                 ),
-                () -> new ItemStack(ModItems.BRONZE_INGOT.get(), 1)
+                () -> new ItemStack(ModItems.BRONZE_INGOT.get(), 3)
         ));
 
         // 2. Diamond Ingot: 1 Diamond + 1 Iron Ingot + 1 Copper Ingot -> 1 Diamond Ingot

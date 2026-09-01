@@ -211,7 +211,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Dedicated JEI Category (`BrickFurnaceRecipeCategory`)**: Displays exact nugget outputs (`Items.RAW_IRON` $\rightarrow$ `Items.IRON_NUGGET`, etc.) rather than full ingots to prevent player confusion.
 - **Alloy Mixer (Смеситель сплавов / `alloy_mixer` / `AlloyMixerBlock`)**:
   - Crafted on a 3x3 Crafting Table from **4 Copper Ingots + 1 Brick Furnace + 4 Brick Slabs** (`SCS / CFC / SCS`).
-  - Accessible in the Copper Age without requiring iron, enabling Bronze production (2 Copper + 1 Tin).
+  - Accessible in the Copper Age without requiring iron, enabling Bronze production (2 Copper Ingots + 1 Tin Ingot $\rightarrow$ **3 Bronze Ingots**).
   - Requires manual fuel loading and ignition.
 - **Advanced Smelter (Продвинутая плавильня / `advanced_smelter` / `AdvancedSmelterBlock`)**:
   - Crafted on a 3x3 Crafting Table from **5 Iron Ingots + 1 Brick Furnace + 3 Smooth Stone**.
