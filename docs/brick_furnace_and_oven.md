@@ -21,7 +21,7 @@ This system splits high-temperature thermal processing into two strictly special
   - Transfer speed: **14 ticks per item** (slightly slower than vanilla's 8 ticks).
   - Can be attached in 5 directions (down, north, south, west, east) to feed fuel into the back/sides of furnaces and ovens, or extract output from the bottom.
 - **Food Oven (`oven` / `OvenBlock` / `OvenBlockEntity`)**:
-  - Crafted from 1 Brick Furnace + 1 Iron Nugget or 2 Brick Slabs + 2 Bricks.
+  - Crafted from **2 Brick Slabs + 2 Bricks** in a 2x2 grid (`SS / ##`).
   - Replaces the vanilla Smoker.
   - **Food ONLY**: Accepts raw beef, pork, mutton, chicken, rabbit, fish, potatoes, and kelp.
   - **Non-Food Strictly Blocked**: Ores, cobblestone, and raw minerals cannot be placed into the oven.
@@ -59,7 +59,7 @@ This system splits high-temperature thermal processing into two strictly special
 - **Unfired Bricks $\rightarrow$ Brick Furnace**:
   - Unfired Bricks dry in direct sunlight into baked Bricks.
   - 8 Bricks $\rightarrow$ Brick Furnace.
-- **Oven Recipe**: 1 Brick Furnace + 1 Iron Nugget.
+- **Oven Recipe**: 2 Brick Slabs + 2 Bricks (2x2 grid).
 - **Harvesting & Minimum Tool Tier**:
   - Brick Furnace, Advanced Smelter, and Food Oven strictly require a **Pickaxe of Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to be mined and harvested.
   - Mining with bare hands, wrong tools, or a Silicon Pickaxe is blocked (mining speed = 0.0, drops = 0).

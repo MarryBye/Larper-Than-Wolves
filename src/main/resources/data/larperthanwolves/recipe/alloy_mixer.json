@@ -1,9 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
-    "SFS",
-    "ICI",
-    "SFS"
+    "SCS",
+    "CFC",
+    "SCS"
   ],
   "key": {
     "S": {
@@ -11,9 +12,6 @@
     },
     "F": {
       "item": "larperthanwolves:brick_furnace"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
     },
     "C": {
       "item": "minecraft:copper_ingot"

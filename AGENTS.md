@@ -202,13 +202,17 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Leather** $\rightarrow$ **Tanned Leather (Дублёная кожа)** (dark oiled hide, required to craft Leather Armor and ropes).
   - **Rope Crafting**: Ropes can only be crafted from Tanned Leather + Shears, or **2 plant fibers / vines** (2 Dry Grass, 2 Vines, 2 String, 2 Dried Kelp, 2 Hanging Roots) in 2x2 grid without requiring a crafting table. Standard raw leather rope crafting is removed.
 
-### 🍞 Oven, Brick Furnace, Advanced Smelter & Wooden Hopper
-- **Oven (Духовка)**: Crafted from 1 Brick Furnace + 1 Iron Nugget or 2 Brick Slabs + 2 Bricks (`oven`).
+### 🍞 Oven, Brick Furnace, Advanced Smelter, Alloy Mixer & Wooden Hopper
+- **Oven (Духовка)**: Crafted from 2 Brick Slabs + 2 Bricks (`oven`).
   - **Food Only**: Accepts exclusively food items (raw beef, porkchop, mutton, chicken, rabbit, fish, potato, kelp). Non-food materials and ores cannot be placed in the oven.
   - Requires manual fueling and ignition with a Lighter or Flint & Steel.
 - **Brick Furnace (Кирпичная печь)**: Replaces vanilla Furnace and Blast Furnace.
   - **Ores & Blocks Only**: Food items cannot be placed or smelted in the Brick Furnace. Smelts raw chunks into **nuggets**.
   - **Dedicated JEI Category (`BrickFurnaceRecipeCategory`)**: Displays exact nugget outputs (`Items.RAW_IRON` $\rightarrow$ `Items.IRON_NUGGET`, etc.) rather than full ingots to prevent player confusion.
+- **Alloy Mixer (Смеситель сплавов / `alloy_mixer` / `AlloyMixerBlock`)**:
+  - Crafted on a 3x3 Crafting Table from **4 Copper Ingots + 1 Brick Furnace + 4 Brick Slabs** (`SCS / CFC / SCS`).
+  - Accessible in the Copper Age without requiring iron, enabling Bronze production (2 Copper + 1 Tin).
+  - Requires manual fuel loading and ignition.
 - **Advanced Smelter (Продвинутая плавильня / `advanced_smelter` / `AdvancedSmelterBlock`)**:
   - Crafted on a 3x3 Crafting Table from **5 Iron Ingots + 1 Brick Furnace + 3 Smooth Stone**.
   - Reinforced iron-plated design with corner rivets, dark steel trim, and industrial firebox grating.

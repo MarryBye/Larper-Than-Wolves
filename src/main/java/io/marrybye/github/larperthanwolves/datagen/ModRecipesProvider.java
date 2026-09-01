@@ -298,13 +298,6 @@ public class ModRecipesProvider extends RecipeProvider implements IConditionBuil
                 .unlockedBy("has_brick_slab", has(Items.BRICK_SLAB))
                 .save(pRecipeOutput, "brick_furnace_from_slabs");
 
-        // 1 Brick Furnace + 1 Iron Nugget -> 1 Oven (shapeless)
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.OVEN.get())
-                .requires(ModBlocks.BRICK_FURNACE.get())
-                .requires(Items.IRON_NUGGET)
-                .unlockedBy("has_brick_furnace", has(ModBlocks.BRICK_FURNACE.get()))
-                .save(pRecipeOutput, "oven_from_furnace");
-
         // 2 Brick Slabs + 2 Bricks -> 1 Oven (shaped)
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.OVEN.get())
                 .pattern("SS")

@@ -6,8 +6,10 @@ This system manages metallurgical alloying, ratio conversions, and tool/armor ti
 
 ## ⚙️ Mechanics & Working Principles
 - **Alloy Mixer (`alloy_mixer` / `AlloyMixerBlock` / `AlloyMixerBlockEntity`)**:
+  - Crafted on a 3x3 Crafting Table from **4 Copper Ingots + 1 Brick Furnace + 4 Brick Slabs** (`SCS / CFC / SCS`).
   - 5-slot container (3 input slots, 1 output slot, 1 fuel slot).
-  - Handles high-temperature alloy metallurgy.
+  - Handles high-temperature alloy metallurgy in the Copper Age without requiring any iron.
+  - Mining & Harvesting: Strictly requires a **Pickaxe of Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to be mined and harvested. Drops itself and spills inventory contents.
 - **Metal & Material Ratios**:
   - **Natural Metals (Iron, Copper, Gold, Tin, Zinc)**:
     - 2 Ore Dust $\rightarrow$ 1 Raw Ore (chunk)
