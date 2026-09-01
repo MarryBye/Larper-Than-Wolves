@@ -21,12 +21,13 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - 5 variants: Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand.
   - Visuals: Silver/white mineral flecks on counterpart vanilla textures.
   - Mining requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich soil block item. Digging with hands or silicon shovel drops standard soil.
-  - **Sifting Drops (Copper Dust, Tin Dust & Flint ONLY)**:
-    - High-tier minerals (Iron, Gold, Diamond) and artificial alloys (Bronze) are strictly removed from rich soils.
-    - Sifting rich soils yields base copper age metals and flint:
-      1. **Copper Dust** (`copper_dust`) — **45%**
-      2. **Tin Dust** (`tin_dust`) — **45%** (on par with copper)
-      3. **Flint** (`minecraft:flint`) — **10%**
+  - **Sifting Drops (Copper Dust, Tin Dust, Iron Dust & Flint)**:
+    - High-tier minerals (Gold, Diamond) and artificial alloys (Bronze) are strictly removed from rich soils.
+    - Sifting rich soils yields base copper age metals, iron dust, and flint:
+      1. **Copper Dust** (`copper_dust`) — **68%** (1.5x boost)
+      2. **Tin Dust** (`tin_dust`) — **68%** (1.5x boost, on par with copper)
+      3. **Iron Dust** (`iron_dust`) — **10%** (small chance)
+      4. **Flint** (`minecraft:flint`) — **15%**
   - Worldgen: Generates in large veins (size 20, 10–12 attempts/chunk) inside soil biomes.
 - **Sieve Processing & Mechanics (`sieve` / `SieveBlock` / `SieveBlockEntity`)**:
   - **No Passive Sifting**: The sieve does NOT passively sift resources over time. Input is on the left (9 slots, 3x3), output is on the right (9 slots, 3x3).
@@ -46,13 +47,16 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - **Balanced Sifting Drop Matrix (Independent Dice Roll Per Item)**:
     - Every possible output item has its own independent probability check. A single sifted block can drop multiple items at once (e.g. Copper + Tin + Flint), only one item, or nothing if all rolls fail.
     - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious)**:
-      - Silicon Shards: **45%** (Common)
-      - Flint: **22%** (Rare)
-      - Copper Dust: **8%** (Very rare)
+      - Silicon Shards: **68%** (Common, 1.5x boost)
+      - Flint: **33%** (Uncommon, 1.5x boost)
+      - Copper Dust: **12%** (Rare, 1.5x boost)
+      - Tin Dust: **12%** (Rare, equal chance with copper)
+      - Iron Dust: **3%** (Very rare / small chance)
     - **Rich Soils (Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand)**:
-      - Copper Dust: **45%**
-      - Tin Dust: **45%**
-      - Flint: **10%**
+      - Copper Dust: **68%** (1.5x boost)
+      - Tin Dust: **68%** (1.5x boost, equal with copper)
+      - Flint: **15%** (1.5x boost)
+      - Iron Dust: **10%** (Small chance)
 
 ---
 

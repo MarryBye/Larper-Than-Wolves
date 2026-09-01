@@ -409,44 +409,62 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, M
         input.shrink(1);
 
         if (isRich) {
-            // Rich Soils: Copper Dust (45%), Tin Dust (45%), Flint (10%)
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.45;
-            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.45;
-            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichFlintChance.get() : 0.10;
+            // Rich Soils: Copper Dust (68%), Tin Dust (68%), Flint (15%), Iron Dust (10%)
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichCopperDustChance.get() : 0.68;
+            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichTinDustChance.get() : 0.68;
+            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichFlintChance.get() : 0.15;
+            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveRichIronDustChance.get() : 0.10;
 
-            // Copper Dust (~45%)
+            // Copper Dust (~68%)
             if (ThreadLocalRandom.current().nextDouble() < copperChance) {
                 insertOutput(new ItemStack(ModItems.COPPER_DUST.get(), 1));
             }
 
-            // Tin Dust (~45%)
+            // Tin Dust (~68%)
             if (ThreadLocalRandom.current().nextDouble() < tinChance) {
                 insertOutput(new ItemStack(ModItems.TIN_DUST.get(), 1));
             }
 
-            // Flint (~10%)
+            // Flint (~15%)
             if (ThreadLocalRandom.current().nextDouble() < flintChance) {
                 insertOutput(new ItemStack(Items.FLINT, 1));
             }
+
+            // Iron Dust (~10%)
+            if (ThreadLocalRandom.current().nextDouble() < ironChance) {
+                insertOutput(new ItemStack(ModItems.IRON_DUST.get(), 1));
+            }
         } else {
             // Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious): Independent roll for each possible drop
-            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.45;
-            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.22;
-            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.08;
+            double siliconChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveSiliconShardChance.get() : 0.68;
+            double flintChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveFlintChance.get() : 0.33;
+            double copperChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveCopperDustChance.get() : 0.12;
+            double tinChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveTinDustChance.get() : 0.12;
+            double ironChance = ModConfig.SERVER != null ? ModConfig.SERVER.sieveIronDustChance.get() : 0.03;
 
-            // Silicon Shard (~45%)
+            // Silicon Shard (~68%)
             if (ThreadLocalRandom.current().nextDouble() < siliconChance) {
                 insertOutput(new ItemStack(ModItems.SILICON_SHARD.get(), 1));
             }
 
-            // Flint (~22%)
+            // Flint (~33%)
             if (ThreadLocalRandom.current().nextDouble() < flintChance) {
                 insertOutput(new ItemStack(Items.FLINT, 1));
             }
 
-            // Copper Dust (~8%)
+            // Copper Dust (~12%)
             if (ThreadLocalRandom.current().nextDouble() < copperChance) {
                 insertOutput(new ItemStack(ModItems.COPPER_DUST.get(), 1));
+            }
+
+            // Tin Dust (~12%)
+            if (ThreadLocalRandom.current().nextDouble() < tinChance) {
+                insertOutput(new ItemStack(ModItems.TIN_DUST.get(), 1));
+            }
+
+            // Iron Dust (~3%)
+            if (ThreadLocalRandom.current().nextDouble() < ironChance) {
+                insertOutput(new ItemStack(ModItems.IRON_DUST.get(), 1));
             }
         }
 

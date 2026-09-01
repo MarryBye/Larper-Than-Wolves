@@ -119,21 +119,24 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Catch Basin & Side Axle Socket 3D Model**: Features a wooden collection basin underneath the mesh where sifted mineral dusts drop, and protruding bronze/iron bearing sockets on the side walls for kinetic shafts.
   - **Balanced Sifting Drop Matrix (Independent Dice Roll Per Item)**:
     - Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious):
-      - Silicon Shards: **45%** (Common)
-      - Flint: **22%** (Rare)
-      - Copper Dust: **8%** (Very rare)
+      - Silicon Shards: **68%** (Common, 1.5x boost)
+      - Flint: **33%** (Uncommon, 1.5x boost)
+      - Copper Dust: **12%** (Rare, 1.5x boost)
+      - Tin Dust: **12%** (Rare, equal chance with copper)
+      - Iron Dust: **3%** (Very rare / small chance)
 - **Rich Soils (Богатая почва)**:
   - 5 variants: **Rich Grass Block** (`rich_grass_block`), **Rich Dirt** (`rich_dirt`), **Rich Gravel** (`rich_gravel`), **Rich Sand** (`rich_sand`), **Rich Red Sand** (`rich_red_sand`).
   - Textures: Counterpart vanilla textures with distinct white/silver mineral flecks and top-left lighting.
   - Digging Hardness: 2x slower (`destroyTime: 1.0f - 1.2f`).
   - Mining Requirement: Strictly requires a shovel of **Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to drop the rich block item (Rich Grass drops Rich Dirt unless Silk Touch is used). Breaking with hands or other tools drops standard soil (Dirt/Gravel/Sand/Red Sand).
-  - **Sifting in Sieve (Copper Dust, Tin Dust & Flint ONLY)**:
-    - High-tier minerals (Iron, Gold, Diamond) and artificial alloys (Bronze) are strictly removed from rich soils.
+  - **Sifting in Sieve (Copper Dust, Tin Dust, Iron Dust & Flint)**:
+    - High-tier minerals (Gold, Diamond) and artificial alloys (Bronze) are strictly removed from rich soils.
     - Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, and Rich Red Sand are all siftable.
-    - Yields copper-age resources:
-      1. Copper Dust (`copper_dust`) — **45%**
-      2. Tin Dust (`tin_dust`) — **45%** (on par with copper)
-      3. Flint (`minecraft:flint`) — **10%**
+    - Yields copper-age resources, iron dust, and flint:
+      1. Copper Dust (`copper_dust`) — **68%** (1.5x boost)
+      2. Tin Dust (`tin_dust`) — **68%** (1.5x boost, on par with copper)
+      3. Iron Dust (`iron_dust`) — **10%** (small chance)
+      4. Flint (`minecraft:flint`) — **15%** (1.5x boost)
   - World Generation: Spawns in large veins (size 20, 10–12 attempts/chunk) embedded naturally inside their ordinary soil counterparts in overworld biomes (meadow surface converts to Rich Grass Block).
 
 ### 🌾 Farming, Mandatory Fertilization (Bone Meal & Dung) & 2-Stage Hoe Tilling
