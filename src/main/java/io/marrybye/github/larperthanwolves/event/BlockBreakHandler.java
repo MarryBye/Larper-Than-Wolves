@@ -285,7 +285,29 @@ public class BlockBreakHandler {
                 block == Blocks.DEEPSLATE_EMERALD_ORE;
     }
 
+    public static boolean isStationBlock(Block block) {
+        return block == ModBlocks.BRICK_FURNACE.get() ||
+                block == ModBlocks.ADVANCED_SMELTER.get() ||
+                block == ModBlocks.OVEN.get() ||
+                block == ModBlocks.ALLOY_MIXER.get() ||
+                block == ModBlocks.MILL.get() ||
+                block == ModBlocks.KINETIC_PISTON.get() ||
+                block == ModBlocks.ENTITY_OBSERVER.get() ||
+                block == Blocks.FURNACE ||
+                block == Blocks.BLAST_FURNACE ||
+                block == Blocks.SMOKER;
+    }
+
     public static boolean canToolMineBlock(ItemStack tool, Level level, BlockPos pos, Block block) {
+        if (isStationBlock(block)) {
+            if (tool == null || tool.isEmpty()) return false;
+            if (isSiliconPickaxe(tool)) return false;
+            return isCopperPickaxe(tool) || isBronzePickaxe(tool) || isIronPickaxe(tool) ||
+                    isReinforcedIronPickaxe(tool) || isNetheritePickaxe(tool) ||
+                    tool.is(net.minecraft.tags.ItemTags.PICKAXES) ||
+                    tool.getItem() instanceof net.minecraft.world.item.PickaxeItem;
+        }
+
         if (!isStoneOrOre(block) && !isObsidianOrNetheriteTier(block) && !isDeepslateLayerOrBlock(level, pos, block)) {
             return true;
         }
@@ -378,7 +400,13 @@ public class BlockBreakHandler {
                 state.is(BlockTags.WOODEN_DOORS) ||
                 state.is(BlockTags.WOODEN_TRAPDOORS) ||
                 ModBlocks.isStump(state) ||
-                state.is(ModBlocks.WORK_STUMP.get());
+                state.is(ModBlocks.WORK_STUMP.get()) ||
+                state.is(ModBlocks.BASKET.get()) ||
+                state.is(ModBlocks.DRYING_RACK.get()) ||
+                state.is(ModBlocks.WOODEN_HOPPER.get()) ||
+                state.is(ModBlocks.SIEVE.get()) ||
+                state.is(ModBlocks.FILTER_GRATE.get()) ||
+                state.is(ModBlocks.MILL_CRANK.get());
     }
 
     public static boolean isAxe(ItemStack tool) {
@@ -464,7 +492,7 @@ public class BlockBreakHandler {
             }
         }
 
-        if (isStoneOrOre(block) || isObsidianOrNetheriteTier(block) || isDeepslateLayerOrBlock(level, pos, block)) {
+        if (isStationBlock(block) || isStoneOrOre(block) || isObsidianOrNetheriteTier(block) || isDeepslateLayerOrBlock(level, pos, block)) {
             if (!canToolMineBlock(held, level, pos, block)) {
                 event.setNewSpeed(0.0f);
                 event.setCanceled(true);
@@ -567,7 +595,7 @@ public class BlockBreakHandler {
             }
         }
 
-        if (isStoneOrOre(block) || isObsidianOrNetheriteTier(block) || isDeepslateLayerOrBlock(level, pos, block)) {
+        if (isStationBlock(block) || isStoneOrOre(block) || isObsidianOrNetheriteTier(block) || isDeepslateLayerOrBlock(level, pos, block)) {
             if (!canToolMineBlock(held, level, pos, block)) {
                 event.setCanceled(true);
                 return;
@@ -755,7 +783,7 @@ public class BlockBreakHandler {
             return;
         }
 
-        if (isStoneOrOre(block) || isObsidianOrNetheriteTier(block) || isDeepslateLayerOrBlock(level, pos, block)) {
+        if (isStationBlock(block) || isStoneOrOre(block) || isObsidianOrNetheriteTier(block) || isDeepslateLayerOrBlock(level, pos, block)) {
             if (!canToolMineBlock(tool, level, pos, block)) {
                 drops.clear();
                 return;

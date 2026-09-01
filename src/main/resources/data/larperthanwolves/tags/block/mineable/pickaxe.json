@@ -1,5 +1,12 @@
 {
+  "replace": false,
   "values": [
-    "larperthanwolves:brick_furnace"
+    "larperthanwolves:brick_furnace",
+    "larperthanwolves:advanced_smelter",
+    "larperthanwolves:oven",
+    "larperthanwolves:alloy_mixer",
+    "larperthanwolves:mill",
+    "larperthanwolves:kinetic_piston",
+    "larperthanwolves:entity_observer"
   ]
 }

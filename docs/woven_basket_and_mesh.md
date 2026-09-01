@@ -23,7 +23,7 @@ This system provides early-game item storage, filtering components, hand weaving
   - **3D Inventory Item & In-World Model**: Rendered as a full 3D isometric woven wicker basket with handle in the GUI inventory, player hand, and in-world.
   - Supports horizontal placement rotation (`FACING`).
   - Supports hopper insertion and extraction through all faces (`WorldlyContainer`).
-  - Tool requirement: Broken with an axe; drops inventory items on removal.
+  - Tool requirement: Strictly requires an **Axe** (any tier: Silicon, Copper, Bronze, Iron, etc.) to mine and harvest; cannot be broken by hand; drops the basket block item and all stored inventory items on removal.
 
 ---
 

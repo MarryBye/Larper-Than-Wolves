@@ -98,10 +98,14 @@ This document defines the complete tool tier progression, durability, harvest sp
 
 ---
 
-## 🪓 Woodcutting & Shovel Rules
+## 🪓 Woodcutting, Workstation & Shovel Rules
 
-* **Axe Mandatory for Wood**:
-  * Hand punching logs, wood, stripped wood, stumps, work stumps, planks, slabs, stairs, fences, gates, doors, trapdoors is completely blocked (mining speed = 0.0, drops = 0).
+* **Workstations & Thermal Machines (Copper Pickaxe or Higher Mandatory)**:
+  * Stone and metal workstations (**Brick Furnace**, **Advanced Smelter**, **Food Oven**, **Alloy Mixer**, **Hand Mill**, **Kinetic Piston**, **Entity Observer**, vanilla Furnaces/Smokers) strictly require a **Pickaxe of Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to be mined and harvested.
+  * Breaking workstations by hand, with tools other than pickaxes, or with a Silicon Pickaxe is blocked (mining speed = 0.0, drops = 0).
+* **Axe Mandatory for Wood & Wooden Objects**:
+  * Hand punching logs, wood, stripped wood, stumps, work stumps, planks, slabs, stairs, fences, gates, doors, trapdoors, as well as wooden machines and containers (**Woven Basket**, **Drying Rack**, **Wooden Hopper**, **Sieve Table**, **Filter Grate**, **Mill Crank**) is completely blocked (mining speed = 0.0, drops = 0).
+  * Any axe (Silicon, Copper, Bronze, Iron, Reinforced Iron, Netherite) can mine and harvest all wooden blocks, dropping the block item and any stored container contents.
 * **Shovel Mandatory for Clay**:
   * Hand breaking or non-shovel breaking of clay blocks drops 0 items.
   * Shovel harvest yields **1 Clay Ball** (down from vanilla 4) with ~1.6x longer digging time.
@@ -109,9 +113,11 @@ This document defines the complete tool tier progression, durability, harvest sp
 ---
 
 ## 🧪 Testing Guide & Edge Cases
-1. **Tier Restriction Test**: Place an Iron Ore block. Mine it with Silicon Pickaxe $\rightarrow$ breaking is cancelled. Mine with Bronze Pickaxe $\rightarrow$ drops 1 `iron_dust`. Mine with Iron Pickaxe $\rightarrow$ drops 1 `raw_iron`.
-2. **Deepslate Layer Test**: Teleport to $Y = -10$. Try mining stone/deepslate with a Copper Pickaxe $\rightarrow$ blocked. Mine with Bronze Pickaxe $\rightarrow$ drops `deepslate_nugget`.
-3. **Zinc Ore Test**: Place `create:zinc_ore`. Try mining with Bronze Pickaxe $\rightarrow$ blocked. Mine with Iron Pickaxe $\rightarrow$ drops `create:raw_zinc`.
+1. **Station Mining Test**: Place a Brick Furnace / Oven / Advanced Smelter / Mill / Alloy Mixer. Try mining with a Silicon Pickaxe $\rightarrow$ blocked (speed = 0). Mine with a Copper Pickaxe $\rightarrow$ harvests the station item and drops any stored inventory contents.
+2. **Wooden Block Axe Test**: Place a Basket, Drying Rack, Wooden Hopper, Sieve Table, Filter Grate, or Mill Crank. Try punching by hand $\rightarrow$ blocked (speed = 0). Mine with any axe (Silicon, Copper, Bronze, Iron) $\rightarrow$ harvests the block item and drops stored items.
+3. **Tier Restriction Test**: Place an Iron Ore block. Mine it with Silicon Pickaxe $\rightarrow$ breaking is cancelled. Mine with Bronze Pickaxe $\rightarrow$ drops 1 `iron_dust`. Mine with Iron Pickaxe $\rightarrow$ drops 1 `raw_iron`.
+4. **Deepslate Layer Test**: Teleport to $Y = -10$. Try mining stone/deepslate with a Copper Pickaxe $\rightarrow$ blocked. Mine with Bronze Pickaxe $\rightarrow$ drops `deepslate_nugget`.
+5. **Zinc Ore Test**: Place `create:zinc_ore`. Try mining with Bronze Pickaxe $\rightarrow$ blocked. Mine with Iron Pickaxe $\rightarrow$ drops `create:raw_zinc`.
 
 ---
 

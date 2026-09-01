@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "larperthanwolves:oven"
+          "name": "larperthanwolves:brick_furnace"
         }
       ],
       "rolls": 1.0

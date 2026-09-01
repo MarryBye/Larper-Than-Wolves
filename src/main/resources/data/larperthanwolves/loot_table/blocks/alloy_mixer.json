@@ -11,11 +11,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "larperthanwolves:drying_rack"
+          "name": "larperthanwolves:alloy_mixer"
         }
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "larperthanwolves:blocks/drying_rack"
+  ]
 }

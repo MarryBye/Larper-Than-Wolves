@@ -2,12 +2,17 @@
   "replace": false,
   "values": [
     "larperthanwolves:brick_furnace",
+    "larperthanwolves:advanced_smelter",
+    "larperthanwolves:oven",
     "larperthanwolves:alloy_mixer",
+    "larperthanwolves:mill",
+    "larperthanwolves:kinetic_piston",
+    "larperthanwolves:entity_observer",
     "larperthanwolves:tin_ore",
     "larperthanwolves:deepslate_tin_ore",
     "larperthanwolves:raw_tin_block",
     "larperthanwolves:tin_block",
     "larperthanwolves:bronze_block",
-    "larperthanwolves:mill"
+    "larperthanwolves:cracked_stone"
   ]
 }

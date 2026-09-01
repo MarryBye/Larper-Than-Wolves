@@ -60,6 +60,11 @@ This system splits high-temperature thermal processing into two strictly special
   - Unfired Bricks dry in direct sunlight into baked Bricks.
   - 8 Bricks $\rightarrow$ Brick Furnace.
 - **Oven Recipe**: 1 Brick Furnace + 1 Iron Nugget.
+- **Harvesting & Minimum Tool Tier**:
+  - Brick Furnace, Advanced Smelter, and Food Oven strictly require a **Pickaxe of Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to be mined and harvested.
+  - Mining with bare hands, wrong tools, or a Silicon Pickaxe is blocked (mining speed = 0.0, drops = 0).
+  - Wooden Hopper strictly requires an **Axe** (any tier: Silicon, Copper, Bronze, Iron, etc.) to be mined and harvested.
+  - When broken with the correct tool, the station drops its block item and automatically spills all stored items and remaining fuels on the ground.
 
 ---
 
