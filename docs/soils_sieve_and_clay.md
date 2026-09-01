@@ -47,16 +47,17 @@ This system overhauls soil digging, clay block harvesting rules, mineral sifting
   - **Balanced Sifting Drop Matrix (Independent Dice Roll Per Item)**:
     - Every possible output item has its own independent probability check. A single sifted block can drop multiple items at once (e.g. Copper + Tin + Flint), only one item, or nothing if all rolls fail.
     - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Grass Block, Suspicious)**:
-      - Silicon Shards: **68%** (Common, 1.5x boost)
-      - Flint: **33%** (Uncommon, 1.5x boost)
-      - Copper Dust: **12%** (Rare, 1.5x boost)
+      - Silicon Shards: **68%** (1-2 shards)
+      - Flint: **33%** (Uncommon)
+      - Copper Dust: **12%** (Rare)
       - Tin Dust: **12%** (Rare, equal chance with copper)
-      - Iron Dust: **3%** (Very rare / small chance)
+      - Iron Dust: **0%** (Removed from standard soils)
     - **Rich Soils (Rich Grass Block, Rich Dirt, Rich Gravel, Rich Sand, Rich Red Sand)**:
-      - Copper Dust: **68%** (1.5x boost)
-      - Tin Dust: **68%** (1.5x boost, equal with copper)
-      - Flint: **15%** (1.5x boost)
-      - Iron Dust: **10%** (Small chance)
+      - Copper Dust: **80%** (yields 1-2 dusts)
+      - Tin Dust: **80%** (yields 1-2 dusts)
+      - Flint: **25%**
+      - Iron Dust: **20%**
+      - Guaranteed minimum drop: if all independent RNG checks fail, automatically drops at least 1 Copper or Tin Dust.
 
 ---
 

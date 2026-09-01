@@ -152,8 +152,7 @@ public class SieveBlock extends BaseEntityBlock implements IJeiMachineStation, I
                 new ItemStack(ModItems.SILICON_SHARD.get()),
                 new ItemStack(Items.FLINT),
                 new ItemStack(ModItems.COPPER_DUST.get()),
-                new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get())
+                new ItemStack(ModItems.TIN_DUST.get())
         );
 
         List<ItemStack> suspGravelOutputs = List.of(
@@ -161,7 +160,6 @@ public class SieveBlock extends BaseEntityBlock implements IJeiMachineStation, I
                 new ItemStack(Items.FLINT),
                 new ItemStack(ModItems.COPPER_DUST.get()),
                 new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
                 new ItemStack(Items.EMERALD),
                 new ItemStack(Items.WHEAT),
                 new ItemStack(Items.BURN_POTTERY_SHERD)
@@ -172,7 +170,6 @@ public class SieveBlock extends BaseEntityBlock implements IJeiMachineStation, I
                 new ItemStack(Items.FLINT),
                 new ItemStack(ModItems.COPPER_DUST.get()),
                 new ItemStack(ModItems.TIN_DUST.get()),
-                new ItemStack(ModItems.IRON_DUST.get()),
                 new ItemStack(Items.DIAMOND),
                 new ItemStack(Items.EMERALD),
                 new ItemStack(Items.SNIFFER_EGG),
