@@ -24,40 +24,40 @@ public class ModToolMaterials {
             ResourceLocation.fromNamespaceAndPath("larperthanwolves", "incorrect_for_bronze_tool")
     );
 
-    // Silicon tools: durability 30, speed 2.5f, bonus 0.0f
+    // Silicon tools: durability 55, speed 2.5f, bonus 0.0f
     public static final Tier SILICON = new SimpleTier(
             INCORRECT_FOR_SILICON,
-            30,
+            55,
             2.5f,
             0.0f,
             5,
             () -> Ingredient.of(ModItems.SILICON_SHARD.get())
     );
 
-    // Copper tools: durability 100, speed 4.5f, bonus 1.5f
+    // Copper tools: durability 180, speed 4.5f, bonus 1.5f
     public static final Tier COPPER = new SimpleTier(
             INCORRECT_FOR_COPPER,
-            100,
+            180,
             4.5f,
             1.5f,
             10,
             () -> Ingredient.of(net.minecraft.world.item.Items.COPPER_INGOT, ModItems.COPPER_DUST.get())
     );
 
-    // Bronze tools: durability 150, speed 5.5f, bonus 2.0f
+    // Bronze tools: durability 280, speed 5.5f, bonus 2.0f
     public static final Tier BRONZE = new SimpleTier(
             INCORRECT_FOR_BRONZE,
-            150,
+            280,
             5.5f,
             2.0f,
             12,
             () -> Ingredient.of(ModItems.BRONZE_INGOT.get())
     );
 
-    // Reinforced Iron tools (Diamond tier): durability 500, speed 8.0f, bonus 3.0f
+    // Reinforced Iron tools (Diamond tier): durability 900, speed 8.0f, bonus 3.0f
     public static final Tier REINFORCED_IRON = new SimpleTier(
             net.minecraft.tags.BlockTags.INCORRECT_FOR_DIAMOND_TOOL,
-            500,
+            900,
             8.0f,
             3.0f,
             10,

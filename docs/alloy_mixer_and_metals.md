@@ -31,11 +31,11 @@ This system manages metallurgical alloying, ratio conversions, and tool/armor ti
 ---
 
 ## 📦 Tool & Armor Tiers
-- **Silicon**: Durability 30. Coal, Copper Dust, Stone Pebbles.
-- **Copper**: Durability 100. Coal, Raw Copper, Tin Dust, Rich Soils.
-- **Bronze**: Durability 150. Raw Tin, Iron Dust, Deepslate/Tuff/Netherrack nuggets.
+- **Silicon**: Durability 55. Coal, Copper Dust, Stone Pebbles.
+- **Copper**: Durability 180. Coal, Raw Copper, Tin Dust, Rich Soils.
+- **Bronze**: Durability 280. Raw Tin, Iron Dust, Deepslate/Tuff/Netherrack nuggets.
 - **Iron**: Durability 250. Standard ores, Raw Zinc, full blocks.
-- **Reinforced Iron**: High durability & mining speed, Ancient Debris & Obsidian.
+- **Reinforced Iron**: Durability 900. High mining speed, Ancient Debris & Obsidian.
 
 ---
 

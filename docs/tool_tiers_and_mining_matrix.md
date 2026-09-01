@@ -16,11 +16,11 @@ This document defines the complete tool tier progression, durability, harvest sp
 
 | Tier | Durability | Speed | Attack Bonus | Repair Ingredient | Incorrect For Tag |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Silicon (Кремень)** | 30 | 2.5 | +0.0 | `larperthanwolves:silicon_shard` | `incorrect_for_silicon_tool` |
-| **Copper (Медь)** | 100 | 4.5 | +1.5 | `minecraft:copper_ingot`, `copper_dust` | `incorrect_for_copper_tool` |
-| **Bronze (Бронза)** | 150 | 5.5 | +2.0 | `larperthanwolves:bronze_ingot` | `incorrect_for_bronze_tool` |
+| **Silicon (Кремень)** | 55 | 2.5 | +0.0 | `larperthanwolves:silicon_shard` | `incorrect_for_silicon_tool` |
+| **Copper (Медь)** | 180 | 4.5 | +1.5 | `minecraft:copper_ingot`, `copper_dust` | `incorrect_for_copper_tool` |
+| **Bronze (Бронза)** | 280 | 5.5 | +2.0 | `larperthanwolves:bronze_ingot` | `incorrect_for_bronze_tool` |
 | **Iron (Железо)** | 250 | 6.0 | +2.0 | `minecraft:iron_ingot` | Vanilla `incorrect_for_iron_tool` |
-| **Reinforced Iron (Алмазный слиток)** | 500 | 8.0 | +3.0 | `larperthanwolves:diamond_ingot` | Vanilla `incorrect_for_diamond_tool` |
+| **Reinforced Iron (Алмазный слиток)** | 900 | 8.0 | +3.0 | `larperthanwolves:diamond_ingot` | Vanilla `incorrect_for_diamond_tool` |
 | **Netherite** | 2031 | 9.0 | +4.0 | `minecraft:netherite_ingot` | Vanilla `incorrect_for_netherite_tool` |
 
 ---

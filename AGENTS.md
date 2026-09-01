@@ -38,11 +38,11 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 - **Disabled Tools & Armor**: Wooden, Stone, Golden, and vanilla Diamond tools and armor are completely disabled and purged from recipes, creative tabs, mob equipment/spawns, and world loot tables.
 - **Workstations & Machines Harvesting Rule**: Stone/metal processing workstations (**Brick Furnace**, **Advanced Smelter**, **Food Oven**, **Alloy Mixer**, **Hand Mill**, **Kinetic Piston**, **Entity Observer**, vanilla Furnaces/Smokers) strictly require a **Pickaxe of Copper tier or higher** (Copper, Bronze, Iron, Reinforced Iron, Netherite) to be mined and harvested. Breaking by hand or with a Silicon Pickaxe is blocked (mining speed = 0.0, drops = 0). When mined with Copper+ pickaxes, the workstation drops itself and spills its inventory contents.
 - **Wooden Objects & Containers Harvesting Rule**: Wooden workstations, machines, and storage (**Woven Basket**, **Drying Rack**, **Wooden Hopper**, **Sieve Table**, **Filter Grate**, **Mill Crank**, stumps, logs, planks) strictly require an **Axe** (any tier: Silicon, Copper, Bronze, Iron, Reinforced Iron, Netherite) to be mined and harvested. Breaking by hand is blocked (mining speed = 0.0, drops = 0).
-- **Silicon (Кремень)**: Durability 30. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Shovel mines Clay (1 Clay Ball) and basic soils. Cannot mine workstations, deepslate, zinc, or any other ores.
-- **Copper (Медь)**: Durability 100. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Workstations (Brick Furnace, Smelter, Oven, Mixer, Mill, Piston, Observer), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`) and Clay. Cannot mine deepslate, zinc, or iron+.
-- **Bronze (Бронза)**: Durability 150. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Workstations, Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils and Clay. Cannot mine zinc ore or high-tier ores.
+- **Silicon (Кремень)**: Durability 55. Mines Coal (item), Copper (Copper Dust), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4), Sandstone (Sand, 2-4). Shovel mines Clay (1 Clay Ball) and basic soils. Cannot mine workstations, deepslate, zinc, or any other ores.
+- **Copper (Медь)**: Durability 180. Mines Coal (item), Copper (Raw Copper), Tin (Tin Dust), Workstations (Brick Furnace, Smelter, Oven, Mixer, Mill, Piston, Observer), Stone/Granite/Diorite/Andesite/Calcite (Pebbles, 2-4). Shovel can mine and harvest Rich Soils (`rich_grass_block`, `rich_dirt`, `rich_gravel`, `rich_sand`, `rich_red_sand`) and Clay. Cannot mine deepslate, zinc, or iron+.
+- **Bronze (Бронза)**: Durability 280. Mines Coal (item), Copper (Raw Copper), Tin (Raw Tin), Iron (Iron Dust), Workstations, Stone/Granite/Diorite/Andesite/Calcite (Pebbles), Deepslate/Tuff/Dripstone/Netherrack (Pebbles: `deepslate_nugget`, `tuff_nugget`, `dripstone_nugget`, `netherrack_nugget`, 2-4). Shovel mines Rich Soils and Clay. Cannot mine zinc ore or high-tier ores.
 - **Iron (Железо)**: Standard metal. Full mining access for standard rocks & ores as whole blocks / raw chunks, including Zinc Ore (`create:raw_zinc`) and all Workstations. Shovel mines Rich Soils and Clay. Cannot mine Ancient Debris or Obsidian.
-- **Reinforced Iron (Diamond Ingot) / Netherite**: Full access to all blocks including Ancient Debris and Obsidian.
+- **Reinforced Iron (Diamond Ingot) / Netherite**: Durability 900. Full access to all blocks including Ancient Debris and Obsidian.
 
 ### ⚙️ Hand Mill & Mill Crank (Молотилка и Рукоять)
 - **Hand Mill (`mill` / `MillBlock`)**:
@@ -95,8 +95,8 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
   - **Method 1 - Hand Weaving**: Hold Right-Click with Unbound Mesh in hand for **15 seconds** (instant center snap, eating bobbing animation, and scratching brush sounds). Durability bar fills from 0 to 300 ticks. Progress is saved if interrupted.
   - **Method 2 - Knitting Needles (Спицы)**: Combine Unbound Mesh + Knitting Needles in any 2x2 or 3x3 crafting grid to **instantly craft a finished Mesh** (`mesh`). Needles lose 1 durability and remain in the crafting grid.
   - **Knitting Needles (`bronze_knitting_needles` / `iron_knitting_needles`)**:
-    - **Bronze Knitting Needles**: 64 durability. Crafted from 2 Bronze Ingots.
-    - **Iron Knitting Needles**: 256 durability. Crafted from 2 Iron Ingots.
+    - **Bronze Knitting Needles**: 110 durability. Crafted from 2 Bronze Ingots.
+    - **Iron Knitting Needles**: 450 durability. Crafted from 2 Iron Ingots.
 - **Standard Soils (Gravel, Sand, Red Sand, Dirt, Suspicious Gravel/Sand)**:
   - **Bare Hand Digging**: Drops only **Silicon Shards** (20%) or the soil block (80%). Whole Flint and Copper Dust **NEVER** drop from bare hand digging.
   - **Shovel Digging**: Drops **Silicon Shards** (20%), **Flint** (8%), **Copper Dust** (2%), **Gravel/Soil** (70%).
@@ -186,7 +186,7 @@ Inspired by *Better Than Wolves*, this hardcore survival overhaul rebuilds the e
 
 ### 🌲 Stumps, Chisel Carving & Crafting Table Construction
 - **Tree Stumps (`StumpBlock` / `WorkStumpBlock`)**: Naturally generated trees have their lowest trunk block replaced with a stump of very high hardness (25.0).
-- **Copper Chisel (`chisel` / `ChiselItem`)**: Crafted from **1 Copper Ingot + 1 Stick** in 2x2/3x3 crafting grid (64 durability).
+- **Copper Chisel (`chisel` / `ChiselItem`)**: Crafted from **1 Copper Ingot + 1 Stick** in 2x2/3x3 crafting grid (110 durability).
 - **Crafting Table Carving**: Right-clicking a stump 4 times with a Chisel carves it through 3 visual stages into a vanilla Crafting Table. Direct crafting of crafting tables in 2x2 inventory is disabled.
 
 ### 🪓 Woodcutting & Plank Crafting Rules

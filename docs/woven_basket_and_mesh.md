@@ -15,8 +15,8 @@ This system provides early-game item storage, filtering components, hand weaving
   - **Method 2 - Knitting Needles (Спицы)**: Combine 1 Unbound Mesh + 1 Knitting Needles in any 2x2 or 3x3 crafting grid to **instantly craft a finished Mesh**.
     - The Knitting Needles lose 1 durability and remain in the crafting grid.
 - **Knitting Needles (`bronze_knitting_needles` / `iron_knitting_needles`)**:
-  - **Bronze Knitting Needles**: 64 durability. Crafted from 2 Bronze Ingots placed diagonally.
-  - **Iron Knitting Needles**: 256 durability. Crafted from 2 Iron Ingots placed diagonally.
+  - **Bronze Knitting Needles**: 110 durability. Crafted from 2 Bronze Ingots placed diagonally.
+  - **Iron Knitting Needles**: 450 durability. Crafted from 2 Iron Ingots placed diagonally.
 - **Woven Basket (`basket` / `BasketBlock` / `BasketBlockEntity`)**:
   - **9-slot container** (3x3 inventory).
   - Crafting: 4 Meshes in 2x2 grid.

@@ -150,7 +150,7 @@ public class ModItems {
                     .attributes(HoeItem.createAttributes(ModToolMaterials.SILICON, -3, 0.0f))));
 
     public static final DeferredItem<ShearsItem> SILICON_SHEARS = ITEMS.register("silicon_shears",
-            () -> new ShearsItem(new Item.Properties().durability(20)));
+            () -> new ShearsItem(new Item.Properties().durability(35)));
 
     public static final DeferredItem<Item> SILICON_SPEAR = ITEMS.register("silicon_spear",
             () -> new SwordItem(ModToolMaterials.SILICON, new Item.Properties()
@@ -159,7 +159,7 @@ public class ModItems {
 
     // Chisel Tool (Стамеска)
     public static final DeferredItem<ChiselItem> CHISEL = ITEMS.register("chisel",
-            () -> new ChiselItem(new Item.Properties().durability(64)));
+            () -> new ChiselItem(new Item.Properties().durability(110)));
 
     // Diamond Ingot
     public static final DeferredItem<Item> DIAMOND_INGOT = ITEMS.register("diamond_ingot",
@@ -217,10 +217,10 @@ public class ModItems {
 
     // Knitting Needles (Спицы)
     public static final DeferredItem<KnittingNeedlesItem> BRONZE_KNITTING_NEEDLES = ITEMS.register("bronze_knitting_needles",
-            () -> new KnittingNeedlesItem(new Item.Properties().durability(64).stacksTo(1)));
+            () -> new KnittingNeedlesItem(new Item.Properties().durability(110).stacksTo(1)));
 
     public static final DeferredItem<KnittingNeedlesItem> IRON_KNITTING_NEEDLES = ITEMS.register("iron_knitting_needles",
-            () -> new KnittingNeedlesItem(new Item.Properties().durability(256).stacksTo(1)));
+            () -> new KnittingNeedlesItem(new Item.Properties().durability(450).stacksTo(1)));
 
     // Tin Items
     public static final DeferredItem<Item> RAW_TIN = ITEMS.register("raw_tin",

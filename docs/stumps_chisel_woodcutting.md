@@ -23,8 +23,8 @@ This system overhauls early-game wood procurement, crafting table construction, 
 ---
 
 ## 📦 Crafting & Progression
-- **Chisel Crafting**: 1 Copper Ingot + 1 Stick in 2x2/3x3 crafting grid $\rightarrow$ **Chisel** (Copper Chisel, 64 durability).
-- **Silicon Axe**: 1 Silicon Shard + 2 Sticks + 1 Rope in 2x2 grid $\rightarrow$ **Silicon Axe** (30 durability).
+- **Chisel Crafting**: 1 Copper Ingot + 1 Stick in 2x2/3x3 crafting grid $\rightarrow$ **Chisel** (Copper Chisel, 110 durability).
+- **Silicon Axe**: 1 Silicon Shard + 2 Sticks + 1 Rope in 2x2 grid $\rightarrow$ **Silicon Axe** (55 durability).
 - **Stump Types**: Oak, Spruce, Birch, Jungle, Acacia, Dark Oak, Mangrove, Cherry, Bamboo, Crimson, Warped.
 
 ---
